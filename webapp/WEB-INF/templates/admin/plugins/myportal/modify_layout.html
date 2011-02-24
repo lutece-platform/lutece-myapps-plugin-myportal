@@ -1,0 +1,38 @@
+
+<div class="content-box">
+       
+    <form method="post"  name="modify_layout" action="jsp/admin/plugins/myportal/DoModifyLayout.jsp">
+        <h2>#i18n{myportal.modify_layout.tableLabel}</h2>
+        
+
+        <p>
+             	  
+                   	   <input type="hidden" id="layout_id_layout" name="layout_id_layout" value="${layout.idLayout}"/>
+ 			
+             <div>
+            <label for="layout_name" >#i18n{myportal.modify_layout.rowTitleName} * :</label>
+            <input type="text" id="layout_name" name="layout_name" size="60" maxlength="50" value="${layout.name}" tabindex="1" />
+            </div>
+ 			
+             <div>
+            <label for="layout_description" >#i18n{myportal.modify_layout.rowTitleDescription} * :</label>
+            <input type="text" id="layout_description" name="layout_description" size="60" maxlength="50" value="${layout.description}" tabindex="1" />
+            </div>
+ 			
+             <div>
+            <label for="layout_layout" >#i18n{myportal.modify_layout.rowTitleLayout} * :</label>
+            <input type="text" id="layout_layout" name="layout_layout" size="60" maxlength="50" value="${layout.layout}" tabindex="1" />
+            </div>
+        </p>
+        <p>   
+            <input type="submit" value="#i18n{myportal.modify_layout.buttonModifyLayout}" class="button" tabindex="3" />
+            <input class="button" type="button" onclick="javascript:history.go(-1)" value="Cancel" />	
+        </p>
+        
+    </form>
+      
+  
+    
+</div>
+
+

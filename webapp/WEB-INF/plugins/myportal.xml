@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<plug-in>
+    <name>myportal</name>
+    <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
+    <version>0.9.0</version>
+    <documentation></documentation>
+    <installation></installation>
+    <changes></changes>
+    <user-guide></user-guide>
+    <description>myportal.plugin.description</description>
+    <provider>myportal.plugin.provider</provider>
+    <provider-url>http://www.lutece.paris.fr</provider-url>
+    <icon-url>images/admin/skin/plugins/myportal/myportal.png</icon-url>
+    <copyright>Copyright (c) City of Paris</copyright>
+    <db-pool-required>1</db-pool-required>
+    
+    <!-- Admin features parameters -->
+    <admin-features>
+        <admin-feature>
+            <feature-id>MYPORTAL_WIDGET_MANAGEMENT</feature-id>
+            <feature-title>myportal.adminFeature.myportal_widget_management.name</feature-title>
+            <feature-description>myportal.adminFeature.myportal_widget_management.description</feature-description>
+            <feature-level>0</feature-level>
+            <feature-url>jsp/admin/plugins/myportal/ManageWidgets.jsp</feature-url>
+            <feature-icon-url></feature-icon-url>
+      </admin-feature>
+        <admin-feature>
+            <feature-id>MYPORTAL_CATEGORY_MANAGEMENT</feature-id>
+            <feature-title>myportal.adminFeature.myportal_category_management.name</feature-title>
+            <feature-description>myportal.adminFeature.myportal_category_management.description</feature-description>
+            <feature-level>0</feature-level>
+            <feature-url>jsp/admin/plugins/myportal/ManageCategories.jsp</feature-url>
+            <feature-icon-url></feature-icon-url>
+      </admin-feature>
+        <admin-feature>
+            <feature-id>MYPORTAL_LAYOUT_MANAGEMENT</feature-id>
+            <feature-title>myportal.adminFeature.myportal_layout_management.name</feature-title>
+            <feature-description>myportal.adminFeature.myportal_layout_management.description</feature-description>
+            <feature-level>0</feature-level>
+            <feature-url>jsp/admin/plugins/myportal/ManageLayouts.jsp</feature-url>
+            <feature-icon-url></feature-icon-url>
+      </admin-feature>
+    </admin-features>    
+  	<!-- XPages parameters -->
+    <applications>
+        <application>
+            <application-id>myportal</application-id>
+            <application-class>fr.paris.lutece.plugins.myportal.web.MyPortalApp</application-class>
+        </application>
+    </applications>
+	<!-- Portlet parameters -->
+    <portlets>
+   </portlets>
+</plug-in>
+

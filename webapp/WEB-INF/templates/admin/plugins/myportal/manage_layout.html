@@ -1,0 +1,61 @@
+
+  <div class="content-box" >
+    <h2>#i18n{myportal.manage_layout.tableLabel}</h2>    
+    <table>
+        <tr>
+ 			  
+                   	   <input type="hidden" id="layout_id_layout" name="layout_id_layout"  />
+ 			
+ 			<th>#i18n{myportal.manage_layout.columnName}</th>
+ 			
+ 			<th>#i18n{myportal.manage_layout.columnDescription}</th>
+ 			
+ 			<th>#i18n{myportal.manage_layout.columnLayout}</th>
+		<th>#i18n{myportal.manage_layout.columnAction}</th>
+        </tr>
+        <#list layout_list as layout >
+         <tr>
+   
+             
+             
+                   	   <input type="hidden" id="layout_id_layout" name="layout_id_layout"  />
+             
+             
+ 			 
+             
+              <td><a href="jsp/admin/plugins/myportal/ModifyLayout.jsp?layout_id_layout=${layout.idLayout}" class="bullet-link">
+                 ${layout.name}
+                </a>
+                </td>
+             
+             
+ 			 
+             
+                <td>${layout.description}</td>
+             
+             
+ 			 
+             
+                <td>${layout.layout}</td>
+             
+             
+ 			 
+             <td>
+                <a href="jsp/admin/plugins/myportal/RemoveLayout.jsp?layout_id_layout=${layout.idLayout}" >
+                    <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
+                </a>
+             </td>
+        </tr>
+        </#list>
+    </table>
+
+    <form method="post"  action="jsp/admin/plugins/myportal/CreateLayout.jsp">
+        <input type="submit" value="#i18n{myportal.manage_layout.buttonAddLayout}" class="button" />
+    </form>
+
+</div>
+
+
+  
+
+

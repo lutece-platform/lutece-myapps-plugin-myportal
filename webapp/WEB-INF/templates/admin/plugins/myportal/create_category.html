@@ -1,0 +1,32 @@
+<div class="content-box" >
+    
+    <h2>#i18n{myportal.create_category.tableLabel}</h2>
+    
+    <form method="post"  name="create_category" id="create_category" action="jsp/admin/plugins/myportal/DoCreateCategory.jsp">
+      
+         <p>
+            
+                   	   <input type="hidden" id="category_id_category" name="category_id_category"  />
+            <div>
+            <label for="category_idParent" >#i18n{myportal.create_category.rowTitleId_parent} * :</label>
+            <input type="text" id="category_id_parent" name="category_id_parent" size="60" maxlength="50" tabindex="1" />
+            </div>
+            <div>
+            <label for="category_name" >#i18n{myportal.create_category.rowTitleName} * :</label>
+            <input type="text" id="category_name" name="category_name" size="60" maxlength="50" tabindex="1" />
+            </div>
+            <div>
+            <label for="category_description" >#i18n{myportal.create_category.rowTitleDescription} * :</label>
+            <input type="text" id="category_description" name="category_description" size="60" maxlength="50" tabindex="1" />
+            </div>
+        </p>
+        <p>   
+        	<input type="submit" value="#i18n{myportal.create_category.buttonValidate}" class="button" tabindex="3" />
+        </p>
+        
+    </form>
+ 
+    
+</div>
+
+
