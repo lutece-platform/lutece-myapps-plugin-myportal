@@ -1,0 +1,65 @@
+<div class="myportal-column">
+
+	<div class="myportal-portlet">
+		<div class="myportal-portlet-header">Feeds</div>
+		<div class="myportal-portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+	</div>
+	
+	<div class="myportal-portlet">
+		<div class="myportal-portlet-header">News</div>
+
+		<div class="myportal-portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+	</div>
+
+</div>
+
+<div class="myportal-column">
+
+	<div class="myportal-portlet">
+		<div class="myportal-portlet-header">Shopping</div>
+		<div class="myportal-portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+
+	</div>
+
+</div>
+
+<div class="myportal-column">
+
+	<div class="myportal-portlet">
+		<div class="myportal-portlet-header">Links</div>
+		<div class="myportal-portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+	</div>
+
+	
+	<div class="myportal-portlet">
+		<div class="myportal-portlet-header">Images</div>
+		<div class="myportal-portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+	</div>
+
+</div>
+
+
+
+<script src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
+	<script>
+	$(function() {
+		$( ".myportal-column" ).sortable({
+			connectWith: ".myportal-column"
+		});
+
+		$( ".myportal-portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+			.find( ".myportal-portlet-header" )
+				.addClass( "ui-widget-header ui-corner-all" )
+				.prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+				.end()
+			.find( ".myportal-portlet-content" );
+
+		$( ".myportal-portlet-header .ui-icon" ).click(function() {
+			$( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+			$( this ).parents( ".myportal-portlet:first" ).find( ".myportal-portlet-content" ).toggle();
+		});
+
+		$( ".myportal-column" ).disableSelection();
+	});
+	</script>
+

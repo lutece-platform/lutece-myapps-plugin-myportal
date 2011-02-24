@@ -47,7 +47,7 @@ public final class WidgetHome
 
     // Static variable pointed at the DAO instance
 
-    private static IWidgetDAO _dao = ( IWidgetDAO ) SpringContextService.getPluginBean( "myportal", "widgetDAO" );
+    private static IWidgetDAO _dao = ( IWidgetDAO ) SpringContextService.getPluginBean( "myportal", "myportal.widgetDAO" );
 
 
     /**

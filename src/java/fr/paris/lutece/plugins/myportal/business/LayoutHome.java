@@ -47,7 +47,7 @@ public final class LayoutHome
 
     // Static variable pointed at the DAO instance
 
-    private static ILayoutDAO _dao = ( ILayoutDAO ) SpringContextService.getPluginBean( "myportal", "layoutDAO" );
+    private static ILayoutDAO _dao = ( ILayoutDAO ) SpringContextService.getPluginBean( "myportal", "myportal.layoutDAO" );
 
 
     /**

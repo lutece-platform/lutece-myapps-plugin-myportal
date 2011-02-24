@@ -47,7 +47,7 @@ public final class CategoryHome
 
     // Static variable pointed at the DAO instance
 
-    private static ICategoryDAO _dao = ( ICategoryDAO ) SpringContextService.getPluginBean( "myportal", "categoryDAO" );
+    private static ICategoryDAO _dao = ( ICategoryDAO ) SpringContextService.getPluginBean( "myportal", "myportal.categoryDAO" );
 
 
     /**

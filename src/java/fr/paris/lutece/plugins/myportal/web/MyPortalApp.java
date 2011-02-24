@@ -43,7 +43,10 @@ import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.html.HtmlTemplate;
+import java.util.Locale;
 
 
 /**
@@ -51,6 +54,7 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
  */
 public class MyPortalApp implements XPageApplication
 {
+    private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
  private static final String PARAMETER_PAGE = "page";
  
  private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
@@ -74,7 +78,9 @@ public class MyPortalApp implements XPageApplication
 
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
-        page.setContent( " Myportal has been installed and this is the myportal XPage"  );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale());
+        page.setContent(  template.getHtml() );
         
         return page;
     }
