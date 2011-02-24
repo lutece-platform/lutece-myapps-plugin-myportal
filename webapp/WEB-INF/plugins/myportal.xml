@@ -17,6 +17,7 @@
     <!-- Specific plugin CSS stylesheet -->
     <css-stylesheets>
         <css-stylesheet>myportal/myportal.css</css-stylesheet>
+        <css-stylesheet>myportal/jquery-ui-1.8.10.custom.css</css-stylesheet>
     </css-stylesheets>
 
 
