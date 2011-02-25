@@ -31,29 +31,31 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.util.ReferenceList;
+
 import java.util.Collection;
+
 
 /**
  * This class provides instances management methods (create, find, ...) for Category objects
  */
-
 public final class CategoryHome
 {
+    private static final String PLUGIN_NAME = "myportal";
 
     // Static variable pointed at the DAO instance
-
-    private static ICategoryDAO _dao = ( ICategoryDAO ) SpringContextService.getPluginBean( "myportal", "myportal.categoryDAO" );
-
+    private static ICategoryDAO _dao = (ICategoryDAO) SpringContextService.getPluginBean( PLUGIN_NAME,
+            "myportal.categoryDAO" );
+    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-
     private CategoryHome(  )
     {
     }
@@ -61,45 +63,35 @@ public final class CategoryHome
     /**
      * Create an instance of the category class
      * @param category The instance of the Category which contains the informations to store
-     * @param plugin the Plugin
      * @return The  instance of category which has been created with its primary key.
      */
-
-    public static Category create( Category category, Plugin plugin )
+    public static Category create( Category category )
     {
-        _dao.insert( category, plugin );
+        _dao.insert( category, _plugin );
 
         return category;
     }
-
 
     /**
      * Update of the category which is specified in parameter
      * @param category The instance of the Category which contains the data to store
-     * @param plugin the Plugin
      * @return The instance of the  category which has been updated
      */
-
-    public static Category update( Category category, Plugin plugin )
+    public static Category update( Category category )
     {
-        _dao.store( category, plugin );
+        _dao.store( category, _plugin );
 
         return category;
     }
 
-
     /**
      * Remove the category whose identifier is specified in parameter
      * @param nCategoryId The category Id
-     * @param plugin the Plugin
      */
-
-
-    public static void remove( int nCategoryId, Plugin plugin )
+    public static void remove( int nCategoryId )
     {
-        _dao.delete( nCategoryId, plugin );
+        _dao.delete( nCategoryId, _plugin );
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // Finders
@@ -107,26 +99,35 @@ public final class CategoryHome
     /**
      * Returns an instance of a category whose identifier is specified in parameter
      * @param nKey The category primary key
-     * @param plugin the Plugin
      * @return an instance of Category
      */
-
-    public static Category findByPrimaryKey( int nKey, Plugin plugin )
+    public static Category findByPrimaryKey( int nKey )
     {
-        return _dao.load( nKey, plugin);
+        return _dao.load( nKey, _plugin );
     }
-
 
     /**
      * Load the data of all the category objects and returns them in form of a collection
-     * @param plugin the Plugin
      * @return the collection which contains the data of all the category objects
      */
-
-    public static Collection<Category> getCategorysList( Plugin plugin )
+    public static Collection<Category> getCategoriesList(  )
     {
-        return _dao.selectCategorysList( plugin );
+        return _dao.selectCategorysList( _plugin );
     }
 
-}
+    /**
+     * Load the data of all the category objects and returns them in form of a ReferenceList
+     * @return the ReferenceList which contains the data of all the category objects
+     */
+    public static ReferenceList getCategories(  )
+    {
+        ReferenceList list = new ReferenceList(  );
 
+        for ( Category category : _dao.selectCategorysList( _plugin ) )
+        {
+            list.addItem( category.getIdCategory(  ), category.getName(  ) );
+        }
+
+        return list;
+    }
+}

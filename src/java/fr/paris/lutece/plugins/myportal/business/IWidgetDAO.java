@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
@@ -32,47 +31,37 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
+
 import java.util.Collection;
 
 
-
- /**
- * IWidgetDAO Interface
- */
-
+/**
+* IWidgetDAO Interface
+*/
 public interface IWidgetDAO
 {
-
-
     /**
      * Insert a new record in the table.
      * @param widget instance of the Widget object to inssert
      * @param plugin the Plugin
      */
-
     void insert( Widget widget, Plugin plugin );
 
-
-
-     /**
-     * Update the record in the table
-     * @param widget the reference of the Widget
-     * @param plugin the Plugin
-     */
-
+    /**
+    * Update the record in the table
+    * @param widget the reference of the Widget
+    * @param plugin the Plugin
+    */
     void store( Widget widget, Plugin plugin );
-
 
     /**
      * Delete a record from the table
      * @param nIdWidget int identifier of the Widget to delete
      * @param plugin the Plugin
      */
-
     void delete( int nIdWidget, Plugin plugin );
 
     ///////////////////////////////////////////////////////////////////////////
@@ -84,18 +73,12 @@ public interface IWidgetDAO
      * @param plugin the Plugin
      * @return The instance of the widget
      */
-
     Widget load( int nKey, Plugin plugin );
 
-
-
-     /**
-     * Load the data of all the widget objects and returns them as a collection
-     * @param plugin the Plugin
-     * @return The collection which contains the data of all the widget objects
-     */
-
+    /**
+    * Load the data of all the widget objects and returns them as a collection
+    * @param plugin the Plugin
+    * @return The collection which contains the data of all the widget objects
+    */
     Collection<Widget> selectWidgetsList( Plugin plugin );
-    
 }
-

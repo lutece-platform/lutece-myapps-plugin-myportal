@@ -31,54 +31,52 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.business.page;
 
 import java.util.List;
 
+
 /**
  * PageConfig
  */
-public class PageConfig 
+public class PageConfig
 {
     private String _strName;
     private List<TabConfig> _listTab;
 
-
-       /**
-        * Returns the Name
-        * @return The Name
-        */
-    public String getName()
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
     {
         return _strName;
     }
 
-       /**
-        * Sets the Name
-        * @param strName The Name
-        */
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
     public void setName( String strName )
     {
         _strName = strName;
     }
 
-       /**
-        * Returns the TabList
-        * @return The TabList
-        */
-    public List<TabConfig> getTabList()
+    /**
+     * Returns the TabList
+     * @return The TabList
+     */
+    public List<TabConfig> getTabList(  )
     {
         return _listTab;
     }
 
-       /**
-        * Sets the TabList
-        * @param TabList The TabList
-        */
+    /**
+     * Sets the TabList
+     * @param TabList The TabList
+     */
     public void setTabList( List TabList )
     {
         _listTab = TabList;
     }
-
 }

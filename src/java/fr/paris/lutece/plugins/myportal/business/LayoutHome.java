@@ -31,29 +31,25 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
 import java.util.Collection;
+
 
 /**
  * This class provides instances management methods (create, find, ...) for Layout objects
  */
-
 public final class LayoutHome
 {
-
     // Static variable pointed at the DAO instance
-
-    private static ILayoutDAO _dao = ( ILayoutDAO ) SpringContextService.getPluginBean( "myportal", "myportal.layoutDAO" );
-
+    private static ILayoutDAO _dao = (ILayoutDAO) SpringContextService.getPluginBean( "myportal", "myportal.layoutDAO" );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-
     private LayoutHome(  )
     {
     }
@@ -64,7 +60,6 @@ public final class LayoutHome
      * @param plugin the Plugin
      * @return The  instance of layout which has been created with its primary key.
      */
-
     public static Layout create( Layout layout, Plugin plugin )
     {
         _dao.insert( layout, plugin );
@@ -72,14 +67,12 @@ public final class LayoutHome
         return layout;
     }
 
-
     /**
      * Update of the layout which is specified in parameter
      * @param layout The instance of the Layout which contains the data to store
      * @param plugin the Plugin
      * @return The instance of the  layout which has been updated
      */
-
     public static Layout update( Layout layout, Plugin plugin )
     {
         _dao.store( layout, plugin );
@@ -87,19 +80,15 @@ public final class LayoutHome
         return layout;
     }
 
-
     /**
      * Remove the layout whose identifier is specified in parameter
      * @param nLayoutId The layout Id
      * @param plugin the Plugin
      */
-
-
     public static void remove( int nLayoutId, Plugin plugin )
     {
         _dao.delete( nLayoutId, plugin );
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // Finders
@@ -110,23 +99,18 @@ public final class LayoutHome
      * @param plugin the Plugin
      * @return an instance of Layout
      */
-
     public static Layout findByPrimaryKey( int nKey, Plugin plugin )
     {
-        return _dao.load( nKey, plugin);
+        return _dao.load( nKey, plugin );
     }
-
 
     /**
      * Load the data of all the layout objects and returns them in form of a collection
      * @param plugin the Plugin
      * @return the collection which contains the data of all the layout objects
      */
-
     public static Collection<Layout> getLayoutsList( Plugin plugin )
     {
         return _dao.selectLayoutsList( plugin );
     }
-
 }
-

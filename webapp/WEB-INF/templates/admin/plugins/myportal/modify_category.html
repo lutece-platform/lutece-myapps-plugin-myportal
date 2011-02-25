@@ -1,38 +1,30 @@
-
 <div class="content-box">
-       
+
     <form method="post"  name="modify_category" action="jsp/admin/plugins/myportal/DoModifyCategory.jsp">
         <h2>#i18n{myportal.modify_category.tableLabel}</h2>
-        
 
         <p>
-             	  
-                   	   <input type="hidden" id="category_id_category" name="category_id_category" value="${category.idCategory}"/>
- 			
-             <div>
-            <label for="category_id_parent" >#i18n{myportal.modify_category.rowTitleId_parent} * :</label>
-            <input type="text" id="category_id_parent" name="category_id_parent" size="60" maxlength="50" value="${category.idParent}" tabindex="1" />
-            </div>
- 			
-             <div>
-            <label for="category_name" >#i18n{myportal.modify_category.rowTitleName} * :</label>
+            <input type="hidden" id="category_id_category" name="category_id_category" value="${category.idCategory}"/>
+
+        <div>
+            <label for="category_name" >#i18n{myportal.modify_category.labelName} * :</label>
             <input type="text" id="category_name" name="category_name" size="60" maxlength="50" value="${category.name}" tabindex="1" />
-            </div>
- 			
-             <div>
-            <label for="category_description" >#i18n{myportal.modify_category.rowTitleDescription} * :</label>
+        </div>
+
+        <div>
+            <label for="category_description" >#i18n{myportal.modify_category.labelDescription} * :</label>
             <input type="text" id="category_description" name="category_description" size="60" maxlength="50" value="${category.description}" tabindex="1" />
-            </div>
+        </div>
         </p>
         <p>   
             <input type="submit" value="#i18n{myportal.modify_category.buttonModifyCategory}" class="button" tabindex="3" />
             <input class="button" type="button" onclick="javascript:history.go(-1)" value="Cancel" />	
         </p>
-        
+
     </form>
-      
-  
-    
+
+
+
 </div>
 
 

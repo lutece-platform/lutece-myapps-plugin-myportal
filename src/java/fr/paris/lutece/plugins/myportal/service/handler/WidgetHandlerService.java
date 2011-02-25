@@ -31,13 +31,13 @@
  *
  * License 1.0
  */
-
-
 package fr.paris.lutece.plugins.myportal.service.handler;
 
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
+
 import java.util.List;
+
 
 /**
  *
@@ -47,43 +47,44 @@ public class WidgetHandlerService
 {
     private static WidgetHandlerService _singleton;
     private static List<WidgetHandler> _listHandlers;
-            
-    private WidgetHandlerService()
+
+    private WidgetHandlerService(  )
     {
-        
     }
-    
-    public static WidgetHandlerService instance()
+
+    public static WidgetHandlerService instance(  )
     {
-        if( _singleton == null )
+        if ( _singleton == null )
         {
-            _singleton = new WidgetHandlerService();
-            _listHandlers = SpringContextService.getBeansOfType(WidgetHandler.class);
+            _singleton = new WidgetHandlerService(  );
+            _listHandlers = SpringContextService.getBeansOfType( WidgetHandler.class );
         }
+
         return _singleton;
     }
 
-    public ReferenceList getHandlers()
+    public ReferenceList getHandlers(  )
     {
-        ReferenceList list = new ReferenceList();
-        for( WidgetHandler handler : _listHandlers )
-        {
-            list.addItem( handler.getName() , handler.getDescription() );
-        }
-        return list;
+        ReferenceList list = new ReferenceList(  );
 
+        for ( WidgetHandler handler : _listHandlers )
+        {
+            list.addItem( handler.getName(  ), handler.getDescription(  ) );
+        }
+
+        return list;
     }
 
-    public WidgetHandler getHandler(String strType)
+    public WidgetHandler getHandler( String strType )
     {
-        for( WidgetHandler handler : _listHandlers )
+        for ( WidgetHandler handler : _listHandlers )
         {
-            if( handler.getName().equals(strType))
+            if ( handler.getName(  ).equals( strType ) )
             {
                 return handler;
             }
         }
+
         return null;
     }
-
 }

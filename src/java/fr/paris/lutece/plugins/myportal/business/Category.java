@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
@@ -31,85 +30,90 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.myportal.business;
+
 
 /**
  * This is the business class for the object Category
- */ 
+ */
 public class Category
 {
-	// Variables declarations 
-	private int _nIdCategory;
-	private int _nIdParent;
-	private String _strName;
-	private String _strDescription;
-	/**
-	 * Returns the IdCategory
-	 * @return The IdCategory
-	 */
-	public int getIdCategory()
-	{
-		return _nIdCategory;
-	}
+    // Variables declarations 
+    private int _nIdCategory;
+    private int _nIdParent;
+    private String _strName;
+    private String _strDescription;
 
-	/**
-	 * Sets the IdCategory
-	 * @param nIdCategory The IdCategory
-	 */ 
-	public void setIdCategory( int nIdCategory )
-	{
-		_nIdCategory = nIdCategory;
-	}
-	/**
-	 * Returns the IdParent
-	 * @return The IdParent
-	 */
-	public int getIdParent()
-	{
-		return _nIdParent;
-	}
+    /**
+     * Returns the IdCategory
+     * @return The IdCategory
+     */
+    public int getIdCategory(  )
+    {
+        return _nIdCategory;
+    }
 
-	/**
-	 * Sets the IdParent
-	 * @param nIdParent The IdParent
-	 */ 
-	public void setIdParent( int nIdParent )
-	{
-		_nIdParent = nIdParent;
-	}
-	/**
-	 * Returns the Name
-	 * @return The Name
-	 */
-	public String getName()
-	{
-		return _strName;
-	}
+    /**
+     * Sets the IdCategory
+     * @param nIdCategory The IdCategory
+     */
+    public void setIdCategory( int nIdCategory )
+    {
+        _nIdCategory = nIdCategory;
+    }
 
-	/**
-	 * Sets the Name
-	 * @param strName The Name
-	 */ 
-	public void setName( String strName )
-	{
-		_strName = strName;
-	}
-	/**
-	 * Returns the Description
-	 * @return The Description
-	 */
-	public String getDescription()
-	{
-		return _strDescription;
-	}
+    /**
+     * Returns the IdParent
+     * @return The IdParent
+     */
+    public int getIdParent(  )
+    {
+        return _nIdParent;
+    }
 
-	/**
-	 * Sets the Description
-	 * @param strDescription The Description
-	 */ 
-	public void setDescription( String strDescription )
-	{
-		_strDescription = strDescription;
-	}
+    /**
+     * Sets the IdParent
+     * @param nIdParent The IdParent
+     */
+    public void setIdParent( int nIdParent )
+    {
+        _nIdParent = nIdParent;
+    }
+
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
+    {
+        return _strName;
+    }
+
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
+    public void setName( String strName )
+    {
+        _strName = strName;
+    }
+
+    /**
+     * Returns the Description
+     * @return The Description
+     */
+    public String getDescription(  )
+    {
+        return _strDescription;
+    }
+
+    /**
+     * Sets the Description
+     * @param strDescription The Description
+     */
+    public void setDescription( String strDescription )
+    {
+        _strDescription = strDescription;
+    }
 }

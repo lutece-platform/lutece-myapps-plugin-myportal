@@ -31,8 +31,6 @@
  *
  * License 1.0
  */
-
-
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -45,165 +43,146 @@ import java.util.Collection;
 /**
  * This class provides Data Access methods for Layout objects
  */
-
 public final class LayoutDAO implements ILayoutDAO
 {
-	
-	// Constants
-	
-	private static final String SQL_QUERY_NEW_PK = "SELECT max( id_layout ) FROM myportal_layout";
-	private static final String SQL_QUERY_SELECT = "SELECT id_layout, name, description, layout FROM myportal_layout WHERE id_layout = ?";
-	private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_layout ( id_layout, name, description, layout ) VALUES ( ?, ?, ?, ? ) ";
-	private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_layout WHERE id_layout = ? ";
-	private static final String SQL_QUERY_UPDATE = "UPDATE myportal_layout SET id_layout = ?, name = ?, description = ?, layout = ? WHERE id_layout = ?";
-	private static final String SQL_QUERY_SELECTALL = "SELECT id_layout, name, description, layout FROM myportal_layout";
+    // Constants
+    private static final String SQL_QUERY_NEW_PK = "SELECT max( id_layout ) FROM myportal_layout";
+    private static final String SQL_QUERY_SELECT = "SELECT id_layout, name, description, layout FROM myportal_layout WHERE id_layout = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_layout ( id_layout, name, description, layout ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_layout WHERE id_layout = ? ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_layout SET id_layout = ?, name = ?, description = ?, layout = ? WHERE id_layout = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_layout, name, description, layout FROM myportal_layout";
 
+    /**
+     * Generates a new primary key
+     * @param plugin The Plugin
+     * @return The new primary key
+     */
+    public int newPrimaryKey( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
+        daoUtil.executeQuery(  );
 
-	
-	/**
-	 * Generates a new primary key
-         * @param plugin The Plugin
-	 * @return The new primary key
-	 */
-    
-	public int newPrimaryKey( Plugin plugin)
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK , plugin  );
-		daoUtil.executeQuery();
+        int nKey;
 
-		int nKey;
+        if ( !daoUtil.next(  ) )
+        {
+            // if the table is empty
+            nKey = 1;
+        }
 
-		if( !daoUtil.next() )
-		{
-			// if the table is empty
-			nKey = 1;
-		}
+        nKey = daoUtil.getInt( 1 ) + 1;
+        daoUtil.free(  );
 
-		nKey = daoUtil.getInt( 1 ) + 1;
-		daoUtil.free();
+        return nKey;
+    }
 
-		return nKey;
-	}
+    /**
+     * Insert a new record in the table.
+     * @param layout instance of the Layout object to insert
+     * @param plugin The plugin
+     */
+    public void insert( Layout layout, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
+        layout.setIdLayout( newPrimaryKey( plugin ) );
 
+        daoUtil.setInt( 1, layout.getIdLayout(  ) );
+        daoUtil.setString( 2, layout.getName(  ) );
+        daoUtil.setString( 3, layout.getDescription(  ) );
+        daoUtil.setString( 4, layout.getLayout(  ) );
 
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-	/**
-	 * Insert a new record in the table.
-	 * @param layout instance of the Layout object to insert
-         * @param plugin The plugin
-	 */
+    /**
+     * Load the data of the layout from the table
+     * @param nId The identifier of the layout
+     * @param plugin The plugin
+     * @return the instance of the Layout
+     */
+    public Layout load( int nId, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+        daoUtil.setInt( 1, nId );
+        daoUtil.executeQuery(  );
 
-	public void insert( Layout layout, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT , plugin );
-                
-		layout.setIdLayout( newPrimaryKey( plugin ) );
-                
-                daoUtil.setInt ( 1, layout.getIdLayout ( ) );
-                daoUtil.setString ( 2, layout.getName ( ) );
-                daoUtil.setString ( 3, layout.getDescription ( ) );
-                daoUtil.setString ( 4, layout.getLayout ( ) );
+        Layout layout = null;
 
-		daoUtil.executeUpdate();
-		daoUtil.free();
-	}
+        if ( daoUtil.next(  ) )
+        {
+            layout = new Layout(  );
 
+            layout.setIdLayout( daoUtil.getInt( 1 ) );
+            layout.setName( daoUtil.getString( 2 ) );
+            layout.setDescription( daoUtil.getString( 3 ) );
+            layout.setLayout( daoUtil.getString( 4 ) );
+        }
 
-	/**
-	 * Load the data of the layout from the table
-	 * @param nId The identifier of the layout
-         * @param plugin The plugin
-	 * @return the instance of the Layout
-	 */
+        daoUtil.free(  );
 
+        return layout;
+    }
 
-        public Layout load( int nId, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT , plugin );
-		daoUtil.setInt( 1 , nId );
-		daoUtil.executeQuery();
+    /**
+     * Delete a record from the table
+     * @param nLayoutId The identifier of the layout
+     * @param plugin The plugin
+     */
+    public void delete( int nLayoutId, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+        daoUtil.setInt( 1, nLayoutId );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-		Layout layout = null;
+    /**
+     * Update the record in the table
+     * @param layout The reference of the layout
+     * @param plugin The plugin
+     */
+    public void store( Layout layout, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-		if ( daoUtil.next() )
-		{
-			layout = new Layout();
+        daoUtil.setInt( 1, layout.getIdLayout(  ) );
+        daoUtil.setString( 2, layout.getName(  ) );
+        daoUtil.setString( 3, layout.getDescription(  ) );
+        daoUtil.setString( 4, layout.getLayout(  ) );
+        daoUtil.setInt( 5, layout.getIdLayout(  ) );
 
-                        layout.setIdLayout( daoUtil.getInt(  1 ) );
-                        layout.setName( daoUtil.getString(  2 ) );
-                        layout.setDescription( daoUtil.getString(  3 ) );
-                        layout.setLayout( daoUtil.getString(  4 ) );
-		}
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-		daoUtil.free();
-		return layout;
-	}
+    /**
+     * Load the data of all the layouts and returns them as a collection
+     * @param plugin The plugin
+     * @return The Collection which contains the data of all the layouts
+     */
+    public Collection<Layout> selectLayoutsList( Plugin plugin )
+    {
+        Collection<Layout> layoutList = new ArrayList<Layout>(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
+        daoUtil.executeQuery(  );
 
+        while ( daoUtil.next(  ) )
+        {
+            Layout layout = new Layout(  );
 
-	/**
-	 * Delete a record from the table
-         * @param nLayoutId The identifier of the layout
-         * @param plugin The plugin
-	 */
+            layout.setIdLayout( daoUtil.getInt( 1 ) );
+            layout.setName( daoUtil.getString( 2 ) );
+            layout.setDescription( daoUtil.getString( 3 ) );
+            layout.setLayout( daoUtil.getString( 4 ) );
 
-	public void delete( int nLayoutId, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE , plugin );
-		daoUtil.setInt( 1 , nLayoutId );
-		daoUtil.executeUpdate();
-		daoUtil.free();
-	}
+            layoutList.add( layout );
+        }
 
+        daoUtil.free(  );
 
-	/**
-	 * Update the record in the table
-	 * @param layout The reference of the layout
-         * @param plugin The plugin
-	 */
-
-	public void store( Layout layout, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE , plugin );
-                
-        daoUtil.setInt( 1, layout.getIdLayout( ) );
-        daoUtil.setString( 2, layout.getName( ) );
-        daoUtil.setString( 3, layout.getDescription( ) );
-        daoUtil.setString( 4, layout.getLayout( ) );
-        daoUtil.setInt( 5, layout.getIdLayout( ) );
-                
-		daoUtil.executeUpdate( );
-		daoUtil.free( );
-	}
-
-
-
-	/**
-	 * Load the data of all the layouts and returns them as a collection
-         * @param plugin The plugin
-	 * @return The Collection which contains the data of all the layouts
-	 */
-
-        public Collection<Layout> selectLayoutsList( Plugin plugin )
-	{
-		Collection<Layout> layoutList = new ArrayList<Layout>(  );
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL , plugin );
-		daoUtil.executeQuery(  );
-
-		while ( daoUtil.next(  ) )
-		{
-                Layout layout = new Layout(  );
-
-                    layout.setIdLayout( daoUtil.getInt( 1 ) );
-                    layout.setName( daoUtil.getString( 2 ) );
-                    layout.setDescription( daoUtil.getString( 3 ) );
-                    layout.setLayout( daoUtil.getString( 4 ) );
-
-                layoutList.add( layout );
-		}
-
-		daoUtil.free();
-		return layoutList;
-	}
-
+        return layoutList;
+    }
 }

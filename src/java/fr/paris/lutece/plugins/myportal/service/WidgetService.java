@@ -39,27 +39,26 @@ import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
+
 /**
  *
  * @author pierre
  */
 public class WidgetService extends AbstractCacheableService
 {
-    private static WidgetService _singleton = new WidgetService();
-
+    private static WidgetService _singleton = new WidgetService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Service";
 
-    private WidgetService()
+    private WidgetService(  )
     {
-
     }
 
-    public String getName()
+    public String getName(  )
     {
         return SERVICE_NAME;
     }
 
-    public static WidgetService instance()
+    public static WidgetService instance(  )
     {
         return _singleton;
     }
@@ -68,13 +67,13 @@ public class WidgetService extends AbstractCacheableService
     {
         String strWidgetId = "" + id;
         Widget widget = (Widget) getFromCache( strWidgetId );
-        if( widget == null )
+
+        if ( widget == null )
         {
-            widget = WidgetHome.findByPrimaryKey(id, null);
-            putInCache(strWidgetId, widget);
+            widget = WidgetHome.findByPrimaryKey( id, null );
+            putInCache( strWidgetId, widget );
         }
+
         return widget;
     }
-
-
 }

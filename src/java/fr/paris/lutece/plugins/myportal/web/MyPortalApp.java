@@ -31,22 +31,21 @@
  *
  * License 1.0
  */
-
- 
 package fr.paris.lutece.plugins.myportal.web;
 
-import javax.servlet.http.HttpServletRequest;
-import fr.paris.lutece.portal.service.message.SiteMessage;
+import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
-import fr.paris.lutece.portal.service.message.SiteMessageService;
-import fr.paris.lutece.portal.web.xpages.XPage;
-import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.web.xpages.XPage;
+import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
-import java.util.Locale;
+
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -55,14 +54,17 @@ import java.util.Locale;
 public class MyPortalApp implements XPageApplication
 {
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
- private static final String PARAMETER_PAGE = "page";
- 
- private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
- private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
-     // private fields
-    private Plugin _plugin;   
-     /**
-     * Returns the content of the page myportal. 
+    private static final String PARAMETER_PAGE = "page";
+    private static final String MARK_WIDGETS = "widgets";
+    private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
+    private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
+
+    // private fields
+    private Plugin _plugin;
+    private MyPortalPageService _pageService = new MyPortalPageService(  );
+
+    /**
+     * Returns the content of the page myportal.
      * @param request The http request
      * @param nMode The current mode
      * @param plugin The plugin object
@@ -79,9 +81,13 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale());
-        page.setContent(  template.getHtml() );
-        
+        String strWidgets = _pageService.getUserPage( null );
+        HashMap model = new HashMap(  );
+        model.put( MARK_WIDGETS, strWidgets );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
+        page.setContent( template.getHtml(  ) );
+
         return page;
     }
 }

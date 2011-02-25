@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
@@ -31,85 +30,90 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.myportal.business;
+
 
 /**
  * This is the business class for the object Layout
- */ 
+ */
 public class Layout
 {
-	// Variables declarations 
-	private int _nIdLayout;
-	private String _strName;
-	private String _strDescription;
-	private String _strLayout;
-	/**
-	 * Returns the IdLayout
-	 * @return The IdLayout
-	 */
-	public int getIdLayout()
-	{
-		return _nIdLayout;
-	}
+    // Variables declarations 
+    private int _nIdLayout;
+    private String _strName;
+    private String _strDescription;
+    private String _strLayout;
 
-	/**
-	 * Sets the IdLayout
-	 * @param nIdLayout The IdLayout
-	 */ 
-	public void setIdLayout( int nIdLayout )
-	{
-		_nIdLayout = nIdLayout;
-	}
-	/**
-	 * Returns the Name
-	 * @return The Name
-	 */
-	public String getName()
-	{
-		return _strName;
-	}
+    /**
+     * Returns the IdLayout
+     * @return The IdLayout
+     */
+    public int getIdLayout(  )
+    {
+        return _nIdLayout;
+    }
 
-	/**
-	 * Sets the Name
-	 * @param strName The Name
-	 */ 
-	public void setName( String strName )
-	{
-		_strName = strName;
-	}
-	/**
-	 * Returns the Description
-	 * @return The Description
-	 */
-	public String getDescription()
-	{
-		return _strDescription;
-	}
+    /**
+     * Sets the IdLayout
+     * @param nIdLayout The IdLayout
+     */
+    public void setIdLayout( int nIdLayout )
+    {
+        _nIdLayout = nIdLayout;
+    }
 
-	/**
-	 * Sets the Description
-	 * @param strDescription The Description
-	 */ 
-	public void setDescription( String strDescription )
-	{
-		_strDescription = strDescription;
-	}
-	/**
-	 * Returns the Layout
-	 * @return The Layout
-	 */
-	public String getLayout()
-	{
-		return _strLayout;
-	}
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
+    {
+        return _strName;
+    }
 
-	/**
-	 * Sets the Layout
-	 * @param strLayout The Layout
-	 */ 
-	public void setLayout( String strLayout )
-	{
-		_strLayout = strLayout;
-	}
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
+    public void setName( String strName )
+    {
+        _strName = strName;
+    }
+
+    /**
+     * Returns the Description
+     * @return The Description
+     */
+    public String getDescription(  )
+    {
+        return _strDescription;
+    }
+
+    /**
+     * Sets the Description
+     * @param strDescription The Description
+     */
+    public void setDescription( String strDescription )
+    {
+        _strDescription = strDescription;
+    }
+
+    /**
+     * Returns the Layout
+     * @return The Layout
+     */
+    public String getLayout(  )
+    {
+        return _strLayout;
+    }
+
+    /**
+     * Sets the Layout
+     * @param strLayout The Layout
+     */
+    public void setLayout( String strLayout )
+    {
+        _strLayout = strLayout;
+    }
 }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
@@ -31,196 +30,204 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.myportal.business;
+
 
 /**
  * This is the business class for the object Widget
- */ 
+ */
 public class Widget
 {
-	// Variables declarations 
-	private int _nIdWidget;
-	private String _strName;
-	private String _strDescription;
-	private int _nIdCategory;
-	private String _strWidgetType;
-	private String _strIconUrl;
-	private int _nIsMovable;
-	private int _nIsRemovable;
-	private int _nIsResizable;
-        private String _strConfigData;
+    // Variables declarations 
+    private int _nIdWidget;
+    private String _strName;
+    private String _strDescription;
+    private int _nIdCategory;
+    private String _strWidgetType;
+    private String _strIconUrl;
+    private int _nIsMovable;
+    private int _nIsRemovable;
+    private int _nIsResizable;
+    private String _strConfigData;
 
-	/**
-	 * Returns the IdWidget
-	 * @return The IdWidget
-	 */
-	public int getIdWidget()
-	{
-		return _nIdWidget;
-	}
+    /**
+     * Returns the IdWidget
+     * @return The IdWidget
+     */
+    public int getIdWidget(  )
+    {
+        return _nIdWidget;
+    }
 
-	/**
-	 * Sets the IdWidget
-	 * @param nIdWidget The IdWidget
-	 */ 
-	public void setIdWidget( int nIdWidget )
-	{
-		_nIdWidget = nIdWidget;
-	}
-	/**
-	 * Returns the Name
-	 * @return The Name
-	 */
-	public String getName()
-	{
-		return _strName;
-	}
+    /**
+     * Sets the IdWidget
+     * @param nIdWidget The IdWidget
+     */
+    public void setIdWidget( int nIdWidget )
+    {
+        _nIdWidget = nIdWidget;
+    }
 
-	/**
-	 * Sets the Name
-	 * @param strName The Name
-	 */ 
-	public void setName( String strName )
-	{
-		_strName = strName;
-	}
-	/**
-	 * Returns the Description
-	 * @return The Description
-	 */
-	public String getDescription()
-	{
-		return _strDescription;
-	}
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
+    {
+        return _strName;
+    }
 
-	/**
-	 * Sets the Description
-	 * @param strDescription The Description
-	 */ 
-	public void setDescription( String strDescription )
-	{
-		_strDescription = strDescription;
-	}
-	/**
-	 * Returns the IdCategory
-	 * @return The IdCategory
-	 */
-	public int getIdCategory()
-	{
-		return _nIdCategory;
-	}
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
+    public void setName( String strName )
+    {
+        _strName = strName;
+    }
 
-	/**
-	 * Sets the IdCategory
-	 * @param nIdCategory The IdCategory
-	 */ 
-	public void setIdCategory( int nIdCategory )
-	{
-		_nIdCategory = nIdCategory;
-	}
-	/**
-	 * Returns the WidgetType
-	 * @return The WidgetType
-	 */
-	public String getWidgetType()
-	{
-		return _strWidgetType;
-	}
+    /**
+     * Returns the Description
+     * @return The Description
+     */
+    public String getDescription(  )
+    {
+        return _strDescription;
+    }
 
-	/**
-	 * Sets the WidgetType
-	 * @param strWidgetType The WidgetType
-	 */ 
-	public void setWidgetType( String strWidgetType )
-	{
-		_strWidgetType = strWidgetType;
-	}
-	/**
-	 * Returns the IconUrl
-	 * @return The IconUrl
-	 */
-	public String getIconUrl()
-	{
-		return _strIconUrl;
-	}
+    /**
+     * Sets the Description
+     * @param strDescription The Description
+     */
+    public void setDescription( String strDescription )
+    {
+        _strDescription = strDescription;
+    }
 
-	/**
-	 * Sets the IconUrl
-	 * @param strIconUrl The IconUrl
-	 */ 
-	public void setIconUrl( String strIconUrl )
-	{
-		_strIconUrl = strIconUrl;
-	}
-	/**
-	 * Returns the IsMovable
-	 * @return The IsMovable
-	 */
-	public int getIsMovable()
-	{
-		return _nIsMovable;
-	}
+    /**
+     * Returns the IdCategory
+     * @return The IdCategory
+     */
+    public int getIdCategory(  )
+    {
+        return _nIdCategory;
+    }
 
-	/**
-	 * Sets the IsMovable
-	 * @param nIsMovable The IsMovable
-	 */ 
-	public void setIsMovable( int nIsMovable )
-	{
-		_nIsMovable = nIsMovable;
-	}
-	/**
-	 * Returns the IsRemovable
-	 * @return The IsRemovable
-	 */
-	public int getIsRemovable()
-	{
-		return _nIsRemovable;
-	}
+    /**
+     * Sets the IdCategory
+     * @param nIdCategory The IdCategory
+     */
+    public void setIdCategory( int nIdCategory )
+    {
+        _nIdCategory = nIdCategory;
+    }
 
-	/**
-	 * Sets the IsRemovable
-	 * @param nIsRemovable The IsRemovable
-	 */ 
-	public void setIsRemovable( int nIsRemovable )
-	{
-		_nIsRemovable = nIsRemovable;
-	}
-	/**
-	 * Returns the IsResizable
-	 * @return The IsResizable
-	 */
-	public int getIsResizable()
-	{
-		return _nIsResizable;
-	}
+    /**
+     * Returns the WidgetType
+     * @return The WidgetType
+     */
+    public String getWidgetType(  )
+    {
+        return _strWidgetType;
+    }
 
-	/**
-	 * Sets the IsResizable
-	 * @param nIsResizable The IsResizable
-	 */ 
-	public void setIsResizable( int nIsResizable )
-	{
-		_nIsResizable = nIsResizable;
-	}
+    /**
+     * Sets the WidgetType
+     * @param strWidgetType The WidgetType
+     */
+    public void setWidgetType( String strWidgetType )
+    {
+        _strWidgetType = strWidgetType;
+    }
 
-      	/**
-	 * Returns the ConfigData
-	 * @return The ConfigData
-	 */
-	public String getConfigData()
-	{
-		return _strConfigData;
-	}
+    /**
+     * Returns the IconUrl
+     * @return The IconUrl
+     */
+    public String getIconUrl(  )
+    {
+        return _strIconUrl;
+    }
 
-	/**
-	 * Sets the ConfigData
-	 * @param strConfigData The ConfigData
-	 */
-	public void setConfigData( String strConfigData )
-	{
-		_strConfigData = strConfigData;
-	}
+    /**
+     * Sets the IconUrl
+     * @param strIconUrl The IconUrl
+     */
+    public void setIconUrl( String strIconUrl )
+    {
+        _strIconUrl = strIconUrl;
+    }
 
+    /**
+     * Returns the IsMovable
+     * @return The IsMovable
+     */
+    public int getIsMovable(  )
+    {
+        return _nIsMovable;
+    }
+
+    /**
+     * Sets the IsMovable
+     * @param nIsMovable The IsMovable
+     */
+    public void setIsMovable( int nIsMovable )
+    {
+        _nIsMovable = nIsMovable;
+    }
+
+    /**
+     * Returns the IsRemovable
+     * @return The IsRemovable
+     */
+    public int getIsRemovable(  )
+    {
+        return _nIsRemovable;
+    }
+
+    /**
+     * Sets the IsRemovable
+     * @param nIsRemovable The IsRemovable
+     */
+    public void setIsRemovable( int nIsRemovable )
+    {
+        _nIsRemovable = nIsRemovable;
+    }
+
+    /**
+     * Returns the IsResizable
+     * @return The IsResizable
+     */
+    public int getIsResizable(  )
+    {
+        return _nIsResizable;
+    }
+
+    /**
+     * Sets the IsResizable
+     * @param nIsResizable The IsResizable
+     */
+    public void setIsResizable( int nIsResizable )
+    {
+        _nIsResizable = nIsResizable;
+    }
+
+    /**
+     * Returns the ConfigData
+     * @return The ConfigData
+     */
+    public String getConfigData(  )
+    {
+        return _strConfigData;
+    }
+
+    /**
+     * Sets the ConfigData
+     * @param strConfigData The ConfigData
+     */
+    public void setConfigData( String strConfigData )
+    {
+        _strConfigData = strConfigData;
+    }
 }

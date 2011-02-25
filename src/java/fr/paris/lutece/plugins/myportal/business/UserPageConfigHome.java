@@ -34,83 +34,73 @@
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
-
-import java.util.Collection;
 
 
 /**
- * This class provides instances management methods (create, find, ...) for Widget objects
+ * This class provides instances management methods (create, find, ...) for UserPageConfig objects
  */
-public final class WidgetHome
+public final class UserPageConfigHome
 {
     // Static variable pointed at the DAO instance
-    private static IWidgetDAO _dao = (IWidgetDAO) SpringContextService.getPluginBean( "myportal", "myportal.widgetDAO" );
+    private static final String PLUGIN_NAME = "myportal";
+    private static final String BEAN_DAO = "myportal.userPageConfigDAO";
+    private static IUserPageConfigDAO _dao = (IUserPageConfigDAO) SpringContextService.getPluginBean( PLUGIN_NAME,
+            BEAN_DAO );
+    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private WidgetHome(  )
+    private UserPageConfigHome(  )
     {
     }
 
     /**
-     * Create an instance of the widget class
-     * @param widget The instance of the Widget which contains the informations to store
-     * @param plugin the Plugin
-     * @return The  instance of widget which has been created with its primary key.
+     * Create an instance of the userPageConfig class
+     * @param userPageConfig The instance of the UserPageConfig which contains the informations to store
+     * @return The  instance of userPageConfig which has been created with its primary key.
      */
-    public static Widget create( Widget widget, Plugin plugin )
+    public static UserPageConfig create( UserPageConfig userPageConfig )
     {
-        _dao.insert( widget, plugin );
+        _dao.insert( userPageConfig, _plugin );
 
-        return widget;
+        return userPageConfig;
     }
 
     /**
-     * Update of the widget which is specified in parameter
-     * @param widget The instance of the Widget which contains the data to store
-     * @param plugin the Plugin
-     * @return The instance of the  widget which has been updated
+     * Update of the userPageConfig which is specified in parameter
+     * @param userPageConfig The instance of the UserPageConfig which contains the data to store
+     * @return The instance of the  userPageConfig which has been updated
      */
-    public static Widget update( Widget widget, Plugin plugin )
+    public static UserPageConfig update( UserPageConfig userPageConfig )
     {
-        _dao.store( widget, plugin );
+        _dao.store( userPageConfig, _plugin );
 
-        return widget;
+        return userPageConfig;
     }
 
     /**
-     * Remove the widget whose identifier is specified in parameter
-     * @param nWidgetId The widget Id
+     * Remove the userPageConfig whose identifier is specified in parameter
+     * @param nUserPageConfigId The userPageConfig Id
      * @param plugin the Plugin
      */
-    public static void remove( int nWidgetId, Plugin plugin )
+    public static void remove( int nUserPageConfigId )
     {
-        _dao.delete( nWidgetId, plugin );
+        _dao.delete( nUserPageConfigId, _plugin );
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
-     * Returns an instance of a widget whose identifier is specified in parameter
-     * @param nKey The widget primary key
-     * @param plugin the Plugin
-     * @return an instance of Widget
+     * Returns an instance of a userPageConfig whose identifier is specified in parameter
+     * @param strUserGuid The userPageConfig primary key
+     * @return an instance of UserPageConfig
      */
-    public static Widget findByPrimaryKey( int nKey, Plugin plugin )
+    public static UserPageConfig findByPrimaryKey( String strUserGuid )
     {
-        return _dao.load( nKey, plugin );
-    }
-
-    /**
-     * Load the data of all the widget objects and returns them in form of a collection
-     * @param plugin the Plugin
-     * @return the collection which contains the data of all the widget objects
-     */
-    public static Collection<Widget> getWidgetsList( Plugin plugin )
-    {
-        return _dao.selectWidgetsList( plugin );
+        return _dao.load( strUserGuid, _plugin );
     }
 }

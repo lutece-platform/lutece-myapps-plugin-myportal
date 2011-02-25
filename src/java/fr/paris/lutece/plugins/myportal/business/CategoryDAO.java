@@ -31,8 +31,6 @@
  *
  * License 1.0
  */
-
-
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -45,165 +43,146 @@ import java.util.Collection;
 /**
  * This class provides Data Access methods for Category objects
  */
-
 public final class CategoryDAO implements ICategoryDAO
 {
-	
-	// Constants
-	
-	private static final String SQL_QUERY_NEW_PK = "SELECT max( id_category ) FROM myportal_category";
-	private static final String SQL_QUERY_SELECT = "SELECT id_category, id_parent, name, description FROM myportal_category WHERE id_category = ?";
-	private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_category ( id_category, id_parent, name, description ) VALUES ( ?, ?, ?, ? ) ";
-	private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_category WHERE id_category = ? ";
-	private static final String SQL_QUERY_UPDATE = "UPDATE myportal_category SET id_category = ?, id_parent = ?, name = ?, description = ? WHERE id_category = ?";
-	private static final String SQL_QUERY_SELECTALL = "SELECT id_category, id_parent, name, description FROM myportal_category";
+    // Constants
+    private static final String SQL_QUERY_NEW_PK = "SELECT max( id_category ) FROM myportal_category";
+    private static final String SQL_QUERY_SELECT = "SELECT id_category, id_parent, name, description FROM myportal_category WHERE id_category = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_category ( id_category, id_parent, name, description ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_category WHERE id_category = ? ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_category SET id_category = ?, id_parent = ?, name = ?, description = ? WHERE id_category = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_category, id_parent, name, description FROM myportal_category";
 
+    /**
+     * Generates a new primary key
+     * @param plugin The Plugin
+     * @return The new primary key
+     */
+    public int newPrimaryKey( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
+        daoUtil.executeQuery(  );
 
-	
-	/**
-	 * Generates a new primary key
-         * @param plugin The Plugin
-	 * @return The new primary key
-	 */
-    
-	public int newPrimaryKey( Plugin plugin)
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK , plugin  );
-		daoUtil.executeQuery();
+        int nKey;
 
-		int nKey;
+        if ( !daoUtil.next(  ) )
+        {
+            // if the table is empty
+            nKey = 1;
+        }
 
-		if( !daoUtil.next() )
-		{
-			// if the table is empty
-			nKey = 1;
-		}
+        nKey = daoUtil.getInt( 1 ) + 1;
+        daoUtil.free(  );
 
-		nKey = daoUtil.getInt( 1 ) + 1;
-		daoUtil.free();
+        return nKey;
+    }
 
-		return nKey;
-	}
+    /**
+     * Insert a new record in the table.
+     * @param category instance of the Category object to insert
+     * @param plugin The plugin
+     */
+    public void insert( Category category, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
+        category.setIdCategory( newPrimaryKey( plugin ) );
 
+        daoUtil.setInt( 1, category.getIdCategory(  ) );
+        daoUtil.setInt( 2, category.getIdParent(  ) );
+        daoUtil.setString( 3, category.getName(  ) );
+        daoUtil.setString( 4, category.getDescription(  ) );
 
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-	/**
-	 * Insert a new record in the table.
-	 * @param category instance of the Category object to insert
-         * @param plugin The plugin
-	 */
+    /**
+     * Load the data of the category from the table
+     * @param nId The identifier of the category
+     * @param plugin The plugin
+     * @return the instance of the Category
+     */
+    public Category load( int nId, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+        daoUtil.setInt( 1, nId );
+        daoUtil.executeQuery(  );
 
-	public void insert( Category category, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT , plugin );
-                
-		category.setIdCategory( newPrimaryKey( plugin ) );
-                
-                daoUtil.setInt ( 1, category.getIdCategory ( ) );
-                daoUtil.setInt ( 2, category.getIdParent ( ) );
-                daoUtil.setString ( 3, category.getName ( ) );
-                daoUtil.setString ( 4, category.getDescription ( ) );
+        Category category = null;
 
-		daoUtil.executeUpdate();
-		daoUtil.free();
-	}
+        if ( daoUtil.next(  ) )
+        {
+            category = new Category(  );
 
+            category.setIdCategory( daoUtil.getInt( 1 ) );
+            category.setIdParent( daoUtil.getInt( 2 ) );
+            category.setName( daoUtil.getString( 3 ) );
+            category.setDescription( daoUtil.getString( 4 ) );
+        }
 
-	/**
-	 * Load the data of the category from the table
-	 * @param nId The identifier of the category
-         * @param plugin The plugin
-	 * @return the instance of the Category
-	 */
+        daoUtil.free(  );
 
+        return category;
+    }
 
-        public Category load( int nId, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT , plugin );
-		daoUtil.setInt( 1 , nId );
-		daoUtil.executeQuery();
+    /**
+     * Delete a record from the table
+     * @param nCategoryId The identifier of the category
+     * @param plugin The plugin
+     */
+    public void delete( int nCategoryId, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+        daoUtil.setInt( 1, nCategoryId );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-		Category category = null;
+    /**
+     * Update the record in the table
+     * @param category The reference of the category
+     * @param plugin The plugin
+     */
+    public void store( Category category, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-		if ( daoUtil.next() )
-		{
-			category = new Category();
+        daoUtil.setInt( 1, category.getIdCategory(  ) );
+        daoUtil.setInt( 2, category.getIdParent(  ) );
+        daoUtil.setString( 3, category.getName(  ) );
+        daoUtil.setString( 4, category.getDescription(  ) );
+        daoUtil.setInt( 5, category.getIdCategory(  ) );
 
-                        category.setIdCategory( daoUtil.getInt(  1 ) );
-                        category.setIdParent( daoUtil.getInt(  2 ) );
-                        category.setName( daoUtil.getString(  3 ) );
-                        category.setDescription( daoUtil.getString(  4 ) );
-		}
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-		daoUtil.free();
-		return category;
-	}
+    /**
+     * Load the data of all the categorys and returns them as a collection
+     * @param plugin The plugin
+     * @return The Collection which contains the data of all the categorys
+     */
+    public Collection<Category> selectCategorysList( Plugin plugin )
+    {
+        Collection<Category> categoryList = new ArrayList<Category>(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
+        daoUtil.executeQuery(  );
 
+        while ( daoUtil.next(  ) )
+        {
+            Category category = new Category(  );
 
-	/**
-	 * Delete a record from the table
-         * @param nCategoryId The identifier of the category
-         * @param plugin The plugin
-	 */
+            category.setIdCategory( daoUtil.getInt( 1 ) );
+            category.setIdParent( daoUtil.getInt( 2 ) );
+            category.setName( daoUtil.getString( 3 ) );
+            category.setDescription( daoUtil.getString( 4 ) );
 
-	public void delete( int nCategoryId, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE , plugin );
-		daoUtil.setInt( 1 , nCategoryId );
-		daoUtil.executeUpdate();
-		daoUtil.free();
-	}
+            categoryList.add( category );
+        }
 
+        daoUtil.free(  );
 
-	/**
-	 * Update the record in the table
-	 * @param category The reference of the category
-         * @param plugin The plugin
-	 */
-
-	public void store( Category category, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE , plugin );
-                
-        daoUtil.setInt( 1, category.getIdCategory( ) );
-        daoUtil.setInt( 2, category.getIdParent( ) );
-        daoUtil.setString( 3, category.getName( ) );
-        daoUtil.setString( 4, category.getDescription( ) );
-        daoUtil.setInt( 5, category.getIdCategory( ) );
-                
-		daoUtil.executeUpdate( );
-		daoUtil.free( );
-	}
-
-
-
-	/**
-	 * Load the data of all the categorys and returns them as a collection
-         * @param plugin The plugin
-	 * @return The Collection which contains the data of all the categorys
-	 */
-
-        public Collection<Category> selectCategorysList( Plugin plugin )
-	{
-		Collection<Category> categoryList = new ArrayList<Category>(  );
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL , plugin );
-		daoUtil.executeQuery(  );
-
-		while ( daoUtil.next(  ) )
-		{
-                Category category = new Category(  );
-
-                    category.setIdCategory( daoUtil.getInt( 1 ) );
-                    category.setIdParent( daoUtil.getInt( 2 ) );
-                    category.setName( daoUtil.getString( 3 ) );
-                    category.setDescription( daoUtil.getString( 4 ) );
-
-                categoryList.add( category );
-		}
-
-		daoUtil.free();
-		return categoryList;
-	}
-
+        return categoryList;
+    }
 }

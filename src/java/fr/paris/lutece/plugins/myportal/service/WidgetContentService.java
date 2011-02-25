@@ -39,27 +39,26 @@ import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
+
 /**
  *
  * @author pierre
  */
 public class WidgetContentService extends AbstractCacheableService
 {
-    private static WidgetContentService _singleton = new WidgetContentService();
-
+    private static WidgetContentService _singleton = new WidgetContentService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Content Service";
 
-    private WidgetContentService()
+    private WidgetContentService(  )
     {
-
     }
 
-    public String getName()
+    public String getName(  )
     {
         return SERVICE_NAME;
     }
 
-    public static WidgetContentService instance()
+    public static WidgetContentService instance(  )
     {
         return _singleton;
     }
@@ -68,16 +67,16 @@ public class WidgetContentService extends AbstractCacheableService
     {
         String strWidgetId = "" + id;
         String strWidget = (String) getFromCache( strWidgetId );
-        if( strWidget == null )
+
+        if ( strWidget == null )
         {
-            Widget widget = WidgetHome.findByPrimaryKey(id, null);
-            String strType = widget.getWidgetType();
-            WidgetHandler handler = WidgetHandlerService.instance().getHandler( strType );
-            strWidget = handler.renderWidget( widget.getConfigData() );
-            putInCache(strWidgetId, strWidget);
+            Widget widget = WidgetHome.findByPrimaryKey( id, null );
+            String strType = widget.getWidgetType(  );
+            WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
+            strWidget = handler.renderWidget( widget.getConfigData(  ) );
+            putInCache( strWidgetId, strWidget );
         }
+
         return strWidget;
     }
-
-
 }

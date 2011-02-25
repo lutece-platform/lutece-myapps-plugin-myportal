@@ -31,11 +31,12 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.business.page;
 
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
+
 import java.util.List;
+
 
 /**
  * TabConfig
@@ -45,38 +46,37 @@ public class TabConfig
     private String _strName;
     private List<WidgetConfig> _listWidget;
 
-
-       /**
-        * Returns the Name
-        * @return The Name
-        */
-    public String getName()
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
     {
         return _strName;
     }
 
-       /**
-        * Sets the Name
-        * @param strName The Name
-        */
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
     public void setName( String strName )
     {
         _strName = strName;
     }
 
-       /**
-        * Returns the WidgetList
-        * @return The WidgetList
-        */
-    public List<WidgetConfig> getWidgetList()
+    /**
+     * Returns the WidgetList
+     * @return The WidgetList
+     */
+    public List<WidgetConfig> getWidgetList(  )
     {
         return _listWidget;
     }
 
-       /**
-        * Sets the WidgetList
-        * @param WidgetList The WidgetList
-        */
+    /**
+     * Sets the WidgetList
+     * @param WidgetList The WidgetList
+     */
     public void setWidgetList( List WidgetList )
     {
         _listWidget = WidgetList;

@@ -8,40 +8,44 @@
 
             <input type="hidden" id="widget_id_widget" name="widget_id_widget"  />
         <div>
-            <label for="widget_name" >#i18n{myportal.create_widget.rowTitleName} * :</label>
+            <label for="widget_name" >#i18n{myportal.create_widget.labelName} * :</label>
             <input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" tabindex="1" />
         </div>
         <div>
-            <label for="widget_description" >#i18n{myportal.create_widget.rowTitleDescription} * :</label>
-            <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_description" >#i18n{myportal.create_widget.labelDescription} * :</label>
+            <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
         </div>
         <div>
-            <label for="widget_idCategory" >#i18n{myportal.create_widget.rowTitleId_category} * :</label>
-            <input type="text" id="widget_id_category" name="widget_id_category" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_idCategory" >#i18n{myportal.create_widget.labelIdCategory} * :</label>
+            <@combo name="widget_id_category" default_value="" items=categories_list />
         </div>
         <div>
-            <label for="widget_widgetType" >#i18n{myportal.create_widget.rowTitleWidget_type} * :</label>
-            <input type="text" id="widget_widget_type" name="widget_widget_type" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_widgetType" >#i18n{myportal.create_widget.labelWidget_type} * :</label>
+            <@combo name="widget_widget_type" default_value="" items=widget_types_list />
         </div>
         <div>
-            <label for="widget_iconUrl" >#i18n{myportal.create_widget.rowTitleIcon_url} * :</label>
-            <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_iconUrl" >#i18n{myportal.create_widget.labelIconUrl} * :</label>
+            <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" tabindex="5" />
         </div>
         <div>
-            <label for="widget_isMovable" >#i18n{myportal.create_widget.rowTitleIs_movable} * :</label>
-            <input type="text" id="widget_is_movable" name="widget_is_movable" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_isMovable" >#i18n{myportal.create_widget.labelIsMovable} * :</label>
+            <input type="text" id="widget_is_movable" name="widget_is_movable" size="60" maxlength="50" tabindex="6" />
         </div>
         <div>
-            <label for="widget_isRemovable" >#i18n{myportal.create_widget.rowTitleIs_removable} * :</label>
-            <input type="text" id="widget_is_removable" name="widget_is_removable" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_isRemovable" >#i18n{myportal.create_widget.labelIsRemovable} * :</label>
+            <input type="text" id="widget_is_removable" name="widget_is_removable" size="60" maxlength="50" tabindex="7" />
         </div>
         <div>
-            <label for="widget_isResizable" >#i18n{myportal.create_widget.rowTitleIs_resizable} * :</label>
-            <input type="text" id="widget_is_resizable" name="widget_is_resizable" size="60" maxlength="50" tabindex="1" />
+            <label for="widget_isResizable" >#i18n{myportal.create_widget.labelIsResizable} * :</label>
+            <input type="text" id="widget_is_resizable" name="widget_is_resizable" size="60" maxlength="50" tabindex="8" />
         </div>
-        </p>
+        <div>
+            <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} * :</label>
+            <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data"  tabindex="9" ></textarea>
+        </div>
+    </p>
         <p>   
-            <input type="submit" value="#i18n{myportal.create_widget.buttonValidate}" class="button" tabindex="3" />
+            <input type="submit" value="#i18n{myportal.create_widget.buttonValidate}" class="button" tabindex="10" />
         </p>
 
     </form>

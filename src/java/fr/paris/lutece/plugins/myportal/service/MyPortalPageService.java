@@ -31,87 +31,99 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.service;
 
+import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
+import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
+
 /**
  * MyPortalPageService
  */
-public class MyPortalPageService 
+public class MyPortalPageService
 {
     private static final String BEGIN_DIV_COLUMN = "\n<div class=\"myportal-column\">\n";
     private static final String BEGIN_DIV_PORTLET = "\n<div class=\"myportal-portlet\">\n";
     private static final String BEGIN_DIV_HEADER = "\n<div class=\"myportal-portlet-header\">\n";
     private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
     private static final String END_DIV = "\n</div>\n";
-
+    private static final String DEFAULT_GUID = "default";
 
     public String getUserPage( LuteceUser user )
     {
         PageConfig pageConfig = getPageConfigUser( user );
 
-        if( pageConfig == null )
+        if ( pageConfig == null )
         {
-            pageConfig = getDefaultPageConfig();
+            pageConfig = getDefaultPageConfig(  );
         }
+
         return buildPage( pageConfig );
     }
 
     private PageConfig getPageConfigUser( LuteceUser user )
     {
-        throw new UnsupportedOperationException( "Not yet implemented" );
+        return null;
     }
 
-    private PageConfig getDefaultPageConfig()
+    private PageConfig getDefaultPageConfig(  )
     {
-        return PageConfigJsonUtil.parseJson( "default json" );
+        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
+
+        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
     }
 
     private String buildPage( PageConfig pageConfig )
     {
-        StringBuilder sb = new StringBuilder();
-        for( TabConfig tab : pageConfig.getTabList() )
+        StringBuilder sb = new StringBuilder(  );
+
+        for ( TabConfig tab : pageConfig.getTabList(  ) )
         {
-            StringBuilder sbCol1 = new StringBuilder(BEGIN_DIV_COLUMN);
-            StringBuilder sbCol2 = new StringBuilder(BEGIN_DIV_COLUMN);
-            StringBuilder sbCol3 = new StringBuilder(BEGIN_DIV_COLUMN);
-            for( WidgetConfig widgetConfig : tab.getWidgetList() )
+            StringBuilder sbCol1 = new StringBuilder( BEGIN_DIV_COLUMN );
+            StringBuilder sbCol2 = new StringBuilder( BEGIN_DIV_COLUMN );
+            StringBuilder sbCol3 = new StringBuilder( BEGIN_DIV_COLUMN );
+
+            for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
             {
                 StringBuilder sbWidget = sbCol1;
-                Widget widget = WidgetService.instance().getWidget(widgetConfig.getWidgetId());
-                switch( widgetConfig.getColumn())
+                Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
+
+                switch ( widgetConfig.getColumn(  ) )
                 {
                     case 2:
                         sbWidget = sbCol2;
+
                         break;
+
                     case 3:
                         sbWidget = sbCol3;
+
                         break;
                 }
-                sbWidget.append(BEGIN_DIV_PORTLET);
-                sbWidget.append(BEGIN_DIV_HEADER);
-                sbWidget.append( widget.getName() );
-                sbWidget.append(END_DIV);
-                sbWidget.append(BEGIN_DIV_CONTENT);
-                sbWidget.append(WidgetContentService.instance().getWidgetContent( widgetConfig.getWidgetId()));
-                sbWidget.append(END_DIV);
-                sbWidget.append(END_DIV);
+
+                sbWidget.append( BEGIN_DIV_PORTLET );
+                sbWidget.append( BEGIN_DIV_HEADER );
+                sbWidget.append( widget.getName(  ) );
+                sbWidget.append( END_DIV );
+                sbWidget.append( BEGIN_DIV_CONTENT );
+                sbWidget.append( WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ) ) );
+                sbWidget.append( END_DIV );
+                sbWidget.append( END_DIV );
             }
+
             sbCol1.append( END_DIV );
             sbCol2.append( END_DIV );
             sbCol3.append( END_DIV );
-            sb.append(sbCol1);
-            sb.append(sbCol2);
-            sb.append(sbCol3);
+            sb.append( sbCol1 );
+            sb.append( sbCol2 );
+            sb.append( sbCol3 );
         }
-        return sb.toString();
-    }
 
-    
+        return sb.toString(  );
+    }
 }

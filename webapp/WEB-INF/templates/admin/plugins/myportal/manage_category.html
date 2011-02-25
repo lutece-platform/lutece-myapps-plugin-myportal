@@ -1,50 +1,24 @@
 
-  <div class="content-box" >
+<div class="content-box" >
     <h2>#i18n{myportal.manage_category.tableLabel}</h2>    
     <table>
         <tr>
- 			  
-                   	   <input type="hidden" id="category_id_category" name="category_id_category"  />
- 			
- 			<th>#i18n{myportal.manage_category.columnId_parent}</th>
- 			
- 			<th>#i18n{myportal.manage_category.columnName}</th>
- 			
- 			<th>#i18n{myportal.manage_category.columnDescription}</th>
-		<th>#i18n{myportal.manage_category.columnAction}</th>
+        <th>#i18n{myportal.manage_category.columnName}</th>
+        <th>#i18n{myportal.manage_category.columnDescription}</th>
+        <th>#i18n{myportal.manage_category.columnAction}</th>
         </tr>
         <#list category_list as category >
-         <tr>
-   
-             
-             
-                   	   <input type="hidden" id="category_id_category" name="category_id_category"  />
-             
-             
- 			 
-             
-                <td>${category.idParent}</td>
-             
-             
- 			 
-             
-              <td><a href="jsp/admin/plugins/myportal/ModifyCategory.jsp?category_id_category=${category.idCategory}" class="bullet-link">
-                 ${category.name}
-                </a>
-                </td>
-             
-             
- 			 
-             
-                <td>${category.description}</td>
-             
-             
- 			 
-             <td>
-                <a href="jsp/admin/plugins/myportal/RemoveCategory.jsp?category_id_category=${category.idCategory}" >
-                    <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
-                </a>
-             </td>
+        <tr>
+        <td><a href="jsp/admin/plugins/myportal/ModifyCategory.jsp?category_id_category=${category.idCategory}" class="bullet-link">
+                ${category.name}
+            </a>
+        </td>
+        <td>${category.description}</td>
+        <td>
+            <a href="jsp/admin/plugins/myportal/RemoveCategory.jsp?category_id_category=${category.idCategory}" >
+                <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
+            </a>
+        </td>
         </tr>
         </#list>
     </table>
@@ -56,6 +30,6 @@
 </div>
 
 
-  
+
 
 

@@ -31,9 +31,8 @@
  *
  * License 1.0
  */
-
-
 package fr.paris.lutece.plugins.myportal.service.handler;
+
 
 /**
  *
@@ -42,21 +41,20 @@ package fr.paris.lutece.plugins.myportal.service.handler;
 public class HtmlWidgetHandler implements WidgetHandler
 {
     private static final String NAME = "html";
-    private static final String DESCRIPTION ="HTML widget";
+    private static final String DESCRIPTION = "HTML widget";
 
-    public String renderWidget(String strWidgetData)
+    public String renderWidget( String strWidgetData )
     {
         return strWidgetData;
     }
 
-    public String getName()
+    public String getName(  )
     {
         return NAME;
     }
 
-    public String getDescription()
+    public String getDescription(  )
     {
         return DESCRIPTION;
     }
-
 }

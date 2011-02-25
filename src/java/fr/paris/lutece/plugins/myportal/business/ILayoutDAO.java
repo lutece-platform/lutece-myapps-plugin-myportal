@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
@@ -32,47 +31,37 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
+
 import java.util.Collection;
 
 
-
- /**
- * ILayoutDAO Interface
- */
-
+/**
+* ILayoutDAO Interface
+*/
 public interface ILayoutDAO
 {
-
-
     /**
      * Insert a new record in the table.
      * @param layout instance of the Layout object to inssert
      * @param plugin the Plugin
      */
-
     void insert( Layout layout, Plugin plugin );
 
-
-
-     /**
-     * Update the record in the table
-     * @param layout the reference of the Layout
-     * @param plugin the Plugin
-     */
-
+    /**
+    * Update the record in the table
+    * @param layout the reference of the Layout
+    * @param plugin the Plugin
+    */
     void store( Layout layout, Plugin plugin );
-
 
     /**
      * Delete a record from the table
      * @param nIdLayout int identifier of the Layout to delete
      * @param plugin the Plugin
      */
-
     void delete( int nIdLayout, Plugin plugin );
 
     ///////////////////////////////////////////////////////////////////////////
@@ -84,18 +73,12 @@ public interface ILayoutDAO
      * @param plugin the Plugin
      * @return The instance of the layout
      */
-
     Layout load( int nKey, Plugin plugin );
 
-
-
-     /**
-     * Load the data of all the layout objects and returns them as a collection
-     * @param plugin the Plugin
-     * @return The collection which contains the data of all the layout objects
-     */
-
+    /**
+    * Load the data of all the layout objects and returns them as a collection
+    * @param plugin the Plugin
+    * @return The collection which contains the data of all the layout objects
+    */
     Collection<Layout> selectLayoutsList( Plugin plugin );
-    
 }
-

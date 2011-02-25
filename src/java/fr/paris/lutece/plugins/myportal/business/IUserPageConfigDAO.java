@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,18 +31,45 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.service.handler;
+package fr.paris.lutece.plugins.myportal.business;
+
+import fr.paris.lutece.portal.service.plugin.Plugin;
 
 
 /**
- *
- * @author pierre
- */
-public interface WidgetHandler
+* IUserPageConfigDAO Interface
+*/
+public interface IUserPageConfigDAO
 {
-    String getName(  );
+    /**
+     * Insert a new record in the table.
+     * @param userPageConfig instance of the UserPageConfig object to inssert
+     * @param plugin the Plugin
+     */
+    void insert( UserPageConfig userPageConfig, Plugin plugin );
 
-    String getDescription(  );
+    /**
+    * Update the record in the table
+    * @param userPageConfig the reference of the UserPageConfig
+    * @param plugin the Plugin
+    */
+    void store( UserPageConfig userPageConfig, Plugin plugin );
 
-    String renderWidget( String strWidgetData );
+    /**
+     * Delete a record from the table
+     * @param nIdUserPageConfig int identifier of the UserPageConfig to delete
+     * @param plugin the Plugin
+     */
+    void delete( int nIdUserPageConfig, Plugin plugin );
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Finders
+
+    /**
+     * Load the data from the table
+     * @param strUserGuid The identifier of the userPageConfig
+     * @param plugin the Plugin
+     * @return The instance of the userPageConfig
+     */
+    UserPageConfig load( String strUserGuid, Plugin plugin );
 }

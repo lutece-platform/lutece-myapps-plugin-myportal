@@ -39,15 +39,15 @@ import fr.paris.lutece.util.sql.DAOUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 /**
  * This class provides Data Access methods for Widget objects
  */
 public final class WidgetDAO implements IWidgetDAO
 {
-
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_widget ) FROM myportal_widget";
-    private static final String SQL_QUERY_SELECT = "SELECT id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable FROM myportal_widget WHERE id_widget = ?";
+    private static final String SQL_QUERY_SELECT = "SELECT id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable, config_data FROM myportal_widget WHERE id_widget = ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable ,config_data ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_widget WHERE id_widget = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE myportal_widget SET id_widget = ?, name = ?, description = ?, id_category = ?, widget_type = ?, icon_url = ?, is_movable = ?, is_removable = ?, is_resizable = ?, config_data = ? WHERE id_widget = ?";
@@ -58,21 +58,21 @@ public final class WidgetDAO implements IWidgetDAO
      * @param plugin The Plugin
      * @return The new primary key
      */
-    public int newPrimaryKey(Plugin plugin)
+    public int newPrimaryKey( Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_NEW_PK, plugin);
-        daoUtil.executeQuery();
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
+        daoUtil.executeQuery(  );
 
         int nKey;
 
-        if (!daoUtil.next())
+        if ( !daoUtil.next(  ) )
         {
             // if the table is empty
             nKey = 1;
         }
 
-        nKey = daoUtil.getInt(1) + 1;
-        daoUtil.free();
+        nKey = daoUtil.getInt( 1 ) + 1;
+        daoUtil.free(  );
 
         return nKey;
     }
@@ -82,25 +82,25 @@ public final class WidgetDAO implements IWidgetDAO
      * @param widget instance of the Widget object to insert
      * @param plugin The plugin
      */
-    public void insert(Widget widget, Plugin plugin)
+    public void insert( Widget widget, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_INSERT, plugin);
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
-        widget.setIdWidget(newPrimaryKey(plugin));
+        widget.setIdWidget( newPrimaryKey( plugin ) );
 
-        daoUtil.setInt(1, widget.getIdWidget());
-        daoUtil.setString(2, widget.getName());
-        daoUtil.setString(3, widget.getDescription());
-        daoUtil.setInt(4, widget.getIdCategory());
-        daoUtil.setString(5, widget.getWidgetType());
-        daoUtil.setString(6, widget.getIconUrl());
-        daoUtil.setInt(7, widget.getIsMovable());
-        daoUtil.setInt(8, widget.getIsRemovable());
-        daoUtil.setInt(9, widget.getIsResizable());
-        daoUtil.setString(10, widget.getConfigData());
+        daoUtil.setInt( 1, widget.getIdWidget(  ) );
+        daoUtil.setString( 2, widget.getName(  ) );
+        daoUtil.setString( 3, widget.getDescription(  ) );
+        daoUtil.setInt( 4, widget.getIdCategory(  ) );
+        daoUtil.setString( 5, widget.getWidgetType(  ) );
+        daoUtil.setString( 6, widget.getIconUrl(  ) );
+        daoUtil.setInt( 7, widget.getIsMovable(  ) );
+        daoUtil.setInt( 8, widget.getIsRemovable(  ) );
+        daoUtil.setInt( 9, widget.getIsResizable(  ) );
+        daoUtil.setString( 10, widget.getConfigData(  ) );
 
-        daoUtil.executeUpdate();
-        daoUtil.free();
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -109,31 +109,32 @@ public final class WidgetDAO implements IWidgetDAO
      * @param plugin The plugin
      * @return the instance of the Widget
      */
-    public Widget load(int nId, Plugin plugin)
+    public Widget load( int nId, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_SELECT, plugin);
-        daoUtil.setInt(1, nId);
-        daoUtil.executeQuery();
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+        daoUtil.setInt( 1, nId );
+        daoUtil.executeQuery(  );
 
         Widget widget = null;
 
-        if (daoUtil.next())
+        if ( daoUtil.next(  ) )
         {
-            widget = new Widget();
+            widget = new Widget(  );
 
-            widget.setIdWidget(daoUtil.getInt(1));
-            widget.setName(daoUtil.getString(2));
-            widget.setDescription(daoUtil.getString(3));
-            widget.setIdCategory(daoUtil.getInt(4));
-            widget.setWidgetType(daoUtil.getString(5));
-            widget.setIconUrl(daoUtil.getString(6));
-            widget.setIsMovable(daoUtil.getInt(7));
-            widget.setIsRemovable(daoUtil.getInt(8));
-            widget.setIsResizable(daoUtil.getInt(9));
-            widget.setConfigData(daoUtil.getString(10));
+            widget.setIdWidget( daoUtil.getInt( 1 ) );
+            widget.setName( daoUtil.getString( 2 ) );
+            widget.setDescription( daoUtil.getString( 3 ) );
+            widget.setIdCategory( daoUtil.getInt( 4 ) );
+            widget.setWidgetType( daoUtil.getString( 5 ) );
+            widget.setIconUrl( daoUtil.getString( 6 ) );
+            widget.setIsMovable( daoUtil.getInt( 7 ) );
+            widget.setIsRemovable( daoUtil.getInt( 8 ) );
+            widget.setIsResizable( daoUtil.getInt( 9 ) );
+            widget.setConfigData( daoUtil.getString( 10 ) );
         }
 
-        daoUtil.free();
+        daoUtil.free(  );
+
         return widget;
     }
 
@@ -142,12 +143,12 @@ public final class WidgetDAO implements IWidgetDAO
      * @param nWidgetId The identifier of the widget
      * @param plugin The plugin
      */
-    public void delete(int nWidgetId, Plugin plugin)
+    public void delete( int nWidgetId, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_DELETE, plugin);
-        daoUtil.setInt(1, nWidgetId);
-        daoUtil.executeUpdate();
-        daoUtil.free();
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+        daoUtil.setInt( 1, nWidgetId );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -155,24 +156,24 @@ public final class WidgetDAO implements IWidgetDAO
      * @param widget The reference of the widget
      * @param plugin The plugin
      */
-    public void store(Widget widget, Plugin plugin)
+    public void store( Widget widget, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_UPDATE, plugin);
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-        daoUtil.setInt(1, widget.getIdWidget());
-        daoUtil.setString(2, widget.getName());
-        daoUtil.setString(3, widget.getDescription());
-        daoUtil.setInt(4, widget.getIdCategory());
-        daoUtil.setString(5, widget.getWidgetType());
-        daoUtil.setString(6, widget.getIconUrl());
-        daoUtil.setInt(7, widget.getIsMovable());
-        daoUtil.setInt(8, widget.getIsRemovable());
-        daoUtil.setInt(9, widget.getIsResizable());
-        daoUtil.setString(10, widget.getConfigData());
-        daoUtil.setInt(11, widget.getIdWidget());
+        daoUtil.setInt( 1, widget.getIdWidget(  ) );
+        daoUtil.setString( 2, widget.getName(  ) );
+        daoUtil.setString( 3, widget.getDescription(  ) );
+        daoUtil.setInt( 4, widget.getIdCategory(  ) );
+        daoUtil.setString( 5, widget.getWidgetType(  ) );
+        daoUtil.setString( 6, widget.getIconUrl(  ) );
+        daoUtil.setInt( 7, widget.getIsMovable(  ) );
+        daoUtil.setInt( 8, widget.getIsRemovable(  ) );
+        daoUtil.setInt( 9, widget.getIsResizable(  ) );
+        daoUtil.setString( 10, widget.getConfigData(  ) );
+        daoUtil.setInt( 11, widget.getIdWidget(  ) );
 
-        daoUtil.executeUpdate();
-        daoUtil.free();
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -180,31 +181,32 @@ public final class WidgetDAO implements IWidgetDAO
      * @param plugin The plugin
      * @return The Collection which contains the data of all the widgets
      */
-    public Collection<Widget> selectWidgetsList(Plugin plugin)
+    public Collection<Widget> selectWidgetsList( Plugin plugin )
     {
-        Collection<Widget> widgetList = new ArrayList<Widget>();
-        DAOUtil daoUtil = new DAOUtil(SQL_QUERY_SELECTALL, plugin);
-        daoUtil.executeQuery();
+        Collection<Widget> widgetList = new ArrayList<Widget>(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
+        daoUtil.executeQuery(  );
 
-        while (daoUtil.next())
+        while ( daoUtil.next(  ) )
         {
-            Widget widget = new Widget();
+            Widget widget = new Widget(  );
 
-            widget.setIdWidget(daoUtil.getInt(1));
-            widget.setName(daoUtil.getString(2));
-            widget.setDescription(daoUtil.getString(3));
-            widget.setIdCategory(daoUtil.getInt(4));
-            widget.setWidgetType(daoUtil.getString(5));
-            widget.setIconUrl(daoUtil.getString(6));
-            widget.setIsMovable(daoUtil.getInt(7));
-            widget.setIsRemovable(daoUtil.getInt(8));
-            widget.setIsResizable(daoUtil.getInt(9));
-            widget.setConfigData(daoUtil.getString(10));
+            widget.setIdWidget( daoUtil.getInt( 1 ) );
+            widget.setName( daoUtil.getString( 2 ) );
+            widget.setDescription( daoUtil.getString( 3 ) );
+            widget.setIdCategory( daoUtil.getInt( 4 ) );
+            widget.setWidgetType( daoUtil.getString( 5 ) );
+            widget.setIconUrl( daoUtil.getString( 6 ) );
+            widget.setIsMovable( daoUtil.getInt( 7 ) );
+            widget.setIsRemovable( daoUtil.getInt( 8 ) );
+            widget.setIsResizable( daoUtil.getInt( 9 ) );
+            widget.setConfigData( daoUtil.getString( 10 ) );
 
-            widgetList.add(widget);
+            widgetList.add( widget );
         }
 
-        daoUtil.free();
+        daoUtil.free(  );
+
         return widgetList;
     }
 }
