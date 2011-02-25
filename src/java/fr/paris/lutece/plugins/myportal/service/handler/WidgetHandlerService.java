@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2008, Mairie de Paris
+ * Copyright (c) 2002-2011, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,70 +31,59 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business.page;
+
+
+package fr.paris.lutece.plugins.myportal.service.handler;
+
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.util.ReferenceList;
+import java.util.List;
 
 /**
- * WidgetConfig
+ *
+ * @author pierre
  */
-public class WidgetConfig
+public class WidgetHandlerService
 {
-    // Variables declarations
-
-    private int _nWidgetId;
-    private int _nWidgetState;
-    private int _nColumn;
-
-    /**
-     * Returns the WidgetId
-     * @return The WidgetId
-     */
-    public int getWidgetId()
+    private static WidgetHandlerService _singleton;
+    private static List<WidgetHandler> _listHandlers;
+            
+    private WidgetHandlerService()
     {
-        return _nWidgetId;
+        
+    }
+    
+    public static WidgetHandlerService instance()
+    {
+        if( _singleton == null )
+        {
+            _singleton = new WidgetHandlerService();
+            _listHandlers = SpringContextService.getBeansOfType(WidgetHandler.class);
+        }
+        return _singleton;
     }
 
-    /**
-     * Sets the WidgetId
-     * @param nWidgetId The WidgetId
-     */
-    public void setWidgetId(int nWidgetId)
+    public ReferenceList getHandlers()
     {
-        _nWidgetId = nWidgetId;
+        ReferenceList list = new ReferenceList();
+        for( WidgetHandler handler : _listHandlers )
+        {
+            list.addItem( handler.getName() , handler.getDescription() );
+        }
+        return list;
+
     }
 
-    /**
-     * Returns the WidgetState
-     * @return The WidgetState
-     */
-    public int getWidgetState()
+    public WidgetHandler getHandler(String strType)
     {
-        return _nWidgetState;
+        for( WidgetHandler handler : _listHandlers )
+        {
+            if( handler.getName().equals(strType))
+            {
+                return handler;
+            }
+        }
+        return null;
     }
 
-    /**
-     * Sets the WidgetState
-     * @param nWidgetState The WidgetState
-     */
-    public void setWidgetState(int nWidgetState)
-    {
-        _nWidgetState = nWidgetState;
-    }
-
-    /**
-     * Returns the Column
-     * @return The Column
-     */
-    public int getColumn()
-    {
-        return _nColumn;
-    }
-
-    /**
-     * Sets the Column
-     * @param nColumn The Column
-     */
-    public void setColumn(int nColumn)
-    {
-        _nColumn = nColumn;
-    }
 }

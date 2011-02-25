@@ -31,22 +31,61 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
+import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
+import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
+import java.util.ArrayList;
+import java.util.List;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONTokener;
 
 /**
  * PageConfigJsonUtil
  */
-public class PageConfigJsonUtil 
+public class PageConfigJsonUtil
 {
-    public static PageConfig parseJson( String json )
+
+    public static PageConfig parseJson(String jsonflow)
     {
         PageConfig pageConfig = new PageConfig();
+        try
+        {
+            JSONTokener tokener = new JSONTokener(jsonflow);
+            JSONObject json = (JSONObject) tokener.nextValue();
+            JSONObject jsonPage = (JSONObject) json.get("page");
+            pageConfig.setName(jsonPage.getString("name"));
+            JSONArray jsonTabs = jsonPage.getJSONArray("tabs");
+            List<TabConfig> listTabs = new ArrayList<TabConfig>();
+            for (int i = 0; i < jsonTabs.size(); i++)
+            {
+                JSONObject jsonTab = jsonTabs.getJSONObject(i);
+                TabConfig tab = new TabConfig();
+                tab.setName(jsonTab.getString("name"));
+                JSONArray jsonWidgets = jsonTab.getJSONArray("widgets");
+                List<WidgetConfig> listWidgets = new ArrayList<WidgetConfig>();
+                for (int j = 0; j < jsonWidgets.size(); j++)
+                {
+                    JSONObject jsonWidget = jsonWidgets.getJSONObject(j);
+                    WidgetConfig widget = new WidgetConfig();
+                    widget.setWidgetId(jsonWidget.getInt("id"));
+                    widget.setWidgetState(jsonWidget.getInt("state"));
+                    listWidgets.add(widget);
+                }
+                tab.setWidgetList(listWidgets);
+                listTabs.add(tab);
+            }
+            pageConfig.setTabList(listTabs);
+        } catch (JSONException e)
+        {
+            throw new RuntimeException("JSON Parsing Error : " + e.getMessage(), e);
+        }
+
+
         return pageConfig;
 
     }
-
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2008, Mairie de Paris
+ * Copyright (c) 2002-2011, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,70 +31,19 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business.page;
+
+package fr.paris.lutece.plugins.myportal.service.handler;
 
 /**
- * WidgetConfig
+ *
+ * @author pierre
  */
-public class WidgetConfig
+public interface WidgetHandler
 {
-    // Variables declarations
+    String getName();
+    
+    String getDescription();
 
-    private int _nWidgetId;
-    private int _nWidgetState;
-    private int _nColumn;
+    String renderWidget( String strWidgetData );
 
-    /**
-     * Returns the WidgetId
-     * @return The WidgetId
-     */
-    public int getWidgetId()
-    {
-        return _nWidgetId;
-    }
-
-    /**
-     * Sets the WidgetId
-     * @param nWidgetId The WidgetId
-     */
-    public void setWidgetId(int nWidgetId)
-    {
-        _nWidgetId = nWidgetId;
-    }
-
-    /**
-     * Returns the WidgetState
-     * @return The WidgetState
-     */
-    public int getWidgetState()
-    {
-        return _nWidgetState;
-    }
-
-    /**
-     * Sets the WidgetState
-     * @param nWidgetState The WidgetState
-     */
-    public void setWidgetState(int nWidgetState)
-    {
-        _nWidgetState = nWidgetState;
-    }
-
-    /**
-     * Returns the Column
-     * @return The Column
-     */
-    public int getColumn()
-    {
-        return _nColumn;
-    }
-
-    /**
-     * Sets the Column
-     * @param nColumn The Column
-     */
-    public void setColumn(int nColumn)
-    {
-        _nColumn = nColumn;
-    }
 }

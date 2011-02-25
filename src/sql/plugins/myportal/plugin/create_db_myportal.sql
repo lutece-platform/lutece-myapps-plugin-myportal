@@ -25,7 +25,8 @@ widget_type varchar(50) NOT NULL default '',
 icon_url varchar(50) NOT NULL default '',
 is_movable int(11) NOT NULL default '0',
 is_removable int(11) NOT NULL default '0',
-is_resizable int(11) NOT NULL default '0'
+is_resizable int(11) NOT NULL default '0',
+config_data LONG VARCHAR DEFAULT NULL
 );
 
 --

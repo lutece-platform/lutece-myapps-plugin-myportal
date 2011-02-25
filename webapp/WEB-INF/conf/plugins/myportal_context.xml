@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
- <bean id="myportal.widgetDAO"  class="fr.paris.lutece.plugins.myportal.business.WidgetDAO" />
- <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
- <bean id="myportal.layoutDAO"  class="fr.paris.lutece.plugins.myportal.business.LayoutDAO" />
+    <!-- DAO -->
+    <bean id="myportal.widgetDAO"  class="fr.paris.lutece.plugins.myportal.business.WidgetDAO" />
+    <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
+    <bean id="myportal.layoutDAO"  class="fr.paris.lutece.plugins.myportal.business.LayoutDAO" />
+
+    <!-- Widget handler -->
+    <bean id="myportal.widgetHandlerHTML"  class="fr.paris.lutece.plugins.myportal.service.handler.HtmlWidgetHandler" />
 </beans>

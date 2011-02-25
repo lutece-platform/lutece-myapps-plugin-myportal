@@ -49,6 +49,8 @@ public class Widget
 	private int _nIsMovable;
 	private int _nIsRemovable;
 	private int _nIsResizable;
+        private String _strConfigData;
+
 	/**
 	 * Returns the IdWidget
 	 * @return The IdWidget
@@ -202,4 +204,23 @@ public class Widget
 	{
 		_nIsResizable = nIsResizable;
 	}
+
+      	/**
+	 * Returns the ConfigData
+	 * @return The ConfigData
+	 */
+	public String getConfigData()
+	{
+		return _strConfigData;
+	}
+
+	/**
+	 * Sets the ConfigData
+	 * @param strConfigData The ConfigData
+	 */
+	public void setConfigData( String strConfigData )
+	{
+		_strConfigData = strConfigData;
+	}
+
 }
