@@ -16,11 +16,11 @@
             <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
         </div>
         <div>
-            <label for="widget_idCategory" >#i18n{myportal.create_widget.labelIdCategory} * :</label>
+            <label for="widget_idCategory" >#i18n{myportal.create_widget.labelIdCategory} :</label>
             <@combo name="widget_id_category" default_value="" items=categories_list />
         </div>
         <div>
-            <label for="widget_widgetType" >#i18n{myportal.create_widget.labelWidget_type} * :</label>
+            <label for="widget_widgetType" >#i18n{myportal.create_widget.labelWidget_type} :</label>
             <@combo name="widget_widget_type" default_value="" items=widget_types_list />
         </div>
         <div>
@@ -28,19 +28,19 @@
             <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" tabindex="5" />
         </div>
         <div>
-            <label for="widget_isMovable" >#i18n{myportal.create_widget.labelIsMovable} * :</label>
-            <input type="text" id="widget_is_movable" name="widget_is_movable" size="60" maxlength="50" tabindex="6" />
+            <label for="widget_isMovable" >#i18n{myportal.create_widget.labelIsMovable} :</label>
+            <input class="checkbox" type="checkbox" id="widget_is_movable" name="widget_is_movable" value="1" tabindex="6" checked />
         </div>
         <div>
-            <label for="widget_isRemovable" >#i18n{myportal.create_widget.labelIsRemovable} * :</label>
-            <input type="text" id="widget_is_removable" name="widget_is_removable" size="60" maxlength="50" tabindex="7" />
+            <label for="widget_isRemovable" >#i18n{myportal.create_widget.labelIsRemovable} :</label>
+            <input class="checkbox" type="checkbox" id="widget_is_removable" name="widget_is_removable" value="1" tabindex="7" checked />
         </div>
         <div>
-            <label for="widget_isResizable" >#i18n{myportal.create_widget.labelIsResizable} * :</label>
-            <input type="text" id="widget_is_resizable" name="widget_is_resizable" size="60" maxlength="50" tabindex="8" />
+            <label for="widget_isResizable" >#i18n{myportal.create_widget.labelIsResizable} :</label>
+            <input class="checkbox" type="checkbox" id="widget_is_resizable" name="widget_is_resizable" value="1" tabindex="8" checked />
         </div>
         <div>
-            <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} * :</label>
+            <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} :</label>
             <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data"  tabindex="9" ></textarea>
         </div>
     </p>

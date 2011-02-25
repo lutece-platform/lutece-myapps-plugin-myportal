@@ -212,28 +212,13 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         widget.setIconUrl( request.getParameter( PARAMETER_WIDGET_ICON_URL ) );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIsMovable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) );
+        int nIsMovable = ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) != null ) ? 1 : 0;
         widget.setIsMovable( nIsMovable );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIsRemovable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) );
+        int nIsRemovable = ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) != null ) ? 1 : 0;
         widget.setIsRemovable( nIsRemovable );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIsResizable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) );
+        int nIsResizable = ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) != null ) ? 1 : 0;
         widget.setIsResizable( nIsResizable );
 
         String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
@@ -352,28 +337,14 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         widget.setIconUrl( request.getParameter( PARAMETER_WIDGET_ICON_URL ) );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
 
-        int nIsMovable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) );
+        int nIsMovable = ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) != null ) ? 1 : 0;
         widget.setIsMovable( nIsMovable );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIsRemovable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) );
+        int nIsRemovable = ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) != null ) ? 1 : 0;
         widget.setIsRemovable( nIsRemovable );
 
-        if ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIsResizable = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) );
+        int nIsResizable = ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) != null ) ? 1 : 0;
         widget.setIsResizable( nIsResizable );
         WidgetHome.update( widget, getPlugin(  ) );
 

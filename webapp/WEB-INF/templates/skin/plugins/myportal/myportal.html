@@ -1,10 +1,16 @@
 Ajouter du contenu
 <br />
-${widgets}
+
+<div id="tabs">
+    ${widgets}
+    <div style="clear:both"></div>
+</div>
 
 <script src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
 <script>
     $(function() {
+	$( "#tabs" ).tabs();
+
         $( ".myportal-column" ).sortable({
             connectWith: ".myportal-column"
         });

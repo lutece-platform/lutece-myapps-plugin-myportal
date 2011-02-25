@@ -47,11 +47,11 @@ public final class WidgetDAO implements IWidgetDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_widget ) FROM myportal_widget";
-    private static final String SQL_QUERY_SELECT = "SELECT id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable, config_data FROM myportal_widget WHERE id_widget = ?";
+    private static final String SQL_QUERY_SELECT = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.is_movable, a.is_removable, a.is_resizable, a.config_data, b.name FROM myportal_widget a, myportal_category b WHERE a.id_category = b.id_category AND id_widget = ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable ,config_data ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_widget WHERE id_widget = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE myportal_widget SET id_widget = ?, name = ?, description = ?, id_category = ?, widget_type = ?, icon_url = ?, is_movable = ?, is_removable = ?, is_resizable = ?, config_data = ? WHERE id_widget = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable, config_data FROM myportal_widget";
+    private static final String SQL_QUERY_SELECTALL = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.is_movable, a.is_removable, a.is_resizable, a.config_data, b.name FROM myportal_widget a, myportal_category b WHERE a.id_category = b.id_category ";
 
     /**
      * Generates a new primary key
@@ -131,6 +131,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIsRemovable( daoUtil.getInt( 8 ) );
             widget.setIsResizable( daoUtil.getInt( 9 ) );
             widget.setConfigData( daoUtil.getString( 10 ) );
+            widget.setCategory( daoUtil.getString( 11 ) );
         }
 
         daoUtil.free(  );
@@ -201,6 +202,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIsRemovable( daoUtil.getInt( 8 ) );
             widget.setIsResizable( daoUtil.getInt( 9 ) );
             widget.setConfigData( daoUtil.getString( 10 ) );
+            widget.setCategory( daoUtil.getString( 11 ) );
 
             widgetList.add( widget );
         }

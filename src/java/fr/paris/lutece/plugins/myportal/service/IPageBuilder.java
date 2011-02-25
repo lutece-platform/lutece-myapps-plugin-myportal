@@ -31,45 +31,16 @@
  *
  * License 1.0
  */
+
 package fr.paris.lutece.plugins.myportal.service;
 
-import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
-import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-
 
 /**
- * MyPortalPageService
+ *
+ * @author pierre
  */
-public class MyPortalPageService
+public interface IPageBuilder
 {
-    private static final String DEFAULT_GUID = "default";
-    private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( "myportal" , "myportal.pageBuilder" );
-
-    public String getUserPage( LuteceUser user )
-    {
-        PageConfig pageConfig = getPageConfigUser( user );
-
-        if ( pageConfig == null )
-        {
-            pageConfig = getDefaultPageConfig(  );
-        }
-
-        return _pageBuilder.buildPage( pageConfig );
-    }
-
-    private PageConfig getPageConfigUser( LuteceUser user )
-    {
-        return null;
-    }
-
-    private PageConfig getDefaultPageConfig(  )
-    {
-        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
-
-        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
-    }
-
+    String buildPage( PageConfig pageConfig );
 }

@@ -43,6 +43,7 @@ public class Widget
     private int _nIdWidget;
     private String _strName;
     private String _strDescription;
+    private String _strCategory;
     private int _nIdCategory;
     private String _strWidgetType;
     private String _strIconUrl;
@@ -85,6 +86,24 @@ public class Widget
     public void setName( String strName )
     {
         _strName = strName;
+    }
+
+    /**
+     * Returns the Category
+     * @return The Category
+     */
+    public String getCategory(  )
+    {
+        return _strCategory;
+    }
+
+    /**
+     * Sets the Category
+     * @param strCategory The Category
+     */
+    public void setCategory( String strCategory )
+    {
+        _strCategory = strCategory;
     }
 
     /**

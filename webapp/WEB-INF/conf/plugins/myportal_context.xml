@@ -9,4 +9,8 @@
 
     <!-- Widget handler -->
     <bean id="myportal.widgetHandlerHTML"  class="fr.paris.lutece.plugins.myportal.service.handler.HtmlWidgetHandler" />
+
+    <!-- Page Builder -->
+    <bean id="myportal.pageBuilder"  class="fr.paris.lutece.plugins.myportal.service.PageBuilder" />
+    
 </beans>
