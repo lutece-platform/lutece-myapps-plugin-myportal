@@ -47,11 +47,11 @@ public final class WidgetDAO implements IWidgetDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_widget ) FROM myportal_widget";
-    private static final String SQL_QUERY_SELECT = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.is_movable, a.is_removable, a.is_resizable, a.config_data, b.name FROM myportal_widget a, myportal_category b WHERE a.id_category = b.id_category AND id_widget = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, icon_url, is_movable, is_removable, is_resizable ,config_data ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.config_data, b.name, a.id_style, c.name, c.css_class FROM myportal_widget a, myportal_category b, myportal_widget_style c WHERE a.id_category = b.id_category AND a.id_style = c.id_style AND a.id_widget = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, icon_url ,config_data , id_style ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_widget WHERE id_widget = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_widget SET id_widget = ?, name = ?, description = ?, id_category = ?, widget_type = ?, icon_url = ?, is_movable = ?, is_removable = ?, is_resizable = ?, config_data = ? WHERE id_widget = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.is_movable, a.is_removable, a.is_resizable, a.config_data, b.name FROM myportal_widget a, myportal_category b WHERE a.id_category = b.id_category ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_widget SET id_widget = ?, name = ?, description = ?, id_category = ?, widget_type = ?, icon_url = ?, config_data = ?, id_style = ? WHERE id_widget = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_url, a.config_data, b.name, a.id_style, c.name, c.css_class FROM myportal_widget a, myportal_category b, myportal_widget_style c WHERE a.id_category = b.id_category AND a.id_style = c.id_style";
 
     /**
      * Generates a new primary key
@@ -94,10 +94,8 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( 4, widget.getIdCategory(  ) );
         daoUtil.setString( 5, widget.getWidgetType(  ) );
         daoUtil.setString( 6, widget.getIconUrl(  ) );
-        daoUtil.setInt( 7, widget.getIsMovable(  ) );
-        daoUtil.setInt( 8, widget.getIsRemovable(  ) );
-        daoUtil.setInt( 9, widget.getIsResizable(  ) );
-        daoUtil.setString( 10, widget.getConfigData(  ) );
+        daoUtil.setString( 7, widget.getConfigData(  ) );
+        daoUtil.setInt( 8, widget.getIdStyle(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -127,11 +125,11 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( 4 ) );
             widget.setWidgetType( daoUtil.getString( 5 ) );
             widget.setIconUrl( daoUtil.getString( 6 ) );
-            widget.setIsMovable( daoUtil.getInt( 7 ) );
-            widget.setIsRemovable( daoUtil.getInt( 8 ) );
-            widget.setIsResizable( daoUtil.getInt( 9 ) );
-            widget.setConfigData( daoUtil.getString( 10 ) );
-            widget.setCategory( daoUtil.getString( 11 ) );
+            widget.setConfigData( daoUtil.getString( 7 ) );
+            widget.setCategory( daoUtil.getString( 8 ) );
+            widget.setIdStyle( daoUtil.getInt(9));
+            widget.setStyle( daoUtil.getString( 10 ) );
+            widget.setCssClass( daoUtil.getString( 11 ) );
         }
 
         daoUtil.free(  );
@@ -167,11 +165,9 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( 4, widget.getIdCategory(  ) );
         daoUtil.setString( 5, widget.getWidgetType(  ) );
         daoUtil.setString( 6, widget.getIconUrl(  ) );
-        daoUtil.setInt( 7, widget.getIsMovable(  ) );
-        daoUtil.setInt( 8, widget.getIsRemovable(  ) );
-        daoUtil.setInt( 9, widget.getIsResizable(  ) );
-        daoUtil.setString( 10, widget.getConfigData(  ) );
-        daoUtil.setInt( 11, widget.getIdWidget(  ) );
+        daoUtil.setString( 7, widget.getConfigData(  ) );
+        daoUtil.setInt( 8, widget.getIdStyle(  ) );
+        daoUtil.setInt( 9, widget.getIdWidget(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -198,12 +194,11 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( 4 ) );
             widget.setWidgetType( daoUtil.getString( 5 ) );
             widget.setIconUrl( daoUtil.getString( 6 ) );
-            widget.setIsMovable( daoUtil.getInt( 7 ) );
-            widget.setIsRemovable( daoUtil.getInt( 8 ) );
-            widget.setIsResizable( daoUtil.getInt( 9 ) );
-            widget.setConfigData( daoUtil.getString( 10 ) );
-            widget.setCategory( daoUtil.getString( 11 ) );
-
+            widget.setConfigData( daoUtil.getString( 7 ) );
+            widget.setCategory( daoUtil.getString( 8 ) );
+            widget.setIdStyle( daoUtil.getInt(9));
+            widget.setStyle( daoUtil.getString( 10 ) );
+            widget.setCssClass( daoUtil.getString( 11 ) );
             widgetList.add( widget );
         }
 

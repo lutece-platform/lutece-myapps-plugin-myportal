@@ -6,7 +6,7 @@
 
 
         <p>
-            <input type="hidden" id="widget_id_widget" name="widget_id_widget" value="${widget.idWidget}"/>
+            <input type="hidden" id="id_widget" name="id_widget" value="${widget.idWidget}"/>
 
         <div>
             <label for="widget_name" >#i18n{myportal.modify_widget.labelName} * :</label>
@@ -19,13 +19,18 @@
         </div>
 
         <div>
-            <label for="widget_id_category" >#i18n{myportal.modify_widget.labelId_category} :</label>
-            <@combo name="widget_id_category" default_value="${widget.idCategory}" items=categories_list />
+            <label for="id_category" >#i18n{myportal.modify_widget.labelId_category} :</label>
+            <@combo name="id_category" default_value="${widget.idCategory}" items=categories_list />
         </div>
 
         <div>
-            <label for="widget_widget_type" >#i18n{myportal.modify_widget.labelWidget_type} :</label>
-            <@combo name="widget_widget_type" default_value="${widget.widgetType}" items=widget_types_list />
+            <label for="widget_type" >#i18n{myportal.modify_widget.labelWidget_type} :</label>
+            <@combo name="widget_type" default_value="${widget.widgetType}" items=widget_types_list />
+        </div>
+
+        <div>
+            <label for="id_style" >#i18n{myportal.modify_widget.labelStyle} :</label>
+            <@combo name="id_style" default_value="${widget.idStyle}" items=widget_styles_list />
         </div>
 
         <div>
@@ -33,32 +38,6 @@
             <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" value="${widget.iconUrl}" tabindex="1" />
         </div>
 
-        <div>
-            <label for="widget_is_movable" >#i18n{myportal.modify_widget.labelIs_movable} :</label>
-            <#if widget.isMovable = 1>
-            <input class="checkbox" type="checkbox" id="widget_is_movable" name="widget_is_movable" value="1" tabindex="1" checked />
-            <#else>
-            <input class="checkbox" type="checkbox" id="widget_is_movable" name="widget_is_movable" value="1" tabindex="1" />
-            </#if>
-        </div>
-
-        <div>
-            <label for="widget_is_removable" >#i18n{myportal.modify_widget.labelIs_removable} :</label>
-            <#if widget.isRemovable = 1>
-            <input class="checkbox" type="checkbox" id="widget_is_removable" name="widget_is_removable" value="1" tabindex="1" checked />
-            <#else>
-            <input class="checkbox" type="checkbox" id="widget_is_removable" name="widget_is_removable" value="1" tabindex="1" />
-            </#if>
-        </div>
-
-        <div>
-            <label for="widget_is_resizable" >#i18n{myportal.modify_widget.labelIs_resizable} :</label>
-            <#if widget.isResizable = 1>
-                <input class="checkbox" type="checkbox" id="widget_is_resizable" name="widget_is_resizable" value="1" tabindex="1" checked />
-            <#else>
-                <input class="checkbox" type="checkbox" id="widget_is_resizable" name="widget_is_resizable" value="1" tabindex="1" />
-            </#if>
-        </div>
         <div>
             <label for="widget_config_data" >#i18n{myportal.modify_widget.labelConfigData} :</label>
             <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data"  tabindex="9" >${widget.configData}</textarea>

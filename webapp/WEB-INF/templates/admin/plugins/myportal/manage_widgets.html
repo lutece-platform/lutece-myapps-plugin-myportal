@@ -4,31 +4,26 @@
     <table>
         <tr>
         <th>#i18n{myportal.manage_widget.columnName}</th>
+        <th>#i18n{myportal.manage_widget.columnIcon_url}</th>
         <th>#i18n{myportal.manage_widget.columnDescription}</th>
         <th>#i18n{myportal.manage_widget.columnId_category}</th>
         <th>#i18n{myportal.manage_widget.columnWidget_type}</th>
-        <th>#i18n{myportal.manage_widget.columnIcon_url}</th>
-        <th>#i18n{myportal.manage_widget.columnIs_movable}</th>
-        <th>#i18n{myportal.manage_widget.columnIs_removable}</th>
-        <th>#i18n{myportal.manage_widget.columnIs_resizable}</th>
+        <th>#i18n{myportal.manage_widget.columnStyle}</th>
         <th>#i18n{myportal.manage_widget.columnAction}</th>
         </tr>
         <#list widget_list as widget >
         <tr>
-        <input type="hidden" id="widget_id_widget" name="widget_id_widget"  />
-        <td><a href="jsp/admin/plugins/myportal/ModifyWidget.jsp?widget_id_widget=${widget.idWidget}" class="bullet-link">
+        <td><a href="jsp/admin/plugins/myportal/ModifyWidget.jsp?id_widget=${widget.idWidget}" class="bullet-link">
                 ${widget.name}
             </a>
         </td>
+        <td><img src="${widget.iconUrl}" alt="widget icon" align="center" /></td>
         <td>${widget.description}</td>
         <td>${widget.category}</td>
         <td>${widget.widgetType}</td>
-        <td>${widget.iconUrl}</td>
-        <td align="center"><#if widget.isMovable = 1><img src="images/admin/skin/enable.png" /> <#else><img src="images/admin/skin/disable.png" /></#if></td>
-        <td align="center"><#if widget.isRemovable = 1><img src="images/admin/skin/enable.png" /> <#else><img src="images/admin/skin/disable.png" /></#if></td>
-        <td align="center"><#if widget.isResizable = 1><img src="images/admin/skin/enable.png" /> <#else><img src="images/admin/skin/disable.png" /></#if></td>
+        <td>${widget.style}</td>
         <td>
-            <a href="jsp/admin/plugins/myportal/RemoveWidget.jsp?widget_id_widget=${widget.idWidget}" >
+            <a href="jsp/admin/plugins/myportal/RemoveWidget.jsp?id_widget=${widget.idWidget}" >
                 <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
             </a>
         </td>

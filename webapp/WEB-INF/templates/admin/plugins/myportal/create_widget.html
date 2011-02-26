@@ -6,7 +6,7 @@
 
         <p>
 
-            <input type="hidden" id="widget_id_widget" name="widget_id_widget"  />
+            <input type="hidden" id="id_widget" name="id_widget"  />
         <div>
             <label for="widget_name" >#i18n{myportal.create_widget.labelName} * :</label>
             <input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" tabindex="1" />
@@ -16,28 +16,20 @@
             <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
         </div>
         <div>
-            <label for="widget_idCategory" >#i18n{myportal.create_widget.labelIdCategory} :</label>
-            <@combo name="widget_id_category" default_value="" items=categories_list />
+            <label for="id_category" >#i18n{myportal.create_widget.labelIdCategory} :</label>
+            <@combo name="id_category" default_value="" items=categories_list />
         </div>
         <div>
-            <label for="widget_widgetType" >#i18n{myportal.create_widget.labelWidget_type} :</label>
-            <@combo name="widget_widget_type" default_value="" items=widget_types_list />
+            <label for="widget_type" >#i18n{myportal.create_widget.labelWidget_type} :</label>
+            <@combo name="widget_type" default_value="" items=widget_types_list />
+        </div>
+        <div>
+            <label for="id_style" >#i18n{myportal.create_widget.labelWidget_type} :</label>
+            <@combo name="id_style" default_value="" items=widget_styles_list />
         </div>
         <div>
             <label for="widget_iconUrl" >#i18n{myportal.create_widget.labelIconUrl} * :</label>
-            <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" tabindex="5" />
-        </div>
-        <div>
-            <label for="widget_isMovable" >#i18n{myportal.create_widget.labelIsMovable} :</label>
-            <input class="checkbox" type="checkbox" id="widget_is_movable" name="widget_is_movable" value="1" tabindex="6" checked />
-        </div>
-        <div>
-            <label for="widget_isRemovable" >#i18n{myportal.create_widget.labelIsRemovable} :</label>
-            <input class="checkbox" type="checkbox" id="widget_is_removable" name="widget_is_removable" value="1" tabindex="7" checked />
-        </div>
-        <div>
-            <label for="widget_isResizable" >#i18n{myportal.create_widget.labelIsResizable} :</label>
-            <input class="checkbox" type="checkbox" id="widget_is_resizable" name="widget_is_resizable" value="1" tabindex="8" checked />
+            <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" tabindex="5" value="images/skin/plugins/myportal/widget.png"/>
         </div>
         <div>
             <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} :</label>

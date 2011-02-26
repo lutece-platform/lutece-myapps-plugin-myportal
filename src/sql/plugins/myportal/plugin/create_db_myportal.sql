@@ -13,6 +13,19 @@ PRIMARY KEY (id_category)
 );
 
 --
+-- Structure for table myportal_widget_style
+--
+
+DROP TABLE IF EXISTS myportal_widget_style;
+CREATE TABLE myportal_widget_style (		
+id_style int(11) NOT NULL default '0',
+name varchar(50) NOT NULL default '',
+css_class varchar(50) NOT NULL default '',
+PRIMARY KEY (id_style)
+);
+
+
+--
 -- Structure for table myportal_widget
 --
 
@@ -24,10 +37,8 @@ description varchar(50) NOT NULL default '',
 id_category int(11) NOT NULL default '0',
 widget_type varchar(50) NOT NULL default '',
 icon_url varchar(50) NOT NULL default '',
-is_movable int(11) NOT NULL default '0',
-is_removable int(11) NOT NULL default '0',
-is_resizable int(11) NOT NULL default '0',
 config_data LONG VARCHAR DEFAULT NULL,
+id_style int(11) NOT NULL default '0',
 PRIMARY KEY (id_widget)
 );
 

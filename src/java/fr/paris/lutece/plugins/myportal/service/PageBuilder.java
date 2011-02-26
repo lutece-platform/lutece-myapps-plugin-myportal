@@ -47,7 +47,7 @@ public class PageBuilder implements IPageBuilder
 {
 
     private static final String BEGIN_DIV_COLUMN = "\n<div class=\"myportal-column\">\n";
-    private static final String BEGIN_DIV_PORTLET = "\n<div class=\"myportal-portlet\">\n";
+    private static final String BEGIN_DIV_COLUMN_FIXED = "\n<div class=\"myportal-column-fixed\">\n";
     private static final String BEGIN_DIV_HEADER = "\n<div class=\"myportal-portlet-header\">\n";
     private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
     private static final String END_DIV = "\n</div>\n";
@@ -76,7 +76,7 @@ public class PageBuilder implements IPageBuilder
         {
             StringBuilder sbCol1 = new StringBuilder(BEGIN_DIV_COLUMN);
             StringBuilder sbCol2 = new StringBuilder(BEGIN_DIV_COLUMN);
-            StringBuilder sbCol3 = new StringBuilder(BEGIN_DIV_COLUMN);
+            StringBuilder sbCol3 = new StringBuilder(BEGIN_DIV_COLUMN_FIXED);
             sb.append("\n<div id=\"tab-");
             sb.append(nTab);
             sb.append("\" >\n");
@@ -99,8 +99,9 @@ public class PageBuilder implements IPageBuilder
 
                         break;
                 }
-
-                sbWidget.append(BEGIN_DIV_PORTLET);
+                sbWidget.append("\n<div class=\"");
+                sbWidget.append(widget.getCssClass());
+                sbWidget.append( "\">\n");
                 sbWidget.append(BEGIN_DIV_HEADER);
                 sbWidget.append(widget.getName());
                 sbWidget.append(END_DIV);

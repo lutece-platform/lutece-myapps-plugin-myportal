@@ -6,7 +6,19 @@
     float: left;
     padding-bottom: 100px;
 }
+
+.myportal-column-fixed {
+    width: 290px;
+    margin: 10px;
+    float: left;
+    padding-bottom: 100px;
+}
+
 .myportal-portlet { 
+    margin: 0 1em 1em 0;
+}
+
+.myportal-portlet-fixed {
     margin: 0 1em 1em 0;
 }
 
@@ -32,4 +44,9 @@
 
 .ui-sortable-placeholder * { 
     visibility: hidden;
+}
+
+.ui-tabs .ui-tabs-hide {
+    position: absolute;
+    left: -10000px;
 }

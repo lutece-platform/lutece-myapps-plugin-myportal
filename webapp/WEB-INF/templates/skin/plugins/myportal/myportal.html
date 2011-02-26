@@ -22,6 +22,14 @@ Ajouter du contenu
         .end()
         .find( ".myportal-portlet-content" );
 
+        $( ".myportal-portlet-fixed" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+        .find( ".myportal-portlet-header" )
+        .addClass( "ui-widget-header ui-corner-all" )
+        .end()
+        .find( ".myportal-portlet-content" );
+
+        $( ".myportal-portlet-fixed" ).sortable({ disabled: true });
+
         $( ".myportal-portlet-header .ui-icon" ).click(function() {
             $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
             $( this ).parents( ".myportal-portlet:first" ).find( ".myportal-portlet-content" ).toggle();

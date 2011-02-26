@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.myportal.web;
 
 import fr.paris.lutece.plugins.myportal.business.CategoryHome;
+import fr.paris.lutece.plugins.myportal.business.StyleHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
@@ -69,15 +70,13 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     public static final String RIGHT_MANAGE_MYPORTAL_WIDGET = "MYPORTAL_WIDGET_MANAGEMENT";
 
     // Parameters
-    private static final String PARAMETER_WIDGET_ID_WIDGET = "widget_id_widget";
+    private static final String PARAMETER_ID_WIDGET = "id_widget";
     private static final String PARAMETER_WIDGET_NAME = "widget_name";
     private static final String PARAMETER_WIDGET_DESCRIPTION = "widget_description";
-    private static final String PARAMETER_WIDGET_ID_CATEGORY = "widget_id_category";
-    private static final String PARAMETER_WIDGET_WIDGET_TYPE = "widget_widget_type";
+    private static final String PARAMETER_ID_CATEGORY = "id_category";
+    private static final String PARAMETER_ID_STYLE = "id_style";
+    private static final String PARAMETER_WIDGET_TYPE = "widget_type";
     private static final String PARAMETER_WIDGET_ICON_URL = "widget_icon_url";
-    private static final String PARAMETER_WIDGET_IS_MOVABLE = "widget_is_movable";
-    private static final String PARAMETER_WIDGET_IS_REMOVABLE = "widget_is_removable";
-    private static final String PARAMETER_WIDGET_IS_RESIZABLE = "widget_is_resizable";
     private static final String PARAMETER_WIDGET_CONFIG_DATA = "widget_config_data";
     private static final String PARAMETER_PAGE_INDEX = "page_index";
 
@@ -96,6 +95,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private static final String MARK_WIDGET = "widget";
     private static final String MARK_WIDGET_TYPES_LIST = "widget_types_list";
     private static final String MARK_CATEGORIES_LIST = "categories_list";
+    private static final String MARK_STYLES_LIST = "widget_styles_list";
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
 
@@ -160,6 +160,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
+        model.put( MARK_STYLES_LIST, StyleHome.getStyles() );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_WIDGET, getLocale(  ), model );
 
@@ -190,20 +191,18 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         widget.setDescription( request.getParameter( PARAMETER_WIDGET_DESCRIPTION ) );
 
-        if ( request.getParameter( PARAMETER_WIDGET_ID_CATEGORY ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIdCategory = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_CATEGORY ) );
+        int nIdCategory = Integer.parseInt( request.getParameter( PARAMETER_ID_CATEGORY ) );
         widget.setIdCategory( nIdCategory );
 
-        if ( request.getParameter( PARAMETER_WIDGET_WIDGET_TYPE ).equals( "" ) )
+        int nIdStyle = Integer.parseInt( request.getParameter( PARAMETER_ID_STYLE ) );
+        widget.setIdStyle( nIdStyle );
+
+        if ( request.getParameter( PARAMETER_WIDGET_TYPE ).equals( "" ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
-        widget.setWidgetType( request.getParameter( PARAMETER_WIDGET_WIDGET_TYPE ) );
+        widget.setWidgetType( request.getParameter( PARAMETER_WIDGET_TYPE ) );
 
         if ( request.getParameter( PARAMETER_WIDGET_ICON_URL ).equals( "" ) )
         {
@@ -211,15 +210,6 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         }
 
         widget.setIconUrl( request.getParameter( PARAMETER_WIDGET_ICON_URL ) );
-
-        int nIsMovable = ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) != null ) ? 1 : 0;
-        widget.setIsMovable( nIsMovable );
-
-        int nIsRemovable = ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) != null ) ? 1 : 0;
-        widget.setIsRemovable( nIsRemovable );
-
-        int nIsResizable = ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) != null ) ? 1 : 0;
-        widget.setIsResizable( nIsResizable );
 
         String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
         widget.setConfigData( strConfigData );
@@ -237,9 +227,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String getConfirmRemoveWidget( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ) );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
         UrlItem url = new UrlItem( JSP_DO_REMOVE_WIDGET );
-        url.addParameter( PARAMETER_WIDGET_ID_WIDGET, nId );
+        url.addParameter( PARAMETER_ID_WIDGET, nId );
 
         return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl(  ),
             AdminMessage.TYPE_CONFIRMATION );
@@ -253,7 +243,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doRemoveWidget( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ) );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
         WidgetHome.remove( nId, getPlugin(  ) );
 
         return JSP_REDIRECT_TO_MANAGE_WIDGETS;
@@ -269,13 +259,14 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_MODIFY_WIDGET );
 
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ) );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
         Widget widget = WidgetHome.findByPrimaryKey( nId, getPlugin(  ) );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_WIDGET, widget );
         model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
+        model.put( MARK_STYLES_LIST, StyleHome.getStyles() );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale(  ), model );
 
@@ -290,15 +281,15 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doModifyWidget( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ) );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
         Widget widget = WidgetHome.findByPrimaryKey( nId, getPlugin(  ) );
 
-        if ( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ).equals( "" ) )
+        if ( request.getParameter( PARAMETER_ID_WIDGET ).equals( "" ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
-        int nIdWidget = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_WIDGET ) );
+        int nIdWidget = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
         widget.setIdWidget( nIdWidget );
 
         if ( request.getParameter( PARAMETER_WIDGET_NAME ).equals( "" ) )
@@ -315,20 +306,18 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         widget.setDescription( request.getParameter( PARAMETER_WIDGET_DESCRIPTION ) );
 
-        if ( request.getParameter( PARAMETER_WIDGET_ID_CATEGORY ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        int nIdCategory = Integer.parseInt( request.getParameter( PARAMETER_WIDGET_ID_CATEGORY ) );
+        int nIdCategory = Integer.parseInt( request.getParameter( PARAMETER_ID_CATEGORY ) );
         widget.setIdCategory( nIdCategory );
 
-        if ( request.getParameter( PARAMETER_WIDGET_WIDGET_TYPE ).equals( "" ) )
+        int nIdStyle = Integer.parseInt( request.getParameter( PARAMETER_ID_STYLE ) );
+        widget.setIdStyle( nIdStyle );
+
+        if ( request.getParameter( PARAMETER_WIDGET_TYPE ).equals( "" ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
-        widget.setWidgetType( request.getParameter( PARAMETER_WIDGET_WIDGET_TYPE ) );
+        widget.setWidgetType( request.getParameter( PARAMETER_WIDGET_TYPE ) );
 
         if ( request.getParameter( PARAMETER_WIDGET_ICON_URL ).equals( "" ) )
         {
@@ -337,15 +326,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         widget.setIconUrl( request.getParameter( PARAMETER_WIDGET_ICON_URL ) );
 
+        String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
+        widget.setConfigData( strConfigData );
 
-        int nIsMovable = ( request.getParameter( PARAMETER_WIDGET_IS_MOVABLE ) != null ) ? 1 : 0;
-        widget.setIsMovable( nIsMovable );
-
-        int nIsRemovable = ( request.getParameter( PARAMETER_WIDGET_IS_REMOVABLE ) != null ) ? 1 : 0;
-        widget.setIsRemovable( nIsRemovable );
-
-        int nIsResizable = ( request.getParameter( PARAMETER_WIDGET_IS_RESIZABLE ) != null ) ? 1 : 0;
-        widget.setIsResizable( nIsResizable );
         WidgetHome.update( widget, getPlugin(  ) );
 
         return JSP_REDIRECT_TO_MANAGE_WIDGETS;

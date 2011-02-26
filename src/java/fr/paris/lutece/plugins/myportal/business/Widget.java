@@ -45,12 +45,12 @@ public class Widget
     private String _strDescription;
     private String _strCategory;
     private int _nIdCategory;
+    private String _strStyle;
+    private int _nIdStyle;
     private String _strWidgetType;
     private String _strIconUrl;
-    private int _nIsMovable;
-    private int _nIsRemovable;
-    private int _nIsResizable;
     private String _strConfigData;
+    private String _strCssClass;
 
     /**
      * Returns the IdWidget
@@ -86,24 +86,6 @@ public class Widget
     public void setName( String strName )
     {
         _strName = strName;
-    }
-
-    /**
-     * Returns the Category
-     * @return The Category
-     */
-    public String getCategory(  )
-    {
-        return _strCategory;
-    }
-
-    /**
-     * Sets the Category
-     * @param strCategory The Category
-     */
-    public void setCategory( String strCategory )
-    {
-        _strCategory = strCategory;
     }
 
     /**
@@ -143,6 +125,60 @@ public class Widget
     }
 
     /**
+     * Returns the Category
+     * @return The Category
+     */
+    public String getCategory(  )
+    {
+        return _strCategory;
+    }
+
+    /**
+     * Sets the Category
+     * @param strCategory The Category
+     */
+    public void setCategory( String strCategory )
+    {
+        _strCategory = strCategory;
+    }
+
+    /**
+     * Returns the IdStyle
+     * @return The IdStyle
+     */
+    public int getIdStyle(  )
+    {
+        return _nIdStyle;
+    }
+
+    /**
+     * Sets the IdStyle
+     * @param nIdStyle The IdStyle
+     */
+    public void setIdStyle( int nIdStyle )
+    {
+        _nIdStyle = nIdStyle;
+    }
+
+    /**
+     * Returns the Style
+     * @return The Style
+     */
+    public String getStyle(  )
+    {
+        return _strStyle;
+    }
+
+    /**
+     * Sets the Style
+     * @param strStyle The Style
+     */
+    public void setStyle( String strStyle )
+    {
+        _strStyle = strStyle;
+    }
+
+    /**
      * Returns the WidgetType
      * @return The WidgetType
      */
@@ -178,59 +214,6 @@ public class Widget
         _strIconUrl = strIconUrl;
     }
 
-    /**
-     * Returns the IsMovable
-     * @return The IsMovable
-     */
-    public int getIsMovable(  )
-    {
-        return _nIsMovable;
-    }
-
-    /**
-     * Sets the IsMovable
-     * @param nIsMovable The IsMovable
-     */
-    public void setIsMovable( int nIsMovable )
-    {
-        _nIsMovable = nIsMovable;
-    }
-
-    /**
-     * Returns the IsRemovable
-     * @return The IsRemovable
-     */
-    public int getIsRemovable(  )
-    {
-        return _nIsRemovable;
-    }
-
-    /**
-     * Sets the IsRemovable
-     * @param nIsRemovable The IsRemovable
-     */
-    public void setIsRemovable( int nIsRemovable )
-    {
-        _nIsRemovable = nIsRemovable;
-    }
-
-    /**
-     * Returns the IsResizable
-     * @return The IsResizable
-     */
-    public int getIsResizable(  )
-    {
-        return _nIsResizable;
-    }
-
-    /**
-     * Sets the IsResizable
-     * @param nIsResizable The IsResizable
-     */
-    public void setIsResizable( int nIsResizable )
-    {
-        _nIsResizable = nIsResizable;
-    }
 
     /**
      * Returns the ConfigData
@@ -249,4 +232,23 @@ public class Widget
     {
         _strConfigData = strConfigData;
     }
+
+    /**
+     * Returns the CssClass
+     * @return The CssClass
+     */
+    public String getCssClass(  )
+    {
+        return _strCssClass;
+    }
+
+    /**
+     * Sets the CssClass
+     * @param strCssClass The CssClass
+     */
+    public void setCssClass( String strCssClass )
+    {
+        _strCssClass = strCssClass;
+    }
+
 }
