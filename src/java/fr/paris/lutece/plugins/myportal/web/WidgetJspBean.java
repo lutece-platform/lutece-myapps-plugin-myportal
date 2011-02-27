@@ -160,7 +160,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleHome.getStyles() );
+        model.put( MARK_STYLES_LIST, StyleHome.getStyles(  ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_WIDGET, getLocale(  ), model );
 
@@ -266,7 +266,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         model.put( MARK_WIDGET, widget );
         model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleHome.getStyles() );
+        model.put( MARK_STYLES_LIST, StyleHome.getStyles(  ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale(  ), model );
 

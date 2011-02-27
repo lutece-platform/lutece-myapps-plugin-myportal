@@ -38,57 +38,59 @@ import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+
 import java.util.List;
 
+
 /**
- *
- * @author pierre
+ * This is an implentation of a page builder. Other implementation can be injected using Spring IoC
  */
 public class PageBuilder implements IPageBuilder
 {
-
     private static final String BEGIN_DIV_COLUMN = "\n<div class=\"myportal-column\">\n";
     private static final String BEGIN_DIV_COLUMN_FIXED = "\n<div class=\"myportal-column-fixed\">\n";
     private static final String BEGIN_DIV_HEADER = "\n<div class=\"myportal-portlet-header\">\n";
     private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
     private static final String END_DIV = "\n</div>\n";
 
-    public String buildPage(PageConfig pageConfig , LuteceUser user )
+    public String buildPage( PageConfig pageConfig, LuteceUser user )
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(  );
 
-        List<TabConfig> listTabs = pageConfig.getTabList();
+        List<TabConfig> listTabs = pageConfig.getTabList(  );
 
         int nTab = 1;
-        sb.append("<ul>");
-        for (TabConfig tab : listTabs)
+        sb.append( "<ul>" );
+
+        for ( TabConfig tab : listTabs )
         {
-            sb.append("<li><a href=\"#tabs-");
-            sb.append(nTab);
-            sb.append("\">");
-            sb.append(tab.getName());
-            sb.append("</a></li>");
+            sb.append( "<li><a href=\"#tabs-" );
+            sb.append( nTab );
+            sb.append( "\">" );
+            sb.append( tab.getName(  ) );
+            sb.append( "</a></li>" );
             nTab++;
         }
-        sb.append("</ul>");
+
+        sb.append( "</ul>" );
 
         nTab = 1;
-        for (TabConfig tab : listTabs)
+
+        for ( TabConfig tab : listTabs )
         {
-            StringBuilder sbCol1 = new StringBuilder(BEGIN_DIV_COLUMN);
-            StringBuilder sbCol2 = new StringBuilder(BEGIN_DIV_COLUMN);
-            StringBuilder sbCol3 = new StringBuilder(BEGIN_DIV_COLUMN_FIXED);
-            sb.append("\n<div id=\"tab-");
-            sb.append(nTab);
-            sb.append("\" >\n");
+            StringBuilder sbCol1 = new StringBuilder( BEGIN_DIV_COLUMN );
+            StringBuilder sbCol2 = new StringBuilder( BEGIN_DIV_COLUMN );
+            StringBuilder sbCol3 = new StringBuilder( BEGIN_DIV_COLUMN_FIXED );
+            sb.append( "\n<div id=\"tab-" );
+            sb.append( nTab );
+            sb.append( "\" >\n" );
 
-
-            for (WidgetConfig widgetConfig : tab.getWidgetList())
+            for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
             {
                 StringBuilder sbWidget = sbCol1;
-                Widget widget = WidgetService.instance().getWidget(widgetConfig.getWidgetId());
+                Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
 
-                switch (widgetConfig.getColumn())
+                switch ( widgetConfig.getColumn(  ) )
                 {
                     case 2:
                         sbWidget = sbCol2;
@@ -100,30 +102,31 @@ public class PageBuilder implements IPageBuilder
 
                         break;
                 }
-                sbWidget.append("\n<div class=\"");
-                sbWidget.append(widget.getCssClass());
+
+                sbWidget.append( "\n<div class=\"" );
+                sbWidget.append( widget.getCssClass(  ) );
                 sbWidget.append( "\" id=\"widget-" );
-                sbWidget.append( widget.getIdWidget() );
-                sbWidget.append("\" >\n");
-                sbWidget.append(BEGIN_DIV_HEADER);
-                sbWidget.append(widget.getName());
-                sbWidget.append(END_DIV);
-                sbWidget.append(BEGIN_DIV_CONTENT);
-                sbWidget.append(WidgetContentService.instance().getWidgetContent(widgetConfig.getWidgetId() , user ));
-                sbWidget.append(END_DIV);
-                sbWidget.append(END_DIV);
+                sbWidget.append( widget.getIdWidget(  ) );
+                sbWidget.append( "\" >\n" );
+                sbWidget.append( BEGIN_DIV_HEADER );
+                sbWidget.append( widget.getName(  ) );
+                sbWidget.append( END_DIV );
+                sbWidget.append( BEGIN_DIV_CONTENT );
+                sbWidget.append( WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ) );
+                sbWidget.append( END_DIV );
+                sbWidget.append( END_DIV );
             }
 
-            sbCol1.append(END_DIV);
-            sbCol2.append(END_DIV);
-            sbCol3.append(END_DIV);
-            sb.append(sbCol1);
-            sb.append(sbCol2);
-            sb.append(sbCol3);
-            sb.append(END_DIV);
+            sbCol1.append( END_DIV );
+            sbCol2.append( END_DIV );
+            sbCol3.append( END_DIV );
+            sb.append( sbCol1 );
+            sb.append( sbCol2 );
+            sb.append( sbCol3 );
+            sb.append( END_DIV );
             nTab++;
         }
 
-        return sb.toString();
+        return sb.toString(  );
     }
 }

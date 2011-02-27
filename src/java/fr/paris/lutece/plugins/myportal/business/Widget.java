@@ -214,7 +214,6 @@ public class Widget
         _strIconUrl = strIconUrl;
     }
 
-
     /**
      * Returns the ConfigData
      * @return The ConfigData
@@ -250,5 +249,4 @@ public class Widget
     {
         _strCssClass = strCssClass;
     }
-
 }

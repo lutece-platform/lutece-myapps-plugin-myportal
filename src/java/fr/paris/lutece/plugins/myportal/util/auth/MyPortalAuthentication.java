@@ -2,15 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fr.paris.lutece.plugins.myportal.util.auth;
 
 import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+
 import java.util.Collection;
+
 import javax.security.auth.login.LoginException;
+
 import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -21,7 +24,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getAuthServiceName()
+    public String getAuthServiceName(  )
     {
         return "MyPortal Authentication";
     }
@@ -37,7 +40,8 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public LuteceUser login( String string, String string1, HttpServletRequest hsr ) throws LoginException, LoginRedirectException
+    public LuteceUser login( String string, String string1, HttpServletRequest hsr )
+        throws LoginException, LoginRedirectException
     {
         return new MyPortalUser( string );
     }
@@ -52,9 +56,9 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public LuteceUser getAnonymousUser()
+    public LuteceUser getAnonymousUser(  )
     {
-        return new MyPortalUser( "Anonymous");
+        return new MyPortalUser( "Anonymous" );
     }
 
     /**
@@ -76,7 +80,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public boolean isExternalAuthentication()
+    public boolean isExternalAuthentication(  )
     {
         return true;
     }
@@ -84,7 +88,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public boolean isDelegatedAuthentication()
+    public boolean isDelegatedAuthentication(  )
     {
         return false;
     }
@@ -100,7 +104,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getLoginPageUrl()
+    public String getLoginPageUrl(  )
     {
         return "";
     }
@@ -108,7 +112,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getDoLoginUrl()
+    public String getDoLoginUrl(  )
     {
         return "";
     }
@@ -116,7 +120,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getDoLogoutUrl()
+    public String getDoLogoutUrl(  )
     {
         return "";
     }
@@ -124,7 +128,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getNewAccountPageUrl()
+    public String getNewAccountPageUrl(  )
     {
         return "";
     }
@@ -132,7 +136,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getViewAccountPageUrl()
+    public String getViewAccountPageUrl(  )
     {
         return "";
     }
@@ -140,7 +144,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getLostPasswordPageUrl()
+    public String getLostPasswordPageUrl(  )
     {
         return "";
     }
@@ -148,7 +152,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getAccessDeniedTemplate()
+    public String getAccessDeniedTemplate(  )
     {
         return "";
     }
@@ -156,7 +160,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getAccessControledTemplate()
+    public String getAccessControledTemplate(  )
     {
         return "";
     }
@@ -164,7 +168,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public boolean isUsersListAvailable()
+    public boolean isUsersListAvailable(  )
     {
         return false;
     }
@@ -172,7 +176,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public Collection<LuteceUser> getUsers()
+    public Collection<LuteceUser> getUsers(  )
     {
         return null;
     }
@@ -188,7 +192,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public boolean isMultiAuthenticationSupported()
+    public boolean isMultiAuthenticationSupported(  )
     {
         return false;
     }
@@ -196,7 +200,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getIconUrl()
+    public String getIconUrl(  )
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
@@ -204,7 +208,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getName()
+    public String getName(  )
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
@@ -212,7 +216,7 @@ public class MyPortalAuthentication implements LuteceAuthentication
     /**
      * {@inheritDoc }
      */
-    public String getPluginName()
+    public String getPluginName(  )
     {
         return "";
     }

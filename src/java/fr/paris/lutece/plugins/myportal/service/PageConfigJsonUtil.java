@@ -51,6 +51,19 @@ import java.util.List;
  */
 public class PageConfigJsonUtil
 {
+    private static final String ATTR_PAGE = "page";
+    private static final String ATTR_NAME = "name";
+    private static final String ATTR_TABS = "tabs";
+    private static final String ATTR_WIDGETS = "widgets";
+    private static final String ATTR_ID = "id";
+    private static final String ATTR_STATE = "state";
+    private static final String ATTR_COLUMN = "column";
+
+    /**
+     * Create a PageConfig object from a JSON flow
+     * @param jsonflow The JSON flow
+     * @return A PageConfig object
+     */
     public static PageConfig parseJson( String jsonflow )
     {
         PageConfig pageConfig = new PageConfig(  );
@@ -59,28 +72,28 @@ public class PageConfigJsonUtil
         {
             JSONTokener tokener = new JSONTokener( jsonflow );
             JSONObject json = (JSONObject) tokener.nextValue(  );
-            JSONObject jsonPage = (JSONObject) json.get( "page" );
-            pageConfig.setName( jsonPage.getString( "name" ) );
+            JSONObject jsonPage = (JSONObject) json.get( ATTR_PAGE );
+            pageConfig.setName( jsonPage.getString( ATTR_NAME ) );
 
-            JSONArray jsonTabs = jsonPage.getJSONArray( "tabs" );
+            JSONArray jsonTabs = jsonPage.getJSONArray( ATTR_TABS );
             List<TabConfig> listTabs = new ArrayList<TabConfig>(  );
 
             for ( int i = 0; i < jsonTabs.size(  ); i++ )
             {
                 JSONObject jsonTab = jsonTabs.getJSONObject( i );
                 TabConfig tab = new TabConfig(  );
-                tab.setName( jsonTab.getString( "name" ) );
+                tab.setName( jsonTab.getString( ATTR_NAME ) );
 
-                JSONArray jsonWidgets = jsonTab.getJSONArray( "widgets" );
+                JSONArray jsonWidgets = jsonTab.getJSONArray( ATTR_WIDGETS );
                 List<WidgetConfig> listWidgets = new ArrayList<WidgetConfig>(  );
 
                 for ( int j = 0; j < jsonWidgets.size(  ); j++ )
                 {
                     JSONObject jsonWidget = jsonWidgets.getJSONObject( j );
                     WidgetConfig widget = new WidgetConfig(  );
-                    widget.setWidgetId( jsonWidget.getInt( "id" ) );
-                    widget.setWidgetState( jsonWidget.getInt( "state" ) );
-                    widget.setColumn( jsonWidget.getInt( "column" ) );
+                    widget.setWidgetId( jsonWidget.getInt( ATTR_ID ) );
+                    widget.setWidgetState( jsonWidget.getInt( ATTR_STATE ) );
+                    widget.setColumn( jsonWidget.getInt( ATTR_COLUMN ) );
                     listWidgets.add( widget );
                 }
 
@@ -98,30 +111,40 @@ public class PageConfigJsonUtil
         return pageConfig;
     }
 
-    static String buildJson(PageConfig pageConfig)
+    /**
+     * Build a JSON flow from a PageConfig object
+     * @param pageConfig The Page Config object
+     * @return The JSON flow
+     */
+    static String buildJson( PageConfig pageConfig )
     {
-        JSONObject json = new JSONObject();
-        JSONObject jsonPage = new JSONObject();
-        JSONArray jsonTabs = new JSONArray();
-        for( TabConfig tab : pageConfig.getTabList() )
+        JSONObject json = new JSONObject(  );
+        JSONObject jsonPage = new JSONObject(  );
+        JSONArray jsonTabs = new JSONArray(  );
+
+        for ( TabConfig tab : pageConfig.getTabList(  ) )
         {
-            JSONObject jsonTab = new JSONObject();
-            JSONArray jsonWidgets = new JSONArray();
-            for( WidgetConfig widget : tab.getWidgetList() )
+            JSONObject jsonTab = new JSONObject(  );
+            JSONArray jsonWidgets = new JSONArray(  );
+
+            for ( WidgetConfig widget : tab.getWidgetList(  ) )
             {
-                JSONObject jsonWidget = new JSONObject();
-                jsonWidget.accumulate("id", widget.getWidgetId());
-                jsonWidget.accumulate("state", widget.getWidgetState());
-                jsonWidget.accumulate("column", widget.getColumn());
-                jsonWidgets.add(jsonWidget);
+                JSONObject jsonWidget = new JSONObject(  );
+                jsonWidget.accumulate( ATTR_ID, widget.getWidgetId(  ) );
+                jsonWidget.accumulate( ATTR_STATE, widget.getWidgetState(  ) );
+                jsonWidget.accumulate( ATTR_COLUMN, widget.getColumn(  ) );
+                jsonWidgets.add( jsonWidget );
             }
-            jsonTab.accumulate("name", tab.getName());
-            jsonTab.accumulate( "widgets", jsonWidgets );
-            jsonTabs.add(jsonTab);
+
+            jsonTab.accumulate( ATTR_NAME, tab.getName(  ) );
+            jsonTab.accumulate( ATTR_WIDGETS, jsonWidgets );
+            jsonTabs.add( jsonTab );
         }
-        jsonPage.accumulate("name", pageConfig.getName() );
-        jsonPage.accumulate("tabs", jsonTabs );
-        json.accumulate("page", jsonPage );
-        return json.toString(4);
+
+        jsonPage.accumulate( ATTR_NAME, pageConfig.getName(  ) );
+        jsonPage.accumulate( ATTR_TABS, jsonTabs );
+        json.accumulate( ATTR_PAGE, jsonPage );
+
+        return json.toString(  );
     }
 }

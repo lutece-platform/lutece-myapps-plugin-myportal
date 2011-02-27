@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+
 /**
  * This is the business class for the object Style
  */
 public class Style
 {
     // Variables declarations
-
     private int _nIdStyle;
     private String _strName;
     private String _strCssClass;
@@ -48,7 +48,7 @@ public class Style
      * Returns the IdStyle
      * @return The IdStyle
      */
-    public int getId()
+    public int getId(  )
     {
         return _nIdStyle;
     }
@@ -57,7 +57,7 @@ public class Style
      * Sets the IdStyle
      * @param nIdStyle The IdStyle
      */
-    public void setId(int nIdStyle)
+    public void setId( int nIdStyle )
     {
         _nIdStyle = nIdStyle;
     }
@@ -66,7 +66,7 @@ public class Style
      * Returns the Name
      * @return The Name
      */
-    public String getName()
+    public String getName(  )
     {
         return _strName;
     }
@@ -75,7 +75,7 @@ public class Style
      * Sets the Name
      * @param strName The Name
      */
-    public void setName(String strName)
+    public void setName( String strName )
     {
         _strName = strName;
     }
@@ -84,7 +84,7 @@ public class Style
      * Returns the CssClass
      * @return The CssClass
      */
-    public String getCssClass()
+    public String getCssClass(  )
     {
         return _strCssClass;
     }
@@ -93,7 +93,7 @@ public class Style
      * Sets the CssClass
      * @param strCssClass The CssClass
      */
-    public void setCssClass(String strCssClass)
+    public void setCssClass( String strCssClass )
     {
         _strCssClass = strCssClass;
     }

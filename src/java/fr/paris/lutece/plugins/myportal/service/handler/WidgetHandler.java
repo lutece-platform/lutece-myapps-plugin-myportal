@@ -46,5 +46,5 @@ public interface WidgetHandler
 
     String getDescription(  );
 
-    String renderWidget( String strWidgetData , LuteceUser user );
+    String renderWidget( String strWidgetData, LuteceUser user );
 }

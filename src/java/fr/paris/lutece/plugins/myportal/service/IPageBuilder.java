@@ -31,11 +31,11 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+
 
 /**
  *
@@ -49,5 +49,5 @@ public interface IPageBuilder
      * @param user The user
      * @return The myportal page
      */
-     String buildPage( PageConfig pageConfig , LuteceUser user  );
+    String buildPage( PageConfig pageConfig, LuteceUser user );
 }

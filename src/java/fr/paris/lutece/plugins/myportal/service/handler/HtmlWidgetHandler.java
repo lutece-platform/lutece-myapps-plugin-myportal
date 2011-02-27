@@ -38,7 +38,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 /**
  * Html Widget Handler
- * 
+ *
  */
 public class HtmlWidgetHandler implements WidgetHandler
 {
@@ -48,7 +48,7 @@ public class HtmlWidgetHandler implements WidgetHandler
     /**
      * {@inheritDoc }
      */
-    public String renderWidget( String strWidgetData , LuteceUser user )
+    public String renderWidget( String strWidgetData, LuteceUser user )
     {
         return strWidgetData;
     }

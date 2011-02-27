@@ -31,32 +31,30 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
+
 import java.util.List;
+
 
 /**
  * This class provides instances management methods (create, find, ...) for Style objects
  */
-
 public final class StyleHome
 {
     private static final String PLUGIN_NAME = "myportal";
 
     // Static variable pointed at the DAO instance
     private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
-    private static IStyleDAO _dao = ( IStyleDAO ) SpringContextService.getPluginBean( "myportal", "myportal.styleDAO" );
-
+    private static IStyleDAO _dao = (IStyleDAO) SpringContextService.getPluginBean( "myportal", "myportal.styleDAO" );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-
     private StyleHome(  )
     {
     }
@@ -66,7 +64,6 @@ public final class StyleHome
      * @param style The instance of the Style which contains the informations to store
      * @return The  instance of style which has been created with its primary key.
      */
-
     public static Style create( Style style )
     {
         _dao.insert( style, _plugin );
@@ -74,13 +71,11 @@ public final class StyleHome
         return style;
     }
 
-
     /**
      * Update of the style which is specified in parameter
      * @param style The instance of the Style which contains the data to store
      * @return The instance of the  style which has been updated
      */
-
     public static Style update( Style style )
     {
         _dao.store( style, _plugin );
@@ -88,18 +83,14 @@ public final class StyleHome
         return style;
     }
 
-
     /**
      * Remove the style whose identifier is specified in parameter
      * @param nStyleId The style Id
      */
-
-
     public static void remove( int nStyleId )
     {
         _dao.delete( nStyleId, _plugin );
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // Finders
@@ -109,20 +100,17 @@ public final class StyleHome
      * @param nKey The style primary key
      * @return an instance of Style
      */
-
     public static Style findByPrimaryKey( int nKey )
     {
-        return _dao.load( nKey, _plugin);
+        return _dao.load( nKey, _plugin );
     }
-
 
     /**
      * Load the data of all the style objects and returns them in form of a list
      * @param plugin the Plugin
      * @return the list which contains the data of all the style objects
      */
-
-    public static List<Style> getStylesList( )
+    public static List<Style> getStylesList(  )
     {
         return _dao.selectStylesList( _plugin );
     }
@@ -132,15 +120,15 @@ public final class StyleHome
      * @param plugin the Plugin
      * @return the list which contains the data of all the style objects
      */
-
-    public static ReferenceList getStyles( )
+    public static ReferenceList getStyles(  )
     {
-        ReferenceList list = new ReferenceList();
-        for( Style style : _dao.selectStylesList( _plugin ))
+        ReferenceList list = new ReferenceList(  );
+
+        for ( Style style : _dao.selectStylesList( _plugin ) )
         {
-            list.addItem(style.getId(), style.getName());
+            list.addItem( style.getId(  ), style.getName(  ) );
         }
+
         return list;
     }
-
 }

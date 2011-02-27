@@ -1,4 +1,7 @@
-Ajouter du contenu
+<a title="Ajouter du contenu" href="jsp/site/plugins/myportal/AddContent.jsp" class="ceebox">
+    <img src="images/skin/plugins/myportal/add_widget.png" alt="Add content button" /> Ajouter du contenu
+</a>
+
 <br />
 
 <div id="tabs">
@@ -6,7 +9,12 @@ Ajouter du contenu
     <div style="clear:both"></div>
 </div>
 
-<script src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
+<script type='text/javascript' src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.swfobject.js' ></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.metadata.js'></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.color.js'></script>
+<script type='text/javascript' src="js/plugins/myportal/jquery.ceebox-min.js"></script>
+
 <script>
     $(function() {
 	$( "#tabs" ).tabs();
@@ -36,6 +44,12 @@ Ajouter du contenu
         });
 
         $( ".myportal-column" ).disableSelection();
+
+        // Ceebox init
+        jQuery(document).ready(function(){
+                $(".ceebox").ceebox({titles:false, borderColor:'#dcdcdc',boxColor:"#fff"});
+        });
+
     });
 </script>
 

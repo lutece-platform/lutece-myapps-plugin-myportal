@@ -35,34 +35,44 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
-import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
-import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
 
 /**
- *
- * @author pierre
+ * Widget Service class : retreive Widget description from a cache
  */
 public class WidgetService extends AbstractCacheableService
 {
     private static WidgetService _singleton = new WidgetService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Service";
 
+    /** Private constructor */
     private WidgetService(  )
     {
     }
 
+    /**
+     * {@inheritDoc }
+     */
     public String getName(  )
     {
         return SERVICE_NAME;
     }
 
+    /**
+     * Gets the unique instance of the service
+     * @return The unique instance
+     */
     public static WidgetService instance(  )
     {
         return _singleton;
     }
 
+    /**
+     * Returns widgets description from the cache
+     * @param id The Widget ID
+     * @return The widget object
+     */
     public Widget getWidget( int id )
     {
         String strWidgetId = "" + id;

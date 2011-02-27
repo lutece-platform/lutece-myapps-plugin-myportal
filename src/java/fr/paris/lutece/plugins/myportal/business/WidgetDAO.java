@@ -127,7 +127,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIconUrl( daoUtil.getString( 6 ) );
             widget.setConfigData( daoUtil.getString( 7 ) );
             widget.setCategory( daoUtil.getString( 8 ) );
-            widget.setIdStyle( daoUtil.getInt(9));
+            widget.setIdStyle( daoUtil.getInt( 9 ) );
             widget.setStyle( daoUtil.getString( 10 ) );
             widget.setCssClass( daoUtil.getString( 11 ) );
         }
@@ -196,7 +196,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIconUrl( daoUtil.getString( 6 ) );
             widget.setConfigData( daoUtil.getString( 7 ) );
             widget.setCategory( daoUtil.getString( 8 ) );
-            widget.setIdStyle( daoUtil.getInt(9));
+            widget.setIdStyle( daoUtil.getInt( 9 ) );
             widget.setStyle( daoUtil.getString( 10 ) );
             widget.setCssClass( daoUtil.getString( 11 ) );
             widgetList.add( widget );

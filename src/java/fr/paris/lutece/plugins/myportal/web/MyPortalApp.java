@@ -89,7 +89,6 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
-
         String strWidgets = _pageService.getUserPage( getUser( request ) );
         HashMap model = new HashMap(  );
         model.put( MARK_WIDGETS, strWidgets );
@@ -100,35 +99,54 @@ public class MyPortalApp implements XPageApplication
         return page;
     }
 
+    /**
+     * Get Add Content popup
+     * @param request The HTTP request
+     * @return The page
+     */
     public String getAddContent( HttpServletRequest request )
     {
         HashMap model = new HashMap(  );
-        model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList(_plugin) );
+        model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList( _plugin ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADD_CONTENT, request.getLocale(  ), model );
+
         return template.getHtml(  );
     }
 
+    /**
+     * Process add content - add a widget to the page
+     * @param request The HTTP request
+     * @return the forward url
+     */
     public String doAddContent( HttpServletRequest request )
     {
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
         String strColumn = request.getParameter( PARAMETER_COLUMN );
 
-        int nIdWidget = Integer.parseInt(strIdWidget);
-        int nColumn = Integer.parseInt(strColumn);
+        int nIdWidget = Integer.parseInt( strIdWidget );
+        int nColumn = Integer.parseInt( strColumn );
         int nTab = 1;
 
-        _pageService.addWidget( getUser( request ) , nIdWidget , nTab , nColumn );
-        return "AddContent.jsp";
+        _pageService.addWidget( getUser( request ), nIdWidget, nTab, nColumn );
+
+        return "../../Portal.jsp?page=myportal"; // todo : use properties conf to permit url rewriting
     }
 
-
+    /**
+     * Gets the user from the request
+     * @param request The HTTP user
+     * @return The Lutece User
+     */
     private LuteceUser getUser( HttpServletRequest request )
     {
         LuteceUser user;
+
         ////////////////////////////////////////////////////////////////////////
-        String strUser = request.getParameter("user");
-        if( strUser != null)
+        // Temporary code
+        String strUser = request.getParameter( "user" );
+
+        if ( strUser != null )
         {
             user = new MyPortalUser( strUser );
         }
@@ -136,7 +154,7 @@ public class MyPortalApp implements XPageApplication
         {
             user = new MyPortalUser( "Anonymous" );
         }
+
         return user;
     }
-
 }

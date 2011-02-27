@@ -42,29 +42,42 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 
 /**
- *
- * @author pierre
+ * WidgetContentService store widget content into a cache
  */
 public class WidgetContentService extends AbstractCacheableService
 {
     private static WidgetContentService _singleton = new WidgetContentService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Content Service";
 
+    /** Private constructor */
     private WidgetContentService(  )
     {
     }
 
+    /**
+     * {@inheritDoc }
+     */
     public String getName(  )
     {
         return SERVICE_NAME;
     }
 
+    /**
+     * Gets the unique instance of the service
+     * @return The unique instance
+     */
     public static WidgetContentService instance(  )
     {
         return _singleton;
     }
 
-    public String getWidgetContent( int id , LuteceUser user )
+    /**
+     * Get the widget content
+     * @param id The Widget ID
+     * @param user The Lutece user
+     * @return The widget Content
+     */
+    public String getWidgetContent( int id, LuteceUser user )
     {
         String strWidgetId = "" + id;
         String strWidget = (String) getFromCache( strWidgetId );
@@ -74,7 +87,7 @@ public class WidgetContentService extends AbstractCacheableService
             Widget widget = WidgetHome.findByPrimaryKey( id, null );
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-            strWidget = handler.renderWidget( widget.getConfigData(  ) , user );
+            strWidget = handler.renderWidget( widget.getConfigData(  ), user );
             putInCache( strWidgetId, strWidget );
         }
 
