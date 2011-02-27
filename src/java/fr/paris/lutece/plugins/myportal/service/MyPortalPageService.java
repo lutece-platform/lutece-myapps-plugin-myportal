@@ -36,8 +36,11 @@ package fr.paris.lutece.plugins.myportal.service;
 import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
 import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
+import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
+import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+import java.util.List;
 
 
 /**
@@ -78,6 +81,22 @@ public class MyPortalPageService
         UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
 
         return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
+    }
+
+    public void addWidget(LuteceUser user, int nIdWidget, int nTab, int nColumn)
+    {
+        PageConfig pageConfig = getPageConfigUser( user );
+        TabConfig tab = pageConfig.getTabList().get( nTab - 1 );
+        List<WidgetConfig> listWidgets = tab.getWidgetList();
+        WidgetConfig widget = new WidgetConfig();
+        widget.setWidgetId(nIdWidget);
+        widget.setColumn(nColumn);
+        listWidgets.add(widget);
+        UserPageConfig userConf = new UserPageConfig();
+        userConf.setUserGuid(user.getName());
+        userConf.setUserPageConfig(PageConfigJsonUtil.buildJson( pageConfig ));
+        UserPageConfigHome.update( userConf );
+
     }
 
 }

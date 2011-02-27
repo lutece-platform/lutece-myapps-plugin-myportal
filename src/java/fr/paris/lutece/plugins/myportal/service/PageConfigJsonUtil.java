@@ -97,4 +97,31 @@ public class PageConfigJsonUtil
 
         return pageConfig;
     }
+
+    static String buildJson(PageConfig pageConfig)
+    {
+        JSONObject json = new JSONObject();
+        JSONObject jsonPage = new JSONObject();
+        JSONArray jsonTabs = new JSONArray();
+        for( TabConfig tab : pageConfig.getTabList() )
+        {
+            JSONObject jsonTab = new JSONObject();
+            JSONArray jsonWidgets = new JSONArray();
+            for( WidgetConfig widget : tab.getWidgetList() )
+            {
+                JSONObject jsonWidget = new JSONObject();
+                jsonWidget.accumulate("id", widget.getWidgetId());
+                jsonWidget.accumulate("state", widget.getWidgetState());
+                jsonWidget.accumulate("column", widget.getColumn());
+                jsonWidgets.add(jsonWidget);
+            }
+            jsonTab.accumulate("name", tab.getName());
+            jsonTab.accumulate( "widgets", jsonWidgets );
+            jsonTabs.add(jsonTab);
+        }
+        jsonPage.accumulate("name", pageConfig.getName() );
+        jsonPage.accumulate("tabs", jsonTabs );
+        json.accumulate("page", jsonPage );
+        return json.toString(4);
+    }
 }

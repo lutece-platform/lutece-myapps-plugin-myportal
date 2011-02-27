@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
@@ -56,8 +57,13 @@ import javax.servlet.http.HttpServletRequest;
 public class MyPortalApp implements XPageApplication
 {
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
+    private static final String TEMPLATE_ADD_CONTENT = "skin/plugins/myportal/add_content.html";
     private static final String PARAMETER_PAGE = "page";
+    private static final String PARAMETER_ID_WIDGET = "id_widget";
+    private static final String PARAMETER_TAB = "tab";
+    private static final String PARAMETER_COLUMN = "column";
     private static final String MARK_WIDGETS = "widgets";
+    private static final String MARK_WIDGETS_LIST = "widgets_list";
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
     private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
 
@@ -83,6 +89,42 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
+
+        String strWidgets = _pageService.getUserPage( getUser( request ) );
+        HashMap model = new HashMap(  );
+        model.put( MARK_WIDGETS, strWidgets );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
+        page.setContent( template.getHtml(  ) );
+
+        return page;
+    }
+
+    public String getAddContent( HttpServletRequest request )
+    {
+        HashMap model = new HashMap(  );
+        model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList(_plugin) );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADD_CONTENT, request.getLocale(  ), model );
+        return template.getHtml(  );
+    }
+
+    public String doAddContent( HttpServletRequest request )
+    {
+        String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
+        String strColumn = request.getParameter( PARAMETER_COLUMN );
+
+        int nIdWidget = Integer.parseInt(strIdWidget);
+        int nColumn = Integer.parseInt(strColumn);
+        int nTab = 1;
+
+        _pageService.addWidget( getUser( request ) , nIdWidget , nTab , nColumn );
+        return "AddContent.jsp";
+    }
+
+
+    private LuteceUser getUser( HttpServletRequest request )
+    {
         LuteceUser user;
         ////////////////////////////////////////////////////////////////////////
         String strUser = request.getParameter("user");
@@ -94,15 +136,7 @@ public class MyPortalApp implements XPageApplication
         {
             user = new MyPortalUser( "Anonymous" );
         }
-
-        String strWidgets = _pageService.getUserPage( user );
-        HashMap model = new HashMap(  );
-        model.put( MARK_WIDGETS, strWidgets );
-
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
-        page.setContent( template.getHtml(  ) );
-
-        return page;
+        return user;
     }
 
 }
