@@ -34,9 +34,11 @@
 package fr.paris.lutece.plugins.myportal.web;
 
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
+import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.xpages.XPage;
@@ -81,7 +83,19 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
-        String strWidgets = _pageService.getUserPage( null );
+        LuteceUser user;
+        ////////////////////////////////////////////////////////////////////////
+        String strUser = request.getParameter("user");
+        if( strUser != null)
+        {
+            user = new MyPortalUser( strUser );
+        }
+        else
+        {
+            user = new MyPortalUser( "Anonymous" );
+        }
+
+        String strWidgets = _pageService.getUserPage( user );
         HashMap model = new HashMap(  );
         model.put( MARK_WIDGETS, strWidgets );
 
@@ -90,4 +104,5 @@ public class MyPortalApp implements XPageApplication
 
         return page;
     }
+
 }

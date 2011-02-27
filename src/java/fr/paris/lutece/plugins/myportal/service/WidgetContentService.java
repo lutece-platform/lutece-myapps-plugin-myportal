@@ -38,6 +38,7 @@ import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 
 
 /**
@@ -63,7 +64,7 @@ public class WidgetContentService extends AbstractCacheableService
         return _singleton;
     }
 
-    public String getWidgetContent( int id )
+    public String getWidgetContent( int id , LuteceUser user )
     {
         String strWidgetId = "" + id;
         String strWidget = (String) getFromCache( strWidgetId );
@@ -73,7 +74,7 @@ public class WidgetContentService extends AbstractCacheableService
             Widget widget = WidgetHome.findByPrimaryKey( id, null );
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-            strWidget = handler.renderWidget( widget.getConfigData(  ) );
+            strWidget = handler.renderWidget( widget.getConfigData(  ) , user );
             putInCache( strWidgetId, strWidget );
         }
 

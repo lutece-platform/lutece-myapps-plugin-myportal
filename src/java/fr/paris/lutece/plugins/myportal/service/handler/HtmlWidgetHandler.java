@@ -33,26 +33,37 @@
  */
 package fr.paris.lutece.plugins.myportal.service.handler;
 
+import fr.paris.lutece.portal.service.security.LuteceUser;
+
 
 /**
- *
- * @author pierre
+ * Html Widget Handler
+ * 
  */
 public class HtmlWidgetHandler implements WidgetHandler
 {
     private static final String NAME = "html";
     private static final String DESCRIPTION = "HTML widget";
 
-    public String renderWidget( String strWidgetData )
+    /**
+     * {@inheritDoc }
+     */
+    public String renderWidget( String strWidgetData , LuteceUser user )
     {
         return strWidgetData;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     public String getName(  )
     {
         return NAME;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     public String getDescription(  )
     {
         return DESCRIPTION;

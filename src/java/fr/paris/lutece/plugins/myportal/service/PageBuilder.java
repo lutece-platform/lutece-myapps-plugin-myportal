@@ -37,6 +37,7 @@ import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class PageBuilder implements IPageBuilder
     private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
     private static final String END_DIV = "\n</div>\n";
 
-    public String buildPage(PageConfig pageConfig)
+    public String buildPage(PageConfig pageConfig , LuteceUser user )
     {
         StringBuilder sb = new StringBuilder();
 
@@ -101,12 +102,14 @@ public class PageBuilder implements IPageBuilder
                 }
                 sbWidget.append("\n<div class=\"");
                 sbWidget.append(widget.getCssClass());
-                sbWidget.append( "\">\n");
+                sbWidget.append( "\" id=\"widget-" );
+                sbWidget.append( widget.getIdWidget() );
+                sbWidget.append("\" >\n");
                 sbWidget.append(BEGIN_DIV_HEADER);
                 sbWidget.append(widget.getName());
                 sbWidget.append(END_DIV);
                 sbWidget.append(BEGIN_DIV_CONTENT);
-                sbWidget.append(WidgetContentService.instance().getWidgetContent(widgetConfig.getWidgetId()));
+                sbWidget.append(WidgetContentService.instance().getWidgetContent(widgetConfig.getWidgetId() , user ));
                 sbWidget.append(END_DIV);
                 sbWidget.append(END_DIV);
             }

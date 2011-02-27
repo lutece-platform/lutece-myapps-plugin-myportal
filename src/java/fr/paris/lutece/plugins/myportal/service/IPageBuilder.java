@@ -35,6 +35,7 @@
 package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 
 /**
  *
@@ -42,5 +43,11 @@ import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
  */
 public interface IPageBuilder
 {
-    String buildPage( PageConfig pageConfig );
+    /**
+     * Build the page according the user and its configuration
+     * @param pageConfig The page config
+     * @param user The user
+     * @return The myportal page
+     */
+     String buildPage( PageConfig pageConfig , LuteceUser user  );
 }

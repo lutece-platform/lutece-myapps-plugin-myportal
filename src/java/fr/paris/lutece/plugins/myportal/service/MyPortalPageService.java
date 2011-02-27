@@ -57,12 +57,20 @@ public class MyPortalPageService
             pageConfig = getDefaultPageConfig(  );
         }
 
-        return _pageBuilder.buildPage( pageConfig );
+        return _pageBuilder.buildPage( pageConfig , user );
     }
 
     private PageConfig getPageConfigUser( LuteceUser user )
     {
-        return null;
+        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName() );
+        if( userConf == null )
+        {
+            userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
+            userConf.setUserGuid(user.getName());
+            UserPageConfigHome.create(userConf);
+        }
+
+        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
     }
 
     private PageConfig getDefaultPageConfig(  )

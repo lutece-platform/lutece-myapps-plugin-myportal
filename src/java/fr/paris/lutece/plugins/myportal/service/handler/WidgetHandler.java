@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.myportal.service.handler;
 
+import fr.paris.lutece.portal.service.security.LuteceUser;
+
 
 /**
  *
@@ -44,5 +46,5 @@ public interface WidgetHandler
 
     String getDescription(  );
 
-    String renderWidget( String strWidgetData );
+    String renderWidget( String strWidgetData , LuteceUser user );
 }
