@@ -53,6 +53,11 @@ public class MyPortalPageService
     private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( "myportal",
             "myportal.pageBuilder" );
 
+    /**
+     * Gets the page for a given user
+     * @param user The user
+     * @return The page
+     */
     public String getUserPage( LuteceUser user )
     {
         PageConfig pageConfig = getPageConfigUser( user );
@@ -86,6 +91,14 @@ public class MyPortalPageService
         return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
     }
 
+    /**
+     * Add a widget to a page of an user
+     * @param user The user
+     * @param nIdWidget The widget ID
+     * @param nTab The tab
+     * @param nColumn The column
+     */
+
     public void addWidget( LuteceUser user, int nIdWidget, int nTab, int nColumn )
     {
         PageConfig pageConfig = getPageConfigUser( user );
@@ -95,7 +108,38 @@ public class MyPortalPageService
         widget.setWidgetId( nIdWidget );
         widget.setColumn( nColumn );
         listWidgets.add( widget );
+        updateConfig( user , pageConfig );
 
+    }
+
+    /**
+     * Remove a widget from an user's page
+     * @param user The user
+     * @param nIdWidget The widget ID
+     */
+    public void removeWidget(LuteceUser user, int nIdWidget)
+    {
+        PageConfig pageConfig = getPageConfigUser( user );
+        for( TabConfig tab : pageConfig.getTabList(  ) )
+        {
+
+            List<WidgetConfig> listWidgets = tab.getWidgetList(  );
+
+            for( int i = 0 ; i < listWidgets.size() ; i++ )
+            {
+                WidgetConfig widget = listWidgets.get(i);
+                if( widget.getWidgetId() == nIdWidget )
+                {
+                    listWidgets.remove(i);
+                    updateConfig( user , pageConfig );
+                    return;
+                }
+            }
+        }
+    }
+
+    private void updateConfig( LuteceUser user , PageConfig pageConfig )
+    {
         UserPageConfig userConf = new UserPageConfig(  );
         userConf.setUserGuid( user.getName(  ) );
         userConf.setUserPageConfig( PageConfigJsonUtil.buildJson( pageConfig ) );

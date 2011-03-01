@@ -60,6 +60,7 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_ADD_CONTENT = "skin/plugins/myportal/add_content.html";
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ID_WIDGET = "id_widget";
+    private static final String PARAMETER_WIDGET = "widget";
     private static final String PARAMETER_TAB = "tab";
     private static final String PARAMETER_COLUMN = "column";
     private static final String MARK_WIDGETS = "widgets";
@@ -104,7 +105,7 @@ public class MyPortalApp implements XPageApplication
      * @param request The HTTP request
      * @return The page
      */
-    public String getAddContent( HttpServletRequest request )
+    public String getAddWidget( HttpServletRequest request )
     {
         HashMap model = new HashMap(  );
         model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList( _plugin ) );
@@ -119,7 +120,7 @@ public class MyPortalApp implements XPageApplication
      * @param request The HTTP request
      * @return the forward url
      */
-    public String doAddContent( HttpServletRequest request )
+    public String doAddWidget( HttpServletRequest request )
     {
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
         String strColumn = request.getParameter( PARAMETER_COLUMN );
@@ -132,6 +133,23 @@ public class MyPortalApp implements XPageApplication
 
         return "../../Portal.jsp?page=myportal"; // todo : use properties conf to permit url rewriting
     }
+
+    /**
+     * Process delete - remove a widget from the page
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doRemoveWidget( HttpServletRequest request )
+    {
+        String strWidget = request.getParameter( PARAMETER_WIDGET );
+
+        int nIdWidget = Integer.parseInt( strWidget.substring( "widget-".length()) );
+
+        _pageService.removeWidget( getUser( request ), nIdWidget );
+
+        return "Widget removed"; // todo : use properties conf to permit url rewriting
+    }
+
 
     /**
      * Gets the user from the request
