@@ -41,6 +41,7 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
@@ -65,6 +66,7 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_COLUMN = "column";
     private static final String MARK_WIDGETS = "widgets";
     private static final String MARK_WIDGETS_LIST = "widgets_list";
+	private static final String MARKER_BASE_URL = "base_url";
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
     private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
 
@@ -108,6 +110,9 @@ public class MyPortalApp implements XPageApplication
     public String getAddWidget( HttpServletRequest request )
     {
         HashMap model = new HashMap(  );
+ 
+		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : "";
+        model.put( MARKER_BASE_URL, strBaseUrl );
         model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList( _plugin ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADD_CONTENT, request.getLocale(  ), model );
