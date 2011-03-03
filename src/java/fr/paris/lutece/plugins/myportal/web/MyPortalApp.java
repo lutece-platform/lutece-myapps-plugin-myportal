@@ -66,9 +66,10 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_COLUMN = "column";
     private static final String MARK_WIDGETS = "widgets";
     private static final String MARK_WIDGETS_LIST = "widgets_list";
-	private static final String MARKER_BASE_URL = "base_url";
+    private static final String MARKER_BASE_URL = "base_url";
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
     private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
+    private static final String PARAMETER_PORTAL_STATE = "portalState";
 
     // private fields
     private Plugin _plugin;
@@ -110,8 +111,8 @@ public class MyPortalApp implements XPageApplication
     public String getAddWidget( HttpServletRequest request )
     {
         HashMap model = new HashMap(  );
- 
-		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : "";
+
+        String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : "";
         model.put( MARKER_BASE_URL, strBaseUrl );
         model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList( _plugin ) );
 
@@ -148,13 +149,26 @@ public class MyPortalApp implements XPageApplication
     {
         String strWidget = request.getParameter( PARAMETER_WIDGET );
 
-        int nIdWidget = Integer.parseInt( strWidget.substring( "widget-".length()) );
+        int nIdWidget = Integer.parseInt( strWidget.substring( "widget-".length(  ) ) );
 
         _pageService.removeWidget( getUser( request ), nIdWidget );
 
         return "Widget removed"; // todo : use properties conf to permit url rewriting
     }
 
+    /**
+     * Process save portal state
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doSavePortalState( HttpServletRequest request )
+    {
+        String strJson = request.getParameter( PARAMETER_PORTAL_STATE );
+
+        _pageService.setPageConfigUser( getUser( request ), strJson );
+
+        return "portal state saved!"; // todo : use properties conf to permit url rewriting
+    }
 
     /**
      * Gets the user from the request

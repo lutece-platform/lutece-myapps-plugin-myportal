@@ -98,7 +98,6 @@ public class MyPortalPageService
      * @param nTab The tab
      * @param nColumn The column
      */
-
     public void addWidget( LuteceUser user, int nIdWidget, int nTab, int nColumn )
     {
         PageConfig pageConfig = getPageConfigUser( user );
@@ -108,8 +107,7 @@ public class MyPortalPageService
         widget.setWidgetId( nIdWidget );
         widget.setColumn( nColumn );
         listWidgets.add( widget );
-        updateConfig( user , pageConfig );
-
+        updateConfig( user, pageConfig );
     }
 
     /**
@@ -117,32 +115,42 @@ public class MyPortalPageService
      * @param user The user
      * @param nIdWidget The widget ID
      */
-    public void removeWidget(LuteceUser user, int nIdWidget)
+    public void removeWidget( LuteceUser user, int nIdWidget )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        for( TabConfig tab : pageConfig.getTabList(  ) )
-        {
 
+        for ( TabConfig tab : pageConfig.getTabList(  ) )
+        {
             List<WidgetConfig> listWidgets = tab.getWidgetList(  );
 
-            for( int i = 0 ; i < listWidgets.size() ; i++ )
+            for ( int i = 0; i < listWidgets.size(  ); i++ )
             {
-                WidgetConfig widget = listWidgets.get(i);
-                if( widget.getWidgetId() == nIdWidget )
+                WidgetConfig widget = listWidgets.get( i );
+
+                if ( widget.getWidgetId(  ) == nIdWidget )
                 {
-                    listWidgets.remove(i);
-                    updateConfig( user , pageConfig );
+                    listWidgets.remove( i );
+                    updateConfig( user, pageConfig );
+
                     return;
                 }
             }
         }
     }
 
-    private void updateConfig( LuteceUser user , PageConfig pageConfig )
+    private void updateConfig( LuteceUser user, PageConfig pageConfig )
     {
         UserPageConfig userConf = new UserPageConfig(  );
         userConf.setUserGuid( user.getName(  ) );
         userConf.setUserPageConfig( PageConfigJsonUtil.buildJson( pageConfig ) );
         UserPageConfigHome.update( userConf );
+    }
+
+    public void setPageConfigUser( LuteceUser usr, String strUserPageConfig )
+    {
+        UserPageConfig userPageConfig = new UserPageConfig(  );
+        userPageConfig.setUserGuid( usr.getName(  ) );
+        userPageConfig.setUserPageConfig( strUserPageConfig );
+        UserPageConfigHome.update( userPageConfig );
     }
 }
