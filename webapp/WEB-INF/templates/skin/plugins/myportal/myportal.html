@@ -1,0 +1,81 @@
+<a title="Ajouter du contenu" href="jsp/site/plugins/myportal/AddWidget.jsp" class="ceebox">
+    <img src="images/skin/plugins/myportal/add_widget.png" alt="Add content button" /> Ajouter du contenu
+</a>
+
+<br />
+
+<div id="tabs">
+    ${widgets}
+    <div style="clear:both"></div>
+</div>
+
+<script type='text/javascript' src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.swfobject.js' ></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.metadata.js'></script>
+<script type='text/javascript' src='js/plugins/myportal/jquery.color.js'></script>
+<script type='text/javascript' src="js/plugins/myportal/jquery.ceebox-min.js"></script>
+
+<script>
+    $(function() {
+	$( "#tabs" ).tabs();
+
+        $( ".myportal-column" ).sortable({
+            connectWith: ".myportal-column"
+        });
+
+        $( ".myportal-portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+        .find( ".myportal-portlet-header" )
+        .addClass( "ui-widget-header ui-corner-all" )
+        .prepend( "<span class='ui-icon ui-icon-circle-triangle-n icon-collapse'></span>")
+        .prepend( "<span class='ui-icon ui-icon-circle-close icon-close'></span>")
+        .end()
+        .find( ".myportal-portlet-content" );
+
+        $( ".myportal-portlet-fixed" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+        .find( ".myportal-portlet-header" )
+        .addClass( "ui-widget-header ui-corner-all" )
+        .end()
+        .find( ".myportal-portlet-content" );
+
+        $( ".myportal-portlet-fixed" ).sortable({ disabled: true });
+
+        $( ".myportal-portlet-header .icon-collapse" ).click(function() {
+            $( this ).toggleClass( "ui-icon-circle-triangle-n" ).toggleClass( "ui-icon-circle-triangle-s" );
+            $( this ).parents( ".myportal-portlet:first" ).find( ".myportal-portlet-content" ).toggle();
+        });
+
+        $( ".myportal-portlet-header .icon-close" ).click(function() {
+             var id = $( this ).parents( ".myportal-portlet:first" ).attr('id');
+             $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoRemoveWidget.jsp", data: "widget=" + id });
+             $( this ).parents( ".myportal-portlet:first" ).hide();
+        });
+
+        $( ".myportal-column" ).disableSelection();
+
+        // Ceebox init
+        jQuery(document).ready(function(){
+                $(".ceebox").ceebox({titles:false, borderColor:'#dcdcdc',boxColor:"#fff"});
+        });
+
+    });
+    
+    
+    /**
+     * Save myportal state on every drap&drop
+     */
+    function saveCurrentConf() {
+		var strJson = '{"page":  { "name": "Ma page", "tabs":[{ "name": "Tab 1" , "widgets":[';
+    	$(".myportal-column, .myportal-column-fixed").each(function(columnPos) {
+    		columnPos++;
+	    	$(this).children(".myportal-portlet, .myportal-portlet-fixed").each(function(portletPos) {
+	    		var id = $(this).attr("id");
+	    		id = id.substring(7, id.length);
+	    		strJson += '{"id":'+id+', "state":0, "column":'+columnPos+'},';
+	    	});
+    	});
+    	strJson += ' ] }] }}';
+        $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoSavePortalState.jsp", data: "portalState=" + strJson });
+    }
+    $( "#tabs" ).bind( "sortstop", saveCurrentConf);
+</script>
+
