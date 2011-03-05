@@ -1,6 +1,9 @@
 <a title="Ajouter du contenu" href="jsp/site/plugins/myportal/AddWidget.jsp" class="ceebox">
     <img src="images/skin/plugins/myportal/add_widget.png" alt="Add content button" /> Ajouter du contenu
 </a>
+<a href="jsp/site/Portal.jsp?page=myportal" id="addTab">
+    <img src="images/skin/plugins/myportal/add_widget.png" alt="" /> Ajouter un onglet
+</a>
 
 <br />
 
@@ -63,19 +66,35 @@
     /**
      * Save myportal state on every drap&drop
      */
-    function saveCurrentConf() {
-		var strJson = '{"page":  { "name": "Ma page", "tabs":[{ "name": "Tab 1" , "widgets":[';
-    	$(".myportal-column, .myportal-column-fixed").each(function(columnPos) {
-    		columnPos++;
-	    	$(this).children(".myportal-portlet, .myportal-portlet-fixed").each(function(portletPos) {
-	    		var id = $(this).attr("id");
-	    		id = id.substring(7, id.length);
-	    		strJson += '{"id":'+id+', "state":0, "column":'+columnPos+'},';
+	function saveCurrentConfPlusTab( tabNameToAdd ) {
+		var strJson = '{"page":{"name":"Ma page","tabs":[';
+    	$( "#tabs>ul>li" ).each( function( tabIndex ) {
+    		var tabId = $( this ).children("a").attr( "href" );
+    		var tabName = $( this ).children( "a" ).html(  );
+    		strJson += '{"name": "' + tabName + '","widgets":[';
+        	$( tabId ).children( ".myportal-column, .myportal-column-fixed" ).each( function( columnPos ) {
+	    		columnPos++;
+		    	$( this ).children( ".myportal-portlet, .myportal-portlet-fixed").each( function( portletPos ) {
+		    		strJson += '{"id":' + $(this).attr("id").substring(7) + ', "state":0,"column":' + columnPos + '},';
+		    	});
 	    	});
+    		strJson += ']},';
     	});
-    	strJson += ' ] }] }}';
-        $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoSavePortalState.jsp", data: "portalState=" + strJson });
+    	var boolAsync = true;
+    	if( tabNameToAdd != null ) {
+    		strJson +=  '{"name":"' + tabNameToAdd + '", "widgets":[]}';
+    		boolAsync = false; //need to freeze the page to avoid the refresh to be done before Ajax call
+    	}
+    	strJson += ']}}';
+        $.ajax({ type: "POST", async:boolAsync, url: "jsp/site/plugins/myportal/DoSavePortalState.jsp", data: "portalState=" + strJson });
     }
-    $( "#tabs" ).bind( "sortstop", saveCurrentConf);
+    
+    $( "#tabs" ).bind( "sortstop", function(  ) {
+		saveCurrentConfPlusTab( null );
+    });
+	
+    $( "#addTab" ).click( function(  ) {
+    	saveCurrentConfPlusTab( "Nouvel onglet" );
+    });
 </script>
 

@@ -16,12 +16,21 @@
     <body>
         <form action="jsp/site/plugins/myportal/DoAddWidget.jsp" method="post">
             <ul>
-
                 <#list widgets_list as widget>
                 <li style="list-style-type: none">
                     <input type="radio" name="id_widget" value="${widget.idWidget}">
                     <img src="${widget.iconUrl}" alt="widget icon"/>
                     <b>${widget.name}</b> [ ${widget.category} ] : ${widget.description}
+                </li>
+                </#list>
+            </ul>
+            
+            Onglet :
+            <ul>
+                <#list tabs_list as tab>
+                <li style="list-style-type: none">
+                    <input type="radio" name="id_tab" value="${tab.name}">
+                    <b>${tab.name}</b>
                 </li>
                 </#list>
             </ul>

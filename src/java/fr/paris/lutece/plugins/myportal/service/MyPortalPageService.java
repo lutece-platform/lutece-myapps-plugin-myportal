@@ -95,13 +95,20 @@ public class MyPortalPageService
      * Add a widget to a page of an user
      * @param user The user
      * @param nIdWidget The widget ID
-     * @param nTab The tab
+     * @param strIdTab The tab
      * @param nColumn The column
      */
-    public void addWidget( LuteceUser user, int nIdWidget, int nTab, int nColumn )
+    public void addWidget( LuteceUser user, int nIdWidget, String strIdTab, int nColumn )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        TabConfig tab = pageConfig.getTabList(  ).get( nTab - 1 );
+        TabConfig tab = null;
+        for(TabConfig tabConfig : pageConfig.getTabList(  ))
+        {
+        	if( tabConfig.getName().compareTo(strIdTab) == 0 )
+        	{
+        		tab = tabConfig;
+        	}
+        }
         List<WidgetConfig> listWidgets = tab.getWidgetList(  );
         WidgetConfig widget = new WidgetConfig(  );
         widget.setWidgetId( nIdWidget );
@@ -153,4 +160,10 @@ public class MyPortalPageService
         userPageConfig.setUserPageConfig( strUserPageConfig );
         UserPageConfigHome.update( userPageConfig );
     }
+
+	public List<TabConfig> getTabList(LuteceUser user) 
+	{
+        PageConfig pageConfig = getPageConfigUser( user );
+        return pageConfig.getTabList(  );
+	}
 }

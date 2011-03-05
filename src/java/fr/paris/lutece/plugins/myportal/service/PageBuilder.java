@@ -81,7 +81,7 @@ public class PageBuilder implements IPageBuilder
             StringBuilder sbCol1 = new StringBuilder( BEGIN_DIV_COLUMN );
             StringBuilder sbCol2 = new StringBuilder( BEGIN_DIV_COLUMN );
             StringBuilder sbCol3 = new StringBuilder( BEGIN_DIV_COLUMN_FIXED );
-            sb.append( "\n<div id=\"tab-" );
+            sb.append( "\n<div id=\"tabs-" );
             sb.append( nTab );
             sb.append( "\" >\n" );
 

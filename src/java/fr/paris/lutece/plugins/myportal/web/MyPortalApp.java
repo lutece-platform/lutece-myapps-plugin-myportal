@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.myportal.web;
 
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
+import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
@@ -48,6 +49,7 @@ import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,11 +63,13 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_ADD_CONTENT = "skin/plugins/myportal/add_content.html";
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ID_WIDGET = "id_widget";
+    private static final String PARAMETER_ID_TAB = "id_tab";
     private static final String PARAMETER_WIDGET = "widget";
     private static final String PARAMETER_TAB = "tab";
     private static final String PARAMETER_COLUMN = "column";
     private static final String MARK_WIDGETS = "widgets";
     private static final String MARK_WIDGETS_LIST = "widgets_list";
+    private static final String MARKER_LIST_TAB = "tabs_list";
     private static final String MARKER_BASE_URL = "base_url";
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
     private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
@@ -110,11 +114,14 @@ public class MyPortalApp implements XPageApplication
      */
     public String getAddWidget( HttpServletRequest request )
     {
+    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+
         HashMap model = new HashMap(  );
 
         String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : "";
         model.put( MARKER_BASE_URL, strBaseUrl );
         model.put( MARK_WIDGETS_LIST, WidgetHome.getWidgetsList( _plugin ) );
+        model.put( MARKER_LIST_TAB, listTabs );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADD_CONTENT, request.getLocale(  ), model );
 
@@ -128,14 +135,14 @@ public class MyPortalApp implements XPageApplication
      */
     public String doAddWidget( HttpServletRequest request )
     {
+        String strIdTab = request.getParameter( PARAMETER_ID_TAB );
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
         String strColumn = request.getParameter( PARAMETER_COLUMN );
 
         int nIdWidget = Integer.parseInt( strIdWidget );
         int nColumn = Integer.parseInt( strColumn );
-        int nTab = 1;
 
-        _pageService.addWidget( getUser( request ), nIdWidget, nTab, nColumn );
+        _pageService.addWidget( getUser( request ), nIdWidget, strIdTab, nColumn );
 
         return "../../Portal.jsp?page=myportal"; // todo : use properties conf to permit url rewriting
     }
