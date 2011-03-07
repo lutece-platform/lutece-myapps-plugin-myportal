@@ -1,15 +1,21 @@
 <a title="Ajouter du contenu" href="jsp/site/plugins/myportal/AddWidget.jsp" class="ceebox">
     <img src="images/skin/plugins/myportal/add_widget.png" alt="Add content button" /> Ajouter du contenu
 </a>
-<a href="jsp/site/Portal.jsp?page=myportal" id="addTab">
+<span id="addTab">
     <img src="images/skin/plugins/myportal/add_widget.png" alt="" /> Ajouter un onglet
-</a>
+</span>
+<a href="jsp/site/Portal.jsp?page=myportal" id="addTabValid"></a>
 
 <br />
 
 <div id="tabs">
     ${widgets}
     <div style="clear:both"></div>
+</div>
+<div id="dialogCreateTab" title="Créer un onglet">
+	<form name="createtab">
+		<input type="text" name="tabname" value="" />
+	</form>
 </div>
 
 <script type='text/javascript' src="js/plugins/myportal/jquery-ui-1.8.10.custom.min.js"></script>
@@ -20,7 +26,7 @@
 
 <script>
     $(function() {
-	$( "#tabs" ).tabs();
+        $( "#tabs" ).tabs().find(">.ui-tabs-nav").sortable({ axis: "x", items: "li:gt(0)" });;
 
         $( ".myportal-column" ).sortable({
             connectWith: ".myportal-column"
@@ -61,8 +67,21 @@
         });
 
     });
-    
-    
+
+    /**
+     * dialog box to create a tab
+     */
+     $( "#dialogCreateTab" ).dialog({
+ 	    autoOpen: false,
+ 	    modal: true,
+ 	    buttons: {
+ 	       "Enregistrer": function() {
+ 	    	  saveCurrentConfPlusTab( document.forms.createtab.tabname.value );
+ 	    	  location.reload();
+ 	       }
+ 	    }
+     });
+     
     /**
      * Save myportal state on every drap&drop
      */
@@ -92,9 +111,8 @@
     $( "#tabs" ).bind( "sortstop", function(  ) {
 		saveCurrentConfPlusTab( null );
     });
-	
     $( "#addTab" ).click( function(  ) {
-    	saveCurrentConfPlusTab( "Nouvel onglet" );
+    	$( "#dialogCreateTab" ).dialog( "open" );
     });
 </script>
 
