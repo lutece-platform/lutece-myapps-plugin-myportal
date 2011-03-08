@@ -33,6 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.myportal.business.Widget;
@@ -135,5 +138,26 @@ public class WidgetService extends AbstractCacheableService
     	}
     	
     	return bIsCorrect;
+    }
+    
+    /**
+     * Get the list of widgets given an id category
+     * @param nCategoryId the id category
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    public List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
+    {
+    	return WidgetHome.getWidgetsByCategoryId( nCategoryId, plugin );
+    }
+    
+    /**
+     * Get the list of widgets
+     * @param plugin {@link Plugin}
+     * @return a collection of {@link Widget}
+     */
+    public Collection<Widget> getWidgetsList( Plugin plugin )
+    {
+    	return WidgetHome.getWidgetsList( plugin );
     }
 }

@@ -130,4 +130,13 @@ public final class CategoryHome
 
         return list;
     }
+    
+    /**
+     * Find the first category
+     * @return a {@link Category}
+     */
+    public static Category findFirstCategory(  )
+    {
+    	return _dao.selectFirstCategory( _plugin );
+    }
 }

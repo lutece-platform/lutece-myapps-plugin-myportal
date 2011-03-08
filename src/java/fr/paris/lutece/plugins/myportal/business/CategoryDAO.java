@@ -52,7 +52,8 @@ public final class CategoryDAO implements ICategoryDAO
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_category WHERE id_category = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE myportal_category SET id_category = ?, id_parent = ?, name = ?, description = ? WHERE id_category = ?";
     private static final String SQL_QUERY_SELECTALL = "SELECT id_category, id_parent, name, description FROM myportal_category";
-
+    private static final String SQL_QUERY_SELECT_FIRST_CATEGORY = "SELECT id_category, id_parent, name, description FROM myportal_category ORDER BY id_category ASC LIMIT 1";
+    
     /**
      * Generates a new primary key
      * @param plugin The Plugin
@@ -184,5 +185,30 @@ public final class CategoryDAO implements ICategoryDAO
         daoUtil.free(  );
 
         return categoryList;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Category selectFirstCategory( Plugin plugin )
+    {
+    	DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_FIRST_CATEGORY, plugin );
+        daoUtil.executeQuery(  );
+
+        Category category = null;
+
+        if ( daoUtil.next(  ) )
+        {
+            category = new Category(  );
+
+            category.setIdCategory( daoUtil.getInt( 1 ) );
+            category.setIdParent( daoUtil.getInt( 2 ) );
+            category.setName( daoUtil.getString( 3 ) );
+            category.setDescription( daoUtil.getString( 4 ) );
+        }
+
+        daoUtil.free(  );
+
+        return category;
     }
 }

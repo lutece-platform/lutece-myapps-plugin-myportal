@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.myportal.business;
 
 import java.util.Collection;
+import java.util.List;
 
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -91,4 +92,12 @@ public interface IWidgetDAO
      * @return an {@link ImageResource}
      */
     ImageResource getIconResource( int nWidgetId, Plugin plugin );
+    
+    /**
+     * Get the list of widgets given an ID category
+     * @param nCategoryId the id category
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin );
 }

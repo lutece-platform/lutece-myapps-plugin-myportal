@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.myportal.business;
 
 import java.util.Collection;
+import java.util.List;
 
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -125,5 +126,16 @@ public final class WidgetHome
     public static ImageResource getIconResource( int nWidgetId, Plugin plugin )
     {
     	return _dao.getIconResource( nWidgetId, plugin );
+    }
+    
+    /**
+     * Get the list of widgets given an ID category
+     * @param nCategoryId the id category
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    public static List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
+    {
+    	return _dao.getWidgetsByCategoryId( nCategoryId, plugin );
     }
 }

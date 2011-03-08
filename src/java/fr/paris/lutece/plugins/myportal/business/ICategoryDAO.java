@@ -81,4 +81,11 @@ public interface ICategoryDAO
     * @return The collection which contains the data of all the category objects
     */
     Collection<Category> selectCategorysList( Plugin plugin );
+    
+    /**
+     * Select the first category
+     * @param plugin {@link Plugin}
+     * @return a {@link Category
+     */
+    Category selectFirstCategory( Plugin plugin );
 }

@@ -33,14 +33,15 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -57,6 +58,9 @@ public final class WidgetDAO implements IWidgetDAO
     private static final String SQL_QUERY_UPDATE_WITHOUT_ICON = "UPDATE myportal_widget SET id_widget = ?, name = ?, description = ?, id_category = ?, widget_type = ?, config_data = ?, id_style = ?, status = ? WHERE id_widget = ? ";
     private static final String SQL_QUERY_SELECTALL = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class FROM myportal_widget a, myportal_category b, myportal_widget_style c WHERE a.id_category = b.id_category AND a.id_style = c.id_style";
     private static final String SQL_QUERY_SELECT_RESOURCE_IMAGE = " SELECT icon_content, icon_mime_type FROM myportal_widget WHERE id_widget = ? ";
+    private static final String SQL_QUERY_SELECT_BY_CATEGORY_ID = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class " +
+    	" FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " + 
+    	" WHERE a.id_category = ? AND a.status = ? ";
 
     /**
      * Generates a new primary key
@@ -256,5 +260,41 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.free(  );
 
         return image;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
+    {
+    	List<Widget> widgetList = new ArrayList<Widget>(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_CATEGORY_ID, plugin );
+        daoUtil.setInt( 1, nCategoryId );
+        daoUtil.setInt( 2, WidgetStatusEnum.PUBLIC.getId(  ) );
+        daoUtil.executeQuery(  );
+
+        while ( daoUtil.next(  ) )
+        {
+        	int nIndex = 1;
+            Widget widget = new Widget(  );
+
+            widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
+            widget.setName( daoUtil.getString( nIndex++ ) );
+            widget.setDescription( daoUtil.getString( nIndex++ ) );
+            widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
+            widget.setWidgetType( daoUtil.getString( nIndex++ ) );
+            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setStatus( daoUtil.getInt( nIndex++ ) );
+            widget.setCategory( daoUtil.getString( nIndex++ ) );
+            widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
+            widget.setStyle( daoUtil.getString( nIndex++ ) );
+            widget.setCssClass( daoUtil.getString( nIndex++ ) );
+            widgetList.add( widget );
+        }
+
+        daoUtil.free(  );
+
+        return widgetList;
     }
 }

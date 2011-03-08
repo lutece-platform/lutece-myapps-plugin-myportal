@@ -58,3 +58,79 @@
 
 }
 .ui-tabs .ui-tabs-panel { padding: 0; }
+
+.myportal-categories-list {
+	float: left;
+}
+
+.myportal-categories-list ul {
+	list-style-type: none;
+}
+
+.myportal-categories-list a {
+	text-decoration: none;
+	color: #000000;
+}
+
+.myportal-categories-list a.active {
+	font-weight: bold;
+}
+
+.myportal-widgets-list {
+	padding-left: 10px;
+	width: 75%;
+	float: right;
+	text-align:left;
+}
+
+.myportal-widgets-list ul {
+	list-style-type: none;
+}
+
+.myportal-widgets-list li {
+	float: left;
+	padding-right: 10px;
+	text-align: center;
+}
+
+.myportal-ceebox {
+	padding-top: 15px;
+	height: 95%;
+}
+
+/********************************
+******** Paginator
+*********************************/
+.myportal-widgets-list #lutece-paginator div{width: 100%;}
+.myportal-widgets-list #lutece-paginator p{text-align: right; color:#888888;}
+.myportal-widgets-list #lutece-paginator span {float: left;width: 50%;}
+.myportal-widgets-list #lutece-paginator ul{border:0; margin:0; padding:0;}
+.myportal-widgets-list #lutece-paginator li{ border:0; margin:0; padding:0; list-style:none; margin-right:2px;float:left;}
+.myportal-widgets-list #lutece-paginator a{ border:solid 1px #9aafe5; margin-right:2px; text-decoration: none; font-weight: normal;}
+.myportal-widgets-list #lutece-paginator .previous-off,.myportal-widgets-list #lutece-paginator .next-off{
+    border:solid 1px #DEDEDE;
+    color:#888888;
+    display:block;
+    float:left;
+    margin-right:2px;
+    padding:1px 3px;
+}
+.myportal-widgets-list #lutece-paginator .next a,.myportal-widgets-list #lutece-paginator .previous a {}
+.myportal-widgets-list #lutece-paginator .active{
+    border:solid 1px #DEDEDE;
+    background:#55B4E5;
+    color:#FFFFFF;
+    display:block;
+    float:left;
+    padding:1px 3px;
+}
+.myportal-widgets-list #lutece-paginator a:link,
+.myportal-widgets-list #lutece-paginator a:visited { color: #888888; display:block; float:left; padding:1px 3px;}
+.myportal-widgets-list #lutece-paginator a:hover{border:solid 1px #444444;}
+.myportal-widgets-list #lutece-paginator .refresh {
+    background:url(../../../images/skin/plugins/myportal/refresh.png) no-repeat;
+    border:none;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
