@@ -19,7 +19,7 @@
                 <#list widgets_list as widget>
                 <li style="list-style-type: none">
                     <input type="radio" name="id_widget" value="${widget.idWidget}">
-                    <img src="${widget.iconUrl}" alt="widget icon"/>
+                    <img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="widget icon"/>
                     <b>${widget.name}</b> [ ${widget.category} ] : ${widget.description}
                 </li>
                 </#list>

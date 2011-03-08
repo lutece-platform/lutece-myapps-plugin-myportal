@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.myportal.web;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -76,7 +77,7 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_PORTAL_STATE = "portalState";
 
     // private fields
-    private Plugin _plugin;
+    private Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
     private MyPortalPageService _pageService = new MyPortalPageService(  );
 
     /**
@@ -90,9 +91,6 @@ public class MyPortalApp implements XPageApplication
         throws SiteMessageException
     {
         XPage page = new XPage(  );
-
-        String strPluginName = request.getParameter( PARAMETER_PAGE );
-        _plugin = PluginService.getPlugin( strPluginName );
 
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );

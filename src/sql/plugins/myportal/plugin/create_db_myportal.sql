@@ -36,9 +36,11 @@ name varchar(50) NOT NULL default '',
 description varchar(50) NOT NULL default '',
 id_category int(11) NOT NULL default '0',
 widget_type varchar(50) NOT NULL default '',
-icon_url varchar(50) NOT NULL default '',
+icon_content LONG VARBINARY,
+icon_mime_type VARCHAR(255) DEFAULT NULL,
 config_data LONG VARCHAR DEFAULT NULL,
 id_style int(11) NOT NULL default '0',
+status smallint NOT NULL default '0',
 PRIMARY KEY (id_widget)
 );
 

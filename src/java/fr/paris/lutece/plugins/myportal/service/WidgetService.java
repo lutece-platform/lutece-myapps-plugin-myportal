@@ -33,9 +33,15 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.image.ImageResource;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 
 /**
@@ -45,6 +51,12 @@ public class WidgetService extends AbstractCacheableService
 {
     private static WidgetService _singleton = new WidgetService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Service";
+
+    // CONSTANTS
+	private static final String COMMA = ",";
+	
+    // PROPERTIES
+    private static final String PROPERTY_ACCEPTED_ICON_FORMATS = "myportal.acceptedIconFormats";
 
     /** Private constructor */
     private WidgetService(  )
@@ -80,10 +92,48 @@ public class WidgetService extends AbstractCacheableService
 
         if ( widget == null )
         {
-            widget = WidgetHome.findByPrimaryKey( id, null );
+        	Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
+            widget = WidgetHome.findByPrimaryKey( id, plugin );
             putInCache( strWidgetId, widget );
         }
 
         return widget;
+    }
+    
+    /**
+     * Get the image resource
+     * @param nWidgetId the id widget
+     * @param plugin {@link Plugin}
+     * @return an {@link ImageResource}
+     */
+    public ImageResource getIconResource( int nWidgetId, Plugin plugin )
+    {
+    	return WidgetHome.getIconResource( nWidgetId, plugin );
+    }
+    
+    /**
+     * Check if the mime type is correct or not (list of correct mime types on
+     * the <b>myportal.properties</b>.
+     * @param strMimeType the mime type to check
+     * @return true if it is correct, false otherwise
+     */
+    public boolean isIconMimeTypeCorrect( String strMimeType )
+    {
+    	boolean bIsCorrect = false;
+    	String strAcceptedFormats = AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS );
+    	if ( StringUtils.isNotBlank( strAcceptedFormats ) )
+    	{
+    		String[] listAcceptedFormats = strAcceptedFormats.split( COMMA );
+    		for ( String strFormat : listAcceptedFormats )
+    		{
+    			if ( strFormat.equals( strMimeType ) )
+        		{
+        			bIsCorrect = true;
+        			break;
+        		}
+    		}
+    	}
+    	
+    	return bIsCorrect;
     }
 }

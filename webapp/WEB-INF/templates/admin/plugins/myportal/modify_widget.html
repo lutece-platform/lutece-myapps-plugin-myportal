@@ -1,57 +1,68 @@
-
 <div class="content-box">
-
-    <form method="post"  name="modify_widget" action="jsp/admin/plugins/myportal/DoModifyWidget.jsp">
-        <h2>#i18n{myportal.modify_widget.tableLabel}</h2>
-
-
+	<h2>#i18n{myportal.modify_widget.tableLabel}</h2>
+    <form method="post" enctype="multipart/form-data" name="modify_widget" action="jsp/admin/plugins/myportal/DoModifyWidget.jsp">
         <p>
-            <input type="hidden" id="id_widget" name="id_widget" value="${widget.idWidget}"/>
-
-        <div>
             <label for="widget_name" >#i18n{myportal.modify_widget.labelName} * :</label>
             <input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" value="${widget.name}" tabindex="1" />
-        </div>
-
-        <div>
+        </p>
+        <p>
             <label for="widget_description" >#i18n{myportal.modify_widget.labelDescription} * :</label>
             <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" value="${widget.description}" tabindex="1" />
-        </div>
-
-        <div>
+        </p>
+        <p>
             <label for="id_category" >#i18n{myportal.modify_widget.labelId_category} :</label>
             <@combo name="id_category" default_value="${widget.idCategory}" items=categories_list />
-        </div>
-
-        <div>
+        </p>
+        <p>
             <label for="widget_type" >#i18n{myportal.modify_widget.labelWidget_type} :</label>
             <@combo name="widget_type" default_value="${widget.widgetType}" items=widget_types_list />
-        </div>
-
-        <div>
+        </p>
+        <p>
             <label for="id_style" >#i18n{myportal.modify_widget.labelStyle} :</label>
             <@combo name="id_style" default_value="${widget.idStyle}" items=widget_styles_list />
-        </div>
-
-        <div>
-            <label for="widget_icon_url" >#i18n{myportal.modify_widget.labelIcon_url} * :</label>
-            <input type="text" id="widget_icon_url" name="widget_icon_url" size="60" maxlength="50" value="${widget.iconUrl}" tabindex="1" />
-        </div>
-
-        <div>
+        </p>
+        <p>
+            <label for="widget_icon" >#i18n{myportal.modify_widget.labelIcon} * :</label>
+            <#if widget.hasIcon(  )>
+				<input name="update_file" type="checkbox" class="checkbox" />
+			<#else>
+				<input type="hidden" name="update_file" value="1" />
+			</#if>
+			<input type="file" name="widget_icon" id="widget_icon" size="60" />
+			<#if widget.hasIcon(  )>
+				<br />
+				<label>&nbsp;</label>
+				<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" height="30" />
+			</#if>
+        </p>
+        <p>
             <label for="widget_config_data" >#i18n{myportal.modify_widget.labelConfigData} :</label>
             <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data"  tabindex="9" >${widget.configData}</textarea>
-        </div>
+        </p>
+        <p>
+        	<label for="widget_status" >#i18n{myportal.create_widget.labelStatus} :</label>
+        	<select name="widget_status">
+        		<option value="${status_draft}" 
+        			<#if widget.status == status_draft>
+        				selected="selected"
+        			</#if>
+        		> #i18n{myportal.create_widget.labelStatusDraft}</option>
+        		<option value="${status_mandatory}" 
+        			<#if widget.status == status_mandatory>
+        				selected="selected"
+        			</#if>
+        		> #i18n{myportal.create_widget.labelStatusMandatory}</option>
+        		<option value="${status_public}" 
+        			<#if widget.status == status_public>
+        				selected="selected"
+        			</#if>
+        		> #i18n{myportal.create_widget.labelStatusPublic}</option>
+        	</select>
         </p>
         <p>   
             <input type="submit" value="#i18n{myportal.modify_widget.buttonModifyWidget}" class="button" tabindex="3" />
             <input class="button" type="button" onclick="javascript:history.go(-1)" value="Cancel" />	
+            <input type="hidden" id="id_widget" name="id_widget" value="${widget.idWidget}"/>
         </p>
-
     </form>
-
-
-
 </div>
-
-

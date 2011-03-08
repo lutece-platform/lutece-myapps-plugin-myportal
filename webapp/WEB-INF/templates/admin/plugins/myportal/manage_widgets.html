@@ -1,15 +1,20 @@
-
+<div id="content-box-actions">
+	<form method="post"  action="jsp/admin/plugins/myportal/CreateWidget.jsp">
+        <input type="submit" value="#i18n{myportal.manage_widgets.buttonAddWidget}" class="button bt-toolbar" />
+    </form>
+</div>
 <div class="content-box" >
-    <h2>#i18n{myportal.manage_widget.tableLabel}</h2>    
+    <h2>#i18n{myportal.manage_widgets.tableLabel}</h2>
+    <@paginationAdmin paginator=paginator combo=1 />
     <table>
         <tr>
-        <th>#i18n{myportal.manage_widget.columnName}</th>
-        <th>#i18n{myportal.manage_widget.columnIcon_url}</th>
-        <th>#i18n{myportal.manage_widget.columnDescription}</th>
-        <th>#i18n{myportal.manage_widget.columnId_category}</th>
-        <th>#i18n{myportal.manage_widget.columnWidget_type}</th>
-        <th>#i18n{myportal.manage_widget.columnStyle}</th>
-        <th>#i18n{myportal.manage_widget.columnAction}</th>
+        <th>#i18n{myportal.manage_widgets.columnName}</th>
+        <th>#i18n{myportal.manage_widgets.columnIcon_url}</th>
+        <th>#i18n{myportal.manage_widgets.columnDescription}</th>
+        <th>#i18n{myportal.manage_widgets.columnId_category}</th>
+        <th>#i18n{myportal.manage_widgets.columnWidget_type}</th>
+        <th>#i18n{myportal.manage_widgets.columnStyle}</th>
+        <th>#i18n{myportal.manage_widgets.columnAction}</th>
         </tr>
         <#list widget_list as widget >
         <tr>
@@ -17,7 +22,7 @@
                 ${widget.name}
             </a>
         </td>
-        <td><img src="${widget.iconUrl}" alt="widget icon" align="center" /></td>
+        <td><img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="widget icon" height="30px"/></td>
         <td>${widget.description}</td>
         <td>${widget.category}</td>
         <td>${widget.widgetType}</td>
@@ -30,14 +35,5 @@
         </tr>
         </#list>
     </table>
-
-    <form method="post"  action="jsp/admin/plugins/myportal/CreateWidget.jsp">
-        <input type="submit" value="#i18n{myportal.manage_widget.buttonAddWidget}" class="button" />
-    </form>
-
+    <@paginationAdmin paginator=paginator />
 </div>
-
-
-
-
-

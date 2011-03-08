@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * This is the business class for the object Widget
@@ -48,9 +50,11 @@ public class Widget
     private String _strStyle;
     private int _nIdStyle;
     private String _strWidgetType;
-    private String _strIconUrl;
+    private String _strIconMimeType;
+    private byte[] _iconContent;
     private String _strConfigData;
     private String _strCssClass;
+    private int _nStatus;
 
     /**
      * Returns the IdWidget
@@ -197,24 +201,6 @@ public class Widget
     }
 
     /**
-     * Returns the IconUrl
-     * @return The IconUrl
-     */
-    public String getIconUrl(  )
-    {
-        return _strIconUrl;
-    }
-
-    /**
-     * Sets the IconUrl
-     * @param strIconUrl The IconUrl
-     */
-    public void setIconUrl( String strIconUrl )
-    {
-        _strIconUrl = strIconUrl;
-    }
-
-    /**
      * Returns the ConfigData
      * @return The ConfigData
      */
@@ -249,4 +235,67 @@ public class Widget
     {
         _strCssClass = strCssClass;
     }
+
+    /**
+     * Set the status of the widget
+     * @param nStatus the status
+     */
+	public void setStatus( int nStatus )
+	{
+		_nStatus = nStatus;
+	}
+
+	/**
+	 * Get the status of the widget
+	 * @return the status of the widget
+	 */
+	public int getStatus(  )
+	{
+		return _nStatus;
+	}
+
+	/**
+	 * Set the icon mime type
+	 * @param strIconMimeType the icon mime type
+	 */
+	public void setIconMimeType( String strIconMimeType )
+	{
+		_strIconMimeType = strIconMimeType;
+	}
+
+	/**
+	 * Get the icon mime type
+	 * @return the icon mime type
+	 */
+	public String getIconMimeType(  )
+	{
+		return _strIconMimeType;
+	}
+
+	/**
+	 * Set the icon content
+	 * @param iconContent the icon content
+	 */
+	public void setIconContent( byte[] iconContent )
+	{
+		_iconContent = iconContent;
+	}
+
+	/**
+	 * Get the icon content
+	 * @return the icon content
+	 */
+	public byte[] getIconContent(  )
+	{
+		return _iconContent;
+	}
+	
+	/**
+	 * Check if the widget has an icon or not
+	 * @return true if it has an icon, false otherwise
+	 */
+	public boolean hasIcon(  )
+	{
+		return StringUtils.isNotBlank( _strIconMimeType );
+	}
 }

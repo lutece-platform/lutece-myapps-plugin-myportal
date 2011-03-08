@@ -33,6 +33,13 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.CategoryHome;
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -41,16 +48,10 @@ import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.admin.PluginAdminPageJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
+import fr.paris.lutece.portal.web.util.LocalizedPaginator;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -80,7 +81,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     private static final String TEMPLATE_MODIFY_CATEGORY = "/admin/plugins/myportal/modify_category.html";
 
     // Properties for page titles
-    private static final String PROPERTY_PAGE_TITLE_MANAGE_CATEGORYS = "myportal.manage_categorys.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MANAGE_CATEGORYS = "myportal.manage_category.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY_CATEGORY = "myportal.modify_category.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_CREATE_CATEGORY = "myportal.create_category.pageTitle";
 
@@ -124,8 +125,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
         UrlItem url = new UrlItem( JSP_MANAGE_CATEGORYS );
         String strUrl = url.getUrl(  );
         Collection<Category> listCATEGORYs = CategoryHome.getCategoriesList(  );
-        Paginator paginator = new Paginator( (List<Category>) listCATEGORYs, _nItemsPerPage, strUrl,
-                PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCATEGORYs, _nItemsPerPage, strUrl,
+                PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
 

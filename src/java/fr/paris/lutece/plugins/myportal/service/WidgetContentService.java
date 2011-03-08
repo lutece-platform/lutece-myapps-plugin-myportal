@@ -38,6 +38,8 @@ import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
 
@@ -84,7 +86,8 @@ public class WidgetContentService extends AbstractCacheableService
 
         if ( strWidget == null )
         {
-            Widget widget = WidgetHome.findByPrimaryKey( id, null );
+        	Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
+            Widget widget = WidgetHome.findByPrimaryKey( id, plugin );
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
             strWidget = handler.renderWidget( widget.getConfigData(  ), user );
