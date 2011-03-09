@@ -21,6 +21,7 @@ function addImgLoading( idContentToAdd, idContentImg ) {
  * @return void
  */
 function reloadContent( link, url, idLinks, idContentToAdd, idContentImg ) {
+	$( 'input[name="search_widgets_name"]' ).attr( 'value', '' );
 	$( '#' + idLinks + ' a' ).each( function( i ) {
 		if ( $( this ).hasClass( 'active' ) ) {
 			$( this ).removeClass( 'active' );
@@ -30,8 +31,40 @@ function reloadContent( link, url, idLinks, idContentToAdd, idContentImg ) {
 	$( '#' + idContentImg ).remove(  );
 	addImgLoading( idContentToAdd, idContentImg );
 	$.ajax( { 
+		type: 'POST',
 		url : url,
 		cache : false,
+		error : function( msg ) {
+			$( '#' + idContentImg ).remove(  );
+		},
+		success : function( data ) {
+			$( '#' + idContentImg ).remove(  );
+			$( '#' + idContentToAdd ).append( data );
+		}
+	} );
+}
+
+/**
+ * Do search widgets
+ * @param link the link where the action is taken
+ * @param url the url of the ajax
+ * @param idLinks ID of the div of the links
+ * @param idContentToAdd ID of the content to add the image
+ * @param idContentImg ID of the div of the image
+ * @return void
+ */
+function doSearchWidgets( url, idLinks, idContentToAdd, idContentImg ) {
+	$( '#' + idLinks + ' a' ).each( function( i ) {
+		if ( $( this ).hasClass( 'active' ) ) {
+			$( this ).removeClass( 'active' );
+		}
+	} );
+	$( '#' + idContentImg ).remove(  );
+	addImgLoading( idContentToAdd, idContentImg );
+	$.ajax( { 
+		type: 'POST',
+		url : url,
+		data : $( 'input[name="search_widgets_name"]' ),
 		error : function( msg ) {
 			$( '#' + idContentImg ).remove(  );
 		},

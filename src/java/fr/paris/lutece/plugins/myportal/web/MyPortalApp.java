@@ -77,6 +77,7 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_MYPORTAL_NAVIGATION = "skin/plugins/myportal/myportal_navigation.html";
     private static final String TEMPLATE_BROWSE_ESSENTIAL_WIDGETS = "skin/plugins/myportal/browse_essential_widgets.html";
     private static final String TEMPLATE_BROWSE_NEW_WIDGETS = "skin/plugins/myportal/browse_new_widgets.html";
+    private static final String TEMPLATE_SEARCH_WIDGETS = "skin/plugins/myportal/search_widgets.html";
     
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
@@ -88,6 +89,7 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_PORTAL_STATE = "portalState";
     private static final String PARAMETER_CATEGORY_ID_CATEGORY = "category_id_category";
     private static final String PARAMETER_ACTION = "action";
+    private static final String PARAMETER_SEARCH_WIDGETS_NAME = "search_widgets_name";
     
     // MARKS
     private static final String MARK_WIDGETS = "widgets";
@@ -102,6 +104,7 @@ public class MyPortalApp implements XPageApplication
     private static final String MARK_MYPORTAL_NAVIGATION_CONTENT = "myportal_navigation_content";
     private static final String MARK_ACTION = "action";
     private static final String MARK_PAGINATOR_URL_FOR_JS = "paginator_url_for_js";
+    private static final String MARK_SEARCH_WIDGETS_NAME = "search_widgets_name";
     
     // PROPERTIES
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
@@ -113,12 +116,14 @@ public class MyPortalApp implements XPageApplication
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
     private static final String ACTION_BROWSE_ESSENTIAL_WIDGETS = "browse_essential_widgets";
     private static final String ACTION_BROWSE_NEW_WIDGETS = "browse_new_widgets";
+    private static final String ACTION_SEARCH_WIDGETS = "search_widgets";
     
     // JSP
     private static final String JSP_URL_BROWSE_CATEGORIES_WIDGETS = "jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp";
     private static final String JSP_URL_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
     private static final String JSP_URL_BROWSE_ESSENTIAL_WIDGETS = "jsp/site/plugins/myportal/BrowseEssentialWidgets.jsp";
     private static final String JSP_URL_BROWSE_NEW_WIDGETS = "jsp/site/plugins/myportal/BrowseNewWidgets.jsp";
+    private static final String JSP_URL_SEARCH_WIDGETS = "jsp/site/plugins/myportal/SearchWidgets.jsp";
     
     // private fields
     private Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
@@ -161,6 +166,11 @@ public class MyPortalApp implements XPageApplication
     	if ( StringUtils.isNotBlank( strAction ) )
     	{
     		String strNavigationContentHtml = StringUtils.EMPTY;
+    		String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
+        	if ( strName == null )
+        	{
+        		strName = StringUtils.EMPTY;
+        	}
     		Map<String, Object> model = new HashMap<String, Object>(  );
     		if ( ACTION_BROWSE_CATEGORIES.equals( strAction ) )
     		{
@@ -174,11 +184,17 @@ public class MyPortalApp implements XPageApplication
     		{
     			strNavigationContentHtml = getBrowseNewWidgets( request );
     		}
+    		else if ( ACTION_SEARCH_WIDGETS.equals( strAction ) )
+    		{
+    			strNavigationContentHtml = getSearchWidgets( request );
+    		}
     		
     		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
     		model.put( MARK_BASE_URL, strBaseUrl );
     		model.put( MARK_ACTION, strAction );
     		model.put( MARK_MYPORTAL_NAVIGATION_CONTENT, strNavigationContentHtml );
+    		model.put( MARK_SEARCH_WIDGETS_NAME, strName );
+    		
     		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_NAVIGATION, request.getLocale(  ), model );
     		strHtml = template.getHtml(  );
     	}
@@ -410,6 +426,47 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_PAGINATOR_URL_FOR_JS, JSP_URL_BROWSE_NEW_WIDGETS );
         
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ), model );
+        
+    	return template.getHtml(  );
+    }
+    
+    /**
+     * Get the new widgets list html
+     * @param request {@link HttpServletRequest}
+     * @return the html code
+     */
+    public String getSearchWidgets( HttpServletRequest request )
+    {
+    	String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
+    	if ( strName == null )
+    	{
+    		strName = StringUtils.EMPTY;
+    	}
+    	List<Widget> listWidgets = WidgetService.instance(  ).getWidgetsByName( strName, _plugin );
+    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+    	String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
+    	
+    	UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+    	url.addParameter( PARAMETER_ACTION, ACTION_SEARCH_WIDGETS );
+    	url.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+    	UrlItem urlForJs = new UrlItem( JSP_URL_SEARCH_WIDGETS );
+    	urlForJs.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+    	
+    	// Paginator
+    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
+		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
+		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
+				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+		
+		Map<String, Object> model = new HashMap<String, Object>(  );
+        model.put( MARK_BASE_URL, strBaseUrl );
+		model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+		model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_PAGINATOR, paginator );
+        model.put( MARK_LIST_TAB, listTabs );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
+        
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale(  ), model );
         
     	return template.getHtml(  );
     }

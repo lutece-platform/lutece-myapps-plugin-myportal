@@ -196,4 +196,19 @@ public class WidgetService extends AbstractCacheableService
     	wFilter.setIsWideSearch( false );
     	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
     }
+    
+    /**
+     * Get the list of widgets given a name
+     * @param strName the name
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    public List<Widget> getWidgetsByName( String strName, Plugin plugin )
+    {
+    	WidgetFilter wFilter = new WidgetFilter(  );
+    	wFilter.setName( strName );
+    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+    	wFilter.setIsWideSearch( false );
+    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
+    }
 }

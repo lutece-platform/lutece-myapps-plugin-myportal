@@ -17,6 +17,11 @@
     <body>
     	<div class="myportal-ceebox">
     		<div id="myportal-navigation">
+    			<form method="post" action="jsp/site/plugins/myportal/MyPortalNavigation.jsp?action=search_widgets" 
+    			onsubmit="doSearchWidgets( '${base_url}jsp/site/plugins/myportal/SearchWidgets.jsp', 'myportal-navigation', 'myportal-navigation-content', 'myportal-content' );return false;" >
+    				<input type="text" name="search_widgets_name" value="${search_widgets_name}" /> 
+    				<input type="submit" value="#i18n{myportal.myportal_navigation.labelButtonSearch}" />
+    			</form>
     			<img src="images/skin/plugins/myportal/add_widget.png" height="30px" />
     			<a href="jsp/site/plugins/myportal/MyPortalNavigation.jsp?action=browse_categories" 
     			onclick="reloadContent( this, '${base_url}jsp/site/plugins/myportal/BrowseCategories.jsp', 'myportal-navigation', 'myportal-navigation-content', 'myportal-content' );return false;" 
