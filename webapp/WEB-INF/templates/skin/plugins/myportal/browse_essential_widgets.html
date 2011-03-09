@@ -1,0 +1,26 @@
+<div id="myportal-content">
+	<#include "/skin/plugins/myportal/add_widget.html" />
+	<script type="text/javascript">
+		$( document ).ready( function(  ) {
+			$( '#lutece-paginator a' ).click(
+				function(  ) {
+					var url = buildPaginatorUrlForJs( "${paginator_url_for_js}", $( this ).attr( 'href' ) );
+					$( '#myportal-content' ).remove(  );
+					addImgLoading( 'myportal-content', 'myportal-navigation-content' );
+					$.ajax( { 
+	    				url : "${base_url}" + url,
+	    				cache : false,
+	    				error : function( msg ) {
+	    					$( '#myportal-content' ).remove(  );
+	    				},
+	    				success : function( data ) {
+	    					$( '#myportal-content' ).remove(  );
+	    					$( '#myportal-navigation-content' ).append( data );
+	    				}
+	    			} );
+	    			return false;
+				}
+			)
+		} );
+	</script>
+</div>

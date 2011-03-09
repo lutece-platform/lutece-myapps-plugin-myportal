@@ -55,6 +55,8 @@ public class Widget
     private String _strConfigData;
     private String _strCssClass;
     private int _nStatus;
+    private boolean _bIsEssential;
+    private boolean _bIsNew;
 
     /**
      * Returns the IdWidget
@@ -297,5 +299,41 @@ public class Widget
 	public boolean hasIcon(  )
 	{
 		return StringUtils.isNotBlank( _strIconMimeType );
+	}
+
+	/**
+	 * Set the widget as essential
+	 * @param bIsEssential true if it is essential, false otherwise
+	 */
+	public void setIsEssential( boolean bIsEssential )
+	{
+		_bIsEssential = bIsEssential;
+	}
+
+	/**
+	 * Check if the widget is essential
+	 * @return true if it is essential, false otherwise
+	 */
+	public boolean getIsEssential(  )
+	{
+		return _bIsEssential;
+	}
+
+	/**
+	 * Set the widget as new
+	 * @param bIsNew true if it is new, false otherwise
+	 */
+	public void setIsNew( boolean bIsNew )
+	{
+		_bIsNew = bIsNew;
+	}
+
+	/**
+	 * Check if the widget is new
+	 * @return true if it is new, false otherwise
+	 */
+	public boolean getIsNew(  )
+	{
+		return _bIsNew;
 	}
 }

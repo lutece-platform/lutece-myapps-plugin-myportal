@@ -59,6 +59,21 @@
         		> #i18n{myportal.create_widget.labelStatusPublic}</option>
         	</select>
         </p>
+        <p>
+        	<label for="is_essential">#i18n{myportal.modify_widget.labelFeature} :</label>
+        	<input type="checkbox" name="is_essential" value="1" 
+        		<#if widget.isEssential>
+        			checked="checked"
+        		</#if>
+        	/>&nbsp;#i18n{myportal.modify_widget.labelEssential}
+        	<br />
+        	<label for="is_new">&nbsp;</label>
+        	<input type="checkbox" name="is_new" value="1" 
+        		<#if widget.isNew>
+        			checked="checked"
+        		</#if>
+        	/>&nbsp;#i18n{myportal.modify_widget.labelNew}
+        </p>
         <p>   
             <input type="submit" value="#i18n{myportal.modify_widget.buttonModifyWidget}" class="button" tabindex="3" />
             <input class="button" type="button" onclick="javascript:history.go(-1)" value="Cancel" />	

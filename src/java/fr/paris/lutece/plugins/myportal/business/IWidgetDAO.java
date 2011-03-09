@@ -94,10 +94,10 @@ public interface IWidgetDAO
     ImageResource getIconResource( int nWidgetId, Plugin plugin );
     
     /**
-     * Get the list of widgets given an ID category
-     * @param nCategoryId the id category
+     * Get the list of widgets by filter
+     * @param wFilter the filter
      * @param plugin {@link Plugin}
      * @return a list of {@link Widget}
      */
-    List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin );
+    List<Widget> getWidgetsByFilter( WidgetFilter wFilter, Plugin plugin );
 }

@@ -4,7 +4,7 @@
 --
 
 DROP TABLE IF EXISTS myportal_category;
-CREATE TABLE myportal_category (		
+CREATE TABLE myportal_category (
 id_category int(11) NOT NULL default '0',
 id_parent int(11) NOT NULL default '0',
 name varchar(50) NOT NULL default '',
@@ -37,10 +37,12 @@ description varchar(50) NOT NULL default '',
 id_category int(11) NOT NULL default '0',
 widget_type varchar(50) NOT NULL default '',
 icon_content LONG VARBINARY,
-icon_mime_type VARCHAR(255) DEFAULT NULL,
-config_data LONG VARCHAR DEFAULT NULL,
+icon_mime_type VARCHAR(255) default NULL,
+config_data LONG VARCHAR default NULL,
 id_style int(11) NOT NULL default '0',
 status smallint NOT NULL default '0',
+is_essential smallint NOT NULL default '0',
+is_new smallint NOT NULL default '0',
 PRIMARY KEY (id_widget)
 );
 

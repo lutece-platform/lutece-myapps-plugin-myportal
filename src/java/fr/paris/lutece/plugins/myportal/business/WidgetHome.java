@@ -129,13 +129,13 @@ public final class WidgetHome
     }
     
     /**
-     * Get the list of widgets given an ID category
-     * @param nCategoryId the id category
+     * Get the list of widgets by filter
+     * @param wFilter the filter
      * @param plugin {@link Plugin}
      * @return a list of {@link Widget}
      */
-    public static List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
+    public static List<Widget> getWidgetsByFilter( WidgetFilter wFilter, Plugin plugin )
     {
-    	return _dao.getWidgetsByCategoryId( nCategoryId, plugin );
+    	return _dao.getWidgetsByFilter( wFilter, plugin );
     }
 }

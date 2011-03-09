@@ -50,7 +50,6 @@ import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
-import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -88,6 +87,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_PAGE_INDEX = "page_index";
     private static final String PARAMETER_WIDGET_STATUS = "widget_status";
     private static final String PARAMETER_UPDATE_FILE = "update_file";
+    private static final String PARAMETER_IS_ESSENTIAL = "is_essential";
+    private static final String PARAMETER_IS_NEW = "is_new";
 
     // templates
     private static final String TEMPLATE_MANAGE_WIDGETS = "/admin/plugins/myportal/manage_widgets.html";
@@ -211,6 +212,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         	int nIdStyle = Integer.parseInt( strIdStyle );
         	int nWidgetStatus = Integer.parseInt( strWidgetStatus );
         	String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
+        	boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
+        	boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
+        	
         	Widget widget = new Widget(  );
         	widget.setName( strWidgetName );
             widget.setDescription( strWidgetDescription );
@@ -219,6 +223,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             widget.setWidgetType( strWidgetType );
             widget.setConfigData( strConfigData );
             widget.setStatus( nWidgetStatus );
+            widget.setIsEssential( bIsEssential );
+            widget.setIsNew( bIsNew );
             
         	try
             {
@@ -355,6 +361,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             	int nWidgetStatus = Integer.parseInt( strWidgetStatus );
             	String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
             	boolean bUpdateIcon = StringUtils.isNotBlank( request.getParameter( PARAMETER_UPDATE_FILE ) );
+            	boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
+            	boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
             	
         		widget.setName( strWidgetName );
                 widget.setDescription( strWidgetDescription );
@@ -363,6 +371,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 widget.setWidgetType( strWidgetType );
                 widget.setConfigData( strConfigData );
                 widget.setStatus( nWidgetStatus );
+                widget.setIsEssential( bIsEssential );
+                widget.setIsNew( bIsNew );
                 
                 if ( bUpdateIcon )
                 {

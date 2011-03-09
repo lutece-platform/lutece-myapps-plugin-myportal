@@ -39,7 +39,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
+import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -148,7 +150,11 @@ public class WidgetService extends AbstractCacheableService
      */
     public List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
     {
-    	return WidgetHome.getWidgetsByCategoryId( nCategoryId, plugin );
+    	WidgetFilter wFilter = new WidgetFilter(  );
+    	wFilter.setIdCategory( nCategoryId );
+    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+    	wFilter.setIsWideSearch( false );
+    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
     }
     
     /**
@@ -159,5 +165,35 @@ public class WidgetService extends AbstractCacheableService
     public Collection<Widget> getWidgetsList( Plugin plugin )
     {
     	return WidgetHome.getWidgetsList( plugin );
+    }
+    
+    /**
+     * Get the list of essential widgets
+     * @param nCategoryId the id category
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    public List<Widget> getEssentialWidgets( Plugin plugin )
+    {
+    	WidgetFilter wFilter = new WidgetFilter(  );
+    	wFilter.setIsEssential( WidgetFilter.FILTER_TRUE );
+    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+    	wFilter.setIsWideSearch( false );
+    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
+    }
+    
+    /**
+     * Get the list of new widgets
+     * @param nCategoryId the id category
+     * @param plugin {@link Plugin}
+     * @return a list of {@link Widget}
+     */
+    public List<Widget> getNewWidgets( Plugin plugin )
+    {
+    	WidgetFilter wFilter = new WidgetFilter(  );
+    	wFilter.setIsNew( WidgetFilter.FILTER_TRUE );
+    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+    	wFilter.setIsWideSearch( false );
+    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
     }
 }

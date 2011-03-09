@@ -1,5 +1,5 @@
 <#if widgets_list?has_content>
-	<div class="myportal-widgets-list-content">
+	<div id="myportal-widgets-list-content">
 		<form method="post" action="jsp/site/plugins/myportal/DoAddWidget.jsp">
    			<ul>
    				<#list widgets_list as widget>
@@ -34,30 +34,8 @@
 		</form>
 		<@paginationAdmin paginator=paginator />
 	</div>
-	<script type="text/javascript">
-		$( document ).ready( function(  ) {
-			$( '#lutece-paginator a' ).click(
-				function(  ) {
-					var url = $( this ).attr( 'href' );
-					$( '.myportal-widgets-list-content' ).remove(  );
-					$.ajax( { 
-	    				url : "${base_url}" + url,
-	    				cache : false,
-	    				error : function( msg ) {
-	    					alert( '#i18n{myportal.browse_categories.messageErrorAjax}' );
-	    				},
-	    				success : function( data ) {
-	    					$( '.myportal-widgets-list-content' ).remove(  );
-	    					$( '.myportal-widgets-list' ).append( data );
-	    				}
-	    			} );
-	    			return false;
-				}
-			)
-		} );
-	</script>
 <#else>
-	<div class="myportal-widgets-list-content">
+	<div id="myportal-widgets-list-content">
 		<b>#i18n{myportal.add_widget.messageNoAvailableWidgets}</b>
 	</div>
 </#if>
