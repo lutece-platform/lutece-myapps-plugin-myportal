@@ -166,4 +166,13 @@ public class MyPortalPageService
         PageConfig pageConfig = getPageConfigUser( user );
         return pageConfig.getTabList(  );
 	}
+
+	public void addTab(LuteceUser user, String strTabName) 
+	{
+        PageConfig pageConfig = getPageConfigUser( user );
+        TabConfig tab = new TabConfig(  );
+        tab.setName(strTabName);
+        pageConfig.getTabList(  ).add( tab );
+        updateConfig( user, pageConfig );
+	}
 }

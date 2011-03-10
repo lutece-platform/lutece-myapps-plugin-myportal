@@ -127,13 +127,16 @@ public class PageConfigJsonUtil
             JSONObject jsonTab = new JSONObject(  );
             JSONArray jsonWidgets = new JSONArray(  );
 
-            for ( WidgetConfig widget : tab.getWidgetList(  ) )
+            if( tab.getWidgetList(  ) != null )
             {
-                JSONObject jsonWidget = new JSONObject(  );
-                jsonWidget.accumulate( ATTR_ID, widget.getWidgetId(  ) );
-                jsonWidget.accumulate( ATTR_STATE, widget.getWidgetState(  ) );
-                jsonWidget.accumulate( ATTR_COLUMN, widget.getColumn(  ) );
-                jsonWidgets.add( jsonWidget );
+                for ( WidgetConfig widget : tab.getWidgetList(  ) )
+                {
+                    JSONObject jsonWidget = new JSONObject(  );
+                    jsonWidget.accumulate( ATTR_ID, widget.getWidgetId(  ) );
+                    jsonWidget.accumulate( ATTR_STATE, widget.getWidgetState(  ) );
+                    jsonWidget.accumulate( ATTR_COLUMN, widget.getColumn(  ) );
+                    jsonWidgets.add( jsonWidget );
+                }
             }
 
             jsonTab.accumulate( ATTR_NAME, tab.getName(  ) );

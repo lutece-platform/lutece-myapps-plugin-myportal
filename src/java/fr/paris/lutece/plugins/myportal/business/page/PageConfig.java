@@ -75,7 +75,7 @@ public class PageConfig
      * Sets the TabList
      * @param TabList The TabList
      */
-    public void setTabList( List TabList )
+    public void setTabList( List<TabConfig> TabList )
     {
         _listTab = TabList;
     }

@@ -75,16 +75,16 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_BROWSE_CATEGORIES = "skin/plugins/myportal/browse_categories.html";
     private static final String TEMPLATE_BROWSE_CATEGORIES_WIDGETS = "skin/plugins/myportal/browse_categories_widgets.html";
     private static final String TEMPLATE_MYPORTAL_NAVIGATION = "skin/plugins/myportal/myportal_navigation.html";
+    private static final String TEMPLATE_MYPORTAL_ADD_TAB = "skin/plugins/myportal/myportal_add_tab.html";
     private static final String TEMPLATE_BROWSE_ESSENTIAL_WIDGETS = "skin/plugins/myportal/browse_essential_widgets.html";
     private static final String TEMPLATE_BROWSE_NEW_WIDGETS = "skin/plugins/myportal/browse_new_widgets.html";
     private static final String TEMPLATE_SEARCH_WIDGETS = "skin/plugins/myportal/search_widgets.html";
     
     // PARAMETERS
-    private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ID_WIDGET = "id_widget";
     private static final String PARAMETER_ID_TAB = "id_tab";
+    private static final String PARAMETER_TAB_NAME = "tab_name";
     private static final String PARAMETER_WIDGET = "widget";
-    private static final String PARAMETER_TAB = "tab";
     private static final String PARAMETER_COLUMN = "column";
     private static final String PARAMETER_PORTAL_STATE = "portalState";
     private static final String PARAMETER_CATEGORY_ID_CATEGORY = "category_id_category";
@@ -494,5 +494,33 @@ public class MyPortalApp implements XPageApplication
         }
 
         return user;
+    }
+
+    /**
+     * Get the content of the page getMyPortalAddTab
+     * @param request {@link HttpServletRequest}
+     * @return the html code
+     */
+    public String getMyPortalAddTab( HttpServletRequest request )
+    {
+		Map<String, Object> model = new HashMap<String, Object>(  );
+        
+		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
+		model.put( MARK_BASE_URL, strBaseUrl );
+		
+		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale(  ), model );
+		return template.getHtml(  );
+    }
+
+    /**
+     * Process add tab
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doAddTab( HttpServletRequest request )
+    {
+        String strTabName = request.getParameter( PARAMETER_TAB_NAME );
+        _pageService.addTab( getUser( request ), strTabName );
+        return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
 }
