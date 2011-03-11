@@ -5,7 +5,6 @@
     <bean id="myportal.widgetDAO"  class="fr.paris.lutece.plugins.myportal.business.WidgetDAO" />
     <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
     <bean id="myportal.styleDAO"  class="fr.paris.lutece.plugins.myportal.business.StyleDAO" />
-    <bean id="myportal.layoutDAO"  class="fr.paris.lutece.plugins.myportal.business.LayoutDAO" />
     <bean id="myportal.userPageConfigDAO" class="fr.paris.lutece.plugins.myportal.business.UserPageConfigDAO" />
 
     <!-- Widget handler -->

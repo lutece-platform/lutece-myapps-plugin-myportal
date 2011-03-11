@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,9 @@ import org.apache.commons.lang.StringUtils;
 
 
 /**
+ *
  * This is the business class for the object Widget
+ *
  */
 public class Widget
 {
@@ -242,98 +244,98 @@ public class Widget
      * Set the status of the widget
      * @param nStatus the status
      */
-	public void setStatus( int nStatus )
-	{
-		_nStatus = nStatus;
-	}
+    public void setStatus( int nStatus )
+    {
+        _nStatus = nStatus;
+    }
 
-	/**
-	 * Get the status of the widget
-	 * @return the status of the widget
-	 */
-	public int getStatus(  )
-	{
-		return _nStatus;
-	}
+    /**
+     * Get the status of the widget
+     * @return the status of the widget
+     */
+    public int getStatus(  )
+    {
+        return _nStatus;
+    }
 
-	/**
-	 * Set the icon mime type
-	 * @param strIconMimeType the icon mime type
-	 */
-	public void setIconMimeType( String strIconMimeType )
-	{
-		_strIconMimeType = strIconMimeType;
-	}
+    /**
+     * Set the icon mime type
+     * @param strIconMimeType the icon mime type
+     */
+    public void setIconMimeType( String strIconMimeType )
+    {
+        _strIconMimeType = strIconMimeType;
+    }
 
-	/**
-	 * Get the icon mime type
-	 * @return the icon mime type
-	 */
-	public String getIconMimeType(  )
-	{
-		return _strIconMimeType;
-	}
+    /**
+     * Get the icon mime type
+     * @return the icon mime type
+     */
+    public String getIconMimeType(  )
+    {
+        return _strIconMimeType;
+    }
 
-	/**
-	 * Set the icon content
-	 * @param iconContent the icon content
-	 */
-	public void setIconContent( byte[] iconContent )
-	{
-		_iconContent = iconContent;
-	}
+    /**
+     * Set the icon content
+     * @param iconContent the icon content
+     */
+    public void setIconContent( byte[] iconContent )
+    {
+        _iconContent = iconContent;
+    }
 
-	/**
-	 * Get the icon content
-	 * @return the icon content
-	 */
-	public byte[] getIconContent(  )
-	{
-		return _iconContent;
-	}
-	
-	/**
-	 * Check if the widget has an icon or not
-	 * @return true if it has an icon, false otherwise
-	 */
-	public boolean hasIcon(  )
-	{
-		return StringUtils.isNotBlank( _strIconMimeType );
-	}
+    /**
+     * Get the icon content
+     * @return the icon content
+     */
+    public byte[] getIconContent(  )
+    {
+        return _iconContent;
+    }
 
-	/**
-	 * Set the widget as essential
-	 * @param bIsEssential true if it is essential, false otherwise
-	 */
-	public void setIsEssential( boolean bIsEssential )
-	{
-		_bIsEssential = bIsEssential;
-	}
+    /**
+     * Check if the widget has an icon or not
+     * @return true if it has an icon, false otherwise
+     */
+    public boolean hasIcon(  )
+    {
+        return StringUtils.isNotBlank( _strIconMimeType );
+    }
 
-	/**
-	 * Check if the widget is essential
-	 * @return true if it is essential, false otherwise
-	 */
-	public boolean getIsEssential(  )
-	{
-		return _bIsEssential;
-	}
+    /**
+     * Set the widget as essential
+     * @param bIsEssential true if it is essential, false otherwise
+     */
+    public void setIsEssential( boolean bIsEssential )
+    {
+        _bIsEssential = bIsEssential;
+    }
 
-	/**
-	 * Set the widget as new
-	 * @param bIsNew true if it is new, false otherwise
-	 */
-	public void setIsNew( boolean bIsNew )
-	{
-		_bIsNew = bIsNew;
-	}
+    /**
+     * Check if the widget is essential
+     * @return true if it is essential, false otherwise
+     */
+    public boolean getIsEssential(  )
+    {
+        return _bIsEssential;
+    }
 
-	/**
-	 * Check if the widget is new
-	 * @return true if it is new, false otherwise
-	 */
-	public boolean getIsNew(  )
-	{
-		return _bIsNew;
-	}
+    /**
+     * Set the widget as new
+     * @param bIsNew true if it is new, false otherwise
+     */
+    public void setIsNew( boolean bIsNew )
+    {
+        _bIsNew = bIsNew;
+    }
+
+    /**
+     * Check if the widget is new
+     * @return true if it is new, false otherwise
+     */
+    public boolean getIsNew(  )
+    {
+        return _bIsNew;
+    }
 }

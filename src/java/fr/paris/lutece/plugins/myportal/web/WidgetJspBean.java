@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,21 +33,10 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.StringUtils;
-
-import fr.paris.lutece.plugins.myportal.business.CategoryHome;
-import fr.paris.lutece.plugins.myportal.business.StyleHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
+import fr.paris.lutece.plugins.myportal.service.CategoryService;
+import fr.paris.lutece.plugins.myportal.service.StyleService;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -63,16 +52,26 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
- * This class provides the user interface to manage  Category, Widget, features 
+ * This class provides the user interface to manage  Category, Widget, features
  * ( manage, create, modify, remove )
  */
 public class WidgetJspBean extends PluginAdminPageJspBean
-{	
+{
     // Right
     public static final String RIGHT_MANAGE_MYPORTAL_WIDGET = "MYPORTAL_WIDGET_MANAGEMENT";
-    
+
     // Parameters
     private static final String PARAMETER_ID_WIDGET = "id_widget";
     private static final String PARAMETER_WIDGET_NAME = "widget_name";
@@ -121,7 +120,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
     // Messages
     private static final String MESSAGE_CONFIRM_REMOVE_WIDGET = "myportal.message.confirmRemoveWidget";
-    private static final String MESSAGE_OBJECT_NOT_FOUND = "myportal.message.objectNotFound";
+    private static final String MESSAGE_ERROR = "myportal.message.error";
     private static final String MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT = "myportal.message.errorIconFormatNotCorrect";
 
     //Variables
@@ -146,9 +145,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         UrlItem url = new UrlItem( JSP_MANAGE_WIDGETS );
         String strUrl = url.getUrl(  );
-        Collection<Widget> listWidgets = WidgetHome.getWidgetsList( getPlugin(  ) );
-        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX,
-                _strCurrentPageIndex, getLocale(  ) );
+        Collection<Widget> listWidgets = WidgetService.instance(  ).getWidgetsList(  );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
+                PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
 
@@ -172,9 +171,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         setPageTitleProperty( PROPERTY_PAGE_TITLE_CREATE_WIDGET );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
+        model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleHome.getStyles(  ) );
+        model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getStyles(  ) );
         model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
         model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
         model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
@@ -192,7 +191,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doCreateWidget( HttpServletRequest request )
     {
-    	String strUrl = StringUtils.EMPTY;
+        String strUrl = StringUtils.EMPTY;
         String strWidgetName = request.getParameter( PARAMETER_WIDGET_NAME );
         String strWidgetDescription = request.getParameter( PARAMETER_WIDGET_DESCRIPTION );
         String strWidgetType = request.getParameter( PARAMETER_WIDGET_TYPE );
@@ -201,20 +200,20 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         String strWidgetStatus = request.getParameter( PARAMETER_WIDGET_STATUS );
 
         if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) &&
-        		StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
-        		StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
-        		StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) && 
-        		StringUtils.isNotBlank( strWidgetType ) )
+                StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
+                StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
+                StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) &&
+                StringUtils.isNotBlank( strWidgetType ) )
         {
-        	int nIdCategory = Integer.parseInt( strIdCategory );
-        	int nIdStyle = Integer.parseInt( strIdStyle );
-        	int nWidgetStatus = Integer.parseInt( strWidgetStatus );
-        	String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
-        	boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
-        	boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
-        	
-        	Widget widget = new Widget(  );
-        	widget.setName( strWidgetName );
+            int nIdCategory = Integer.parseInt( strIdCategory );
+            int nIdStyle = Integer.parseInt( strIdStyle );
+            int nWidgetStatus = Integer.parseInt( strWidgetStatus );
+            String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
+            boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
+            boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
+
+            Widget widget = new Widget(  );
+            widget.setName( strWidgetName );
             widget.setDescription( strWidgetDescription );
             widget.setIdCategory( nIdCategory );
             widget.setIdStyle( nIdStyle );
@@ -223,35 +222,37 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             widget.setStatus( nWidgetStatus );
             widget.setIsEssential( bIsEssential );
             widget.setIsNew( bIsNew );
-            
-        	try
+
+            try
             {
-        		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
                 FileItem itemIcon = multiRequest.getFile( PARAMETER_WIDGET_ICON );
 
                 if ( itemIcon != null )
                 {
-                	String strMimeType = itemIcon.getContentType(  );
-                	if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
-                	{
-                		byte[] bytes = itemIcon.get(  );
+                    String strMimeType = itemIcon.getContentType(  );
+
+                    if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
+                    {
+                        byte[] bytes = itemIcon.get(  );
                         widget.setIconContent( bytes );
                         widget.setIconMimeType( strMimeType );
-                        WidgetService.instance(  ).createWidget( widget, getPlugin(  ) );
+                        WidgetService.instance(  ).createWidget( widget );
 
                         strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
-                	}
-                	else
-                	{
-                		Object[] listParam = {AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS )};
-                		strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT, listParam, AdminMessage.TYPE_STOP );
-                	}
+                    }
+                    else
+                    {
+                        Object[] listParam = { AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS ) };
+                        strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT,
+                                listParam, AdminMessage.TYPE_STOP );
+                    }
                 }
                 else
                 {
-                	widget.setIconContent( null );
-                	widget.setIconMimeType( StringUtils.EMPTY );
-                	WidgetService.instance(  ).createWidget( widget, getPlugin(  ) );
+                    widget.setIconContent( null );
+                    widget.setIconMimeType( StringUtils.EMPTY );
+                    WidgetService.instance(  ).createWidget( widget );
 
                     strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
@@ -263,7 +264,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         }
         else
         {
-        	strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
         return strUrl;
@@ -277,12 +278,24 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String getConfirmRemoveWidget( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
-        UrlItem url = new UrlItem( JSP_DO_REMOVE_WIDGET );
-        url.addParameter( PARAMETER_ID_WIDGET, nId );
+        String strUrl = StringUtils.EMPTY;
+        String strWidgetId = request.getParameter( PARAMETER_ID_WIDGET );
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl(  ),
-            AdminMessage.TYPE_CONFIRMATION );
+        if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
+        {
+            int nId = Integer.parseInt( strWidgetId );
+            UrlItem url = new UrlItem( JSP_DO_REMOVE_WIDGET );
+            url.addParameter( PARAMETER_ID_WIDGET, nId );
+
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl(  ),
+                    AdminMessage.TYPE_CONFIRMATION );
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -293,10 +306,22 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doRemoveWidget( HttpServletRequest request )
     {
-        int nWidgetId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
-        WidgetService.instance(  ).removeWidget( nWidgetId, getPlugin(  ) );
+        String strUrl = StringUtils.EMPTY;
+        String strWidgetId = request.getParameter( PARAMETER_ID_WIDGET );
 
-        return JSP_REDIRECT_TO_MANAGE_WIDGETS;
+        if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
+        {
+            int nWidgetId = Integer.parseInt( strWidgetId );
+            WidgetService.instance(  ).removeWidget( nWidgetId );
+
+            strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -309,21 +334,40 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_MODIFY_WIDGET );
 
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
-        Widget widget = WidgetHome.findByPrimaryKey( nId, getPlugin(  ) );
+        String strUrl = StringUtils.EMPTY;
+        String strWidgetId = request.getParameter( PARAMETER_ID_WIDGET );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_WIDGET, widget );
-        model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategories(  ) );
-        model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleHome.getStyles(  ) );
-        model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
-        model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
-        model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
+        if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
+        {
+            int nWidgetId = Integer.parseInt( strWidgetId );
+            Widget widget = WidgetService.instance(  ).getWidget( nWidgetId );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale(  ), model );
+            if ( widget != null )
+            {
+                Map<String, Object> model = new HashMap<String, Object>(  );
+                model.put( MARK_WIDGET, widget );
+                model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
+                model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
+                model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getStyles(  ) );
+                model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
+                model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
+                model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
 
-        return getAdminPage( template.getHtml(  ) );
+                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale(  ), model );
+
+                strUrl = getAdminPage( template.getHtml(  ) );
+            }
+            else
+            {
+                strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+            }
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -334,8 +378,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doModifyWidget( HttpServletRequest request )
     {
-    	String strUrl = StringUtils.EMPTY;
-    	String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
+        String strUrl = StringUtils.EMPTY;
+        String strWidgetId = request.getParameter( PARAMETER_ID_WIDGET );
         String strWidgetName = request.getParameter( PARAMETER_WIDGET_NAME );
         String strWidgetDescription = request.getParameter( PARAMETER_WIDGET_DESCRIPTION );
         String strWidgetType = request.getParameter( PARAMETER_WIDGET_TYPE );
@@ -344,25 +388,26 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         String strWidgetStatus = request.getParameter( PARAMETER_WIDGET_STATUS );
 
         if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) &&
-        		StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
-        		StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
-        		StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) && 
-        		StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) && 
-        		StringUtils.isNotBlank( strWidgetType ) )
+                StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
+                StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
+                StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) &&
+                StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) &&
+                StringUtils.isNotBlank( strWidgetType ) )
         {
-        	int nIdWidget = Integer.parseInt( strIdWidget );
-        	Widget widget = WidgetHome.findByPrimaryKey( nIdWidget, getPlugin(  ) );
-        	if ( widget != null )
-        	{
-        		int nIdCategory = Integer.parseInt( strIdCategory );
-            	int nIdStyle = Integer.parseInt( strIdStyle );
-            	int nWidgetStatus = Integer.parseInt( strWidgetStatus );
-            	String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
-            	boolean bUpdateIcon = StringUtils.isNotBlank( request.getParameter( PARAMETER_UPDATE_FILE ) );
-            	boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
-            	boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
-            	
-        		widget.setName( strWidgetName );
+            int nWidgetId = Integer.parseInt( strWidgetId );
+            Widget widget = WidgetService.instance(  ).getWidget( nWidgetId );
+
+            if ( widget != null )
+            {
+                int nIdCategory = Integer.parseInt( strIdCategory );
+                int nIdStyle = Integer.parseInt( strIdStyle );
+                int nWidgetStatus = Integer.parseInt( strWidgetStatus );
+                String strConfigData = request.getParameter( PARAMETER_WIDGET_CONFIG_DATA );
+                boolean bUpdateIcon = StringUtils.isNotBlank( request.getParameter( PARAMETER_UPDATE_FILE ) );
+                boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
+                boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
+
+                widget.setName( strWidgetName );
                 widget.setDescription( strWidgetDescription );
                 widget.setIdCategory( nIdCategory );
                 widget.setIdStyle( nIdStyle );
@@ -371,56 +416,74 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 widget.setStatus( nWidgetStatus );
                 widget.setIsEssential( bIsEssential );
                 widget.setIsNew( bIsNew );
-                
+
                 if ( bUpdateIcon )
                 {
-                	try
-                    {
-                		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-                        FileItem itemIcon = multiRequest.getFile( PARAMETER_WIDGET_ICON );
-
-                        if ( itemIcon != null )
-                        {
-                        	String strMimeType = itemIcon.getContentType(  );
-                        	if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
-                        	{
-                        		byte[] bytes = itemIcon.get(  );
-                                widget.setIconContent( bytes );
-                                widget.setIconMimeType( strMimeType );
-                                WidgetHome.update( widget, bUpdateIcon, getPlugin(  ) );
-                                strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
-                        	}
-                        	else
-                        	{
-                        		Object[] listParam = {AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS )};
-                        		strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT, listParam, AdminMessage.TYPE_STOP );
-                        	}
-                        }
-                        else
-                        {
-                        	strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-                        }
-                    }
-                    catch ( Exception e )
-                    {
-                        AppLogService.error( e.getMessage(  ), e );
-                    }
+                    strUrl = doModifyWidgetWithIcon( request, widget );
                 }
                 else
                 {
-                	WidgetService.instance(  ).updateWidget( widget, bUpdateIcon, getPlugin(  ) );
-                	strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
+                    WidgetService.instance(  ).updateWidget( widget, bUpdateIcon );
+                    strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
-        	}
-        	else
-        	{
-        		strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_OBJECT_NOT_FOUND, AdminMessage.TYPE_STOP );
-        	}
+            }
+            else
+            {
+                strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+            }
         }
         else
         {
-        	strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
+
+        return strUrl;
+    }
+
+    /**
+     * Do modify the widget and its icon
+     * @param request {@link HttpServletRequest}
+     * @param widget the {@link Widget}
+     * @return the url return
+     */
+    private String doModifyWidgetWithIcon( HttpServletRequest request, Widget widget )
+    {
+        String strUrl = StringUtils.EMPTY;
+
+        try
+        {
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            FileItem itemIcon = multiRequest.getFile( PARAMETER_WIDGET_ICON );
+
+            if ( itemIcon != null )
+            {
+                String strMimeType = itemIcon.getContentType(  );
+
+                if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
+                {
+                    byte[] bytes = itemIcon.get(  );
+                    widget.setIconContent( bytes );
+                    widget.setIconMimeType( strMimeType );
+                    WidgetService.instance(  ).updateWidget( widget, true );
+                    strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
+                }
+                else
+                {
+                    Object[] listParam = { AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS ) };
+                    strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT,
+                            listParam, AdminMessage.TYPE_STOP );
+                }
+            }
+            else
+            {
+                strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            }
+        }
+        catch ( Exception e )
+        {
+            AppLogService.error( e.getMessage(  ), e );
+        }
+
         return strUrl;
     }
 }

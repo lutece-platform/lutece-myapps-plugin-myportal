@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,9 @@ import java.util.List;
 
 
 /**
+ *
 * IStyleDAO Interface
+*
 */
 public interface IStyleDAO
 {
@@ -69,7 +71,7 @@ public interface IStyleDAO
 
     /**
      * Load the data from the table
-     * @param strId The identifier of the style
+     * @param nKey The identifier of the style
      * @param plugin the Plugin
      * @return The instance of the style
      */

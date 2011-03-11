@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,26 +33,15 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.myportal.business.Category;
-import fr.paris.lutece.plugins.myportal.business.CategoryHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
+import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
-import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
@@ -64,13 +53,22 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * This class provides a simple implementation of an XPage
  */
 public class MyPortalApp implements XPageApplication
 {
-	// TEMPLATES
+    // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
     private static final String TEMPLATE_BROWSE_CATEGORIES = "skin/plugins/myportal/browse_categories.html";
     private static final String TEMPLATE_BROWSE_CATEGORIES_WIDGETS = "skin/plugins/myportal/browse_categories_widgets.html";
@@ -79,7 +77,7 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_BROWSE_ESSENTIAL_WIDGETS = "skin/plugins/myportal/browse_essential_widgets.html";
     private static final String TEMPLATE_BROWSE_NEW_WIDGETS = "skin/plugins/myportal/browse_new_widgets.html";
     private static final String TEMPLATE_SEARCH_WIDGETS = "skin/plugins/myportal/search_widgets.html";
-    
+
     // PARAMETERS
     private static final String PARAMETER_ID_WIDGET = "id_widget";
     private static final String PARAMETER_ID_TAB = "id_tab";
@@ -90,7 +88,7 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_CATEGORY_ID_CATEGORY = "category_id_category";
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_SEARCH_WIDGETS_NAME = "search_widgets_name";
-    
+
     // MARKS
     private static final String MARK_WIDGETS = "widgets";
     private static final String MARK_WIDGETS_LIST = "widgets_list";
@@ -105,28 +103,27 @@ public class MyPortalApp implements XPageApplication
     private static final String MARK_ACTION = "action";
     private static final String MARK_PAGINATOR_URL_FOR_JS = "paginator_url_for_js";
     private static final String MARK_SEARCH_WIDGETS_NAME = "search_widgets_name";
-    
+
     // PROPERTIES
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
     private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
     private static final String PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO = "myportal.listWidgets.itemsPerPageInFO";
     private static final String PROPERTY_URL_RETURN = "myportal.urlReturn";
-    
+
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
     private static final String ACTION_BROWSE_ESSENTIAL_WIDGETS = "browse_essential_widgets";
     private static final String ACTION_BROWSE_NEW_WIDGETS = "browse_new_widgets";
     private static final String ACTION_SEARCH_WIDGETS = "search_widgets";
-    
+
     // JSP
     private static final String JSP_URL_BROWSE_CATEGORIES_WIDGETS = "jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp";
     private static final String JSP_URL_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
     private static final String JSP_URL_BROWSE_ESSENTIAL_WIDGETS = "jsp/site/plugins/myportal/BrowseEssentialWidgets.jsp";
     private static final String JSP_URL_BROWSE_NEW_WIDGETS = "jsp/site/plugins/myportal/BrowseNewWidgets.jsp";
     private static final String JSP_URL_SEARCH_WIDGETS = "jsp/site/plugins/myportal/SearchWidgets.jsp";
-    
+
     // private fields
-    private Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
     private MyPortalPageService _pageService = new MyPortalPageService(  );
 
     /**
@@ -134,6 +131,7 @@ public class MyPortalApp implements XPageApplication
      * @param request The http request
      * @param nMode The current mode
      * @param plugin The plugin object
+     * @return the {@link XPage}
      * @throws fr.paris.lutece.portal.service.message.SiteMessageException Message displayed if an exception occurs
      */
     public XPage getPage( HttpServletRequest request, int nMode, Plugin plugin )
@@ -161,46 +159,52 @@ public class MyPortalApp implements XPageApplication
      */
     public String getMyPortalNavigation( HttpServletRequest request )
     {
-    	String strHtml = StringUtils.EMPTY;
-    	String strAction = request.getParameter( PARAMETER_ACTION );
-    	if ( StringUtils.isNotBlank( strAction ) )
-    	{
-    		String strNavigationContentHtml = StringUtils.EMPTY;
-    		String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
-        	if ( strName == null )
-        	{
-        		strName = StringUtils.EMPTY;
-        	}
-    		Map<String, Object> model = new HashMap<String, Object>(  );
-    		if ( ACTION_BROWSE_CATEGORIES.equals( strAction ) )
-    		{
-    			strNavigationContentHtml = getBrowseCategories( request );
-    		}
-    		else if ( ACTION_BROWSE_ESSENTIAL_WIDGETS.equals( strAction ) )
-    		{
-    			strNavigationContentHtml = getBrowseEssentialWidgets( request );
-    		}
-    		else if ( ACTION_BROWSE_NEW_WIDGETS.equals( strAction ) )
-    		{
-    			strNavigationContentHtml = getBrowseNewWidgets( request );
-    		}
-    		else if ( ACTION_SEARCH_WIDGETS.equals( strAction ) )
-    		{
-    			strNavigationContentHtml = getSearchWidgets( request );
-    		}
-    		
-    		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-    		model.put( MARK_BASE_URL, strBaseUrl );
-    		model.put( MARK_ACTION, strAction );
-    		model.put( MARK_MYPORTAL_NAVIGATION_CONTENT, strNavigationContentHtml );
-    		model.put( MARK_SEARCH_WIDGETS_NAME, strName );
-    		
-    		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_NAVIGATION, request.getLocale(  ), model );
-    		strHtml = template.getHtml(  );
-    	}
-    	return strHtml;
+        String strHtml = StringUtils.EMPTY;
+        String strAction = request.getParameter( PARAMETER_ACTION );
+
+        if ( StringUtils.isNotBlank( strAction ) )
+        {
+            String strNavigationContentHtml = StringUtils.EMPTY;
+            String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
+
+            if ( strName == null )
+            {
+                strName = StringUtils.EMPTY;
+            }
+
+            Map<String, Object> model = new HashMap<String, Object>(  );
+
+            if ( ACTION_BROWSE_CATEGORIES.equals( strAction ) )
+            {
+                strNavigationContentHtml = getBrowseCategories( request );
+            }
+            else if ( ACTION_BROWSE_ESSENTIAL_WIDGETS.equals( strAction ) )
+            {
+                strNavigationContentHtml = getBrowseEssentialWidgets( request );
+            }
+            else if ( ACTION_BROWSE_NEW_WIDGETS.equals( strAction ) )
+            {
+                strNavigationContentHtml = getBrowseNewWidgets( request );
+            }
+            else if ( ACTION_SEARCH_WIDGETS.equals( strAction ) )
+            {
+                strNavigationContentHtml = getSearchWidgets( request );
+            }
+
+            String strBaseUrl = AppPathService.getBaseUrl( request );
+            model.put( MARK_BASE_URL, strBaseUrl );
+            model.put( MARK_ACTION, strAction );
+            model.put( MARK_MYPORTAL_NAVIGATION_CONTENT, strNavigationContentHtml );
+            model.put( MARK_SEARCH_WIDGETS_NAME, strName );
+
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_NAVIGATION,
+                    request.getLocale(  ), model );
+            strHtml = template.getHtml(  );
+        }
+
+        return strHtml;
     }
-    
+
     /**
      * Get Browse categories popup
      * @param request The HTTP request
@@ -208,41 +212,20 @@ public class MyPortalApp implements XPageApplication
      */
     public String getBrowseCategories( HttpServletRequest request )
     {
-    	String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
-    	List<Widget> listWidgets;
-    	Category category = null;
-    	if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
-    	{
-    		int nCategoryId = Integer.parseInt( strCategoryId );
-    		category = CategoryHome.findByPrimaryKey( nCategoryId );
-    	}
-    	else
-    	{
-    		category = CategoryHome.findFirstCategory(  );
-    	}
-    	
-    	if ( category != null )
-		{
-			listWidgets = WidgetService.instance(  ).getWidgetsByCategoryId( category.getIdCategory(  ), _plugin );
-			strCategoryId = String.valueOf( category.getIdCategory(  ) );
-		}
-		else
-		{
-			listWidgets = new ArrayList<Widget>(  );
-		}
-    	
-    	String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
-		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-    	UrlItem url = new UrlItem( JSP_URL_BROWSE_CATEGORIES_WIDGETS );
-		url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
-		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
-				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
-		String strWidgetsListHtml = getBrowseCategoriesWidgets( request );
-		
-		Map<String, Object> model = new HashMap<String, Object>(  );
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
+
+        if ( StringUtils.isBlank( strCategoryId ) )
+        {
+            Category category = CategoryService.getInstance(  ).findFirstCategory(  );
+            strCategoryId = Integer.toString( category.getIdCategory(  ) );
+        }
+
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+        String strWidgetsListHtml = getBrowseCategoriesWidgets( request );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_CATEGORIES_LIST, CategoryHome.getCategoriesList(  ) );
+        model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategoriesList(  ) );
         model.put( MARK_CATEGORY_ID_CATEGORY, strCategoryId );
         model.put( MARK_WIDGETS_LIST_HTML, strWidgetsListHtml );
 
@@ -250,65 +233,68 @@ public class MyPortalApp implements XPageApplication
 
         return template.getHtml(  );
     }
-    
+
     /**
-     * Get Add Widget Content 
+     * Get Add Widget Content
      * @param request The HTTP request
      * @return The page
      */
     public String getBrowseCategoriesWidgets( HttpServletRequest request )
     {
-    	String strHtml = StringUtils.EMPTY;
-    	String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
-    	List<Widget> listWidgets;
-    	Category category = null;
-    	if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
-    	{
-    		int nCategoryId = Integer.parseInt( strCategoryId );
-    		category = CategoryHome.findByPrimaryKey( nCategoryId );
-    	}
-    	else
-    	{
-    		category = CategoryHome.findFirstCategory(  );
-    	}
-    	
-    	if ( category != null )
-		{
-			listWidgets = WidgetService.instance(  ).getWidgetsByCategoryId( category.getIdCategory(  ), _plugin );
-		}
-		else
-		{
-			listWidgets = new ArrayList<Widget>(  );
-		}
-    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
-    	
-    	UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
-    	url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
-		url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
-		UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_CATEGORIES_WIDGETS );
-		urlForJs.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
-    	
-    	// Paginator
-    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
-		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
-				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
-		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-		
-		Map<String, Object> model = new HashMap<String, Object>(  );
+        String strHtml = StringUtils.EMPTY;
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
+        List<Widget> listWidgets;
+        Category category = null;
+
+        if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
+        {
+            int nCategoryId = Integer.parseInt( strCategoryId );
+            category = CategoryService.getInstance(  ).findByPrimaryKey( nCategoryId );
+        }
+        else
+        {
+            category = CategoryService.getInstance(  ).findFirstCategory(  );
+        }
+
+        if ( category != null )
+        {
+            listWidgets = WidgetService.instance(  ).getWidgetsByCategoryId( category.getIdCategory(  ) );
+        }
+        else
+        {
+            listWidgets = new ArrayList<Widget>(  );
+        }
+
+        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+
+        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
+        url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
+
+        UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_CATEGORIES_WIDGETS );
+        urlForJs.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
+
+        // Paginator
+        String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
+        int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
+                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-		model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-		model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
-		
-		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS, request.getLocale(  ), model );
-		
-		strHtml = template.getHtml(  );
-    	
-    	
-    	return strHtml;
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS,
+                request.getLocale(  ), model );
+
+        strHtml = template.getHtml(  );
+
+        return strHtml;
     }
 
     /**
@@ -322,15 +308,16 @@ public class MyPortalApp implements XPageApplication
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
         String strColumn = request.getParameter( PARAMETER_COLUMN );
 
-        if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) && 
-        		StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) && 
-        		StringUtils.isNotBlank( strIdTab ) )
+        if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) &&
+                StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) &&
+                StringUtils.isNotBlank( strIdTab ) )
         {
-        	int nIdWidget = Integer.parseInt( strIdWidget );
+            int nIdWidget = Integer.parseInt( strIdWidget );
             int nColumn = Integer.parseInt( strColumn );
 
             _pageService.addWidget( getUser( request ), nIdWidget, strIdTab, nColumn );
         }
+
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
 
@@ -371,32 +358,33 @@ public class MyPortalApp implements XPageApplication
      */
     public String getBrowseEssentialWidgets( HttpServletRequest request )
     {
-    	List<Widget> listWidgets = WidgetService.instance(  ).getEssentialWidgets( _plugin );
-    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
-    	String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-    	
-    	UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
-    	url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_ESSENTIAL_WIDGETS );
-    	
-    	// Paginator
-    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
-		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
-				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
-		
-		Map<String, Object> model = new HashMap<String, Object>(  );
+        List<Widget> listWidgets = WidgetService.instance(  ).getEssentialWidgets(  );
+        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+
+        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_ESSENTIAL_WIDGETS );
+
+        // Paginator
+        String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
+        int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
+                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-		model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-		model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, JSP_URL_BROWSE_ESSENTIAL_WIDGETS );
-        
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS, request.getLocale(  ), model );
-        
-    	return template.getHtml(  );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS,
+                request.getLocale(  ), model );
+
+        return template.getHtml(  );
     }
-    
+
     /**
      * Get the new widgets list html
      * @param request {@link HttpServletRequest}
@@ -404,32 +392,33 @@ public class MyPortalApp implements XPageApplication
      */
     public String getBrowseNewWidgets( HttpServletRequest request )
     {
-    	List<Widget> listWidgets = WidgetService.instance(  ).getNewWidgets( _plugin );
-    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
-    	String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-    	
-    	UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
-    	url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_NEW_WIDGETS );
-    	
-    	// Paginator
-    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
-		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
-				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
-		
-		Map<String, Object> model = new HashMap<String, Object>(  );
+        List<Widget> listWidgets = WidgetService.instance(  ).getNewWidgets(  );
+        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+
+        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_NEW_WIDGETS );
+
+        // Paginator
+        String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
+        int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
+                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-		model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-		model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, JSP_URL_BROWSE_NEW_WIDGETS );
-        
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ), model );
-        
-    	return template.getHtml(  );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ),
+                model );
+
+        return template.getHtml(  );
     }
-    
+
     /**
      * Get the new widgets list html
      * @param request {@link HttpServletRequest}
@@ -437,40 +426,43 @@ public class MyPortalApp implements XPageApplication
      */
     public String getSearchWidgets( HttpServletRequest request )
     {
-    	String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
-    	if ( strName == null )
-    	{
-    		strName = StringUtils.EMPTY;
-    	}
-    	List<Widget> listWidgets = WidgetService.instance(  ).getWidgetsByName( strName, _plugin );
-    	List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
-    	String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-    	
-    	UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
-    	url.addParameter( PARAMETER_ACTION, ACTION_SEARCH_WIDGETS );
-    	url.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
-    	UrlItem urlForJs = new UrlItem( JSP_URL_SEARCH_WIDGETS );
-    	urlForJs.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
-    	
-    	// Paginator
-    	String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
-		int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-		LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ), 
-				Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
-		
-		Map<String, Object> model = new HashMap<String, Object>(  );
+        String strName = request.getParameter( PARAMETER_SEARCH_WIDGETS_NAME );
+
+        if ( strName == null )
+        {
+            strName = StringUtils.EMPTY;
+        }
+
+        List<Widget> listWidgets = WidgetService.instance(  ).getWidgetsByName( strName );
+        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+
+        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        url.addParameter( PARAMETER_ACTION, ACTION_SEARCH_WIDGETS );
+        url.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+
+        UrlItem urlForJs = new UrlItem( JSP_URL_SEARCH_WIDGETS );
+        urlForJs.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+
+        // Paginator
+        String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
+        int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
+                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-		model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-		model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
-        
+
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale(  ), model );
-        
-    	return template.getHtml(  );
+
+        return template.getHtml(  );
     }
-    
+
     /**
      * Gets the user from the request
      * @param request The HTTP user
@@ -503,13 +495,14 @@ public class MyPortalApp implements XPageApplication
      */
     public String getMyPortalAddTab( HttpServletRequest request )
     {
-		Map<String, Object> model = new HashMap<String, Object>(  );
-        
-		String strBaseUrl = ( request != null ) ? AppPathService.getBaseUrl( request ) : StringUtils.EMPTY;
-		model.put( MARK_BASE_URL, strBaseUrl );
-		
-		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale(  ), model );
-		return template.getHtml(  );
+        Map<String, Object> model = new HashMap<String, Object>(  );
+
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+        model.put( MARK_BASE_URL, strBaseUrl );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale(  ), model );
+
+        return template.getHtml(  );
     }
 
     /**
@@ -521,6 +514,7 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabName = request.getParameter( PARAMETER_TAB_NAME );
         _pageService.addTab( getUser( request ), strTabName );
+
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
 }

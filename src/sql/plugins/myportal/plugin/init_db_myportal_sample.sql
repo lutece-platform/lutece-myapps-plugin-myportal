@@ -1,8 +1,8 @@
 INSERT INTO myportal_category VALUES 
-(1,0,'Accessoires','Calculette, Convertiseur,...'),
-(2,0,'Actualités internes','Vie des directions'),
-(3,0,'Actualités externes','Le Monde, Le Parisien, ...'),
-(4,0,'Restaurants administratifs','Menus des restaurants administratifs');
+(1,'Accessoires','Calculette, Convertiseur,...'),
+(2,'Actualités internes','Vie des directions'),
+(3,'Actualités externes','Le Monde, Le Parisien, ...'),
+(4,'Restaurants administratifs','Menus des restaurants administratifs');
 
 
 INSERT INTO myportal_widget_style VALUES 

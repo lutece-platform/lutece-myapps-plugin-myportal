@@ -1,16 +1,16 @@
 <div id="content-box-actions">
 	<form method="post"  action="jsp/admin/plugins/myportal/CreateCategory.jsp">
-        <input type="submit" value="#i18n{myportal.manage_category.buttonAddCategory}" class="button bt-toolbar" />
+        <input type="submit" value="#i18n{myportal.manage_categories.buttonAddCategory}" class="button bt-toolbar" />
     </form>
 </div>
 <div class="content-box" >
-    <h2>#i18n{myportal.manage_category.tableLabel}</h2>
+    <h2>#i18n{myportal.manage_categories.tableLabel}</h2>
     <@paginationAdmin paginator=paginator combo=1 />
     <table>
         <tr>
-        <th>#i18n{myportal.manage_category.columnName}</th>
-        <th>#i18n{myportal.manage_category.columnDescription}</th>
-        <th>#i18n{myportal.manage_category.columnAction}</th>
+        <th>#i18n{myportal.manage_categories.columnName}</th>
+        <th>#i18n{myportal.manage_categories.columnDescription}</th>
+        <th>#i18n{myportal.manage_categories.columnAction}</th>
         </tr>
         <#list category_list as category >
         <tr>

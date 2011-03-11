@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2008, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,9 @@ import java.util.List;
 
 
 /**
+ *
  * PageConfig
+ *
  */
 public class PageConfig
 {
@@ -73,10 +75,10 @@ public class PageConfig
 
     /**
      * Sets the TabList
-     * @param TabList The TabList
+     * @param tabList The TabList
      */
-    public void setTabList( List<TabConfig> TabList )
+    public void setTabList( List<TabConfig> tabList )
     {
-        _listTab = TabList;
+        _listTab = tabList;
     }
 }

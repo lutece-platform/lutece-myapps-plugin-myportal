@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,13 +45,16 @@ import java.util.List;
 
 
 /**
+ *
  * MyPortalPageService
+ *
  */
 public class MyPortalPageService
 {
+    private static final String BEAN_MYPORTAL_PAGEBUILDER = "myportal.pageBuilder";
     private static final String DEFAULT_GUID = "default";
-    private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( "myportal",
-            "myportal.pageBuilder" );
+    private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_PAGEBUILDER );
 
     /**
      * Gets the page for a given user
@@ -70,6 +73,11 @@ public class MyPortalPageService
         return _pageBuilder.buildPage( pageConfig, user );
     }
 
+    /**
+     * Get the page config of the given user
+     * @param user a {@link LuteceUser}
+     * @return a {@link PageConfig}
+     */
     private PageConfig getPageConfigUser( LuteceUser user )
     {
         UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName(  ) );
@@ -84,6 +92,10 @@ public class MyPortalPageService
         return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
     }
 
+    /**
+     * Get the default page config
+     * @return a {@link PageConfig}
+     */
     private PageConfig getDefaultPageConfig(  )
     {
         UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
@@ -102,13 +114,15 @@ public class MyPortalPageService
     {
         PageConfig pageConfig = getPageConfigUser( user );
         TabConfig tab = null;
-        for(TabConfig tabConfig : pageConfig.getTabList(  ))
+
+        for ( TabConfig tabConfig : pageConfig.getTabList(  ) )
         {
-        	if( tabConfig.getName().compareTo(strIdTab) == 0 )
-        	{
-        		tab = tabConfig;
-        	}
+            if ( tabConfig.getName(  ).compareTo( strIdTab ) == 0 )
+            {
+                tab = tabConfig;
+            }
         }
+
         List<WidgetConfig> listWidgets = tab.getWidgetList(  );
         WidgetConfig widget = new WidgetConfig(  );
         widget.setWidgetId( nIdWidget );
@@ -145,6 +159,11 @@ public class MyPortalPageService
         }
     }
 
+    /**
+     * Update an user page config
+     * @param user the user
+     * @param pageConfig the page config
+     */
     private void updateConfig( LuteceUser user, PageConfig pageConfig )
     {
         UserPageConfig userConf = new UserPageConfig(  );
@@ -153,6 +172,11 @@ public class MyPortalPageService
         UserPageConfigHome.update( userConf );
     }
 
+    /**
+     * Set a page config to the given user
+     * @param usr the {@link LuteceUser}
+     * @param strUserPageConfig the user page config
+     */
     public void setPageConfigUser( LuteceUser usr, String strUserPageConfig )
     {
         UserPageConfig userPageConfig = new UserPageConfig(  );
@@ -161,18 +185,29 @@ public class MyPortalPageService
         UserPageConfigHome.update( userPageConfig );
     }
 
-	public List<TabConfig> getTabList(LuteceUser user) 
-	{
+    /**
+     * Get the list of tabs of the given user
+     * @param user the {@link LuteceUser}
+     * @return a list of {@link TabConfig}
+     */
+    public List<TabConfig> getTabList( LuteceUser user )
+    {
         PageConfig pageConfig = getPageConfigUser( user );
-        return pageConfig.getTabList(  );
-	}
 
-	public void addTab(LuteceUser user, String strTabName) 
-	{
+        return pageConfig.getTabList(  );
+    }
+
+    /**
+     * Add a new tab to the given user
+     * @param user the {@link LuteceUser}
+     * @param strTabName the name of the new tab
+     */
+    public void addTab( LuteceUser user, String strTabName )
+    {
         PageConfig pageConfig = getPageConfigUser( user );
         TabConfig tab = new TabConfig(  );
-        tab.setName(strTabName);
+        tab.setName( strTabName );
         pageConfig.getTabList(  ).add( tab );
         updateConfig( user, pageConfig );
-	}
+    }
 }

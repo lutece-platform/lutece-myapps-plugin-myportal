@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,15 +33,17 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import java.util.Collection;
-import java.util.List;
-
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
+import java.util.Collection;
+import java.util.List;
+
 
 /**
+ *
 * IWidgetDAO Interface
+*
 */
 public interface IWidgetDAO
 {
@@ -72,7 +74,7 @@ public interface IWidgetDAO
 
     /**
      * Load the data from the table
-     * @param strId The identifier of the widget
+     * @param nKey The identifier of the widget
      * @param plugin the Plugin
      * @return The instance of the widget
      */
@@ -84,7 +86,7 @@ public interface IWidgetDAO
     * @return The collection which contains the data of all the widget objects
     */
     Collection<Widget> selectWidgetsList( Plugin plugin );
-    
+
     /**
      * Get the icon resource
      * @param nWidgetId the ID widget
@@ -92,7 +94,7 @@ public interface IWidgetDAO
      * @return an {@link ImageResource}
      */
     ImageResource getIconResource( int nWidgetId, Plugin plugin );
-    
+
     /**
      * Get the list of widgets by filter
      * @param wFilter the filter

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,19 +41,21 @@ import java.util.Collection;
 
 
 /**
+ *
  * This class provides Data Access methods for Category objects
+ *
  */
 public final class CategoryDAO implements ICategoryDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_category ) FROM myportal_category";
-    private static final String SQL_QUERY_SELECT = "SELECT id_category, id_parent, name, description FROM myportal_category WHERE id_category = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_category ( id_category, id_parent, name, description ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_category, name, description FROM myportal_category WHERE id_category = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_category ( id_category, name, description ) VALUES ( ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_category WHERE id_category = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_category SET id_category = ?, id_parent = ?, name = ?, description = ? WHERE id_category = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_category, id_parent, name, description FROM myportal_category";
-    private static final String SQL_QUERY_SELECT_FIRST_CATEGORY = "SELECT id_category, id_parent, name, description FROM myportal_category ORDER BY id_category ASC LIMIT 1";
-    
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_category SET id_category = ?, name = ?, description = ? WHERE id_category = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_category, name, description FROM myportal_category ORDER BY name ASC";
+    private static final String SQL_QUERY_SELECT_FIRST_CATEGORY = "SELECT id_category, name, description FROM myportal_category ORDER BY name ASC LIMIT 1";
+
     /**
      * Generates a new primary key
      * @param plugin The Plugin
@@ -85,14 +87,14 @@ public final class CategoryDAO implements ICategoryDAO
      */
     public void insert( Category category, Plugin plugin )
     {
+        int nIndex = 1;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
         category.setIdCategory( newPrimaryKey( plugin ) );
 
-        daoUtil.setInt( 1, category.getIdCategory(  ) );
-        daoUtil.setInt( 2, category.getIdParent(  ) );
-        daoUtil.setString( 3, category.getName(  ) );
-        daoUtil.setString( 4, category.getDescription(  ) );
+        daoUtil.setInt( nIndex++, category.getIdCategory(  ) );
+        daoUtil.setString( nIndex++, category.getName(  ) );
+        daoUtil.setString( nIndex++, category.getDescription(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -114,12 +116,12 @@ public final class CategoryDAO implements ICategoryDAO
 
         if ( daoUtil.next(  ) )
         {
+            int nIndex = 1;
             category = new Category(  );
 
-            category.setIdCategory( daoUtil.getInt( 1 ) );
-            category.setIdParent( daoUtil.getInt( 2 ) );
-            category.setName( daoUtil.getString( 3 ) );
-            category.setDescription( daoUtil.getString( 4 ) );
+            category.setIdCategory( daoUtil.getInt( nIndex++ ) );
+            category.setName( daoUtil.getString( nIndex++ ) );
+            category.setDescription( daoUtil.getString( nIndex++ ) );
         }
 
         daoUtil.free(  );
@@ -147,13 +149,13 @@ public final class CategoryDAO implements ICategoryDAO
      */
     public void store( Category category, Plugin plugin )
     {
+        int nIndex = 1;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-        daoUtil.setInt( 1, category.getIdCategory(  ) );
-        daoUtil.setInt( 2, category.getIdParent(  ) );
-        daoUtil.setString( 3, category.getName(  ) );
-        daoUtil.setString( 4, category.getDescription(  ) );
-        daoUtil.setInt( 5, category.getIdCategory(  ) );
+        daoUtil.setInt( nIndex++, category.getIdCategory(  ) );
+        daoUtil.setString( nIndex++, category.getName(  ) );
+        daoUtil.setString( nIndex++, category.getDescription(  ) );
+        daoUtil.setInt( nIndex++, category.getIdCategory(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -164,7 +166,7 @@ public final class CategoryDAO implements ICategoryDAO
      * @param plugin The plugin
      * @return The Collection which contains the data of all the categorys
      */
-    public Collection<Category> selectCategorysList( Plugin plugin )
+    public Collection<Category> selectCategoriesList( Plugin plugin )
     {
         Collection<Category> categoryList = new ArrayList<Category>(  );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
@@ -172,12 +174,12 @@ public final class CategoryDAO implements ICategoryDAO
 
         while ( daoUtil.next(  ) )
         {
+            int nIndex = 1;
             Category category = new Category(  );
 
-            category.setIdCategory( daoUtil.getInt( 1 ) );
-            category.setIdParent( daoUtil.getInt( 2 ) );
-            category.setName( daoUtil.getString( 3 ) );
-            category.setDescription( daoUtil.getString( 4 ) );
+            category.setIdCategory( daoUtil.getInt( nIndex++ ) );
+            category.setName( daoUtil.getString( nIndex++ ) );
+            category.setDescription( daoUtil.getString( nIndex++ ) );
 
             categoryList.add( category );
         }
@@ -186,25 +188,25 @@ public final class CategoryDAO implements ICategoryDAO
 
         return categoryList;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Category selectFirstCategory( Plugin plugin )
     {
-    	DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_FIRST_CATEGORY, plugin );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_FIRST_CATEGORY, plugin );
         daoUtil.executeQuery(  );
 
         Category category = null;
 
         if ( daoUtil.next(  ) )
         {
+            int nIndex = 1;
             category = new Category(  );
 
-            category.setIdCategory( daoUtil.getInt( 1 ) );
-            category.setIdParent( daoUtil.getInt( 2 ) );
-            category.setName( daoUtil.getString( 3 ) );
-            category.setDescription( daoUtil.getString( 4 ) );
+            category.setIdCategory( daoUtil.getInt( nIndex++ ) );
+            category.setName( daoUtil.getString( nIndex++ ) );
+            category.setDescription( daoUtil.getString( nIndex++ ) );
         }
 
         daoUtil.free(  );

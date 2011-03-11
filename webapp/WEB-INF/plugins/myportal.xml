@@ -21,8 +21,6 @@
         <css-stylesheet>myportal/myportal.css</css-stylesheet>
     </css-stylesheets>
 
-
-
     <!-- Admin features parameters -->
     <admin-features>
         <admin-feature>
@@ -32,7 +30,7 @@
             <feature-level>0</feature-level>
             <feature-url>jsp/admin/plugins/myportal/ManageWidgets.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
-      </admin-feature>
+		</admin-feature>
         <admin-feature>
             <feature-id>MYPORTAL_CATEGORY_MANAGEMENT</feature-id>
             <feature-title>myportal.adminFeature.myportal_category_management.name</feature-title>
@@ -40,15 +38,7 @@
             <feature-level>0</feature-level>
             <feature-url>jsp/admin/plugins/myportal/ManageCategories.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
-      </admin-feature>
-        <admin-feature>
-            <feature-id>MYPORTAL_LAYOUT_MANAGEMENT</feature-id>
-            <feature-title>myportal.adminFeature.myportal_layout_management.name</feature-title>
-            <feature-description>myportal.adminFeature.myportal_layout_management.description</feature-description>
-            <feature-level>0</feature-level>
-            <feature-url>jsp/admin/plugins/myportal/ManageLayouts.jsp</feature-url>
-            <feature-icon-url></feature-icon-url>
-      </admin-feature>
+		</admin-feature>
     </admin-features>    
   	<!-- XPages parameters -->
     <applications>

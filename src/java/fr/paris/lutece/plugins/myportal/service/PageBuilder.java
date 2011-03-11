@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,9 @@ import java.util.List;
 
 
 /**
+ *
  * This is an implentation of a page builder. Other implementation can be injected using Spring IoC
+ *
  */
 public class PageBuilder implements IPageBuilder
 {
@@ -53,6 +55,12 @@ public class PageBuilder implements IPageBuilder
     private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
     private static final String END_DIV = "\n</div>\n";
 
+    /**
+     * Build the page given a page config and a LuteceUser
+     * @param pageConfig a {@link PageConfig}
+     * @param user a {@link LuteceUser}
+     * @return the page
+     */
     public String buildPage( PageConfig pageConfig, LuteceUser user )
     {
         StringBuilder sb = new StringBuilder(  );
@@ -100,6 +108,9 @@ public class PageBuilder implements IPageBuilder
                     case 3:
                         sbWidget = sbCol3;
 
+                        break;
+
+                    default:
                         break;
                 }
 

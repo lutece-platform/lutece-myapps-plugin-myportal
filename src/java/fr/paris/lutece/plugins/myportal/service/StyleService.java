@@ -31,72 +31,47 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business;
+package fr.paris.lutece.plugins.myportal.service;
+
+import fr.paris.lutece.plugins.myportal.business.StyleHome;
+import fr.paris.lutece.util.ReferenceList;
 
 
 /**
- *
- * This is the business class for the object Style
- *
+ * StyleService
  */
-public class Style
+public final class StyleService
 {
-    // Variables declarations
-    private int _nIdStyle;
-    private String _strName;
-    private String _strCssClass;
+    private static StyleService _singleton;
 
     /**
-     * Returns the IdStyle
-     * @return The IdStyle
+     * Private constructor
      */
-    public int getId(  )
+    private StyleService(  )
     {
-        return _nIdStyle;
     }
 
     /**
-     * Sets the IdStyle
-     * @param nIdStyle The IdStyle
+     * Get the instance of {@link StyleService}
+     *
+     * @return an instance of {@link StyleService}
      */
-    public void setId( int nIdStyle )
+    public static synchronized StyleService getInstance(  )
     {
-        _nIdStyle = nIdStyle;
+        if ( _singleton == null )
+        {
+            _singleton = new StyleService(  );
+        }
+
+        return _singleton;
     }
 
     /**
-     * Returns the Name
-     * @return The Name
+     * Load the data of all the style objects and returns them in form of a list
+     * @return the list which contains the data of all the style objects
      */
-    public String getName(  )
+    public ReferenceList getStyles(  )
     {
-        return _strName;
-    }
-
-    /**
-     * Sets the Name
-     * @param strName The Name
-     */
-    public void setName( String strName )
-    {
-        _strName = strName;
-    }
-
-    /**
-     * Returns the CssClass
-     * @return The CssClass
-     */
-    public String getCssClass(  )
-    {
-        return _strCssClass;
-    }
-
-    /**
-     * Sets the CssClass
-     * @param strCssClass The CssClass
-     */
-    public void setCssClass( String strCssClass )
-    {
-        _strCssClass = strCssClass;
+        return StyleHome.getStyles(  );
     }
 }

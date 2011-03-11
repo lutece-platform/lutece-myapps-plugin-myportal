@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2008, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,9 @@ package fr.paris.lutece.plugins.myportal.business.page;
 
 
 /**
+ *
  * WidgetConfig
+ *
  */
 public class WidgetConfig
 {

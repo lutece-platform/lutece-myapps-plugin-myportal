@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,13 +35,14 @@ package fr.paris.lutece.plugins.myportal.business;
 
 
 /**
+ *
  * This is the business class for the object Category
+ *
  */
 public class Category
 {
     // Variables declarations 
     private int _nIdCategory;
-    private int _nIdParent;
     private String _strName;
     private String _strDescription;
 
@@ -61,24 +62,6 @@ public class Category
     public void setIdCategory( int nIdCategory )
     {
         _nIdCategory = nIdCategory;
-    }
-
-    /**
-     * Returns the IdParent
-     * @return The IdParent
-     */
-    public int getIdParent(  )
-    {
-        return _nIdParent;
-    }
-
-    /**
-     * Sets the IdParent
-     * @param nIdParent The IdParent
-     */
-    public void setIdParent( int nIdParent )
-    {
-        _nIdParent = nIdParent;
     }
 
     /**

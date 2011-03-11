@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,13 +38,28 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 /**
  *
- * @author pierre
+ * WidgetHandler
+ *
  */
 public interface WidgetHandler
 {
+    /**
+     * Get the name of the handler
+     * @return the name
+     */
     String getName(  );
 
+    /**
+     * Get the description of the handler
+     * @return the description
+     */
     String getDescription(  );
 
+    /**
+     * Render a widget
+     * @param strWidgetData the widget data
+     * @param user the {@link LuteceUser}
+     * @return a data
+     */
     String renderWidget( String strWidgetData, LuteceUser user );
 }

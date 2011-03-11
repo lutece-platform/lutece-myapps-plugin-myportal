@@ -6,7 +6,6 @@
 DROP TABLE IF EXISTS myportal_category;
 CREATE TABLE myportal_category (
 id_category int(11) NOT NULL default '0',
-id_parent int(11) NOT NULL default '0',
 name varchar(50) NOT NULL default '',
 description varchar(50) NOT NULL default '',
 PRIMARY KEY (id_category)
@@ -44,19 +43,6 @@ status smallint NOT NULL default '0',
 is_essential smallint NOT NULL default '0',
 is_new smallint NOT NULL default '0',
 PRIMARY KEY (id_widget)
-);
-
---
--- Structure for table myportal_layout
---
-
-DROP TABLE IF EXISTS myportal_layout;
-CREATE TABLE myportal_layout (		
-id_layout int(11) NOT NULL default '0',
-name varchar(50) NOT NULL default '',
-description varchar(50) NOT NULL default '',
-layout varchar(50) NOT NULL default '',
-PRIMARY KEY (id_layout)
 );
 
 --

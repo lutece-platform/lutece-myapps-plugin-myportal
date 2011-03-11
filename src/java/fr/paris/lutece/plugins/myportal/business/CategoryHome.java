@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -42,16 +43,17 @@ import java.util.Collection;
 
 
 /**
+ *
  * This class provides instances management methods (create, find, ...) for Category objects
+ *
  */
 public final class CategoryHome
 {
-    private static final String PLUGIN_NAME = "myportal";
-
     // Static variable pointed at the DAO instance
-    private static ICategoryDAO _dao = (ICategoryDAO) SpringContextService.getPluginBean( PLUGIN_NAME,
-            "myportal.categoryDAO" );
-    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
+    private static final String BEAN_MYPORTAL_CATEGORYDAO = "myportal.categoryDAO";
+    private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
+    private static ICategoryDAO _dao = (ICategoryDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_CATEGORYDAO );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -112,7 +114,7 @@ public final class CategoryHome
      */
     public static Collection<Category> getCategoriesList(  )
     {
-        return _dao.selectCategorysList( _plugin );
+        return _dao.selectCategoriesList( _plugin );
     }
 
     /**
@@ -123,20 +125,20 @@ public final class CategoryHome
     {
         ReferenceList list = new ReferenceList(  );
 
-        for ( Category category : _dao.selectCategorysList( _plugin ) )
+        for ( Category category : _dao.selectCategoriesList( _plugin ) )
         {
             list.addItem( category.getIdCategory(  ), category.getName(  ) );
         }
 
         return list;
     }
-    
+
     /**
      * Find the first category
      * @return a {@link Category}
      */
     public static Category findFirstCategory(  )
     {
-    	return _dao.selectFirstCategory( _plugin );
+        return _dao.selectFirstCategory( _plugin );
     }
 }

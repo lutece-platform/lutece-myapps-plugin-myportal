@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,22 +33,24 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 /**
+ *
  * This class provides instances management methods (create, find, ...) for UserPageConfig objects
+ *
  */
 public final class UserPageConfigHome
 {
     // Static variable pointed at the DAO instance
-    private static final String PLUGIN_NAME = "myportal";
-    private static final String BEAN_DAO = "myportal.userPageConfigDAO";
-    private static IUserPageConfigDAO _dao = (IUserPageConfigDAO) SpringContextService.getPluginBean( PLUGIN_NAME,
-            BEAN_DAO );
-    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
+    private static final String BEAN_MYPORTAL_USERPAGECONFIGDAO = "myportal.userPageConfigDAO";
+    private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
+    private static IUserPageConfigDAO _dao = (IUserPageConfigDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_USERPAGECONFIGDAO );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -84,7 +86,6 @@ public final class UserPageConfigHome
     /**
      * Remove the userPageConfig whose identifier is specified in parameter
      * @param nUserPageConfigId The userPageConfig Id
-     * @param plugin the Plugin
      */
     public static void remove( int nUserPageConfigId )
     {

@@ -37,7 +37,9 @@ import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
 
 
 /**
+ *
  * class MyPortalPlugin
+ *
  */
 public class MyPortalPlugin extends PluginDefaultImplementation
 {
@@ -48,6 +50,6 @@ public class MyPortalPlugin extends PluginDefaultImplementation
      */
     public void init(  )
     {
-    	WidgetImgProvider.getInstance(  ).init(  );
+        WidgetImgProvider.getInstance(  ).init(  );
     }
 }

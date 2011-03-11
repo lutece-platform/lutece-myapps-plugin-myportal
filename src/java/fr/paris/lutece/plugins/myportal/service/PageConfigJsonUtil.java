@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2008, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,11 @@ import java.util.List;
 
 
 /**
+ *
  * PageConfigJsonUtil
+ *
  */
-public class PageConfigJsonUtil
+public final class PageConfigJsonUtil
 {
     private static final String ATTR_PAGE = "page";
     private static final String ATTR_NAME = "name";
@@ -58,6 +60,13 @@ public class PageConfigJsonUtil
     private static final String ATTR_ID = "id";
     private static final String ATTR_STATE = "state";
     private static final String ATTR_COLUMN = "column";
+
+    /**
+     * Constructor
+     */
+    private PageConfigJsonUtil(  )
+    {
+    }
 
     /**
      * Create a PageConfig object from a JSON flow
@@ -127,7 +136,7 @@ public class PageConfigJsonUtil
             JSONObject jsonTab = new JSONObject(  );
             JSONArray jsonWidgets = new JSONArray(  );
 
-            if( tab.getWidgetList(  ) != null )
+            if ( tab.getWidgetList(  ) != null )
             {
                 for ( WidgetConfig widget : tab.getWidgetList(  ) )
                 {

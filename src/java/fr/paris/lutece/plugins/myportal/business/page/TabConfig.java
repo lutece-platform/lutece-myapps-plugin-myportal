@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.myportal.business.page;
 
-import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
-
 import java.util.List;
 
 
 /**
+ *
  * TabConfig
+ *
  */
 public class TabConfig
 {
@@ -75,10 +75,10 @@ public class TabConfig
 
     /**
      * Sets the WidgetList
-     * @param WidgetList The WidgetList
+     * @param widgetList The WidgetList
      */
-    public void setWidgetList( List WidgetList )
+    public void setWidgetList( List<WidgetConfig> widgetList )
     {
-        _listWidget = WidgetList;
+        _listWidget = widgetList;
     }
 }

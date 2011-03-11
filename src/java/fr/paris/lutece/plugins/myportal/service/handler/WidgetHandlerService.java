@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2011, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,18 +41,26 @@ import java.util.List;
 
 /**
  *
- * @author pierre
+ * WidgetHandlerService
+ *
  */
-public class WidgetHandlerService
+public final class WidgetHandlerService
 {
     private static WidgetHandlerService _singleton;
     private static List<WidgetHandler> _listHandlers;
 
+    /**
+     * Constructor
+     */
     private WidgetHandlerService(  )
     {
     }
 
-    public static WidgetHandlerService instance(  )
+    /**
+     * Get an instance of {@link WidgetHandlerService}
+     * @return an instance of {@link WidgetHandlerService}
+     */
+    public static synchronized WidgetHandlerService instance(  )
     {
         if ( _singleton == null )
         {
@@ -63,6 +71,10 @@ public class WidgetHandlerService
         return _singleton;
     }
 
+    /**
+     * Get the handlers as a {@link ReferenceList}
+     * @return a {@link ReferenceList}
+     */
     public ReferenceList getHandlers(  )
     {
         ReferenceList list = new ReferenceList(  );
@@ -75,6 +87,11 @@ public class WidgetHandlerService
         return list;
     }
 
+    /**
+     * Get a handler given a type
+     * @param strType the type
+     * @return a {@link WidgetHandler}
+     */
     public WidgetHandler getHandler( String strType )
     {
         for ( WidgetHandler handler : _listHandlers )

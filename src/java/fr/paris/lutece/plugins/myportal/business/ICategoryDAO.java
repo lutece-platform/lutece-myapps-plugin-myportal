@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,9 @@ import java.util.Collection;
 
 
 /**
+ *
 * ICategoryDAO Interface
+*
 */
 public interface ICategoryDAO
 {
@@ -69,7 +71,7 @@ public interface ICategoryDAO
 
     /**
      * Load the data from the table
-     * @param strId The identifier of the category
+     * @param nKey The identifier of the category
      * @param plugin the Plugin
      * @return The instance of the category
      */
@@ -80,8 +82,8 @@ public interface ICategoryDAO
     * @param plugin the Plugin
     * @return The collection which contains the data of all the category objects
     */
-    Collection<Category> selectCategorysList( Plugin plugin );
-    
+    Collection<Category> selectCategoriesList( Plugin plugin );
+
     /**
      * Select the first category
      * @param plugin {@link Plugin}

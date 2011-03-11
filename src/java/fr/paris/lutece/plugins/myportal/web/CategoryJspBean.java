@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,15 +33,8 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.myportal.business.Category;
-import fr.paris.lutece.plugins.myportal.business.CategoryHome;
+import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -53,12 +46,19 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
- * This class provides the user interface to manage  Category,
-Widget,
-Layout
-features ( manage, create, modify, remove )
+ * This class provides the user interface to manage  Category, Widget, features
+ * ( manage, create, modify, remove )
  */
 public class CategoryJspBean extends PluginAdminPageJspBean
 {
@@ -69,19 +69,17 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
     // Parameters
     private static final String PARAMETER_CATEGORY_ID_CATEGORY = "category_id_category";
-    private static final String PARAMETER_CATEGORY_ID_PARENT = "category_id_parent";
     private static final String PARAMETER_CATEGORY_NAME = "category_name";
     private static final String PARAMETER_CATEGORY_DESCRIPTION = "category_description";
-    private static final String PARAMETER_CATEGORY_PAGE_INDEX = "category_page_index";
     private static final String PARAMETER_PAGE_INDEX = "page_index";
 
     // templates
-    private static final String TEMPLATE_MANAGE_CATEGORYS = "/admin/plugins/myportal/manage_category.html";
+    private static final String TEMPLATE_MANAGE_CATEGORIES = "/admin/plugins/myportal/manage_categories.html";
     private static final String TEMPLATE_CREATE_CATEGORY = "/admin/plugins/myportal/create_category.html";
     private static final String TEMPLATE_MODIFY_CATEGORY = "/admin/plugins/myportal/modify_category.html";
 
     // Properties for page titles
-    private static final String PROPERTY_PAGE_TITLE_MANAGE_CATEGORYS = "myportal.manage_category.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MANAGE_CATEGORIES = "myportal.manage_categories.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY_CATEGORY = "myportal.modify_category.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_CREATE_CATEGORY = "myportal.create_category.pageTitle";
 
@@ -101,6 +99,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
     // Messages
     private static final String MESSAGE_CONFIRM_REMOVE_CATEGORY = "myportal.message.confirmRemoveCategory";
+    private static final String MESSAGE_ERROR = "myportal.message.error";
 
     //Variables
     private int _nDefaultItemsPerPage;
@@ -115,7 +114,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
      */
     public String getManageCategories( HttpServletRequest request )
     {
-        setPageTitleProperty( PROPERTY_PAGE_TITLE_MANAGE_CATEGORYS );
+        setPageTitleProperty( PROPERTY_PAGE_TITLE_MANAGE_CATEGORIES );
 
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
         _nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_CATEGORY_PER_PAGE, 50 );
@@ -124,8 +123,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
         UrlItem url = new UrlItem( JSP_MANAGE_CATEGORYS );
         String strUrl = url.getUrl(  );
-        Collection<Category> listCATEGORYs = CategoryHome.getCategoriesList(  );
-        LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCATEGORYs, _nItemsPerPage, strUrl,
+        Collection<Category> listCategories = CategoryService.getInstance(  ).getCategoriesList(  );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCategories, _nItemsPerPage, strUrl,
                 PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
@@ -134,7 +133,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_CATEGORY_LIST, paginator.getPageItems(  ) );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_CATEGORYS, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_CATEGORIES, getLocale(  ), model );
 
         return getAdminPage( templateList.getHtml(  ) );
     }
@@ -164,25 +163,26 @@ public class CategoryJspBean extends PluginAdminPageJspBean
      */
     public String doCreateCategory( HttpServletRequest request )
     {
-        Category category = new Category(  );
+        String strUrl = StringUtils.EMPTY;
+        String strName = request.getParameter( PARAMETER_CATEGORY_NAME );
+        String strDescription = request.getParameter( PARAMETER_CATEGORY_DESCRIPTION );
 
-        if ( request.getParameter( PARAMETER_CATEGORY_NAME ).equals( "" ) )
+        if ( StringUtils.isNotBlank( strName ) && StringUtils.isNotBlank( strDescription ) )
         {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            Category category = new Category(  );
+            category.setName( strName );
+            category.setDescription( strDescription );
+
+            CategoryService.getInstance(  ).createCategory( category );
+
+            strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
-        category.setName( request.getParameter( PARAMETER_CATEGORY_NAME ) );
-
-        if ( request.getParameter( PARAMETER_CATEGORY_DESCRIPTION ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        category.setDescription( request.getParameter( PARAMETER_CATEGORY_DESCRIPTION ) );
-
-        CategoryHome.create( category );
-
-        return JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+        return strUrl;
     }
 
     /**
@@ -193,12 +193,24 @@ public class CategoryJspBean extends PluginAdminPageJspBean
      */
     public String getConfirmRemoveCategory( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY ) );
-        UrlItem url = new UrlItem( JSP_DO_REMOVE_CATEGORY );
-        url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, nId );
+        String strUrl = StringUtils.EMPTY;
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_CATEGORY, url.getUrl(  ),
-            AdminMessage.TYPE_CONFIRMATION );
+        if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
+        {
+            int nId = Integer.parseInt( strCategoryId );
+            UrlItem url = new UrlItem( JSP_DO_REMOVE_CATEGORY );
+            url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, nId );
+
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_CATEGORY, url.getUrl(  ),
+                    AdminMessage.TYPE_CONFIRMATION );
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -209,10 +221,22 @@ public class CategoryJspBean extends PluginAdminPageJspBean
      */
     public String doRemoveCategory( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY ) );
-        CategoryHome.remove( nId );
+        String strUrl = StringUtils.EMPTY;
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
 
-        return JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+        if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
+        {
+            int nId = Integer.parseInt( strCategoryId );
+            CategoryService.getInstance(  ).removeCategory( nId );
+
+            strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -225,15 +249,27 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_MODIFY_CATEGORY );
 
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY ) );
-        Category category = CategoryHome.findByPrimaryKey( nId );
+        String strUrl = StringUtils.EMPTY;
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_CATEGORY, category );
+        if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
+        {
+            int nId = Integer.parseInt( strCategoryId );
+            Category category = CategoryService.getInstance(  ).findByPrimaryKey( nId );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_CATEGORY, getLocale(  ), model );
+            Map<String, Object> model = new HashMap<String, Object>(  );
+            model.put( MARK_CATEGORY, category );
 
-        return getAdminPage( template.getHtml(  ) );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_CATEGORY, getLocale(  ), model );
+
+            strUrl = getAdminPage( template.getHtml(  ) );
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+        }
+
+        return strUrl;
     }
 
     /**
@@ -244,24 +280,42 @@ public class CategoryJspBean extends PluginAdminPageJspBean
      */
     public String doModifyCategory( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY ) );
-        Category category = CategoryHome.findByPrimaryKey( nId );
+        String strUrl = StringUtils.EMPTY;
+        String strCategoryId = request.getParameter( PARAMETER_CATEGORY_ID_CATEGORY );
 
-        if ( request.getParameter( PARAMETER_CATEGORY_NAME ).equals( "" ) )
+        if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
         {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            String strName = request.getParameter( PARAMETER_CATEGORY_NAME );
+            String strDescription = request.getParameter( PARAMETER_CATEGORY_DESCRIPTION );
+
+            if ( StringUtils.isNotBlank( strName ) && StringUtils.isNotBlank( strDescription ) )
+            {
+                int nId = Integer.parseInt( strCategoryId );
+                Category category = CategoryService.getInstance(  ).findByPrimaryKey( nId );
+
+                if ( category != null )
+                {
+                    category.setName( strName );
+                    category.setDescription( strDescription );
+                    CategoryService.getInstance(  ).updateCategory( category );
+
+                    strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+                }
+                else
+                {
+                    strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
+                }
+            }
+            else
+            {
+                strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            }
+        }
+        else
+        {
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_ERROR, AdminMessage.TYPE_STOP );
         }
 
-        category.setName( request.getParameter( PARAMETER_CATEGORY_NAME ) );
-
-        if ( request.getParameter( PARAMETER_CATEGORY_DESCRIPTION ).equals( "" ) )
-        {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
-        }
-
-        category.setDescription( request.getParameter( PARAMETER_CATEGORY_DESCRIPTION ) );
-        CategoryHome.update( category );
-
-        return JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+        return strUrl;
     }
 }

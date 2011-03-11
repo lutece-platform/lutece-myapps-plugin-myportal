@@ -36,8 +36,6 @@ package fr.paris.lutece.plugins.myportal.service;
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.image.ImageResourceManager;
 import fr.paris.lutece.portal.service.image.ImageResourceProvider;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
 
 
 /**
@@ -106,8 +104,6 @@ public class WidgetImgProvider implements ImageResourceProvider
      */
     public ImageResource getImageResource( int nWidgetId )
     {
-        Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-
-        return WidgetService.instance(  ).getIconResource( nWidgetId, plugin );
+        return WidgetService.instance(  ).getIconResource( nWidgetId );
     }
 }

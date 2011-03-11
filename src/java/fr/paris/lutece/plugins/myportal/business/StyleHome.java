@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -42,15 +43,17 @@ import java.util.List;
 
 
 /**
+ *
  * This class provides instances management methods (create, find, ...) for Style objects
+ *
  */
 public final class StyleHome
 {
-    private static final String PLUGIN_NAME = "myportal";
-
     // Static variable pointed at the DAO instance
-    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
-    private static IStyleDAO _dao = (IStyleDAO) SpringContextService.getPluginBean( "myportal", "myportal.styleDAO" );
+    private static final String BEAN_MYPORTAL_STYLEDAO = "myportal.styleDAO";
+    private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
+    private static IStyleDAO _dao = (IStyleDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_STYLEDAO );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -107,7 +110,6 @@ public final class StyleHome
 
     /**
      * Load the data of all the style objects and returns them in form of a list
-     * @param plugin the Plugin
      * @return the list which contains the data of all the style objects
      */
     public static List<Style> getStylesList(  )
@@ -117,7 +119,6 @@ public final class StyleHome
 
     /**
      * Load the data of all the style objects and returns them in form of a list
-     * @param plugin the Plugin
      * @return the list which contains the data of all the style objects
      */
     public static ReferenceList getStyles(  )
