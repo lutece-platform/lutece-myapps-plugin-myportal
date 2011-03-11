@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +42,7 @@ import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.cache.CacheService;
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
@@ -50,22 +50,41 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 
 /**
- * Widget Service class : retreive Widget description from a cache
+ * Widget Service class : retrieve Widget description from a cache
  */
 public class WidgetService extends AbstractCacheableService
 {
-    private static WidgetService _singleton = new WidgetService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Service";
 
+    // PREFIX
+    private static final String PREFIX_ICON_RESOURCE = "icon_resource_";
+    private static final String PREFIX_WIDGETS_BY_CATEGORIES = "widgets_by_categories_";
+    private static final String PREFIX_ESSENTIAL_WIDGETS = "essential_widgets";
+    private static final String PREFIX_NEW_WIDGETS = "new_widgets";
+    
     // CONSTANTS
 	private static final String COMMA = ",";
+	private static final String TRUE = "true";
 	
     // PROPERTIES
     private static final String PROPERTY_ACCEPTED_ICON_FORMATS = "myportal.acceptedIconFormats";
+    private static final String PROPERTY_CACHE_WIDGETSERVICE_ENABLE = "myportal.cache.widgetService.enable";
 
+    private static WidgetService _singleton;
+    
     /** Private constructor */
     private WidgetService(  )
     {
+    	String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETSERVICE_ENABLE, TRUE );
+    	boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
+    	if ( bCacheEnable )
+    	{
+    		initCache( getName(  ) );
+    	}
+    	else
+    	{
+    		CacheService.registerCacheableService( getName(  ), this );
+    	}
     }
 
     /**
@@ -80,25 +99,29 @@ public class WidgetService extends AbstractCacheableService
      * Gets the unique instance of the service
      * @return The unique instance
      */
-    public static WidgetService instance(  )
+    public static synchronized WidgetService instance(  )
     {
+    	if ( _singleton == null )
+    	{
+    		_singleton = new WidgetService(  );
+    	}
         return _singleton;
     }
 
     /**
      * Returns widgets description from the cache
-     * @param id The Widget ID
+     * @param nWidgetId The Widget ID
      * @return The widget object
      */
-    public Widget getWidget( int id )
+    public Widget getWidget( int nWidgetId )
     {
-        String strWidgetId = "" + id;
+        String strWidgetId = Integer.toString( nWidgetId );
         Widget widget = (Widget) getFromCache( strWidgetId );
 
         if ( widget == null )
         {
         	Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-            widget = WidgetHome.findByPrimaryKey( id, plugin );
+            widget = WidgetHome.findByPrimaryKey( nWidgetId, plugin );
             putInCache( strWidgetId, widget );
         }
 
@@ -113,7 +136,13 @@ public class WidgetService extends AbstractCacheableService
      */
     public ImageResource getIconResource( int nWidgetId, Plugin plugin )
     {
-    	return WidgetHome.getIconResource( nWidgetId, plugin );
+    	ImageResource img = (ImageResource) getFromCache( PREFIX_ICON_RESOURCE + nWidgetId );
+    	if ( img == null )
+    	{
+    		img = WidgetHome.getIconResource( nWidgetId, plugin );
+    		putInCache( PREFIX_ICON_RESOURCE + nWidgetId, img );
+    	}
+    	return img;
     }
     
     /**
@@ -148,23 +177,20 @@ public class WidgetService extends AbstractCacheableService
      * @param plugin {@link Plugin}
      * @return a list of {@link Widget}
      */
-    public List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
+    @SuppressWarnings("unchecked")
+	public List<Widget> getWidgetsByCategoryId( int nCategoryId, Plugin plugin )
     {
-    	WidgetFilter wFilter = new WidgetFilter(  );
-    	wFilter.setIdCategory( nCategoryId );
-    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
-    	wFilter.setIsWideSearch( false );
-    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
-    }
-    
-    /**
-     * Get the list of widgets
-     * @param plugin {@link Plugin}
-     * @return a collection of {@link Widget}
-     */
-    public Collection<Widget> getWidgetsList( Plugin plugin )
-    {
-    	return WidgetHome.getWidgetsList( plugin );
+    	List<Widget> listWidgets = (List<Widget>) getFromCache( PREFIX_WIDGETS_BY_CATEGORIES + nCategoryId );
+    	if ( listWidgets == null )
+    	{
+    		WidgetFilter wFilter = new WidgetFilter(  );
+        	wFilter.setIdCategory( nCategoryId );
+        	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+        	wFilter.setIsWideSearch( false );
+        	listWidgets = WidgetHome.getWidgetsByFilter( wFilter, plugin );
+        	putInCache( PREFIX_WIDGETS_BY_CATEGORIES + nCategoryId, listWidgets );
+    	}
+    	return listWidgets;
     }
     
     /**
@@ -173,13 +199,20 @@ public class WidgetService extends AbstractCacheableService
      * @param plugin {@link Plugin}
      * @return a list of {@link Widget}
      */
-    public List<Widget> getEssentialWidgets( Plugin plugin )
+    @SuppressWarnings("unchecked")
+	public List<Widget> getEssentialWidgets( Plugin plugin )
     {
-    	WidgetFilter wFilter = new WidgetFilter(  );
-    	wFilter.setIsEssential( WidgetFilter.FILTER_TRUE );
-    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
-    	wFilter.setIsWideSearch( false );
-    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
+    	List<Widget> listWidgets = (List<Widget>) getFromCache( PREFIX_ESSENTIAL_WIDGETS );
+    	if ( listWidgets == null )
+    	{
+    		WidgetFilter wFilter = new WidgetFilter(  );
+        	wFilter.setIsEssential( WidgetFilter.FILTER_TRUE );
+        	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+        	wFilter.setIsWideSearch( false );
+        	listWidgets = WidgetHome.getWidgetsByFilter( wFilter, plugin );
+        	putInCache( PREFIX_ESSENTIAL_WIDGETS, listWidgets );
+    	}
+    	return listWidgets;
     }
     
     /**
@@ -188,13 +221,20 @@ public class WidgetService extends AbstractCacheableService
      * @param plugin {@link Plugin}
      * @return a list of {@link Widget}
      */
-    public List<Widget> getNewWidgets( Plugin plugin )
+    @SuppressWarnings("unchecked")
+	public List<Widget> getNewWidgets( Plugin plugin )
     {
-    	WidgetFilter wFilter = new WidgetFilter(  );
-    	wFilter.setIsNew( WidgetFilter.FILTER_TRUE );
-    	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
-    	wFilter.setIsWideSearch( false );
-    	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
+    	List<Widget> listWidgets = (List<Widget>) getFromCache( PREFIX_NEW_WIDGETS );
+    	if ( listWidgets == null )
+    	{
+    		WidgetFilter wFilter = new WidgetFilter(  );
+        	wFilter.setIsNew( WidgetFilter.FILTER_TRUE );
+        	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+        	wFilter.setIsWideSearch( false );
+        	listWidgets = WidgetHome.getWidgetsByFilter( wFilter, plugin );
+        	putInCache( PREFIX_NEW_WIDGETS, listWidgets );
+    	}
+    	return listWidgets;
     }
     
     /**
@@ -205,10 +245,46 @@ public class WidgetService extends AbstractCacheableService
      */
     public List<Widget> getWidgetsByName( String strName, Plugin plugin )
     {
-    	WidgetFilter wFilter = new WidgetFilter(  );
+		WidgetFilter wFilter = new WidgetFilter(  );
     	wFilter.setName( strName );
     	wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
     	wFilter.setIsWideSearch( false );
     	return WidgetHome.getWidgetsByFilter( wFilter, plugin );
+    }
+    
+    /**
+     * Create a new widget. If the cache is enable, it will reset the cache.
+     * @param widget The {@link Widget}
+     * @param plugin {@link Plugin}
+     */
+    public void createWidget( Widget widget, Plugin plugin )
+    {
+    	resetCache(  );
+    	WidgetHome.create( widget, plugin );
+    }
+    
+    /**
+     * Remove a widget. If the cache is enable, it will reset the cache.
+     * @param nWidgetId the widget ID
+     * @param plugin {@link Plugin}
+     */
+    public void removeWidget( int nWidgetId, Plugin plugin )
+    {
+    	resetCache(  );
+    	WidgetContentService.instance(  ).removeCache( Integer.toString( nWidgetId ) );
+    	WidgetHome.remove( nWidgetId, plugin );
+    }
+    
+    /**
+     * Update a widget. If the cache is enable, it will reset the cache.
+     * @param widget The {@link Widget}
+     * @param bUpdateIcon true if it must also update the icon, false otherwise
+     * @param plugin {@link Plugin}
+     */
+    public void updateWidget( Widget widget, boolean bUpdateIcon, Plugin plugin )
+    {
+    	resetCache(  );
+    	WidgetContentService.instance(  ).removeCache( Integer.toString( widget.getIdWidget(  ) ) );
+    	WidgetHome.update( widget, bUpdateIcon, plugin );
     }
 }

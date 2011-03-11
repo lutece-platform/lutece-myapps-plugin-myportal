@@ -65,10 +65,8 @@ import fr.paris.lutece.util.url.UrlItem;
 
 
 /**
- * This class provides the user interface to manage  Category,
-Widget,
-Layout
-features ( manage, create, modify, remove )
+ * This class provides the user interface to manage  Category, Widget, features 
+ * ( manage, create, modify, remove )
  */
 public class WidgetJspBean extends PluginAdminPageJspBean
 {	
@@ -239,7 +237,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 		byte[] bytes = itemIcon.get(  );
                         widget.setIconContent( bytes );
                         widget.setIconMimeType( strMimeType );
-                        WidgetHome.create( widget, getPlugin(  ) );
+                        WidgetService.instance(  ).createWidget( widget, getPlugin(  ) );
 
                         strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 	}
@@ -253,7 +251,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 {
                 	widget.setIconContent( null );
                 	widget.setIconMimeType( StringUtils.EMPTY );
-                	WidgetHome.create( widget, getPlugin(  ) );
+                	WidgetService.instance(  ).createWidget( widget, getPlugin(  ) );
 
                     strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
@@ -295,8 +293,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
      */
     public String doRemoveWidget( HttpServletRequest request )
     {
-        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
-        WidgetHome.remove( nId, getPlugin(  ) );
+        int nWidgetId = Integer.parseInt( request.getParameter( PARAMETER_ID_WIDGET ) );
+        WidgetService.instance(  ).removeWidget( nWidgetId, getPlugin(  ) );
 
         return JSP_REDIRECT_TO_MANAGE_WIDGETS;
     }
@@ -410,7 +408,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 }
                 else
                 {
-                	WidgetHome.update( widget, bUpdateIcon, getPlugin(  ) );
+                	WidgetService.instance(  ).updateWidget( widget, bUpdateIcon, getPlugin(  ) );
                 	strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
         	}

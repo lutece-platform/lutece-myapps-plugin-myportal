@@ -38,9 +38,12 @@ import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.cache.CacheService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 
 /**
@@ -48,12 +51,29 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
  */
 public class WidgetContentService extends AbstractCacheableService
 {
-    private static WidgetContentService _singleton = new WidgetContentService(  );
     private static final String SERVICE_NAME = "MyPortal Widget Content Service";
+    
+    // CONSTANTS
+    private static final String TRUE = "true";
+    
+    // PROPERTIES
+    private static final String PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE = "myportal.cache.widgetContentService.enable";
 
+    private static WidgetContentService _singleton;
+    
     /** Private constructor */
     private WidgetContentService(  )
     {
+    	String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE, TRUE );
+    	boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
+    	if ( bCacheEnable )
+    	{
+    		initCache( getName(  ) );
+    	}
+    	else
+    	{
+    		CacheService.registerCacheableService( getName(  ), this );
+    	}
     }
 
     /**
@@ -68,26 +88,30 @@ public class WidgetContentService extends AbstractCacheableService
      * Gets the unique instance of the service
      * @return The unique instance
      */
-    public static WidgetContentService instance(  )
+    public static synchronized WidgetContentService instance(  )
     {
+    	if ( _singleton == null )
+    	{
+    		_singleton = new WidgetContentService(  );
+    	}
         return _singleton;
     }
 
     /**
      * Get the widget content
-     * @param id The Widget ID
+     * @param nWidgetId The Widget ID
      * @param user The Lutece user
      * @return The widget Content
      */
-    public String getWidgetContent( int id, LuteceUser user )
+    public String getWidgetContent( int nWidgetId, LuteceUser user )
     {
-        String strWidgetId = "" + id;
+        String strWidgetId = Integer.toString( nWidgetId );
         String strWidget = (String) getFromCache( strWidgetId );
 
         if ( strWidget == null )
         {
         	Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-            Widget widget = WidgetHome.findByPrimaryKey( id, plugin );
+            Widget widget = WidgetHome.findByPrimaryKey( nWidgetId, plugin );
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
             strWidget = handler.renderWidget( widget.getConfigData(  ), user );
@@ -95,5 +119,21 @@ public class WidgetContentService extends AbstractCacheableService
         }
 
         return strWidget;
+    }
+    
+    /**
+     * Remove the cache by a given name
+     * @param strName the name of the cache to remove
+     */
+    public void removeCache( String strName )
+    {
+    	try
+    	{
+    		getCache(  ).remove( strName );
+    	}
+    	catch( IllegalStateException e )
+    	{
+    		AppLogService.error( e.getMessage(  ), e );
+    	}
     }
 }
