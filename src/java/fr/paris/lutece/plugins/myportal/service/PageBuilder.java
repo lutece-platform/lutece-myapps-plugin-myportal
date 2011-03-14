@@ -38,8 +38,12 @@ import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.util.xml.XmlUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,11 +53,43 @@ import java.util.List;
  */
 public class PageBuilder implements IPageBuilder
 {
-    private static final String BEGIN_DIV_COLUMN = "\n<div class=\"myportal-column\">\n";
-    private static final String BEGIN_DIV_COLUMN_FIXED = "\n<div class=\"myportal-column-fixed\">\n";
-    private static final String BEGIN_DIV_HEADER = "\n<div class=\"myportal-portlet-header\">\n";
-    private static final String BEGIN_DIV_CONTENT = "\n<div class=\"myportal-portlet-content\">\n";
-    private static final String END_DIV = "\n</div>\n";
+    // CONSTANTS
+    private static final String QUESTION_MARK = "?";
+    private static final String EQUAL = "=";
+    private static final String ANCHOR = "#";
+    private static final String ID_TAB = "tabs-";
+    private static final String ID_WIDGET = "widget-";
+    private static final String CLASS_MYPORTAL_COLUMN = "myportal-column";
+    private static final String CLASS_MYPORTAL_COLUMN_FIXED = "myportal-column-fixed";
+    private static final String CLASS_MYPORTAL_PORTLET_HEADER = "myportal-portlet-header";
+    private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
+
+    // PARAMETERS
+    private static final String PARAMETER_PAGE = "page";
+
+    // HTML CONSTANTS
+    private static final String BEGIN_LI = "<li>";
+    private static final String BEGIN_A = "<a href=\"";
+    private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
+    private static final String END_LI = "</li>";
+    private static final String END_A = "</a>";
+    private static final String END_JS_DOCUMENT_WRITE = "');";
+    private static final String END_TAG = "\">";
+
+    // TAGS
+    private static final String TAG_UL = "ul";
+    private static final String TAG_LI = "li";
+    private static final String TAG_A = "a";
+    private static final String TAG_JS = "script";
+    private static final String TAG_NOJS = "noscript";
+    private static final String TAG_DIV = "div";
+
+    // ATTRIBUTES
+    private static final String ATTRIBUTE_TYPE = "type";
+    private static final String ATTRIBUTE_HREF = "href";
+    private static final String ATTRIBUTE_ID = "id";
+    private static final String ATTRIBUTE_CLASS = "class";
+    private static final String ATTRIBUTE_VALUE_JS = "text/javascript";
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -63,43 +99,65 @@ public class PageBuilder implements IPageBuilder
      */
     public String buildPage( PageConfig pageConfig, LuteceUser user )
     {
-        StringBuilder sb = new StringBuilder(  );
+        StringBuffer sb = new StringBuffer(  );
 
         List<TabConfig> listTabs = pageConfig.getTabList(  );
 
         int nTab = 1;
-        sb.append( "<ul>" );
+        XmlUtil.beginElement( sb, TAG_UL );
 
         for ( TabConfig tab : listTabs )
         {
-            sb.append( "<li><a href=\"#tabs-" );
-            sb.append( nTab );
-            sb.append( "\">" );
-            sb.append( tab.getName(  ) );
-            sb.append( "</a></li>" );
+            // Tab when JS is on
+            String strUrl = ANCHOR + ID_TAB + nTab;
+            StringBuilder sbContent = new StringBuilder(  );
+            sbContent.append( BEGIN_JS_DOCUMENT_WRITE );
+            sbContent.append( BEGIN_LI );
+            sbContent.append( BEGIN_A );
+            sbContent.append( strUrl );
+            sbContent.append( END_TAG );
+            sbContent.append( tab.getName(  ) );
+            sbContent.append( END_A );
+            sbContent.append( END_LI );
+            sbContent.append( END_JS_DOCUMENT_WRITE );
+            XmlUtil.addElement( sb, TAG_JS, sbContent.toString(  ),
+                buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
+
+            // Tab when JS is off 
+            strUrl = AppPathService.getPortalUrl(  ) + QUESTION_MARK + PARAMETER_PAGE + EQUAL +
+                MyPortalPlugin.PLUGIN_NAME + strUrl;
+            XmlUtil.beginElement( sb, TAG_NOJS );
+            XmlUtil.beginElement( sb, TAG_LI );
+            XmlUtil.addElement( sb, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
+            XmlUtil.endElement( sb, TAG_LI );
+            XmlUtil.endElement( sb, TAG_NOJS );
+
             nTab++;
         }
 
-        sb.append( "</ul>" );
+        XmlUtil.endElement( sb, TAG_UL );
 
         nTab = 1;
 
         for ( TabConfig tab : listTabs )
         {
-            StringBuilder sbCol1 = new StringBuilder( BEGIN_DIV_COLUMN );
-            StringBuilder sbCol2 = new StringBuilder( BEGIN_DIV_COLUMN );
-            StringBuilder sbCol3 = new StringBuilder( BEGIN_DIV_COLUMN_FIXED );
-            sb.append( "\n<div id=\"tabs-" );
-            sb.append( nTab );
-            sb.append( "\" >\n" );
+            StringBuffer sbCol1 = new StringBuffer(  );
+            StringBuffer sbCol2 = new StringBuffer(  );
+            StringBuffer sbCol3 = new StringBuffer(  );
+            XmlUtil.beginElement( sbCol1, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
+            XmlUtil.beginElement( sbCol2, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
+            XmlUtil.beginElement( sbCol3, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN_FIXED ) );
+
+            StringBuilder sbContent = new StringBuilder(  );
 
             for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
             {
-                StringBuilder sbWidget = sbCol1;
+                StringBuffer sbWidget = sbCol1;
                 Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
+
                 if ( widget != null )
                 {
-                	switch ( widgetConfig.getColumn(  ) )
+                    switch ( widgetConfig.getColumn(  ) )
                     {
                         case 2:
                             sbWidget = sbCol2;
@@ -115,31 +173,45 @@ public class PageBuilder implements IPageBuilder
                             break;
                     }
 
-                    sbWidget.append( "\n<div class=\"" );
-                    sbWidget.append( widget.getCssClass(  ) );
-                    sbWidget.append( "\" id=\"widget-" );
-                    sbWidget.append( widget.getIdWidget(  ) );
-                    sbWidget.append( "\" >\n" );
-                    sbWidget.append( BEGIN_DIV_HEADER );
-                    sbWidget.append( widget.getName(  ) );
-                    sbWidget.append( END_DIV );
-                    sbWidget.append( BEGIN_DIV_CONTENT );
-                    sbWidget.append( WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ) );
-                    sbWidget.append( END_DIV );
-                    sbWidget.append( END_DIV );
+                    Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_CLASS, widget.getCssClass(  ) );
+                    listAttributes.put( ATTRIBUTE_ID, ID_WIDGET + widget.getIdWidget(  ) );
+                    XmlUtil.beginElement( sbWidget, TAG_DIV, listAttributes );
+                    XmlUtil.addElement( sbWidget, TAG_DIV, widget.getName(  ),
+                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
+                    XmlUtil.addElement( sbWidget, TAG_DIV,
+                        WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ),
+                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
+                    XmlUtil.endElement( sbWidget, TAG_DIV );
                 }
             }
 
-            sbCol1.append( END_DIV );
-            sbCol2.append( END_DIV );
-            sbCol3.append( END_DIV );
-            sb.append( sbCol1 );
-            sb.append( sbCol2 );
-            sb.append( sbCol3 );
-            sb.append( END_DIV );
+            XmlUtil.endElement( sbCol1, TAG_DIV );
+            XmlUtil.endElement( sbCol2, TAG_DIV );
+            XmlUtil.endElement( sbCol3, TAG_DIV );
+
+            sbContent.append( sbCol1 );
+            sbContent.append( sbCol2 );
+            sbContent.append( sbCol3 );
+
+            XmlUtil.addElement( sb, TAG_DIV, sbContent.toString(  ), buildAttributes( ATTRIBUTE_ID, ID_TAB + nTab ) );
+
             nTab++;
         }
 
         return sb.toString(  );
+    }
+
+    /**
+     * Build the attributes for the tag
+     * @param strName the attribute name
+     * @param strValue the attribute value
+     * @return a map
+     */
+    private Map<String, String> buildAttributes( String strName, String strValue )
+    {
+        Map<String, String> listAttributes = new HashMap<String, String>(  );
+        listAttributes.put( strName, strValue );
+
+        return listAttributes;
     }
 }
