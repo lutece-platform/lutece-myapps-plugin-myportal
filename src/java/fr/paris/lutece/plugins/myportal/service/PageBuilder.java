@@ -97,35 +97,37 @@ public class PageBuilder implements IPageBuilder
             {
                 StringBuilder sbWidget = sbCol1;
                 Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
-
-                switch ( widgetConfig.getColumn(  ) )
+                if ( widget != null )
                 {
-                    case 2:
-                        sbWidget = sbCol2;
+                	switch ( widgetConfig.getColumn(  ) )
+                    {
+                        case 2:
+                            sbWidget = sbCol2;
 
-                        break;
+                            break;
 
-                    case 3:
-                        sbWidget = sbCol3;
+                        case 3:
+                            sbWidget = sbCol3;
 
-                        break;
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
+
+                    sbWidget.append( "\n<div class=\"" );
+                    sbWidget.append( widget.getCssClass(  ) );
+                    sbWidget.append( "\" id=\"widget-" );
+                    sbWidget.append( widget.getIdWidget(  ) );
+                    sbWidget.append( "\" >\n" );
+                    sbWidget.append( BEGIN_DIV_HEADER );
+                    sbWidget.append( widget.getName(  ) );
+                    sbWidget.append( END_DIV );
+                    sbWidget.append( BEGIN_DIV_CONTENT );
+                    sbWidget.append( WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ) );
+                    sbWidget.append( END_DIV );
+                    sbWidget.append( END_DIV );
                 }
-
-                sbWidget.append( "\n<div class=\"" );
-                sbWidget.append( widget.getCssClass(  ) );
-                sbWidget.append( "\" id=\"widget-" );
-                sbWidget.append( widget.getIdWidget(  ) );
-                sbWidget.append( "\" >\n" );
-                sbWidget.append( BEGIN_DIV_HEADER );
-                sbWidget.append( widget.getName(  ) );
-                sbWidget.append( END_DIV );
-                sbWidget.append( BEGIN_DIV_CONTENT );
-                sbWidget.append( WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ) );
-                sbWidget.append( END_DIV );
-                sbWidget.append( END_DIV );
             }
 
             sbCol1.append( END_DIV );
