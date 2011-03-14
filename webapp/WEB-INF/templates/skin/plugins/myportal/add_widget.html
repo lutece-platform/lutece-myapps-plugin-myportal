@@ -20,13 +20,19 @@
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-                <br />
-                <label for="id_tab">#i18n{myportal.add_widget.labelTab} :</label>
-                <select name="id_tab">
-					<#list tabs_list as tab>
-						<option value="${tab.name}">${tab.name}</option>
-					</#list>
-				</select>
+                <#if tab_index??>
+                	<input type="hidden" name="tab_index" value="${tab_index}" />
+                <#else>
+	                <br />
+	                <label for="id_tab">#i18n{myportal.add_widget.labelTab} :</label>
+	                <select name="tab_index">
+	                	<#assign index = 1>
+						<#list tabs_list as tab>
+							<option value="${index}">${tab.name}</option>
+							<#assign index = index + 1>
+						</#list>
+					</select>
+				</#if>
 			</p>
 			<p>
 				<input type="submit" value="#i18n{myportal.add_widget.labelAdd}" />

@@ -6,8 +6,8 @@
 		<ul>
    			<#list categories_list as category>
    				<li>
-   					<a href="jsp/site/plugins/myportal/MyPortalNavigation.jsp?action=browse_categories&amp;category_id_category=${category.idCategory}" 
-   					onclick="reloadContent( this, '${base_url}jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp?category_id_category=${category.idCategory}', 'myportal-categories-list', 'myportal-widgets-list', 'myportal-widgets-list-content' );return false;"
+   					<a href="jsp/site/plugins/myportal/MyPortalNavigation.jsp?action=browse_categories&amp;category_id_category=${category.idCategory}&amp;tab_index=${tab_index}" 
+   					onclick="reloadContent( this, '${base_url}jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp?category_id_category=${category.idCategory}&tab_index=${tab_index}', 'myportal-categories-list', 'myportal-widgets-list', 'myportal-widgets-list-content' );return false;"
    						<#if category_id_category == category.idCategory?string>
    							class="active"
    						</#if>

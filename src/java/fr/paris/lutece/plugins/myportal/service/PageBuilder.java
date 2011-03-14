@@ -39,7 +39,10 @@ import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.xml.XmlUtil;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,24 +60,31 @@ public class PageBuilder implements IPageBuilder
     private static final String QUESTION_MARK = "?";
     private static final String EQUAL = "=";
     private static final String ANCHOR = "#";
+    private static final String HTML_SPACE = "&nbsp;";
+    private static final String SPACE = " ";
+    private static final String NEWLINE_CHAR = "(\\r|\\n)";
     private static final String ID_TAB = "tabs-";
     private static final String ID_WIDGET = "widget-";
     private static final String CLASS_MYPORTAL_COLUMN = "myportal-column";
     private static final String CLASS_MYPORTAL_COLUMN_FIXED = "myportal-column-fixed";
     private static final String CLASS_MYPORTAL_PORTLET_HEADER = "myportal-portlet-header";
     private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
+    private static final String CLASS_MYPORTAL_ICON = "myportal-icon";
+    private static final String CLASS_UI_ICON_PLUS = "ui-icon ui-icon-plus";
+    private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
+    private static final String CLASS_CEEBOX = "ceebox";
 
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
+    private static final String PARAMETER_ACTION = "action";
+    private static final String PARAMETER_TAB_INDEX = "tab_index";
+
+    // ACTIONS
+    private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
 
     // HTML CONSTANTS
-    private static final String BEGIN_LI = "<li>";
-    private static final String BEGIN_A = "<a href=\"";
     private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
-    private static final String END_LI = "</li>";
-    private static final String END_A = "</a>";
     private static final String END_JS_DOCUMENT_WRITE = "');";
-    private static final String END_TAG = "\">";
 
     // TAGS
     private static final String TAG_UL = "ul";
@@ -83,6 +93,7 @@ public class PageBuilder implements IPageBuilder
     private static final String TAG_JS = "script";
     private static final String TAG_NOJS = "noscript";
     private static final String TAG_DIV = "div";
+    private static final String TAG_SPAN = "span";
 
     // ATTRIBUTES
     private static final String ATTRIBUTE_TYPE = "type";
@@ -90,6 +101,9 @@ public class PageBuilder implements IPageBuilder
     private static final String ATTRIBUTE_ID = "id";
     private static final String ATTRIBUTE_CLASS = "class";
     private static final String ATTRIBUTE_VALUE_JS = "text/javascript";
+
+    // JSP
+    private static final String JSP_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -108,29 +122,21 @@ public class PageBuilder implements IPageBuilder
 
         for ( TabConfig tab : listTabs )
         {
-            // Tab when JS is on
+            /* Tab when JS is on */
+            StringBuilder sbJsContent = new StringBuilder(  );
+
+            // Url of the tab link
             String strUrl = ANCHOR + ID_TAB + nTab;
-            StringBuilder sbContent = new StringBuilder(  );
-            sbContent.append( BEGIN_JS_DOCUMENT_WRITE );
-            sbContent.append( BEGIN_LI );
-            sbContent.append( BEGIN_A );
-            sbContent.append( strUrl );
-            sbContent.append( END_TAG );
-            sbContent.append( tab.getName(  ) );
-            sbContent.append( END_A );
-            sbContent.append( END_LI );
-            sbContent.append( END_JS_DOCUMENT_WRITE );
-            XmlUtil.addElement( sb, TAG_JS, sbContent.toString(  ),
+            sbJsContent.append( BEGIN_JS_DOCUMENT_WRITE );
+            sbJsContent.append( buildTabLinks( strUrl, nTab, tab ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
+            sbJsContent.append( END_JS_DOCUMENT_WRITE );
+            XmlUtil.addElement( sb, TAG_JS, sbJsContent.toString(  ),
                 buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
 
-            // Tab when JS is off 
+            /* Tab when JS is off */
             strUrl = AppPathService.getPortalUrl(  ) + QUESTION_MARK + PARAMETER_PAGE + EQUAL +
                 MyPortalPlugin.PLUGIN_NAME + strUrl;
-            XmlUtil.beginElement( sb, TAG_NOJS );
-            XmlUtil.beginElement( sb, TAG_LI );
-            XmlUtil.addElement( sb, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
-            XmlUtil.endElement( sb, TAG_LI );
-            XmlUtil.endElement( sb, TAG_NOJS );
+            XmlUtil.addElement( sb, TAG_NOJS, buildTabLinks( strUrl, nTab, tab ) );
 
             nTab++;
         }
@@ -199,6 +205,38 @@ public class PageBuilder implements IPageBuilder
         }
 
         return sb.toString(  );
+    }
+
+    /**
+     * Build the html code for tab links
+     * @param strUrl the url of the tab link
+     * @param nTabIndex the tab index
+     * @param tab the tab
+     * @return the html code
+     */
+    private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab )
+    {
+        // Url for adding a new widget
+        UrlItem urlAddWidget = new UrlItem( JSP_MYPORTAL_NAVIGATION );
+        urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
+        urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
+
+        // Attributes of the link to add a new widget
+        Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_HREF, urlAddWidget.getUrlWithEntity(  ) );
+        listAttributes.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
+
+        StringBuffer sbContent = new StringBuffer(  );
+        XmlUtil.beginElement( sbContent, TAG_LI );
+        XmlUtil.addElement( sbContent, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
+        XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
+        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PLUS ) );
+        XmlUtil.endElement( sbContent, TAG_A );
+        XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
+        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PENCIL ) );
+        XmlUtil.endElement( sbContent, TAG_A );
+        XmlUtil.endElement( sbContent, TAG_LI );
+
+        return sbContent.toString(  );
     }
 
     /**

@@ -140,6 +140,16 @@
 }
 
 /********************************
+******** myportal-icon
+*********************************/
+
+#tabs a.myportal-icon {
+	padding: 0;
+	cursor: hand;
+	cursor: pointer;
+}
+
+/********************************
 ******** Paginator
 *********************************/
 #myportal-widgets-list-content #lutece-paginator div{width: 100%;}
