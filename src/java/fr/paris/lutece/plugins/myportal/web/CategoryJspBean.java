@@ -100,6 +100,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     // Messages
     private static final String MESSAGE_CONFIRM_REMOVE_CATEGORY = "myportal.message.confirmRemoveCategory";
     private static final String MESSAGE_ERROR = "myportal.message.error";
+    private static final String MESSAGE_CANNOT_REMOVE_CATEGORY = "myportal.message.cannotRemoveCategory";
 
     //Variables
     private int _nDefaultItemsPerPage;
@@ -227,9 +228,16 @@ public class CategoryJspBean extends PluginAdminPageJspBean
         if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
         {
             int nId = Integer.parseInt( strCategoryId );
-            CategoryService.getInstance(  ).removeCategory( nId );
 
-            strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+            if ( !CategoryService.getInstance(  ).removeCategory( nId ) )
+            {
+                strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
+            }
+            else
+            {
+                strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CANNOT_REMOVE_CATEGORY,
+                        AdminMessage.TYPE_STOP );
+            }
         }
         else
         {

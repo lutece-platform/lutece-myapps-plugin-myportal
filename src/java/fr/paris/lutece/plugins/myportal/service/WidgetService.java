@@ -156,7 +156,7 @@ public final class WidgetService extends AbstractCacheableService
 
     /**
      * Check if the mime type is correct or not (list of correct mime types on
-     * the <b>myportal.properties</b>.
+     * the <b>myportal.properties</b>).
      * @param strMimeType the mime type to check
      * @return true if it is correct, false otherwise
      */
@@ -188,7 +188,6 @@ public final class WidgetService extends AbstractCacheableService
      * @param nCategoryId the id category
      * @return a list of {@link Widget}
      */
-    @SuppressWarnings( "unchecked" )
     public List<Widget> getWidgetsByCategoryId( int nCategoryId )
     {
         List<Widget> listWidgets = (List<Widget>) getFromCache( CACHE_WIDGETS_BY_CATEGORIES + nCategoryId );
@@ -210,7 +209,6 @@ public final class WidgetService extends AbstractCacheableService
      * Get the list of essential widgets
      * @return a list of {@link Widget}
      */
-    @SuppressWarnings( "unchecked" )
     public List<Widget> getEssentialWidgets(  )
     {
         List<Widget> listWidgets = (List<Widget>) getFromCache( CACHE_ESSENTIAL_WIDGETS );
@@ -232,7 +230,6 @@ public final class WidgetService extends AbstractCacheableService
      * Get the list of new widgets
      * @return a list of {@link Widget}
      */
-    @SuppressWarnings( "unchecked" )
     public List<Widget> getNewWidgets(  )
     {
         List<Widget> listWidgets = (List<Widget>) getFromCache( CACHE_NEW_WIDGETS );

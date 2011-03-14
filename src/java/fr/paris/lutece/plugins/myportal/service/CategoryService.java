@@ -35,9 +35,13 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.CategoryHome;
+import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
+import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.util.ReferenceList;
 
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -110,12 +114,31 @@ public final class CategoryService
     }
 
     /**
-     * Remove the category whose identifier is specified in parameter
+     * Remove the category whose identifier is specified in parameter.
+     * The category is removed if and only if it is not linked to any widget.
      * @param nCategoryId The category Id
+     * @return true if the category is linked to a widget, false otherwise
      */
-    public void removeCategory( int nCategoryId )
+    public boolean removeCategory( int nCategoryId )
     {
-        CategoryHome.remove( nCategoryId );
+        boolean bIsCategoryLinkedToWidget = false;
+
+        // Check if the category is linked to any widget
+        WidgetFilter wFilter = new WidgetFilter(  );
+        wFilter.setIdCategory( nCategoryId );
+
+        List<Widget> listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
+
+        if ( ( listWidgets != null ) && ( listWidgets.size(  ) > 0 ) )
+        {
+            bIsCategoryLinkedToWidget = true;
+        }
+        else
+        {
+            CategoryHome.remove( nCategoryId );
+        }
+
+        return bIsCategoryLinkedToWidget;
     }
 
     /**
