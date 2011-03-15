@@ -35,12 +35,15 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
 import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
+import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,8 +54,10 @@ import java.util.List;
  */
 public class MyPortalPageService
 {
+    // PROPERTIES
+    private static final String PROPERTY_PAGECONFIG_NAME = "myportal.defaultPageBuilder.pageConfig.name";
+    private static final String PROPERTY_TABCONFIG_NAME = "myportal.defaultPageBuilder.tabConfig.name";
     private static final String BEAN_MYPORTAL_PAGEBUILDER = "myportal.pageBuilder";
-    private static final String DEFAULT_GUID = "default";
     private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
             BEAN_MYPORTAL_PAGEBUILDER );
 
@@ -64,11 +69,6 @@ public class MyPortalPageService
     public String getUserPage( LuteceUser user )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-
-        if ( pageConfig == null )
-        {
-            pageConfig = getDefaultPageConfig(  );
-        }
 
         return _pageBuilder.buildPage( pageConfig, user );
     }
@@ -84,21 +84,43 @@ public class MyPortalPageService
 
         if ( userConf == null )
         {
+            int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
+            PageConfig pageConfig = new PageConfig(  );
+            pageConfig.setName( AppPropertiesService.getProperty( PROPERTY_PAGECONFIG_NAME ) );
+
+            List<TabConfig> listTabConfigs = new ArrayList<TabConfig>(  );
+            TabConfig tabConfig = new TabConfig(  );
+            tabConfig.setName( AppPropertiesService.getProperty( PROPERTY_TABCONFIG_NAME ) );
+
+            List<WidgetConfig> listWidgetConfigs = new ArrayList<WidgetConfig>(  );
+
+            for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
+            {
+                List<WidgetComponent> listWidgetComponents = DefaultPageBuilderService.getInstance(  )
+                                                                                      .getWidgetComponents( nColumn );
+
+                for ( WidgetComponent widgetComponent : listWidgetComponents )
+                {
+                    WidgetConfig widgetConfig = new WidgetConfig(  );
+                    widgetConfig.setWidgetId( widgetComponent.getIdWidget(  ) );
+                    widgetConfig.setColumn( nColumn );
+                    listWidgetConfigs.add( widgetConfig );
+                }
+            }
+
+            tabConfig.setWidgetList( listWidgetConfigs );
+            listTabConfigs.add( tabConfig );
+            pageConfig.setTabList( listTabConfigs );
+            userConf = new UserPageConfig(  );
+            userConf.setUserGuid( user.getName(  ) );
+            userConf.setUserPageConfig( PageConfigJsonUtil.buildJson( pageConfig ) );
+
+            /*
             userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
             userConf.setUserGuid( user.getName(  ) );
+             */
             UserPageConfigHome.create( userConf );
         }
-
-        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
-    }
-
-    /**
-     * Get the default page config
-     * @return a {@link PageConfig}
-     */
-    private PageConfig getDefaultPageConfig(  )
-    {
-        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
 
         return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
     }

@@ -83,8 +83,7 @@ function doSearchWidgets( url, idLinks, idContentToAdd, idContentImg ) {
 function getUrlParameters( url ) {
     var parameters = [], hash;
     var hashes = url.slice( url.indexOf( '?' ) + 1 ).split( '&' );
-    for( var i = 0; i < hashes.length; i++ )
-    {
+    for( var i = 0; i < hashes.length; i++ ) {
         hash = hashes[i].split( '=' );
         parameters.push( hash[0] );
         parameters[hash[0]] = hash[1];

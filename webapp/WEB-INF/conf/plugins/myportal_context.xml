@@ -6,6 +6,7 @@
     <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
     <bean id="myportal.styleDAO"  class="fr.paris.lutece.plugins.myportal.business.StyleDAO" />
     <bean id="myportal.userPageConfigDAO" class="fr.paris.lutece.plugins.myportal.business.UserPageConfigDAO" />
+    <bean id="myportal.defaultPageBuilderDAO" class="fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderDAO" />
 
     <!-- Widget handler -->
     <bean id="myportal.widgetHandlerHTML"  class="fr.paris.lutece.plugins.myportal.service.handler.HtmlWidgetHandler" />

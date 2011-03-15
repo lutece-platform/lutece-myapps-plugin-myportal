@@ -1,0 +1,44 @@
+<div class="content-box" >
+    <h2>#i18n{myportal.build_default_page_widgets_list.pageTitle}</h2>
+    <@paginationAdmin paginator=paginator combo=1 />
+    <form method="post" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp">
+	    <table>
+	        <tr>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnName}</th>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnIcon_url}</th>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnDescription}</th>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnId_category}</th>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnWidget_type}</th>
+	        <th>#i18n{myportal.build_default_page_widgets_list.columnStyle}</th>
+	        </tr>
+	        <#list widgets_list as widget >
+	        <tr>
+	        <td>
+	        	<input type="radio" name="id_widget" value="${widget.idWidget}" />
+	            ${widget.name}
+	        </td>
+	        <td><img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="widget icon" height="30px"/></td>
+	        <td>${widget.description}</td>
+	        <td>${widget.category}</td>
+	        <td>${widget.widgetType}</td>
+	        <td>${widget.style}</td>
+	        </tr>
+	        </#list>
+	    </table>
+	    <input type="hidden" name="widget_order" value="0" />
+	    
+	    <p>
+		    <b>#i18n{myportal.build_default_page_widgets_list.labelColumn} :</b>
+		    <select name="widget_column">
+			    <#list list_available_columns as column_refItem>
+				    <#if column_refItem.code != ''>
+						<option value="${column_refItem.code}">${column_refItem.code}</option>
+					</#if>
+			    </#list>
+		    </select>
+	    </p>
+	    <br />
+	    <input class="button" type="submit" value="#i18n{myportal.build_default_page_widgets_list.buttonAddWidget}" />
+    </form>
+    <@paginationAdmin paginator=paginator />
+</div>

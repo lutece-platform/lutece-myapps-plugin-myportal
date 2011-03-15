@@ -1,0 +1,83 @@
+<#macro widgetComponentTable items=[] list_available_orders_columns=[] order=true>
+	<#if items?exists && items?size &gt; 0>
+	<table>
+			<tr> <#-- header -->
+				<th>#i18n{myportal.build_default_page.columnName}</th>
+				<th>#i18n{myportal.build_default_page.columnColumn}</th>
+				<#if order><th>#i18n{myportal.build_default_page.columnOrder}</th></#if>
+				<th>#i18n{myportal.build_default_page.columnStyle}</th>
+				<th>#i18n{myportal.build_default_page.columnActions}</th>
+			</tr>
+		<#list items as widgetComponent>
+				<tr>
+					<td>${widgetComponent.widgetName}</td>
+					<td>
+						<form action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
+							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
+							<#if !widgetComponent.order?exists || widgetComponent.order == 0 >
+								<#assign widget_order = 1 />
+							<#else>
+								<#assign widget_order = widgetComponent.order />
+							</#if>
+							<input type="hidden" name="widget_order" value="${widget_order}" />
+							<@combo name="widget_column" default_value="${widgetComponent.column!}" items=list_available_columns />
+							<input type="submit" value="#i18n{myportal.build_default_page.buttonSetColumn}" class="button"/>
+						</form>
+					</td>
+					<#if order>
+					<td>
+						<form action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
+							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
+							<#if !widgetComponent.column?exists  || widgetComponent.column == 0>
+								<#assign widget_column = 1 />
+							<#else>
+								<#assign widget_column = widgetComponent.column />
+							</#if>
+							<input type="hidden" name="widget_column" value="${widget_column}"/>
+							<@combo name="widget_order" default_value="${widgetComponent.order!}" items=list_available_orders_columns />
+							
+							<input type="submit" value="#i18n{myportal.build_default_page.buttonMove}" class="button"/>
+						</form>
+					</td>
+					</#if>
+					<td>${widgetComponent.styleName}</td>
+					<td>
+						<form method="post" action="jsp/admin/plugins/myportal/DoRemoveWidgetComponent.jsp">
+							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}" />
+							<input type="submit" value="#i18n{myportal.build_default_page.buttonRemove}" class="button"/>
+						</form>
+					</td>
+				</tr>
+		</#list>
+		</table>
+		<#else>
+			<p>
+				#i18n{myportal.build_default_page.message.emptyGroup}
+			</p>
+		</#if>
+</#macro>
+
+<div id="content-box-actions">
+	<form method="post"  action="jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp">
+        <input type="submit" value="#i18n{myportal.build_default_page.buttonAddWidget}" class="button bt-toolbar" />
+    </form>
+</div>
+<div class="content-box">
+	<h2>#i18n{myportal.build_default_page.pageTitle}</h2>
+	<#-- column lists -->
+	<#list list_available_columns as column_refItem>
+		<#if column_refItem.code != ''>
+			<#assign column_key = column_refItem.code />
+			<div class="highlight-box">
+				<h2>#i18n{myportal.build_default_page.labelColumn} ${column_key}</h2>
+				<#if map_column_order_status[column_key]?exists && !map_column_order_status[column_key]>
+					<p>
+						<a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labeReorder}</a>
+					</p>
+				</#if>
+				<@widgetComponentTable items=map_widget_components[column_key] list_available_orders_columns=map_available_orders[column_key] />
+				<#-- suggest reorder if the column is not well ordered -->
+			</div>
+		</#if>
+	</#list>
+</div>
