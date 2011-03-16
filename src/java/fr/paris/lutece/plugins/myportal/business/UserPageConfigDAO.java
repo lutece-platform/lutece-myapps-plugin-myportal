@@ -95,13 +95,13 @@ public final class UserPageConfigDAO implements IUserPageConfigDAO
 
     /**
      * Delete a record from the table
-     * @param nUserPageConfigId The identifier of the userPageConfig
+     * @param strUserGuid user guid
      * @param plugin The plugin
      */
-    public void delete( int nUserPageConfigId, Plugin plugin )
+    public void delete( String strUserGuid, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
-        daoUtil.setInt( 1, nUserPageConfigId );
+        daoUtil.setString( 1, strUserGuid );
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }

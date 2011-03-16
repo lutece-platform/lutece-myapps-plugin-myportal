@@ -48,6 +48,13 @@ import java.util.List;
 public interface IWidgetDAO
 {
     /**
+    * Generates a new primary key
+    * @param plugin The Plugin
+    * @return The new primary key
+    */
+    int newPrimaryKey( Plugin plugin );
+
+    /**
      * Insert a new record in the table.
      * @param widget instance of the Widget object to inssert
      * @param plugin the Plugin

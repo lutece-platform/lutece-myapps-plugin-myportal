@@ -31,63 +31,41 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business;
+package fr.paris.lutece.plugins.myportal.web;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
-
-import java.util.List;
+import fr.paris.lutece.portal.business.user.AdminUser;
+import fr.paris.lutece.portal.business.user.AdminUserHome;
+import fr.paris.lutece.portal.service.admin.AccessDeniedException;
+import fr.paris.lutece.portal.web.dashboard.AdminDashboardJspBean;
+import fr.paris.lutece.test.LuteceTestCase;
+import fr.paris.lutece.test.MokeHttpServletRequest;
 
 
 /**
  *
-* IStyleDAO Interface
-*
-*/
-public interface IStyleDAO
+ * MyPortalAdminDashboardComponentTest
+ *
+ */
+public class MyPortalAdminDashboardComponentTest extends LuteceTestCase
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
-    int newPrimaryKey( Plugin plugin );
-
-    /**
-     * Insert a new record in the table.
-     * @param style instance of the Style object to inssert
-     * @param plugin the Plugin
+     * Test of getDashboardData method of class fr.paris.lutece.plugins.myportal.web.MyPortalAdminDashboardComponent
+     * @throws AccessDeniedException if the user has not the right
      */
-    void insert( Style style, Plugin plugin );
+    public void testGetDashboardData(  ) throws AccessDeniedException
+    {
+        System.out.println( "getMyPortalAdminDashboardData" );
 
-    /**
-    * Update the record in the table
-    * @param style the reference of the Style
-    * @param plugin the Plugin
-    */
-    void store( Style style, Plugin plugin );
+        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
 
-    /**
-     * Delete a record from the table
-     * @param nIdStyle int identifier of the Style to delete
-     * @param plugin the Plugin
-     */
-    void delete( int nIdStyle, Plugin plugin );
+        AdminUser user = AdminUserHome.findUserByLogin( "admin" );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        request.registerAdminUserWithRigth( user, AdminDashboardJspBean.RIGHT_MANAGE_ADMINDASHBOARD );
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
+        MyPortalAdminDashboardComponent instance = new MyPortalAdminDashboardComponent(  );
 
-    /**
-     * Load the data from the table
-     * @param nKey The identifier of the style
-     * @param plugin the Plugin
-     * @return The instance of the style
-     */
-    Style load( int nKey, Plugin plugin );
+        String result = instance.getDashboardData( user, request );
 
-    /**
-    * Load the data of all the style objects and returns them as a List
-    * @param plugin the Plugin
-    * @return The List which contains the data of all the style objects
-    */
-    List<Style> selectStylesList( Plugin plugin );
+        assertNotNull( result );
+    }
 }

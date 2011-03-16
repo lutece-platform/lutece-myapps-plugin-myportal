@@ -47,7 +47,6 @@ import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
-import fr.paris.lutece.plugins.myportal.service.PageBuilder;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
@@ -541,19 +540,19 @@ public class MyPortalApp implements XPageApplication
      */
     public String getMyPortalEditTab( HttpServletRequest request )
     {
-    	String strTabId = request.getParameter( PageBuilder.PARAMETER_TAB_INDEX );
-    	int nIdTab = Integer.parseInt( strTabId );
-    	nIdTab--;
-    	
+        String strTabId = request.getParameter( PARAMETER_TAB_INDEX );
+        int nIdTab = Integer.parseInt( strTabId );
+        nIdTab--;
+
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         TabConfig tabConfig = listTabs.get( nIdTab );
-        
+
         Map<String, Object> model = new HashMap<String, Object>(  );
 
         String strBaseUrl = AppPathService.getBaseUrl( request );
         model.put( MARK_BASE_URL, strBaseUrl );
         model.put( MARK_TAB_INDEX, nIdTab );
-        model.put( MARK_TAB_NAME, tabConfig.getName() );
+        model.put( MARK_TAB_NAME, tabConfig.getName(  ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale(  ), model );
 
@@ -568,9 +567,9 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabNewName = request.getParameter( PARAMETER_TAB_NAME );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
-    	int nIdTab = Integer.parseInt( strTabIndex );
+        int nIdTab = Integer.parseInt( strTabIndex );
 
-    	_pageService.editTab( getUser( request ), strTabNewName, nIdTab );
+        _pageService.editTab( getUser( request ), strTabNewName, nIdTab );
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
@@ -582,9 +581,9 @@ public class MyPortalApp implements XPageApplication
     public String doDelTab( HttpServletRequest request )
     {
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
-    	int nIdTab = Integer.parseInt( strTabIndex );
+        int nIdTab = Integer.parseInt( strTabIndex );
 
-    	_pageService.delTab( getUser( request ), nIdTab );
+        _pageService.delTab( getUser( request ), nIdTab );
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }

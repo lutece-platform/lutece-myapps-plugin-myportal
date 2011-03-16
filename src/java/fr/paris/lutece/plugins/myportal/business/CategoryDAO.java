@@ -57,9 +57,7 @@ public final class CategoryDAO implements ICategoryDAO
     private static final String SQL_QUERY_SELECT_FIRST_CATEGORY = "SELECT id_category, name, description FROM myportal_category ORDER BY name ASC LIMIT 1";
 
     /**
-     * Generates a new primary key
-     * @param plugin The Plugin
-     * @return The new primary key
+     * {@inheritDoc}
      */
     public int newPrimaryKey( Plugin plugin )
     {
@@ -81,9 +79,7 @@ public final class CategoryDAO implements ICategoryDAO
     }
 
     /**
-     * Insert a new record in the table.
-     * @param category instance of the Category object to insert
-     * @param plugin The plugin
+     * {@inheritDoc}
      */
     public void insert( Category category, Plugin plugin )
     {
@@ -101,10 +97,7 @@ public final class CategoryDAO implements ICategoryDAO
     }
 
     /**
-     * Load the data of the category from the table
-     * @param nId The identifier of the category
-     * @param plugin The plugin
-     * @return the instance of the Category
+     * {@inheritDoc}
      */
     public Category load( int nId, Plugin plugin )
     {
@@ -130,9 +123,7 @@ public final class CategoryDAO implements ICategoryDAO
     }
 
     /**
-     * Delete a record from the table
-     * @param nCategoryId The identifier of the category
-     * @param plugin The plugin
+     * {@inheritDoc}
      */
     public void delete( int nCategoryId, Plugin plugin )
     {
@@ -143,9 +134,7 @@ public final class CategoryDAO implements ICategoryDAO
     }
 
     /**
-     * Update the record in the table
-     * @param category The reference of the category
-     * @param plugin The plugin
+     * {@inheritDoc}
      */
     public void store( Category category, Plugin plugin )
     {
@@ -162,9 +151,7 @@ public final class CategoryDAO implements ICategoryDAO
     }
 
     /**
-     * Load the data of all the categorys and returns them as a collection
-     * @param plugin The plugin
-     * @return The Collection which contains the data of all the categorys
+     * {@inheritDoc}
      */
     public Collection<Category> selectCategoriesList( Plugin plugin )
     {

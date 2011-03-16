@@ -244,32 +244,33 @@ public class MyPortalPageService
 
     /**
      * change tab name
-     * @param user
-     * @param strTabNewName
-     * @param nIdTab
+     * @param user the {@link LuteceUser}
+     * @param strTabNewName the new name of the tab
+     * @param nIdTab the id tab
      */
-	public void editTab(LuteceUser user, String strTabNewName, int nIdTab) 
-	{
+    public void editTab( LuteceUser user, String strTabNewName, int nIdTab )
+    {
         PageConfig pageConfig = getPageConfigUser( user );
         List<TabConfig> listTabs = pageConfig.getTabList(  );
         TabConfig tabConfig = listTabs.get( nIdTab );
         tabConfig.setName( strTabNewName );
+
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
         setPageConfigUser( user, strJson );
-	}
+    }
 
     /**
      * del tab name
-     * @param user
-     * @param strTabNewName
-     * @param nIdTab
+     * @param user the {@link LuteceUser}
+     * @param nIdTab the id tab
      */
-	public void delTab(LuteceUser user, int nIdTab) 
-	{
+    public void delTab( LuteceUser user, int nIdTab )
+    {
         PageConfig pageConfig = getPageConfigUser( user );
         List<TabConfig> listTabs = pageConfig.getTabList(  );
         listTabs.remove( nIdTab );
+
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
         setPageConfigUser( user, strJson );
-	}
+    }
 }

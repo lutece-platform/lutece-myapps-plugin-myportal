@@ -31,63 +31,28 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business;
+package fr.paris.lutece.plugins.myportal.service.handler;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
-
-import java.util.List;
+import fr.paris.lutece.test.LuteceTestCase;
+import fr.paris.lutece.util.ReferenceList;
 
 
 /**
  *
-* IStyleDAO Interface
-*
-*/
-public interface IStyleDAO
+ * WidgetHandlerServiceTest
+ *
+ */
+public class WidgetHandlerServiceTest extends LuteceTestCase
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
-    int newPrimaryKey( Plugin plugin );
-
-    /**
-     * Insert a new record in the table.
-     * @param style instance of the Style object to inssert
-     * @param plugin the Plugin
+     * Test of getHandlers method of class fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerServiceTest
      */
-    void insert( Style style, Plugin plugin );
+    public void testGetHandlers(  )
+    {
+        System.out.println( "getHandlers" );
 
-    /**
-    * Update the record in the table
-    * @param style the reference of the Style
-    * @param plugin the Plugin
-    */
-    void store( Style style, Plugin plugin );
-
-    /**
-     * Delete a record from the table
-     * @param nIdStyle int identifier of the Style to delete
-     * @param plugin the Plugin
-     */
-    void delete( int nIdStyle, Plugin plugin );
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
-
-    /**
-     * Load the data from the table
-     * @param nKey The identifier of the style
-     * @param plugin the Plugin
-     * @return The instance of the style
-     */
-    Style load( int nKey, Plugin plugin );
-
-    /**
-    * Load the data of all the style objects and returns them as a List
-    * @param plugin the Plugin
-    * @return The List which contains the data of all the style objects
-    */
-    List<Style> selectStylesList( Plugin plugin );
+        WidgetHandlerService instance = WidgetHandlerService.instance(  );
+        ReferenceList result = instance.getHandlers(  );
+        assertNotNull( result );
+    }
 }

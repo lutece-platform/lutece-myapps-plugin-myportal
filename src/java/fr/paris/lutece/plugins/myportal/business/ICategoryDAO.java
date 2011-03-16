@@ -46,6 +46,13 @@ import java.util.Collection;
 public interface ICategoryDAO
 {
     /**
+    * Generates a new primary key
+    * @param plugin The Plugin
+    * @return The new primary key
+    */
+    int newPrimaryKey( Plugin plugin );
+
+    /**
      * Insert a new record in the table.
      * @param category instance of the Category object to inssert
      * @param plugin the Plugin

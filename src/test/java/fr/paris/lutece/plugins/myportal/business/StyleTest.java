@@ -33,61 +33,56 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
-
-import java.util.List;
+import fr.paris.lutece.test.LuteceTestCase;
 
 
 /**
  *
-* IStyleDAO Interface
-*
-*/
-public interface IStyleDAO
+ * StyleTest
+ *
+ */
+public class StyleTest extends LuteceTestCase
 {
-    /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
-    int newPrimaryKey( Plugin plugin );
+    private static final String NAME1 = "Name1";
+    private static final String NAME2 = "Name2";
+    private static final String CSSCLASS1 = "CssClass1";
+    private static final String CSSCLASS2 = "CssClass2";
 
     /**
-     * Insert a new record in the table.
-     * @param style instance of the Style object to inssert
-     * @param plugin the Plugin
+     * Test business of class fr.paris.lutece.plugins.myportal.business.Style
      */
-    void insert( Style style, Plugin plugin );
+    public void testBusiness(  )
+    {
+        // Initialize an object
+        Style style = new Style(  );
+        style.setId( StyleHome.newPrimaryKey(  ) );
+        style.setName( NAME1 );
+        style.setCssClass( CSSCLASS1 );
 
-    /**
-    * Update the record in the table
-    * @param style the reference of the Style
-    * @param plugin the Plugin
-    */
-    void store( Style style, Plugin plugin );
+        // Create test
+        StyleHome.create( style );
 
-    /**
-     * Delete a record from the table
-     * @param nIdStyle int identifier of the Style to delete
-     * @param plugin the Plugin
-     */
-    void delete( int nIdStyle, Plugin plugin );
+        Style styleStored = StyleHome.findByPrimaryKey( style.getId(  ) );
+        assertEquals( styleStored.getId(  ), style.getId(  ) );
+        assertEquals( styleStored.getName(  ), style.getName(  ) );
+        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
+        // Update test
+        style.setName( NAME2 );
+        style.setCssClass( CSSCLASS2 );
+        StyleHome.update( style );
+        styleStored = StyleHome.findByPrimaryKey( style.getId(  ) );
+        assertEquals( styleStored.getId(  ), style.getId(  ) );
+        assertEquals( styleStored.getName(  ), style.getName(  ) );
+        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
 
-    /**
-     * Load the data from the table
-     * @param nKey The identifier of the style
-     * @param plugin the Plugin
-     * @return The instance of the style
-     */
-    Style load( int nKey, Plugin plugin );
+        // List test
+        StyleHome.getStyles(  );
+        StyleHome.getStylesList(  );
 
-    /**
-    * Load the data of all the style objects and returns them as a List
-    * @param plugin the Plugin
-    * @return The List which contains the data of all the style objects
-    */
-    List<Style> selectStylesList( Plugin plugin );
+        // Delete test
+        StyleHome.remove( style.getId(  ) );
+        styleStored = StyleHome.findByPrimaryKey( style.getId(  ) );
+        assertNull( styleStored );
+    }
 }

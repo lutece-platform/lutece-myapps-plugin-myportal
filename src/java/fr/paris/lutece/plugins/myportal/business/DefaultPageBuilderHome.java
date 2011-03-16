@@ -62,6 +62,16 @@ public final class DefaultPageBuilderHome
     }
 
     /**
+     * Get a new PK
+     *
+     * @return the new PK
+     */
+    public static int newPrimaryKey(  )
+    {
+        return _dao.newPrimaryKey( _plugin );
+    }
+
+    /**
      * Creation of an instance of widgetComponent
      *
      * @param widgetComponent The instance of the widgetComponent which contains the informations to store

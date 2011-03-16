@@ -59,10 +59,10 @@ public interface IUserPageConfigDAO
 
     /**
      * Delete a record from the table
-     * @param nIdUserPageConfig int identifier of the UserPageConfig to delete
+     * @param strUserGuid user guid
      * @param plugin the Plugin
      */
-    void delete( int nIdUserPageConfig, Plugin plugin );
+    void delete( String strUserGuid, Plugin plugin );
 
     ///////////////////////////////////////////////////////////////////////////
     // Finders

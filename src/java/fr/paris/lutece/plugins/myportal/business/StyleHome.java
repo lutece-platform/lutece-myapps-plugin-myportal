@@ -63,6 +63,15 @@ public final class StyleHome
     }
 
     /**
+     * Generates a new primary key
+     * @return The new primary key
+     */
+    public static int newPrimaryKey(  )
+    {
+        return _dao.newPrimaryKey( _plugin );
+    }
+
+    /**
      * Create an instance of the style class
      * @param style The instance of the Style which contains the informations to store
      * @return The  instance of style which has been created with its primary key.

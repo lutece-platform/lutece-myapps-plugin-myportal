@@ -64,6 +64,15 @@ public final class WidgetHome
     }
 
     /**
+     * Generates a new primary key
+     * @return The new primary key
+     */
+    public static int newPrimaryKey(  )
+    {
+        return _dao.newPrimaryKey( _plugin );
+    }
+
+    /**
      * Create an instance of the widget class
      * @param widget The instance of the Widget which contains the informations to store
      * @return The  instance of widget which has been created with its primary key.

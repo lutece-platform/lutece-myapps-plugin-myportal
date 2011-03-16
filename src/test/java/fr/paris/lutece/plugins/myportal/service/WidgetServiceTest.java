@@ -31,63 +31,42 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business;
+package fr.paris.lutece.plugins.myportal.service;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.List;
 
 
 /**
  *
-* IStyleDAO Interface
-*
-*/
-public interface IStyleDAO
+ * WidgetServiceTest
+ *
+ */
+public class WidgetServiceTest extends LuteceTestCase
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
-    int newPrimaryKey( Plugin plugin );
-
-    /**
-     * Insert a new record in the table.
-     * @param style instance of the Style object to inssert
-     * @param plugin the Plugin
+     * Test of getEssentialWidgets method of class fr.paris.lutece.plugins.myportal.service.WidgetServiceTest
      */
-    void insert( Style style, Plugin plugin );
+    public void testGetEssentialWidgets(  )
+    {
+        System.out.println( "getEssentialWidgets" );
+
+        WidgetService instance = WidgetService.instance(  );
+        List<Widget> result = instance.getEssentialWidgets(  );
+        assertNotNull( result );
+    }
 
     /**
-    * Update the record in the table
-    * @param style the reference of the Style
-    * @param plugin the Plugin
-    */
-    void store( Style style, Plugin plugin );
-
-    /**
-     * Delete a record from the table
-     * @param nIdStyle int identifier of the Style to delete
-     * @param plugin the Plugin
+     * Test of getNewWidgets method of class fr.paris.lutece.plugins.myportal.service.WidgetServiceTest
      */
-    void delete( int nIdStyle, Plugin plugin );
+    public void testGetNewWidgets(  )
+    {
+        System.out.println( "getNewWidgets" );
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
-
-    /**
-     * Load the data from the table
-     * @param nKey The identifier of the style
-     * @param plugin the Plugin
-     * @return The instance of the style
-     */
-    Style load( int nKey, Plugin plugin );
-
-    /**
-    * Load the data of all the style objects and returns them as a List
-    * @param plugin the Plugin
-    * @return The List which contains the data of all the style objects
-    */
-    List<Style> selectStylesList( Plugin plugin );
+        WidgetService instance = WidgetService.instance(  );
+        List<Widget> result = instance.getNewWidgets(  );
+        assertNotNull( result );
+    }
 }

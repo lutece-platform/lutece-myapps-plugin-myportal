@@ -31,63 +31,53 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business;
+package fr.paris.lutece.plugins.myportal.service;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.plugins.myportal.business.WidgetHome;
+import fr.paris.lutece.portal.service.image.ImageResource;
+import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.List;
 
 
 /**
  *
-* IStyleDAO Interface
-*
-*/
-public interface IStyleDAO
+ * WidgetImgProviderTest
+ *
+ */
+public class WidgetImgProviderTest extends LuteceTestCase
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
-    int newPrimaryKey( Plugin plugin );
-
-    /**
-     * Insert a new record in the table.
-     * @param style instance of the Style object to inssert
-     * @param plugin the Plugin
+     * Test method getImageResource of class fr.paris.lutece.plugins.myportal.service.WidgetImgProvider
      */
-    void insert( Style style, Plugin plugin );
+    public void testGetImageResource(  )
+    {
+        System.out.println( "getImageResource" );
 
-    /**
-    * Update the record in the table
-    * @param style the reference of the Style
-    * @param plugin the Plugin
-    */
-    void store( Style style, Plugin plugin );
+        List<Widget> listWidgets = (List<Widget>) WidgetHome.getWidgetsList(  );
 
-    /**
-     * Delete a record from the table
-     * @param nIdStyle int identifier of the Style to delete
-     * @param plugin the Plugin
-     */
-    void delete( int nIdStyle, Plugin plugin );
+        if ( listWidgets.size(  ) > 0 )
+        {
+            int nIndex = 0;
+            boolean bBreak = false;
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
+            while ( ( nIndex < listWidgets.size(  ) ) && !bBreak )
+            {
+                Widget widget = listWidgets.get( nIndex );
 
-    /**
-     * Load the data from the table
-     * @param nKey The identifier of the style
-     * @param plugin the Plugin
-     * @return The instance of the style
-     */
-    Style load( int nKey, Plugin plugin );
+                if ( widget.hasIcon(  ) )
+                {
+                    WidgetImgProvider instance = new WidgetImgProvider(  );
 
-    /**
-    * Load the data of all the style objects and returns them as a List
-    * @param plugin the Plugin
-    * @return The List which contains the data of all the style objects
-    */
-    List<Style> selectStylesList( Plugin plugin );
+                    ImageResource result = instance.getImageResource( widget.getIdWidget(  ) );
+
+                    assertNotNull( result );
+                    bBreak = true;
+                }
+
+                nIndex++;
+            }
+        }
+    }
 }

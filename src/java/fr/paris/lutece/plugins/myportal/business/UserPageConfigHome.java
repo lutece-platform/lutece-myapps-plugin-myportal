@@ -85,11 +85,11 @@ public final class UserPageConfigHome
 
     /**
      * Remove the userPageConfig whose identifier is specified in parameter
-     * @param nUserPageConfigId The userPageConfig Id
+     * @param strUserGuid The user guid
      */
-    public static void remove( int nUserPageConfigId )
+    public static void remove( String strUserGuid )
     {
-        _dao.delete( nUserPageConfigId, _plugin );
+        _dao.delete( strUserGuid, _plugin );
     }
 
     ///////////////////////////////////////////////////////////////////////////

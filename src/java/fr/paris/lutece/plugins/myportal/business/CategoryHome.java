@@ -63,6 +63,15 @@ public final class CategoryHome
     }
 
     /**
+     * Generates a new primary key
+     * @return The new primary key
+     */
+    public static int newPrimaryKey(  )
+    {
+        return _dao.newPrimaryKey( _plugin );
+    }
+
+    /**
      * Create an instance of the category class
      * @param category The instance of the Category which contains the informations to store
      * @return The  instance of category which has been created with its primary key.
