@@ -574,4 +574,18 @@ public class MyPortalApp implements XPageApplication
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
+
+    /**
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doDelTab( HttpServletRequest request )
+    {
+        String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
+    	int nIdTab = Integer.parseInt( strTabIndex );
+
+    	_pageService.delTab( getUser( request ), nIdTab );
+
+        return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
+    }
 }

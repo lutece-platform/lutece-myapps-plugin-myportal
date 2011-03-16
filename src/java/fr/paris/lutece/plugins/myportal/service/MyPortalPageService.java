@@ -257,4 +257,19 @@ public class MyPortalPageService
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
         setPageConfigUser( user, strJson );
 	}
+
+    /**
+     * del tab name
+     * @param user
+     * @param strTabNewName
+     * @param nIdTab
+     */
+	public void delTab(LuteceUser user, int nIdTab) 
+	{
+        PageConfig pageConfig = getPageConfigUser( user );
+        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        listTabs.remove( nIdTab );
+        String strJson = PageConfigJsonUtil.buildJson( pageConfig );
+        setPageConfigUser( user, strJson );
+	}
 }

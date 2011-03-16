@@ -17,10 +17,18 @@
     	<div class="myportal-ceebox">
     		<div>
     			<form method="post" action="jsp/site/plugins/myportal/DoEditTab.jsp">
-	    			#i18n{myportal.myportal_add_tab.labelAddTab}<br />
+	    			#i18n{myportal.myportal_edit_tab.labelAddTab}<br />
     				<input type="hidden" name="tab_index" value="${tab_index}" />
     				<input type="text" name="tab_name" value="${tab_name}" /><br />
-    				<input type="submit" value="#i18n{myportal.myportal_add_tab.labelButtonValid}" />
+    				<input type="submit" value="#i18n{myportal.myportal_edit_tab.labelButtonValid}" />
+    			</form>
+    		</div>
+    		<div>&nbsp;</div>
+    		<div>
+    			<form method="post" action="jsp/site/plugins/myportal/DoDelTab.jsp">
+	    			#i18n{myportal.myportal_del_tab.labelAddTab}<br />
+    				<input type="hidden" name="tab_index" value="${tab_index}" />
+    				<input type="submit" value="#i18n{myportal.myportal_del_tab.labelButtonValid}" />
     			</form>
     		</div>
    			<div class="clear"></div>
