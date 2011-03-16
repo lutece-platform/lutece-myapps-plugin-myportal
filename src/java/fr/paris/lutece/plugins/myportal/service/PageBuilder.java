@@ -84,7 +84,7 @@ public class PageBuilder implements IPageBuilder
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ACTION = "action";
-    private static final String PARAMETER_TAB_INDEX = "tab_index";
+    public static final String PARAMETER_TAB_INDEX = "tab_index";
     private static final String PARAMETER_COLUMN_FIXED = "column_fixed";
 
     // ACTIONS
@@ -112,6 +112,7 @@ public class PageBuilder implements IPageBuilder
 
     // JSP
     private static final String JSP_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
+    private static final String JSP_MYPORTAL_EDIT_TAB = "jsp/site/plugins/myportal/MyPortalEditTab.jsp";
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -173,24 +174,39 @@ public class PageBuilder implements IPageBuilder
      */
     private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab )
     {
-        // Url for adding a new widget
-        UrlItem urlAddWidget = new UrlItem( JSP_MYPORTAL_NAVIGATION );
-        urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
-        urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-
-        // Attributes of the link to add a new widget
-        Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_HREF, urlAddWidget.getUrlWithEntity(  ) );
-        listAttributes.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
-
         StringBuffer sbContent = new StringBuffer(  );
         XmlUtil.beginElement( sbContent, TAG_LI );
         XmlUtil.addElement( sbContent, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
-        XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
-        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PLUS ) );
-        XmlUtil.endElement( sbContent, TAG_A );
-        XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
-        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PENCIL ) );
-        XmlUtil.endElement( sbContent, TAG_A );
+        
+        {
+            // Url for adding a new widget
+            UrlItem urlAddWidget = new UrlItem( JSP_MYPORTAL_NAVIGATION );
+            urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
+            urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
+
+            // Attributes of the link to add a new widget
+            Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_HREF, urlAddWidget.getUrlWithEntity(  ) );
+            listAttributes.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
+
+            XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
+	        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PLUS ) );
+	        XmlUtil.endElement( sbContent, TAG_A );
+        }
+
+        {
+            // Url for editing a tab
+            UrlItem urlEditTab = new UrlItem( JSP_MYPORTAL_EDIT_TAB );
+            urlEditTab.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
+
+            // Attributes of the link to edit a tab
+            Map<String, String> listAttributesEditTab = buildAttributes( ATTRIBUTE_HREF, urlEditTab.getUrlWithEntity(  ) );
+            listAttributesEditTab.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
+
+            XmlUtil.beginElement( sbContent, TAG_A, listAttributesEditTab );
+            XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PENCIL ) );
+            XmlUtil.endElement( sbContent, TAG_A );
+        }
+        
         XmlUtil.endElement( sbContent, TAG_LI );
 
         return sbContent.toString(  );

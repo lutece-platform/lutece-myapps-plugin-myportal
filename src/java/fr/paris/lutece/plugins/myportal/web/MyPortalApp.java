@@ -33,11 +33,21 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
+import fr.paris.lutece.plugins.myportal.service.PageBuilder;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
@@ -53,15 +63,6 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
-import org.apache.commons.lang.StringUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 
 /**
  * This class provides a simple implementation of an XPage
@@ -74,6 +75,7 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_BROWSE_CATEGORIES_WIDGETS = "skin/plugins/myportal/browse_categories_widgets.html";
     private static final String TEMPLATE_MYPORTAL_NAVIGATION = "skin/plugins/myportal/myportal_navigation.html";
     private static final String TEMPLATE_MYPORTAL_ADD_TAB = "skin/plugins/myportal/myportal_add_tab.html";
+    private static final String TEMPLATE_MYPORTAL_EDIT_TAB = "skin/plugins/myportal/myportal_edit_tab.html";
     private static final String TEMPLATE_BROWSE_ESSENTIAL_WIDGETS = "skin/plugins/myportal/browse_essential_widgets.html";
     private static final String TEMPLATE_BROWSE_NEW_WIDGETS = "skin/plugins/myportal/browse_new_widgets.html";
     private static final String TEMPLATE_SEARCH_WIDGETS = "skin/plugins/myportal/search_widgets.html";
@@ -94,6 +96,7 @@ public class MyPortalApp implements XPageApplication
     private static final String MARK_WIDGETS_LIST = "widgets_list";
     private static final String MARK_LIST_TAB = "tabs_list";
     private static final String MARK_BASE_URL = "base_url";
+    private static final String MARK_TAB_NAME = "tab_name";
     private static final String MARK_CATEGORIES_LIST = "categories_list";
     private static final String MARK_CATEGORY_ID_CATEGORY = "category_id_category";
     private static final String MARK_PAGINATOR = "paginator";
@@ -528,6 +531,46 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabName = request.getParameter( PARAMETER_TAB_NAME );
         _pageService.addTab( getUser( request ), strTabName );
+
+        return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
+    }
+
+    /**
+     * @param request {@link HttpServletRequest}
+     * @return the html code
+     */
+    public String getMyPortalEditTab( HttpServletRequest request )
+    {
+    	String strTabId = request.getParameter( PageBuilder.PARAMETER_TAB_INDEX );
+    	int nIdTab = Integer.parseInt( strTabId );
+    	nIdTab--;
+    	
+        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+        TabConfig tabConfig = listTabs.get( nIdTab );
+        
+        Map<String, Object> model = new HashMap<String, Object>(  );
+
+        String strBaseUrl = AppPathService.getBaseUrl( request );
+        model.put( MARK_BASE_URL, strBaseUrl );
+        model.put( MARK_TAB_INDEX, nIdTab );
+        model.put( MARK_TAB_NAME, tabConfig.getName() );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale(  ), model );
+
+        return template.getHtml(  );
+    }
+
+    /**
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doEditTab( HttpServletRequest request )
+    {
+        String strTabNewName = request.getParameter( PARAMETER_TAB_NAME );
+        String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
+    	int nIdTab = Integer.parseInt( strTabIndex );
+
+    	_pageService.editTab( getUser( request ), strTabNewName, nIdTab );
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }

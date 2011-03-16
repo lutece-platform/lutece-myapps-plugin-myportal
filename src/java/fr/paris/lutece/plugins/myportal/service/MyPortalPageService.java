@@ -241,4 +241,20 @@ public class MyPortalPageService
         pageConfig.getTabList(  ).add( tab );
         updateConfig( user, pageConfig );
     }
+
+    /**
+     * change tab name
+     * @param user
+     * @param strTabNewName
+     * @param nIdTab
+     */
+	public void editTab(LuteceUser user, String strTabNewName, int nIdTab) 
+	{
+        PageConfig pageConfig = getPageConfigUser( user );
+        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        TabConfig tabConfig = listTabs.get( nIdTab );
+        tabConfig.setName( strTabNewName );
+        String strJson = PageConfigJsonUtil.buildJson( pageConfig );
+        setPageConfigUser( user, strJson );
+	}
 }
