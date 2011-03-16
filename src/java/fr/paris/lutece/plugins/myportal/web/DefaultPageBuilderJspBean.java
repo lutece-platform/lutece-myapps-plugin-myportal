@@ -37,15 +37,21 @@ import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService;
+import fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
+import fr.paris.lutece.portal.business.rbac.RBAC;
+import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
+import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.admin.PluginAdminPageJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.portal.web.util.LocalizedPaginator;
+import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
@@ -70,6 +76,9 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 {
     public static final String RIGHT_DEFAULT_PAGE_BUILDER = "MYPORTAL_DEFAULT_PAGE_BUILDER";
 
+    // CONSTANTS
+    private static final String ZERO = "0";
+
     // PARAMETERS
     private static final String PARAMETER_ID_WIDGET_COMPONENT = "id_widget_component";
     private static final String PARAMETER_ID_WIDGET = "id_widget";
@@ -77,10 +86,12 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_WIDGET_ORDER = "widget_order";
     private static final String PARAMETER_COLUMN = "column";
     private static final String PARAMETER_PAGE_INDEX = "page_index";
+    private static final String PARAMETER_COLUMN_FIXED = "column_fixed";
 
     // PROPERTIES
     private static final String PROPERTY_PAGE_TITLE_BUILD_DEFAULT_PAGE = "myportal.build_default_page.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_WIDGETS_LIST = "myportal.build_default_page_widgets_list.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MANAGE_ADVANCED_PARAMETERS = "myportal.manage_advanced_parameters.pageTitle";
     private static final String PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE = "myportal.listWidgets.itemsPerPage";
 
     // MARKS
@@ -92,6 +103,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String MARK_WIDGETS_LIST = "widgets_list";
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
+    private static final String MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS = "permission_manage_advanced_parameters";
+    private static final String MARK_COLUMN_FIXED = "column_fixed";
 
     // MESSAGES
     private static final String MESSAGE_ERROR = "myportal.message.error";
@@ -99,10 +112,12 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     // TEMPLATES
     private static final String TEMPLATE_BUILD_DEFAULT_PAGE = "/admin/plugins/myportal/build_default_page.html";
     private static final String TEMPLATE_WIDGETS_LIST = "/admin/plugins/myportal/build_default_page_widgets_list.html";
+    private static final String TEMPLATE_MANAGE_ADVANCED_PARAMETERS = "/admin/plugins/myportal/manage_advanced_parameters.html";
 
     // JSP
     private static final String JSP_BUILD_DEFAULT_PAGE = "BuildDefaultPage.jsp";
     private static final String JSP_BUILD_DEFAULT_PAGE_WIDGETS_LIST = "BuildDefaultPageWidgetsList.jsp";
+    private static final String JSP_URL_MANAGE_ADVANCED_PARAMETERS = "jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp";
     private DefaultPageBuilderService _service = DefaultPageBuilderService.getInstance(  );
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
@@ -117,15 +132,21 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_BUILD_DEFAULT_PAGE );
 
+        Map<String, List<WidgetComponent>> mapWidgetComponents = _service.getAllSetWidgetComponents(  );
+        ReferenceItem columnFixed = DefaultPageBuilderService.getInstance(  )
+                                                             .getWidgetParameterDefaultValue( PARAMETER_COLUMN_FIXED );
+
         Map<String, Object> model = new HashMap<String, Object>(  );
 
-        Map<String, List<WidgetComponent>> mapWidgetComponents = _service.getAllSetWidgetComponents(  );
         model.put( MARK_MAP_WIDGET_COMPONENTS, mapWidgetComponents );
-
         model.put( MARK_COLUMN_COUNT, _service.getColumnCount(  ) );
         model.put( MARK_MAP_AVAILABLE_ORDERS, getMapAvailableOrders(  ) );
         model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns(  ) );
         model.put( MARK_MAP_COLUMN_ORDER_STATUS, _service.getOrderedColumnsStatus(  ) );
+        model.put( MARK_COLUMN_FIXED, columnFixed.getName(  ) );
+        model.put( MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS,
+            RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BUILD_DEFAULT_PAGE, getLocale(  ), model );
 
@@ -286,6 +307,62 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         }
 
         return strUrl;
+    }
+
+    /**
+     * Returns the advanced parameters management interface
+     * @param request {@link HttpServletRequest}
+     * @return the interface
+     */
+    public String getManageAdvancedParameters( HttpServletRequest request )
+    {
+        if ( !RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
+        {
+            return getBuildDefaultPage( request );
+        }
+
+        setPageTitleProperty( PROPERTY_PAGE_TITLE_MANAGE_ADVANCED_PARAMETERS );
+
+        Map<String, Object> model = DefaultPageBuilderService.getInstance(  ).getManageAdvancedParameters( getUser(  ) );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale(  ),
+                model );
+
+        return getAdminPage( template.getHtml(  ) );
+    }
+
+    /**
+     * Modify the widget parameter default values
+     * @param request {@link HttpServletRequest}
+     * @return the url return
+     * @throws AccessDeniedException access denied if the user does not have the permission
+     */
+    public String doModifyWidgetParameterDefaultValues( HttpServletRequest request )
+        throws AccessDeniedException
+    {
+        if ( !RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
+        {
+            throw new AccessDeniedException(  );
+        }
+
+        ReferenceList listParams = DefaultPageBuilderService.getInstance(  ).getWidgetParamDefaultValues(  );
+
+        for ( ReferenceItem param : listParams )
+        {
+            String strParamValue = request.getParameter( param.getCode(  ) );
+
+            if ( StringUtils.isBlank( strParamValue ) )
+            {
+                strParamValue = ZERO;
+            }
+
+            param.setName( strParamValue );
+            DefaultPageBuilderService.getInstance(  ).updateWidgetParameterDefaultValue( param );
+        }
+
+        return AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_ADVANCED_PARAMETERS;
     }
 
     /**

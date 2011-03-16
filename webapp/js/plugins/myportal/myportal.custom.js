@@ -2,7 +2,8 @@ $(function() {
     $( "#tabs" ).tabs().find(">.ui-tabs-nav").sortable({ axis: "x", items: "li:gt(0)" });
 
     $( ".myportal-column" ).sortable({
-        connectWith: ".myportal-column"
+    	connectWith: ".myportal-column",
+    	items: "div.myportal-portlet"
     });
 
     $( ".myportal-portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
@@ -18,8 +19,6 @@ $(function() {
     .addClass( "ui-widget-header ui-corner-all" )
     .end()
     .find( ".myportal-portlet-content" );
-
-    $( ".myportal-portlet-fixed" ).sortable({ disabled: true });
 
     $( ".myportal-portlet-header .icon-collapse" ).click(function() {
         $( this ).toggleClass( "ui-icon-circle-triangle-n" ).toggleClass( "ui-icon-circle-triangle-s" );

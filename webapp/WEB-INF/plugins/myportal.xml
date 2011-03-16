@@ -47,7 +47,8 @@
             <feature-url>jsp/admin/plugins/myportal/BuildDefaultPage.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
 		</admin-feature>
-    </admin-features>    
+    </admin-features>
+    
   	<!-- XPages parameters -->
     <applications>
         <application>
@@ -55,5 +56,22 @@
             <application-class>fr.paris.lutece.plugins.myportal.web.MyPortalApp</application-class>
         </application>
     </applications>
+    
+    <!-- RBAC Resources -->
+	<rbac-resource-types>
+		<rbac-resource-type>
+			<rbac-resource-type-class>
+				fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService
+			</rbac-resource-type-class>
+		</rbac-resource-type>
+	</rbac-resource-types>
+	
+	<!-- Admin Dashboard components -->
+    <admindashboard-components>
+    	<admindashboard-component>
+            <dashboard-component-name>myPortalAdminDashboardComponent</dashboard-component-name>
+            <dashboard-component-class>fr.paris.lutece.plugins.myportal.web.MyPortalAdminDashboardComponent</dashboard-component-class>
+        </admindashboard-component>
+    </admindashboard-components>
 </plug-in>
 

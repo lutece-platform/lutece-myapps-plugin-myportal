@@ -92,10 +92,12 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private static final String TEMPLATE_CREATE_WIDGET = "/admin/plugins/myportal/create_widget.html";
     private static final String TEMPLATE_MODIFY_WIDGET = "/admin/plugins/myportal/modify_widget.html";
 
-    // Properties for page titles
+    // Properties
     private static final String PROPERTY_PAGE_TITLE_MANAGE_WIDGETS = "myportal.manage_widgets.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY_WIDGET = "myportal.modify_widget.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_CREATE_WIDGET = "myportal.create_widget.pageTitle";
+    private static final String PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE = "myportal.listWidgets.itemsPerPage";
+    private static final String PROPERTY_ACCEPTED_ICON_FORMATS = "myportal.acceptedIconFormats";
 
     // Markers
     private static final String MARK_WIDGET_LIST = "widget_list";
@@ -110,13 +112,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private static final String MARK_STATUS_PUBLIC = "status_public";
 
     // Jsp Definition
-    private static final String JSP_DO_REMOVE_WIDGET = "jsp/admin/plugins/myportal/DoRemoveWidget.jsp";
-    private static final String JSP_MANAGE_WIDGETS = "jsp/admin/plugins/myportal/ManageWidgets.jsp";
+    private static final String JSP_URL_DO_REMOVE_WIDGET = "jsp/admin/plugins/myportal/DoRemoveWidget.jsp";
+    private static final String JSP_URL_MANAGE_WIDGETS = "jsp/admin/plugins/myportal/ManageWidgets.jsp";
     private static final String JSP_REDIRECT_TO_MANAGE_WIDGETS = "ManageWidgets.jsp";
-
-    // Properties
-    private static final String PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE = "myportal.listWidgets.itemsPerPage";
-    private static final String PROPERTY_ACCEPTED_ICON_FORMATS = "myportal.acceptedIconFormats";
 
     // Messages
     private static final String MESSAGE_CONFIRM_REMOVE_WIDGET = "myportal.message.confirmRemoveWidget";
@@ -143,7 +141,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
                 _nDefaultItemsPerPage );
 
-        UrlItem url = new UrlItem( JSP_MANAGE_WIDGETS );
+        UrlItem url = new UrlItem( JSP_URL_MANAGE_WIDGETS );
         String strUrl = url.getUrl(  );
         Collection<Widget> listWidgets = WidgetService.instance(  ).getWidgetsList(  );
         LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
@@ -151,7 +149,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         Map<String, Object> model = new HashMap<String, Object>(  );
 
-        model.put( MARK_NB_ITEMS_PER_PAGE, "" + _nItemsPerPage );
+        model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( _nItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_WIDGET_LIST, paginator.getPageItems(  ) );
 
@@ -284,7 +282,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
         {
             int nId = Integer.parseInt( strWidgetId );
-            UrlItem url = new UrlItem( JSP_DO_REMOVE_WIDGET );
+            UrlItem url = new UrlItem( JSP_URL_DO_REMOVE_WIDGET );
             url.addParameter( PARAMETER_ID_WIDGET, nId );
 
             strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl(  ),

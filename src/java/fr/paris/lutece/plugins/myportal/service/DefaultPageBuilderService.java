@@ -36,7 +36,11 @@ package fr.paris.lutece.plugins.myportal.service;
 import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
+import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
+import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.ReferenceList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +59,10 @@ public final class DefaultPageBuilderService
     private static final String PROPERTY_COLUMN_COUNT = "myportal.defaultPageBuilder.columnCount";
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
+
+    // MARKS
+    private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
+    private static final String MARK_NB_COLUMNS = "nb_columns";
     private static DefaultPageBuilderService _singleton;
 
     /**
@@ -233,6 +241,51 @@ public final class DefaultPageBuilderService
         }
 
         return mapOrderedStatus;
+    }
+
+    /**
+     * Get the model to manage the advanced parameters
+     * @param user the current {@link AdminUser}
+     * @return the model
+     */
+    public Map<String, Object> getManageAdvancedParameters( AdminUser user )
+    {
+        ReferenceList listDefaultValues = getWidgetParamDefaultValues(  );
+        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
+        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, listDefaultValues );
+        model.put( MARK_NB_COLUMNS, nNbColumns );
+
+        return model;
+    }
+
+    /**
+     * Get the list of widget parameter default values
+     * @return a {@link ReferenceList}
+     */
+    public ReferenceList getWidgetParamDefaultValues(  )
+    {
+        return PageBuilderParameterHome.findAll(  );
+    }
+
+    /**
+     * Get the parameter
+     * @param strParameterKey the parameter key
+     * @return a {@link ReferenceItem}
+     */
+    public ReferenceItem getWidgetParameterDefaultValue( String strParameterKey )
+    {
+        return PageBuilderParameterHome.findByKey( strParameterKey );
+    }
+
+    /**
+     * Update a widget parameter default value
+     * @param param the parameter
+     */
+    public void updateWidgetParameterDefaultValue( ReferenceItem param )
+    {
+        PageBuilderParameterHome.update( param );
     }
 
     /**

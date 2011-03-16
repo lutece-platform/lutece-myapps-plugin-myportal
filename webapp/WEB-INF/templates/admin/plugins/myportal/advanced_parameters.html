@@ -1,0 +1,40 @@
+<#function getName code reference_list>
+	<#if reference_list?has_content>
+		<#list reference_list as reference_item>
+			<#if reference_item.code = code>
+  				<#return reference_item.name>
+  			</#if>
+  		</#list>
+	</#if>
+	<#return "">
+</#function>
+
+<div class="highlight-box">
+	<form method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
+		<p>
+   			<label>#i18n{myportal.manage_advanced_parameters.labelColumnFixed} : </label>
+   			<select name="column_fixed">
+   				<#assign default_column = getName( 'column_fixed', list_param_default_values )>
+   				<#if default_column == "0">
+   					<option value="0">#i18n{myportal.manage_advanced_parameters.labelNoColumnFixed}</option>
+   				<#else>
+   					<option value="0" selected="selected">#i18n{myportal.manage_advanced_parameters.labelNoColumnFixed}</option>
+   				</#if>
+   				<#list 1..nb_columns as column>
+   					<#if default_column == "" + column>
+   						<option value="${column}" selected="selected">${column}</option>
+   					<#else>
+   						<option value="${column}">${column}</option>
+   					</#if>
+   				</#list>
+   			</select>
+			<br />
+			<label>&nbsp;</label>
+			#i18n{myportal.manage_advanced_parameters.labelColumnFixedComment}
+		</p>
+		<br />
+		<p>
+			<input type="submit" class="button" value="#i18n{myportal.manage_advanced_parameters.buttonModify}" />
+		</p>
+	</form>
+</div>

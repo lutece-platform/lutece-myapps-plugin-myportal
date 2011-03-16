@@ -49,10 +49,10 @@ import java.util.List;
 public final class DefaultPageBuilderHome
 {
     // Static variable pointed at the DAO instance
-    private static final String BEAN_MYPORTAL_DEFAULTPAGEBUILDERDAOR = "myportal.defaultPageBuilderDAO";
+    private static final String BEAN_MYPORTAL_DEFAULTPAGEBUILDERDAO = "myportal.defaultPageBuilderDAO";
     private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
     private static IDefaultPageBuilderDAO _dao = (IDefaultPageBuilderDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_DEFAULTPAGEBUILDERDAOR );
+            BEAN_MYPORTAL_DEFAULTPAGEBUILDERDAO );
 
     /**
      * Private constructor - this class need not be instantiated

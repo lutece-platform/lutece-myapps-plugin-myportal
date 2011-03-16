@@ -23,6 +23,16 @@ PRIMARY KEY (id_widget_component)
 );
 
 --
+-- Structure for table myportal_page_builder_parameter
+--
+DROP TABLE IF EXISTS myportal_page_builder_parameter;
+CREATE TABLE myportal_page_builder_parameter (
+	parameter_key varchar(100) NOT NULL,
+	parameter_value varchar(100) NOT NULL,
+	PRIMARY KEY (parameter_key)
+);
+
+--
 -- Structure for table myportal_widget_style
 --
 DROP TABLE IF EXISTS myportal_widget_style;

@@ -38,12 +38,15 @@ import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.xml.XmlUtil;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +54,8 @@ import java.util.Map;
 
 /**
  *
- * This is an implentation of a page builder. Other implementation can be injected using Spring IoC
+ * This is an implentation of a page builder. Other implementation can be
+ * injected using Spring IoC
  *
  */
 public class PageBuilder implements IPageBuilder
@@ -74,10 +78,14 @@ public class PageBuilder implements IPageBuilder
     private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
     private static final String CLASS_CEEBOX = "ceebox";
 
+    // MESSAGES
+    private static final String MESSAGES_ERROR_WIDGET_PARAMETER = "Widget parameter : parameter \"column_fixed\" null or not numeric";
+
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_TAB_INDEX = "tab_index";
+    private static final String PARAMETER_COLUMN_FIXED = "column_fixed";
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
@@ -107,6 +115,7 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Build the page given a page config and a LuteceUser
+     *
      * @param pageConfig a {@link PageConfig}
      * @param user a {@link LuteceUser}
      * @return the page
@@ -147,60 +156,7 @@ public class PageBuilder implements IPageBuilder
 
         for ( TabConfig tab : listTabs )
         {
-            StringBuffer sbCol1 = new StringBuffer(  );
-            StringBuffer sbCol2 = new StringBuffer(  );
-            StringBuffer sbCol3 = new StringBuffer(  );
-            XmlUtil.beginElement( sbCol1, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
-            XmlUtil.beginElement( sbCol2, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
-            XmlUtil.beginElement( sbCol3, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN_FIXED ) );
-
-            StringBuilder sbContent = new StringBuilder(  );
-
-            for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
-            {
-                StringBuffer sbWidget = sbCol1;
-                Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
-
-                if ( widget != null )
-                {
-                    switch ( widgetConfig.getColumn(  ) )
-                    {
-                        case 2:
-                            sbWidget = sbCol2;
-
-                            break;
-
-                        case 3:
-                            sbWidget = sbCol3;
-
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_CLASS, widget.getCssClass(  ) );
-                    listAttributes.put( ATTRIBUTE_ID, ID_WIDGET + widget.getIdWidget(  ) );
-                    XmlUtil.beginElement( sbWidget, TAG_DIV, listAttributes );
-                    XmlUtil.addElement( sbWidget, TAG_DIV, widget.getName(  ),
-                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
-                    XmlUtil.addElement( sbWidget, TAG_DIV,
-                        WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ),
-                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
-                    XmlUtil.endElement( sbWidget, TAG_DIV );
-                }
-            }
-
-            XmlUtil.endElement( sbCol1, TAG_DIV );
-            XmlUtil.endElement( sbCol2, TAG_DIV );
-            XmlUtil.endElement( sbCol3, TAG_DIV );
-
-            sbContent.append( sbCol1 );
-            sbContent.append( sbCol2 );
-            sbContent.append( sbCol3 );
-
-            XmlUtil.addElement( sb, TAG_DIV, sbContent.toString(  ), buildAttributes( ATTRIBUTE_ID, ID_TAB + nTab ) );
-
+            buildTabContent( tab, sb, nTab, user );
             nTab++;
         }
 
@@ -209,6 +165,7 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Build the html code for tab links
+     *
      * @param strUrl the url of the tab link
      * @param nTabIndex the tab index
      * @param tab the tab
@@ -240,8 +197,80 @@ public class PageBuilder implements IPageBuilder
     }
 
     /**
+     * Build the tab content
+     * @param tab the tab
+     * @param sb the content of the htlm code
+     * @param nTab the index of the tab
+     * @param user the {@link LuteceUser}
+     */
+    private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user )
+    {
+        ReferenceItem columnFixed = DefaultPageBuilderService.getInstance(  )
+                                                             .getWidgetParameterDefaultValue( PARAMETER_COLUMN_FIXED );
+        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
+        List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
+
+        for ( int i = 0; i < nNbColumns; i++ )
+        {
+            StringBuffer sbCol = new StringBuffer(  );
+
+            if ( StringUtils.isNotBlank( columnFixed.getName(  ) ) && StringUtils.isNumeric( columnFixed.getName(  ) ) )
+            {
+                int nColumnFixed = Integer.parseInt( columnFixed.getName(  ) );
+
+                if ( nColumnFixed == ( i + 1 ) )
+                {
+                    XmlUtil.beginElement( sbCol, TAG_DIV,
+                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN_FIXED ) );
+                }
+                else
+                {
+                    XmlUtil.beginElement( sbCol, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
+                }
+
+                listCol.add( sbCol );
+            }
+            else
+            {
+                AppLogService.error( MESSAGES_ERROR_WIDGET_PARAMETER );
+            }
+        }
+
+        StringBuilder sbContent = new StringBuilder(  );
+
+        for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
+        {
+            Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
+
+            if ( widget != null )
+            {
+                StringBuffer sbWidget = listCol.get( widgetConfig.getColumn(  ) - 1 );
+
+                Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_CLASS, widget.getCssClass(  ) );
+                listAttributes.put( ATTRIBUTE_ID, ID_WIDGET + widget.getIdWidget(  ) );
+                XmlUtil.beginElement( sbWidget, TAG_DIV, listAttributes );
+                XmlUtil.addElement( sbWidget, TAG_DIV, widget.getName(  ),
+                    buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
+                XmlUtil.addElement( sbWidget, TAG_DIV,
+                    WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ),
+                    buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
+                XmlUtil.endElement( sbWidget, TAG_DIV );
+            }
+        }
+
+        for ( int i = 0; i < nNbColumns; i++ )
+        {
+            XmlUtil.endElement( listCol.get( i ), TAG_DIV );
+            sbContent.append( listCol.get( i ) );
+        }
+
+        XmlUtil.addElement( sb, TAG_DIV, sbContent.toString(  ), buildAttributes( ATTRIBUTE_ID, ID_TAB + nTab ) );
+    }
+
+    /**
      * Build the attributes for the tag
-     * @param strName the attribute name
+     *
+     * @param strName  the attribute name
      * @param strValue the attribute value
      * @return a map
      */

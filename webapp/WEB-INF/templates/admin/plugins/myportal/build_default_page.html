@@ -61,6 +61,11 @@
 	<form method="post"  action="jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp">
         <input type="submit" value="#i18n{myportal.build_default_page.buttonAddWidget}" class="button bt-toolbar" />
     </form>
+    <#if permission_manage_advanced_parameters>
+    	<form method="post" action="jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp">
+	        <input type="submit" value="#i18n{myportal.build_default_page.buttonManageAdvancedParameters}" class="button bt-toolbar" />
+	    </form>
+    </#if>
 </div>
 <div class="content-box">
 	<h2>#i18n{myportal.build_default_page.pageTitle}</h2>
@@ -69,7 +74,7 @@
 		<#if column_refItem.code != ''>
 			<#assign column_key = column_refItem.code />
 			<div class="highlight-box">
-				<h2>#i18n{myportal.build_default_page.labelColumn} ${column_key}</h2>
+				<h2>#i18n{myportal.build_default_page.labelColumn} ${column_key}<#if column_fixed == column_key> - #i18n{myportal.build_default_page.labelFixed}</#if></h2>
 				<#if map_column_order_status[column_key]?exists && !map_column_order_status[column_key]>
 					<p>
 						<a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labeReorder}</a>
