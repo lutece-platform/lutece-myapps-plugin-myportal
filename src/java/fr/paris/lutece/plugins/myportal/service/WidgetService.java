@@ -38,8 +38,8 @@ import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
-import fr.paris.lutece.portal.service.cache.CacheService;
 import fr.paris.lutece.portal.service.image.ImageResource;
+import fr.paris.lutece.portal.service.portal.PortalService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 import org.apache.commons.lang.StringUtils;
@@ -56,10 +56,8 @@ public final class WidgetService extends AbstractCacheableService
     private static final String SERVICE_NAME = "MyPortal Widget Service";
 
     // CACHE
-    private static final String CACHE_ICON_RESOURCE = "icon_resource_";
-    private static final String CACHE_WIDGETS_BY_CATEGORIES = "widgets_by_categories_";
-    private static final String CACHE_ESSENTIAL_WIDGETS = "essential_widgets";
-    private static final String CACHE_NEW_WIDGETS = "new_widgets";
+    private static final String CACHE_ESSENTIAL_WIDGETS = "[essential widgets list]";
+    private static final String CACHE_NEW_WIDGETS = "[new widgets list]";
 
     // CONSTANTS
     private static final String COMMA = ",";
@@ -82,7 +80,7 @@ public final class WidgetService extends AbstractCacheableService
         }
         else
         {
-            CacheService.registerCacheableService( getName(  ), this );
+            PortalService.registerCacheableService( getName(  ), this );
         }
     }
 
@@ -115,16 +113,23 @@ public final class WidgetService extends AbstractCacheableService
      */
     public Widget getWidget( int nWidgetId )
     {
-        String strWidgetId = Integer.toString( nWidgetId );
-        Widget widget = (Widget) getFromCache( strWidgetId );
+        String strKey = getKey( nWidgetId );
+        Widget widget = (Widget) getFromCache( strKey );
 
         if ( widget == null )
         {
             widget = WidgetHome.findByPrimaryKey( nWidgetId );
-            putInCache( strWidgetId, widget );
+            putInCache( strKey, widget );
         }
 
         return widget;
+    }
+
+    private String getKey( int nId )
+    {
+        StringBuilder sbKey = new StringBuilder();
+        sbKey.append("[widget:").append(nId).append("]");
+        return sbKey.toString();
     }
 
     /**
@@ -143,15 +148,23 @@ public final class WidgetService extends AbstractCacheableService
      */
     public ImageResource getIconResource( int nWidgetId )
     {
-        ImageResource img = (ImageResource) getFromCache( CACHE_ICON_RESOURCE + nWidgetId );
+        String strKey = getIconKey(nWidgetId);
+        ImageResource img = (ImageResource) getFromCache( strKey );
 
         if ( img == null )
         {
             img = WidgetHome.getIconResource( nWidgetId );
-            putInCache( CACHE_ICON_RESOURCE + nWidgetId, img );
+            putInCache( strKey, img );
         }
 
         return img;
+    }
+
+    private String getIconKey( int nId )
+    {
+        StringBuilder sbKey = new StringBuilder();
+        sbKey.append("[icon:").append(nId).append("]");
+        return sbKey.toString();
     }
 
     /**
@@ -190,7 +203,8 @@ public final class WidgetService extends AbstractCacheableService
      */
     public List<Widget> getWidgetsByCategoryId( int nCategoryId )
     {
-        List<Widget> listWidgets = (List<Widget>) getFromCache( CACHE_WIDGETS_BY_CATEGORIES + nCategoryId );
+        String strKey = getCategoryListKey( nCategoryId );
+        List<Widget> listWidgets = (List<Widget>) getFromCache( strKey );
 
         if ( listWidgets == null )
         {
@@ -199,10 +213,17 @@ public final class WidgetService extends AbstractCacheableService
             wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
-            putInCache( CACHE_WIDGETS_BY_CATEGORIES + nCategoryId, listWidgets );
+            putInCache( strKey, listWidgets );
         }
 
         return listWidgets;
+    }
+
+    private String getCategoryListKey( int nId )
+    {
+        StringBuilder sbKey = new StringBuilder();
+        sbKey.append("[category widget list:").append(nId).append("]");
+        return sbKey.toString();
     }
 
     /**
@@ -279,7 +300,7 @@ public final class WidgetService extends AbstractCacheableService
     public void removeWidget( int nWidgetId )
     {
         resetCache(  );
-        WidgetContentService.instance(  ).removeCache( Integer.toString( nWidgetId ) );
+        WidgetContentService.instance(  ).removeCache( nWidgetId );
         WidgetHome.remove( nWidgetId );
     }
 
@@ -291,7 +312,7 @@ public final class WidgetService extends AbstractCacheableService
     public void updateWidget( Widget widget, boolean bUpdateIcon )
     {
         resetCache(  );
-        WidgetContentService.instance(  ).removeCache( Integer.toString( widget.getIdWidget(  ) ) );
+        WidgetContentService.instance(  ).removeCache( widget.getIdWidget(  ) );
         WidgetHome.update( widget, bUpdateIcon );
     }
 }

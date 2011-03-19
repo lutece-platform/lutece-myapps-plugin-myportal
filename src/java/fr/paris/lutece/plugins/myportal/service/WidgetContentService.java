@@ -38,7 +38,7 @@ import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
-import fr.paris.lutece.portal.service.cache.CacheService;
+import fr.paris.lutece.portal.service.portal.PortalService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -70,7 +70,7 @@ public final class WidgetContentService extends AbstractCacheableService
         }
         else
         {
-            CacheService.registerCacheableService( getName(  ), this );
+            PortalService.registerCacheableService( getName(  ), this );
         }
     }
 
@@ -104,8 +104,8 @@ public final class WidgetContentService extends AbstractCacheableService
      */
     public String getWidgetContent( int nWidgetId, LuteceUser user )
     {
-        String strWidgetId = Integer.toString( nWidgetId );
-        String strWidget = (String) getFromCache( strWidgetId );
+        String strKey =  getKey( nWidgetId );
+        String strWidget = (String) getFromCache( strKey );
 
         if ( strWidget == null )
         {
@@ -113,7 +113,7 @@ public final class WidgetContentService extends AbstractCacheableService
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
             strWidget = handler.renderWidget( widget.getConfigData(  ), user );
-            putInCache( strWidgetId, strWidget );
+            putInCache( strKey , strWidget );
         }
 
         return strWidget;
@@ -121,17 +121,24 @@ public final class WidgetContentService extends AbstractCacheableService
 
     /**
      * Remove the cache by a given name
-     * @param strName the name of the cache to remove
+     * @param nId the name of the cache to remove
      */
-    public void removeCache( String strName )
+    public void removeCache( int nId )
     {
         try
         {
-            getCache(  ).remove( strName );
+            getCache(  ).remove( getKey( nId ) );
         }
         catch ( IllegalStateException e )
         {
             AppLogService.error( e.getMessage(  ), e );
         }
+    }
+
+    private String getKey( int nId )
+    {
+        StringBuilder sbKey = new StringBuilder();
+        sbKey.append("[widget:").append(nId).append("]");
+        return sbKey.toString();
     }
 }
