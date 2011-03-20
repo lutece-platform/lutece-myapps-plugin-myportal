@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
+import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -41,7 +42,7 @@ import org.apache.commons.lang.StringUtils;
  * This is the business class for the object Widget
  *
  */
-public class Widget
+public class Widget implements Serializable
 {
     // Variables declarations 
     private int _nIdWidget;
