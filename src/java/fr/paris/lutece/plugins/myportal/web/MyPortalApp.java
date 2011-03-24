@@ -43,7 +43,10 @@ import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.UserNotSignedException;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.util.LocalizedPaginator;
@@ -145,7 +148,7 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
-        String strWidgets = _pageService.getUserPage( getUser( request ) );
+        String strWidgets = _pageService.getUserPage( getUser( request ), request );
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_WIDGETS, strWidgets );
 
@@ -486,17 +489,21 @@ public class MyPortalApp implements XPageApplication
      */
     private LuteceUser getUser( HttpServletRequest request )
     {
-        LuteceUser user;
+        LuteceUser user = null;
 
-        ////////////////////////////////////////////////////////////////////////
-        // Temporary code
-        String strUser = request.getParameter( "user" );
-
-        if ( strUser != null )
+        if ( SecurityService.isAuthenticationEnable(  ) )
         {
-            user = new MyPortalUser( strUser );
+            try
+            {
+                user = SecurityService.getInstance(  ).getRemoteUser( request );
+            }
+            catch ( UserNotSignedException ue )
+            {
+                AppLogService.error( ue.getMessage(  ), ue );
+            }
         }
-        else
+
+        if ( user == null )
         {
             user = new MyPortalUser( "Anonymous" );
         }

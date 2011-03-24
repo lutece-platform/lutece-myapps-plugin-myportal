@@ -33,8 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.Serializable;
 
 
 /**
@@ -44,6 +45,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Widget implements Serializable
 {
+    private static final long serialVersionUID = 6779038411191982156L;
+
     // Variables declarations 
     private int _nIdWidget;
     private String _strName;

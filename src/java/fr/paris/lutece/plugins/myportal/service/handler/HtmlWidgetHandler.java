@@ -35,6 +35,8 @@ package fr.paris.lutece.plugins.myportal.service.handler;
 
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -49,7 +51,7 @@ public class HtmlWidgetHandler implements WidgetHandler
     /**
      * {@inheritDoc }
      */
-    public String renderWidget( String strWidgetData, LuteceUser user )
+    public String renderWidget( String strWidgetData, LuteceUser user, HttpServletRequest request )
     {
         return strWidgetData;
     }

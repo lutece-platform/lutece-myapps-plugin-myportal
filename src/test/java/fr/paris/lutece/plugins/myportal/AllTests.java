@@ -41,7 +41,6 @@ import fr.paris.lutece.plugins.myportal.business.WidgetTest;
 import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterTest;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderServiceTest;
 import fr.paris.lutece.plugins.myportal.service.WidgetImgProviderTest;
-import fr.paris.lutece.plugins.myportal.service.WidgetServiceTest;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerServiceTest;
 import fr.paris.lutece.plugins.myportal.web.CategoryJspBeanTest;
 import fr.paris.lutece.plugins.myportal.web.DefaultPageBuilderJspBeanTest;
@@ -75,7 +74,6 @@ public final class AllTests
         suite.addTest( new TestSuite( WidgetHandlerServiceTest.class ) );
         suite.addTest( new TestSuite( DefaultPageBuilderServiceTest.class ) );
         suite.addTest( new TestSuite( WidgetImgProviderTest.class ) );
-        suite.addTest( new TestSuite( WidgetServiceTest.class ) );
         suite.addTest( new TestSuite( CategoryJspBeanTest.class ) );
         suite.addTest( new TestSuite( DefaultPageBuilderJspBeanTest.class ) );
         suite.addTest( new TestSuite( MyPortalAdminDashboardComponentTest.class ) );

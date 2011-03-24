@@ -68,7 +68,7 @@ public class WidgetImgProviderTest extends LuteceTestCase
 
                 if ( widget.hasIcon(  ) )
                 {
-                    WidgetImgProvider instance = new WidgetImgProvider(  );
+                    WidgetImgProvider instance = WidgetImgProvider.getInstance(  );
 
                     ImageResource result = instance.getImageResource( widget.getIdWidget(  ) );
 

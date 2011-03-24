@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -119,9 +121,10 @@ public class PageBuilder implements IPageBuilder
      *
      * @param pageConfig a {@link PageConfig}
      * @param user a {@link LuteceUser}
+     * @param request {@link HttpServletRequest}
      * @return the page
      */
-    public String buildPage( PageConfig pageConfig, LuteceUser user )
+    public String buildPage( PageConfig pageConfig, LuteceUser user, HttpServletRequest request )
     {
         StringBuffer sb = new StringBuffer(  );
 
@@ -157,7 +160,7 @@ public class PageBuilder implements IPageBuilder
 
         for ( TabConfig tab : listTabs )
         {
-            buildTabContent( tab, sb, nTab, user );
+            buildTabContent( tab, sb, nTab, user, request );
             nTab++;
         }
 
@@ -214,8 +217,9 @@ public class PageBuilder implements IPageBuilder
      * @param sb the content of the htlm code
      * @param nTab the index of the tab
      * @param user the {@link LuteceUser}
+     * @param request {@link HttpServletRequest}
      */
-    private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user )
+    private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user, HttpServletRequest request )
     {
         ReferenceItem columnFixed = DefaultPageBuilderService.getInstance(  )
                                                              .getWidgetParameterDefaultValue( PARAMETER_COLUMN_FIXED );
@@ -264,7 +268,7 @@ public class PageBuilder implements IPageBuilder
                 XmlUtil.addElement( sbWidget, TAG_DIV, widget.getName(  ),
                     buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
                 XmlUtil.addElement( sbWidget, TAG_DIV,
-                    WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user ),
+                    WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user, request ),
                     buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
                 XmlUtil.endElement( sbWidget, TAG_DIV );
             }

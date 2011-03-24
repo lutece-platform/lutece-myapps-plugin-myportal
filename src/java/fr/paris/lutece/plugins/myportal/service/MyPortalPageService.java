@@ -46,6 +46,8 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -64,13 +66,14 @@ public class MyPortalPageService
     /**
      * Gets the page for a given user
      * @param user The user
+     * @param request {@link HttpServletRequest}
      * @return The page
      */
-    public String getUserPage( LuteceUser user )
+    public String getUserPage( LuteceUser user, HttpServletRequest request )
     {
         PageConfig pageConfig = getPageConfigUser( user );
 
-        return _pageBuilder.buildPage( pageConfig, user );
+        return _pageBuilder.buildPage( pageConfig, user, request );
     }
 
     /**

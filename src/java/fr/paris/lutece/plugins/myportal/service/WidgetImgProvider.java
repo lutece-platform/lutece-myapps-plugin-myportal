@@ -43,7 +43,7 @@ import fr.paris.lutece.portal.service.image.ImageResourceProvider;
  * MyPortalImgProvider
  *
  */
-public class WidgetImgProvider implements ImageResourceProvider
+public final class WidgetImgProvider implements ImageResourceProvider
 {
     private static final String IMAGE_RESOURCE_TYPE_ID = "myportal_widget_icon";
     private static WidgetImgProvider _singleton;
@@ -51,7 +51,7 @@ public class WidgetImgProvider implements ImageResourceProvider
     /**
      * Contructor
      */
-    public WidgetImgProvider(  )
+    private WidgetImgProvider(  )
     {
     }
 
