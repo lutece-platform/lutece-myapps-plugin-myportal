@@ -134,7 +134,7 @@ public final class WidgetContentService extends AbstractCacheableService
             Widget widget = WidgetHome.findByPrimaryKey( nWidgetId );
             String strType = widget.getWidgetType(  );
             WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-            strWidget = handler.renderWidget( widget.getConfigData(  ), user, request );
+            strWidget = handler.renderWidget( widget, user, request );
             mapWidgetContent.put( user.getName(  ), strWidget );
             putInCache( strKey, mapWidgetContent );
         }
@@ -149,7 +149,7 @@ public final class WidgetContentService extends AbstractCacheableService
                 Widget widget = WidgetHome.findByPrimaryKey( nWidgetId );
                 String strType = widget.getWidgetType(  );
                 WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-                strWidget = handler.renderWidget( widget.getConfigData(  ), user, request );
+                strWidget = handler.renderWidget( widget, user, request );
                 mapWidgetContent.put( user.getName(  ), strWidget );
                 putInCache( strKey, mapWidgetContent );
             }
