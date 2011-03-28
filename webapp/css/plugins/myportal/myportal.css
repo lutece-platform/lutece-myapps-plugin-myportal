@@ -61,7 +61,7 @@
 
 .myportal-ceebox {
 	padding-top: 15px;
-	height: 95%;
+	height: 300px;
 }
 
 /********************************
@@ -104,6 +104,7 @@
 	height: 100%;
 	border-right: 1px solid #000000;
 	padding-right: 15px;
+	width: 182px;
 }
 
 #myportal-categories-list ul {
@@ -126,7 +127,7 @@
 #myportal-widgets-list {
 	padding-left: 15px;
 	float: left;
-	width: 70%;
+	width: 67%;
 }
 
 #myportal-widgets-list-content ul {

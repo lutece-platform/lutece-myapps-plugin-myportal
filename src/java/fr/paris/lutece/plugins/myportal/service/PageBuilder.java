@@ -91,6 +91,7 @@ public class PageBuilder implements IPageBuilder
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
+    private static final String ACTION_EDIT_TAB = "edit_tab";
 
     // HTML CONSTANTS
     private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
@@ -113,8 +114,7 @@ public class PageBuilder implements IPageBuilder
     private static final String ATTRIBUTE_VALUE_JS = "text/javascript";
 
     // JSP
-    private static final String JSP_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
-    private static final String JSP_MYPORTAL_EDIT_TAB = "jsp/site/plugins/myportal/MyPortalEditTab.jsp";
+    private static final String JSP_RUNSTANDALONEAPP = "jsp/site/RunStandaloneApp.jsp";
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -141,7 +141,8 @@ public class PageBuilder implements IPageBuilder
             // Url of the tab link
             String strUrl = ANCHOR + ID_TAB + nTab;
             sbJsContent.append( BEGIN_JS_DOCUMENT_WRITE );
-            sbJsContent.append( buildTabLinks( strUrl, nTab, tab ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
+            sbJsContent.append( buildTabLinks( strUrl, nTab, tab, JSP_RUNSTANDALONEAPP )
+                                    .replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
             sbJsContent.append( END_JS_DOCUMENT_WRITE );
             XmlUtil.addElement( sb, TAG_JS, sbJsContent.toString(  ),
                 buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
@@ -149,7 +150,7 @@ public class PageBuilder implements IPageBuilder
             /* Tab when JS is off */
             strUrl = AppPathService.getPortalUrl(  ) + QUESTION_MARK + PARAMETER_PAGE + EQUAL +
                 MyPortalPlugin.PLUGIN_NAME + strUrl;
-            XmlUtil.addElement( sb, TAG_NOJS, buildTabLinks( strUrl, nTab, tab ) );
+            XmlUtil.addElement( sb, TAG_NOJS, buildTabLinks( strUrl, nTab, tab, AppPathService.getPortalUrl(  ) ) );
 
             nTab++;
         }
@@ -173,16 +174,18 @@ public class PageBuilder implements IPageBuilder
      * @param strUrl the url of the tab link
      * @param nTabIndex the tab index
      * @param tab the tab
+     * @param the base url
      * @return the html code
      */
-    private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab )
+    private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab, String strBaseUrl )
     {
         StringBuffer sbContent = new StringBuffer(  );
         XmlUtil.beginElement( sbContent, TAG_LI );
         XmlUtil.addElement( sbContent, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
 
         // Url for adding a new widget
-        UrlItem urlAddWidget = new UrlItem( JSP_MYPORTAL_NAVIGATION );
+        UrlItem urlAddWidget = new UrlItem( strBaseUrl );
+        urlAddWidget.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
         urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
 
@@ -195,7 +198,9 @@ public class PageBuilder implements IPageBuilder
         XmlUtil.endElement( sbContent, TAG_A );
 
         // Url for editing a tab
-        UrlItem urlEditTab = new UrlItem( JSP_MYPORTAL_EDIT_TAB );
+        UrlItem urlEditTab = new UrlItem( strBaseUrl );
+        urlEditTab.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
+        urlEditTab.addParameter( PARAMETER_ACTION, ACTION_EDIT_TAB );
         urlEditTab.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
 
         // Attributes of the link to edit a tab

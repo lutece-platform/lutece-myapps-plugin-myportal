@@ -73,5 +73,10 @@
             <dashboard-component-class>fr.paris.lutece.plugins.myportal.web.MyPortalAdminDashboardComponent</dashboard-component-class>
         </admindashboard-component>
     </admindashboard-components>
+    
+    <!-- JS -->
+    <javascript-files>
+         <javascript-file>myportal/myportal.js</javascript-file>
+    </javascript-files>
 </plug-in>
 

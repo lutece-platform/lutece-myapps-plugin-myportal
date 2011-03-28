@@ -38,6 +38,7 @@ import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
@@ -92,6 +93,7 @@ public class MyPortalApp implements XPageApplication
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_SEARCH_WIDGETS_NAME = "search_widgets_name";
     private static final String PARAMETER_TAB_INDEX = "tab_index";
+    private static final String PARAMETER_PAGE = "page";
 
     // MARKS
     private static final String MARK_WIDGETS = "widgets";
@@ -121,10 +123,11 @@ public class MyPortalApp implements XPageApplication
     private static final String ACTION_BROWSE_ESSENTIAL_WIDGETS = "browse_essential_widgets";
     private static final String ACTION_BROWSE_NEW_WIDGETS = "browse_new_widgets";
     private static final String ACTION_SEARCH_WIDGETS = "search_widgets";
+    private static final String ACTION_ADD_TAB = "add_tab";
+    private static final String ACTION_EDIT_TAB = "edit_tab";
 
     // JSP
     private static final String JSP_URL_BROWSE_CATEGORIES_WIDGETS = "jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp";
-    private static final String JSP_URL_MYPORTAL_NAVIGATION = "jsp/site/plugins/myportal/MyPortalNavigation.jsp";
     private static final String JSP_URL_BROWSE_ESSENTIAL_WIDGETS = "jsp/site/plugins/myportal/BrowseEssentialWidgets.jsp";
     private static final String JSP_URL_BROWSE_NEW_WIDGETS = "jsp/site/plugins/myportal/BrowseNewWidgets.jsp";
     private static final String JSP_URL_SEARCH_WIDGETS = "jsp/site/plugins/myportal/SearchWidgets.jsp";
@@ -148,12 +151,32 @@ public class MyPortalApp implements XPageApplication
         page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
         page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
 
-        String strWidgets = _pageService.getUserPage( getUser( request ), request );
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_WIDGETS, strWidgets );
+        String strAction = request.getParameter( PARAMETER_ACTION );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
-        page.setContent( template.getHtml(  ) );
+        if ( StringUtils.isNotBlank( strAction ) )
+        {
+            if ( ACTION_ADD_TAB.equals( strAction ) )
+            {
+                page.setContent( getMyPortalAddTab( request ) );
+            }
+            else if ( ACTION_EDIT_TAB.equals( strAction ) )
+            {
+                page.setContent( getMyPortalEditTab( request ) );
+            }
+            else
+            {
+                page.setContent( getMyPortalNavigation( request ) );
+            }
+        }
+        else
+        {
+            String strWidgets = _pageService.getUserPage( getUser( request ), request );
+            Map<String, Object> model = new HashMap<String, Object>(  );
+            model.put( MARK_WIDGETS, strWidgets );
+
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
+            page.setContent( template.getHtml(  ) );
+        }
 
         return page;
     }
@@ -265,6 +288,7 @@ public class MyPortalApp implements XPageApplication
         else
         {
             category = CategoryService.getInstance(  ).findFirstCategory(  );
+            strCategoryId = Integer.toString( category.getIdCategory(  ) );
         }
 
         if ( category != null )
@@ -278,12 +302,15 @@ public class MyPortalApp implements XPageApplication
 
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
 
-        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
         url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_CATEGORIES_WIDGETS );
         urlForJs.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
@@ -376,8 +403,13 @@ public class MyPortalApp implements XPageApplication
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
 
-        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_ESSENTIAL_WIDGETS );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
+
+        UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_ESSENTIAL_WIDGETS );
+        urlForJs.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
@@ -391,7 +423,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, JSP_URL_BROWSE_ESSENTIAL_WIDGETS );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS,
@@ -412,8 +444,13 @@ public class MyPortalApp implements XPageApplication
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
 
-        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_NEW_WIDGETS );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
+
+        UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_NEW_WIDGETS );
+        urlForJs.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
@@ -424,10 +461,10 @@ public class MyPortalApp implements XPageApplication
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
         model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-        model.put( MARK_NB_ITEMS_PER_PAGE, "" + nDefaultItemsPerPage );
+        model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, JSP_URL_BROWSE_NEW_WIDGETS );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ),
@@ -455,12 +492,15 @@ public class MyPortalApp implements XPageApplication
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
 
-        UrlItem url = new UrlItem( JSP_URL_MYPORTAL_NAVIGATION );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_SEARCH_WIDGETS );
         url.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         UrlItem urlForJs = new UrlItem( JSP_URL_SEARCH_WIDGETS );
         urlForJs.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
+        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
