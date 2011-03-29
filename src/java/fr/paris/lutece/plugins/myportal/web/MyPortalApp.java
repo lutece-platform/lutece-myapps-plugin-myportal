@@ -310,7 +310,7 @@ public class MyPortalApp implements XPageApplication
 
         UrlItem urlForJs = new UrlItem( JSP_URL_BROWSE_CATEGORIES_WIDGETS );
         urlForJs.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
-        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
+        urlForJs.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
@@ -500,7 +500,7 @@ public class MyPortalApp implements XPageApplication
 
         UrlItem urlForJs = new UrlItem( JSP_URL_SEARCH_WIDGETS );
         urlForJs.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
-        url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
+        urlForJs.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
 
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
