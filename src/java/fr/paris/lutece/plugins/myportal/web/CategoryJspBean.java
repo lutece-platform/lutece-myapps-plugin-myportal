@@ -64,8 +64,6 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 {
     ////////////////////////////////////////////////////////////////////////////
     // Constants
-    // Right
-    public static final String RIGHT_MANAGE_MYPORTAL_CATEGORY = "MYPORTAL_CATEGORY_MANAGEMENT";
 
     // Parameters
     private static final String PARAMETER_CATEGORY_ID_CATEGORY = "category_id_category";

@@ -66,10 +66,10 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
         user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
-        request.registerAdminUserWithRigth( user, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         CategoryJspBean instance = new CategoryJspBean(  );
-        instance.init( request, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getManageCategories( request );
 
@@ -88,10 +88,10 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
         user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
-        request.registerAdminUserWithRigth( user, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         CategoryJspBean instance = new CategoryJspBean(  );
-        instance.init( request, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getCreateCategory( request );
 
@@ -110,10 +110,10 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
         user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
-        request.registerAdminUserWithRigth( user, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         CategoryJspBean instance = new CategoryJspBean(  );
-        instance.init( request, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+        instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getConfirmRemoveCategory( request );
 
@@ -138,10 +138,10 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
             AdminUser user = AdminUserHome.findUserByLogin( "admin" );
             user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
-            request.registerAdminUserWithRigth( user, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+            request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
             CategoryJspBean instance = new CategoryJspBean(  );
-            instance.init( request, CategoryJspBean.RIGHT_MANAGE_MYPORTAL_CATEGORY );
+            instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
             String result = instance.getModifyCategory( request );
 
