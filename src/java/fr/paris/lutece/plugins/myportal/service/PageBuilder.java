@@ -174,7 +174,7 @@ public class PageBuilder implements IPageBuilder
      * @param strUrl the url of the tab link
      * @param nTabIndex the tab index
      * @param tab the tab
-     * @param the base url
+     * @param strBaseUrl the base url
      * @return the html code
      */
     private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab, String strBaseUrl )

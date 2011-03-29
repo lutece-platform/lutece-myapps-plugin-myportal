@@ -60,9 +60,12 @@ public final class WidgetDAO implements IWidgetDAO
     private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_widget WHERE id_widget = ? ";
     private static final String SQL_QUERY_UPDATE = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, icon_content = ?, icon_mime_type = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
     private static final String SQL_QUERY_UPDATE_WITHOUT_ICON = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
-    private static final String SQL_QUERY_SELECTALL = "SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
+    private static final String SQL_QUERY_SELECTALL = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
         " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style ";
     private static final String SQL_QUERY_SELECT_RESOURCE_IMAGE = " SELECT icon_content, icon_mime_type FROM myportal_widget WHERE id_widget = ? ";
+    private static final String SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
+        " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " +
+        " WHERE a.status = ? OR a.status = ? ";
     private static final String SQL_ORDER_BY = " ORDER BY ";
     private static final String SQL_ASC = " ASC ";
     private static final String SQL_NAME = " a.name ";
@@ -236,7 +239,7 @@ public final class WidgetDAO implements IWidgetDAO
     public Collection<Widget> selectWidgetsList( Plugin plugin )
     {
         String strSQL = SQL_QUERY_SELECTALL + SQL_ORDER_BY + SQL_NAME + SQL_ASC;
-        Collection<Widget> widgetList = new ArrayList<Widget>(  );
+        Collection<Widget> widgetsList = new ArrayList<Widget>(  );
         DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
         daoUtil.executeQuery(  );
 
@@ -259,12 +262,12 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setCssClass( daoUtil.getString( nIndex++ ) );
             widget.setIsEssential( daoUtil.getBoolean( nIndex++ ) );
             widget.setIsNew( daoUtil.getBoolean( nIndex++ ) );
-            widgetList.add( widget );
+            widgetsList.add( widget );
         }
 
         daoUtil.free(  );
 
-        return widgetList;
+        return widgetsList;
     }
 
     /**
@@ -294,9 +297,48 @@ public final class WidgetDAO implements IWidgetDAO
     /**
      * {@inheritDoc}
      */
+    public List<Widget> getPublicMandatoryWidgets( Plugin plugin )
+    {
+        String strSQL = SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS + SQL_ORDER_BY + SQL_NAME + SQL_ASC;
+        List<Widget> widgetsList = new ArrayList<Widget>(  );
+        DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
+        daoUtil.setInt( 1, WidgetStatusEnum.PUBLIC.getId(  ) );
+        daoUtil.setInt( 2, WidgetStatusEnum.MANDATORY.getId(  ) );
+        daoUtil.executeQuery(  );
+
+        while ( daoUtil.next(  ) )
+        {
+            int nIndex = 1;
+            Widget widget = new Widget(  );
+
+            widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
+            widget.setName( daoUtil.getString( nIndex++ ) );
+            widget.setDescription( daoUtil.getString( nIndex++ ) );
+            widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
+            widget.setWidgetType( daoUtil.getString( nIndex++ ) );
+            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setStatus( daoUtil.getInt( nIndex++ ) );
+            widget.setCategory( daoUtil.getString( nIndex++ ) );
+            widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
+            widget.setStyle( daoUtil.getString( nIndex++ ) );
+            widget.setCssClass( daoUtil.getString( nIndex++ ) );
+            widget.setIsEssential( daoUtil.getBoolean( nIndex++ ) );
+            widget.setIsNew( daoUtil.getBoolean( nIndex++ ) );
+            widgetsList.add( widget );
+        }
+
+        daoUtil.free(  );
+
+        return widgetsList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public List<Widget> getWidgetsByFilter( WidgetFilter wFilter, Plugin plugin )
     {
-        List<Widget> widgetList = new ArrayList<Widget>(  );
+        List<Widget> widgetsList = new ArrayList<Widget>(  );
         StringBuilder sbSQL = new StringBuilder( buildSQLQuery( wFilter ) );
         sbSQL.append( SQL_ORDER_BY + SQL_NAME + SQL_ASC );
 
@@ -323,12 +365,12 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setCssClass( daoUtil.getString( nIndex++ ) );
             widget.setIsEssential( daoUtil.getBoolean( nIndex++ ) );
             widget.setIsNew( daoUtil.getBoolean( nIndex++ ) );
-            widgetList.add( widget );
+            widgetsList.add( widget );
         }
 
         daoUtil.free(  );
 
-        return widgetList;
+        return widgetsList;
     }
 
     /**

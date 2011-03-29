@@ -290,7 +290,7 @@ public final class DefaultPageBuilderService
         Collection<Widget> listWidgets = new ArrayList<Widget>(  );
         List<Integer> listWidgetIds = DefaultPageBuilderHome.findWidgetIds(  );
 
-        for ( Widget widget : WidgetService.instance(  ).getWidgetsList(  ) )
+        for ( Widget widget : WidgetService.instance(  ).getPublicMandatoryWidgets(  ) )
         {
             boolean bHasWidget = false;
 

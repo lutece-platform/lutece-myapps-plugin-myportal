@@ -341,6 +341,15 @@ public final class WidgetService extends AbstractCacheableService
         return listWidgetIds;
     }
 
+    /**
+     * Get the list of public or mandatory widgets
+     * @return the list widgets
+     */
+    public List<Widget> getPublicMandatoryWidgets(  )
+    {
+        return WidgetHome.getPublicMandatoryWidgets(  );
+    }
+
     // BUILD CACHE KEYS
 
     /**

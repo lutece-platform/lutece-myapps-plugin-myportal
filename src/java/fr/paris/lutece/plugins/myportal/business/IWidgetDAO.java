@@ -103,6 +103,13 @@ public interface IWidgetDAO
     ImageResource getIconResource( int nWidgetId, Plugin plugin );
 
     /**
+     * Get the list of public or mandatory widgets
+     * @param plugin {@link Plugin}
+     * @return the list widgets
+     */
+    List<Widget> getPublicMandatoryWidgets( Plugin plugin );
+
+    /**
      * Get the list of widgets by filter
      * @param wFilter the filter
      * @param plugin {@link Plugin}

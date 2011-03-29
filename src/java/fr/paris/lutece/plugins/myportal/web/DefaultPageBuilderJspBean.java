@@ -38,7 +38,6 @@ import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService;
-import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.message.AdminMessage;

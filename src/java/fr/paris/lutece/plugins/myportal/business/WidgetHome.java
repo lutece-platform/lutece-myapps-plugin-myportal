@@ -139,6 +139,15 @@ public final class WidgetHome
     }
 
     /**
+     * Get the list of public or mandatory widgets
+     * @return the list widgets
+     */
+    public static List<Widget> getPublicMandatoryWidgets(  )
+    {
+        return _dao.getPublicMandatoryWidgets( _plugin );
+    }
+
+    /**
      * Get the list of widgets by filter
      * @param wFilter the filter
      * @return a list of {@link Widget}
