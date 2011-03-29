@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
+import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
 import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
@@ -43,6 +44,7 @@ import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -277,6 +279,38 @@ public final class DefaultPageBuilderService
     public ReferenceItem getWidgetParameterDefaultValue( String strParameterKey )
     {
         return PageBuilderParameterHome.findByKey( strParameterKey );
+    }
+
+    /**
+     * Get the list of widgets that are not currently put on the default page builder
+     * @return the list of widgets
+     */
+    public Collection<Widget> getWidgetsList(  )
+    {
+        Collection<Widget> listWidgets = new ArrayList<Widget>(  );
+        List<Integer> listWidgetIds = DefaultPageBuilderHome.findWidgetIds(  );
+
+        for ( Widget widget : WidgetService.instance(  ).getWidgetsList(  ) )
+        {
+            boolean bHasWidget = false;
+
+            for ( int nWidgetId : listWidgetIds )
+            {
+                if ( nWidgetId == widget.getIdWidget(  ) )
+                {
+                    bHasWidget = true;
+
+                    break;
+                }
+            }
+
+            if ( !bHasWidget )
+            {
+                listWidgets.add( widget );
+            }
+        }
+
+        return listWidgets;
     }
 
     /**

@@ -172,4 +172,13 @@ public final class DefaultPageBuilderHome
     {
         return _dao.selectColumns( _plugin );
     }
+
+    /**
+     * Return the widget ids list
+     * @return the widget ids list
+     */
+    public static List<Integer> findWidgetIds(  )
+    {
+        return _dao.selectWidgetIds( _plugin );
+    }
 }

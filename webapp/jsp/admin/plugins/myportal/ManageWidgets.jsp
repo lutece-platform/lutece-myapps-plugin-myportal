@@ -8,5 +8,3 @@
 <%= myportalWidget.getManageWidgets( request ) %>
 
 <%@ include file="../../AdminFooter.jsp" %>
-
-

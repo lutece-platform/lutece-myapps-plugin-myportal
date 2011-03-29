@@ -61,7 +61,7 @@
 
 .myportal-ceebox {
 	padding-top: 15px;
-	height: 300px;
+	height: 400px;
 }
 
 /********************************
@@ -134,10 +134,18 @@
 	list-style-type: none;
 }
 
-#myportal-widgets-list-content li {
+#myportal-widgets-list-content ul.myportal-widget li {
 	float: left;
-	padding-right: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
 	text-align: center;
+	padding: 5px;
+}
+
+#myportal-widgets-list-content ul.myportal-widget li.selected {
+	background-color: #ECE9D8;
+	border: 1px solid #C6C4BB;
+	padding: 4px;
 }
 
 /********************************

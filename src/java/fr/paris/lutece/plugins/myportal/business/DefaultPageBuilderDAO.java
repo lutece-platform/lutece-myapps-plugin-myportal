@@ -60,6 +60,7 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     private static final String SQL_QUERY_ORDER_BY_COLUMN_AND_ORDER = " ORDER BY a.widget_column, a.widget_order ";
     private static final String SQL_QUERY_SELECT_ALL = SQL_QUERY_SELECT + SQL_QUERY_ORDER_BY_COLUMN_AND_ORDER;
     private static final String SQL_QUERY_SELECT_COLUMNS = " SELECT a.widget_column FROM myportal_default_page a GROUP BY a.widget_column ";
+    private static final String SQL_QUERY_SELECT_WIDGET_IDS = " SELECT DISTINCT a.id_widget FROM myportal_default_page a GROUP BY a.id_widget ";
     private static final String SQL_QUERY_FILTER_COLUMN = " a.widget_column = ? ";
     private static final String SQL_QUERY_FILTER_ORDER = " a.widget_order = ? ";
     private static final String SQL_QUERY_FILTER_ID_WIDGET_COMPONENT = " a.id_widget_component = ? ";
@@ -308,6 +309,27 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
         daoUtil.free(  );
 
         return listColumns;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Integer> selectWidgetIds( Plugin plugin )
+    {
+        List<Integer> listWidgetIds = new ArrayList<Integer>(  );
+
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_WIDGET_IDS, plugin );
+
+        daoUtil.executeQuery(  );
+
+        while ( daoUtil.next(  ) )
+        {
+            listWidgetIds.add( daoUtil.getInt( 1 ) );
+        }
+
+        daoUtil.free(  );
+
+        return listWidgetIds;
     }
 
     /**

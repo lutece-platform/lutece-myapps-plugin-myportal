@@ -33,17 +33,24 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
+import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
+import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
+import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
+import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 import fr.paris.lutece.portal.service.cache.CacheService;
 import fr.paris.lutece.portal.service.image.ImageResource;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -306,6 +313,32 @@ public final class WidgetService extends AbstractCacheableService
         resetCache(  );
         WidgetContentService.instance(  ).removeCache( widget.getIdWidget(  ) );
         WidgetHome.update( widget, bUpdateIcon );
+    }
+
+    /**
+     * Get the widget IDs from a given LuteceUser
+     * @param user the {@link LuteceUser}
+     * @return a list of widget IDs
+     */
+    public List<Integer> getUserWidgetIds( LuteceUser user )
+    {
+        List<Integer> listWidgetIds = new ArrayList<Integer>(  );
+        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName(  ) );
+
+        if ( userConf != null )
+        {
+            PageConfig pageConfig = PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
+
+            for ( TabConfig tabConfig : pageConfig.getTabList(  ) )
+            {
+                for ( WidgetConfig widgetConfig : tabConfig.getWidgetList(  ) )
+                {
+                    listWidgetIds.add( widgetConfig.getWidgetId(  ) );
+                }
+            }
+        }
+
+        return listWidgetIds;
     }
 
     // BUILD CACHE KEYS

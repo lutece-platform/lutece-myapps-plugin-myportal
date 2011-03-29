@@ -1,5 +1,3 @@
-
-
 <%@ page errorPage="../../ErrorPage.jsp" %>
 
 <jsp:include page="../../AdminHeader.jsp" />
@@ -10,5 +8,3 @@
 <%= myportalCategory.getManageCategories( request ) %>
 
 <%@ include file="../../AdminFooter.jsp" %>
-
-

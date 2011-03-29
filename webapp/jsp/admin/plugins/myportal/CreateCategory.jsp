@@ -8,4 +8,3 @@
 <%= myportalCategory.getCreateCategory ( request ) %>
 
 <%@ include file="../../AdminFooter.jsp" %>
-

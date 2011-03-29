@@ -111,6 +111,7 @@ public class MyPortalApp implements XPageApplication
     private static final String MARK_PAGINATOR_URL_FOR_JS = "paginator_url_for_js";
     private static final String MARK_SEARCH_WIDGETS_NAME = "search_widgets_name";
     private static final String MARK_TAB_INDEX = "tab_index";
+    private static final String MARK_USER_WIDGET_IDS = "user_widget_ids";
 
     // PROPERTIES
     private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
@@ -327,6 +328,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
+        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS,
                 request.getLocale(  ), model );
@@ -425,6 +427,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
+        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS,
                 request.getLocale(  ), model );
@@ -466,6 +469,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
+        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ),
                 model );
@@ -516,6 +520,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
+        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale(  ), model );
 

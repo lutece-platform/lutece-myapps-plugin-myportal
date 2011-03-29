@@ -116,7 +116,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     // JSP
     private static final String JSP_BUILD_DEFAULT_PAGE = "BuildDefaultPage.jsp";
-    private static final String JSP_BUILD_DEFAULT_PAGE_WIDGETS_LIST = "BuildDefaultPageWidgetsList.jsp";
+    private static final String JSP_URL_BUILD_DEFAULT_PAGE_WIDGETS_LIST = "jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp";
     private static final String JSP_URL_MANAGE_ADVANCED_PARAMETERS = "jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp";
     private DefaultPageBuilderService _service = DefaultPageBuilderService.getInstance(  );
     private int _nDefaultItemsPerPage;
@@ -167,9 +167,9 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
                 _nDefaultItemsPerPage );
 
-        UrlItem url = new UrlItem( JSP_BUILD_DEFAULT_PAGE_WIDGETS_LIST );
+        UrlItem url = new UrlItem( JSP_URL_BUILD_DEFAULT_PAGE_WIDGETS_LIST );
         String strUrl = url.getUrl(  );
-        Collection<Widget> listWidgets = WidgetService.instance(  ).getWidgetsList(  );
+        Collection<Widget> listWidgets = _service.getWidgetsList(  );
         LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
                 PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 

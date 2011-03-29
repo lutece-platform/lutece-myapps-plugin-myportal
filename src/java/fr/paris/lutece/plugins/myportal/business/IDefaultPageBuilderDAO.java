@@ -134,4 +134,12 @@ public interface IDefaultPageBuilderDAO
      * @return the columns list
      */
     List<Integer> selectColumns( Plugin plugin );
+
+    /**
+     * Return the widget ids list
+     *
+     * @param plugin {@link Plugin}
+     * @return the widget ids list
+     */
+    List<Integer> selectWidgetIds( Plugin plugin );
 }

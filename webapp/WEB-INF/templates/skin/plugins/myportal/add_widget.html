@@ -1,14 +1,34 @@
+<#function hasWidget user_widget_ids id_widget>
+	<#if user_widget_ids?has_content>
+		<#list user_widget_ids as id>
+			<#if id == id_widget>
+				<#return true>
+			</#if>
+		</#list>
+	</#if>
+	<#return false>
+</#function>
+
 <#if widgets_list?has_content>
 	<div id="myportal-widgets-list-content">
 		<form method="post" action="jsp/site/plugins/myportal/DoAddWidget.jsp">
-   			<ul>
+   			<ul class="myportal-widget">
    				<#list widgets_list as widget>
-   					<li>
-   						<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" height="30px"/>
+   					<#assign has_widget = hasWidget( user_widget_ids, widget.idWidget )>
+   					<li 
+   						<#if has_widget>
+   							class="selected"
+   						</#if>
+   					>
+   						<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" title="${widget.description}" height="30px"/>
    						<br />
    						<b>${widget.name}</b>
    						<br />
-   						<input type="radio" name="id_widget" value="${widget.idWidget}" />
+   						<input type="radio" name="id_widget" value="${widget.idWidget}" 
+   							<#if has_widget>
+   								disabled="disabled" 
+   							</#if>
+   						/>
    					</li>
    				</#list>
    			</ul>
