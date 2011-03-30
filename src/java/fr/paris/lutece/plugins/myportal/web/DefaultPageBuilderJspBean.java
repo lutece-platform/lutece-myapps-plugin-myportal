@@ -34,10 +34,12 @@
 package fr.paris.lutece.plugins.myportal.web;
 
 import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
+import fr.paris.lutece.plugins.myportal.business.Style;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService;
+import fr.paris.lutece.plugins.myportal.service.StyleService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -85,7 +87,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_WIDGET_ORDER = "widget_order";
     private static final String PARAMETER_COLUMN = "column";
     private static final String PARAMETER_PAGE_INDEX = "page_index";
-    private static final String PARAMETER_COLUMN_FIXED = "column_fixed";
+    private static final String PARAMETER_NB_COLUMNS = "nb_columns";
+    private static final String PARAMETER_COLUMN_STYLE = "column_style_";
 
     // PROPERTIES
     private static final String PROPERTY_PAGE_TITLE_BUILD_DEFAULT_PAGE = "myportal.build_default_page.pageTitle";
@@ -103,7 +106,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
     private static final String MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS = "permission_manage_advanced_parameters";
-    private static final String MARK_COLUMN_FIXED = "column_fixed";
+    private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
+    private static final String MARK_COLUMNS_STYLE = "column_styles";
 
     // MESSAGES
     private static final String MESSAGE_ERROR = "myportal.message.error";
@@ -132,8 +136,6 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         setPageTitleProperty( PROPERTY_PAGE_TITLE_BUILD_DEFAULT_PAGE );
 
         Map<String, List<WidgetComponent>> mapWidgetComponents = _service.getAllSetWidgetComponents(  );
-        ReferenceItem columnFixed = DefaultPageBuilderService.getInstance(  )
-                                                             .getWidgetParameterDefaultValue( PARAMETER_COLUMN_FIXED );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
 
@@ -142,7 +144,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         model.put( MARK_MAP_AVAILABLE_ORDERS, getMapAvailableOrders(  ) );
         model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns(  ) );
         model.put( MARK_MAP_COLUMN_ORDER_STATUS, _service.getOrderedColumnsStatus(  ) );
-        model.put( MARK_COLUMN_FIXED, columnFixed.getName(  ) );
+        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, _service.getPageBuilderParamDefaultValues(  ) );
+        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance(  ).getColumnStyles(  ) );
         model.put( MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS,
             RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
                 MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) );
@@ -323,7 +326,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
         setPageTitleProperty( PROPERTY_PAGE_TITLE_MANAGE_ADVANCED_PARAMETERS );
 
-        Map<String, Object> model = DefaultPageBuilderService.getInstance(  ).getManageAdvancedParameters( getUser(  ) );
+        Map<String, Object> model = _service.getManageAdvancedParameters( getUser(  ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale(  ),
                 model );
@@ -346,7 +349,10 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             throw new AccessDeniedException(  );
         }
 
-        ReferenceList listParams = DefaultPageBuilderService.getInstance(  ).getWidgetParamDefaultValues(  );
+        _service.removeAllColumnStyleFromPageBuilderParameter(  );
+
+        ReferenceList listParams = _service.getPageBuilderParamDefaultValues(  );
+        int nNbColumns = _service.getColumnCount(  );
 
         for ( ReferenceItem param : listParams )
         {
@@ -358,8 +364,40 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             }
 
             param.setName( strParamValue );
-            DefaultPageBuilderService.getInstance(  ).updateWidgetParameterDefaultValue( param );
+            _service.updatePageBuilderParameterDefaultValue( param );
+
+            if ( PARAMETER_NB_COLUMNS.equals( param.getCode(  ) ) && StringUtils.isNotBlank( param.getName(  ) ) &&
+                    StringUtils.isNumeric( param.getName(  ) ) )
+            {
+                nNbColumns = Integer.parseInt( param.getName(  ) );
+            }
         }
+
+        // Add column styles
+        for ( int i = 1; i <= nNbColumns; i++ )
+        {
+            ReferenceItem param = new ReferenceItem(  );
+            param.setCode( PARAMETER_COLUMN_STYLE + i );
+
+            String strParamValue = request.getParameter( PARAMETER_COLUMN_STYLE + i );
+
+            if ( StringUtils.isBlank( strParamValue ) || !StringUtils.isNumeric( strParamValue ) )
+            {
+                strParamValue = ZERO;
+            }
+
+            int nIdStyle = Integer.parseInt( strParamValue );
+            Style style = StyleService.getInstance(  ).getColumnStyle( nIdStyle );
+
+            if ( style != null )
+            {
+                param.setName( strParamValue );
+                _service.addNewPageBuilderParameter( param );
+            }
+        }
+
+        // Remove the widgets that are in a column > to the column max
+        DefaultPageBuilderService.getInstance(  ).doRemoveByColumnMax( nNbColumns );
 
         return AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_ADVANCED_PARAMETERS;
     }

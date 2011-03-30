@@ -33,12 +33,12 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import fr.paris.lutece.plugins.myportal.business.Style;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.url.UrlItem;
@@ -71,8 +71,6 @@ public class PageBuilder implements IPageBuilder
     private static final String NEWLINE_CHAR = "(\\r|\\n)";
     private static final String ID_TAB = "tabs-";
     private static final String ID_WIDGET = "widget-";
-    private static final String CLASS_MYPORTAL_COLUMN = "myportal-column";
-    private static final String CLASS_MYPORTAL_COLUMN_FIXED = "myportal-column-fixed";
     private static final String CLASS_MYPORTAL_PORTLET_HEADER = "myportal-portlet-header";
     private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
     private static final String CLASS_MYPORTAL_ICON = "myportal-icon";
@@ -80,14 +78,11 @@ public class PageBuilder implements IPageBuilder
     private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
     private static final String CLASS_CEEBOX = "ceebox";
 
-    // MESSAGES
-    private static final String MESSAGES_ERROR_WIDGET_PARAMETER = "Widget parameter : parameter \"column_fixed\" null or not numeric";
-
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_TAB_INDEX = "tab_index";
-    private static final String PARAMETER_COLUMN_FIXED = "column_fixed";
+    private static final String PARAMETER_COLUMN_STYLE = "column_style_";
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
@@ -226,35 +221,24 @@ public class PageBuilder implements IPageBuilder
      */
     private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user, HttpServletRequest request )
     {
-        ReferenceItem columnFixed = DefaultPageBuilderService.getInstance(  )
-                                                             .getWidgetParameterDefaultValue( PARAMETER_COLUMN_FIXED );
         int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
         List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
 
-        for ( int i = 0; i < nNbColumns; i++ )
+        for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
         {
             StringBuffer sbCol = new StringBuffer(  );
+            Style style = getColumnStyle( nColumn );
 
-            if ( StringUtils.isNotBlank( columnFixed.getName(  ) ) && StringUtils.isNumeric( columnFixed.getName(  ) ) )
+            if ( style != null )
             {
-                int nColumnFixed = Integer.parseInt( columnFixed.getName(  ) );
-
-                if ( nColumnFixed == ( i + 1 ) )
-                {
-                    XmlUtil.beginElement( sbCol, TAG_DIV,
-                        buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN_FIXED ) );
-                }
-                else
-                {
-                    XmlUtil.beginElement( sbCol, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_COLUMN ) );
-                }
-
-                listCol.add( sbCol );
+                XmlUtil.beginElement( sbCol, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, style.getCssClass(  ) ) );
             }
             else
             {
-                AppLogService.error( MESSAGES_ERROR_WIDGET_PARAMETER );
+                XmlUtil.beginElement( sbCol, TAG_DIV );
             }
+
+            listCol.add( sbCol );
         }
 
         StringBuilder sbContent = new StringBuilder(  );
@@ -263,7 +247,7 @@ public class PageBuilder implements IPageBuilder
         {
             Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
 
-            if ( widget != null )
+            if ( ( widget != null ) && ( widgetConfig.getColumn(  ) <= nNbColumns ) )
             {
                 StringBuffer sbWidget = listCol.get( widgetConfig.getColumn(  ) - 1 );
 
@@ -301,5 +285,27 @@ public class PageBuilder implements IPageBuilder
         listAttributes.put( strName, strValue );
 
         return listAttributes;
+    }
+
+    /**
+     * Get the column style from the column number
+     * @param nColumn the column number
+     * @return the {@link Style}
+     */
+    private Style getColumnStyle( int nColumn )
+    {
+        Style style = null;
+        ReferenceItem columnStyle = DefaultPageBuilderService.getInstance(  )
+                                                             .getPageBuilderParameterDefaultValue( PARAMETER_COLUMN_STYLE +
+                nColumn );
+
+        if ( ( columnStyle != null ) && StringUtils.isNotBlank( columnStyle.getName(  ) ) &&
+                StringUtils.isNumeric( columnStyle.getName(  ) ) )
+        {
+            int nIdStyle = Integer.parseInt( columnStyle.getName(  ) );
+            style = StyleService.getInstance(  ).getColumnStyle( nIdStyle );
+        }
+
+        return style;
     }
 }

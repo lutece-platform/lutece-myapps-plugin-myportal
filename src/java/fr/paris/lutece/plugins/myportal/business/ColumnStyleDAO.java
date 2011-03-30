@@ -45,15 +45,15 @@ import java.util.List;
  * This class provides Data Access methods for Style objects
  *
  */
-public final class StyleDAO implements IStyleDAO
+public final class ColumnStyleDAO implements IWidgetStyleDAO
 {
     // Constants
-    private static final String SQL_QUERY_NEW_PK = "SELECT max( id_style ) FROM myportal_widget_style";
-    private static final String SQL_QUERY_SELECT = "SELECT id_style, name, css_class FROM myportal_widget_style WHERE id_style = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_widget_style ( id_style, name, css_class ) VALUES ( ?, ?, ? ) ";
-    private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_widget_style WHERE id_style = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_widget_style SET id_style = ?, name = ?, css_class = ? WHERE id_style = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_style, name, css_class FROM myportal_widget_style";
+    private static final String SQL_QUERY_NEW_PK = "SELECT max( id_style ) FROM myportal_column_style";
+    private static final String SQL_QUERY_SELECT = "SELECT id_style, name, css_class FROM myportal_column_style WHERE id_style = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO myportal_column_style ( id_style, name, css_class ) VALUES ( ?, ?, ? ) ";
+    private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_column_style WHERE id_style = ? ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_column_style SET id_style = ?, name = ?, css_class = ? WHERE id_style = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_style, name, css_class FROM myportal_column_style";
 
     /**
      * Generates a new primary key

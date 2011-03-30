@@ -50,11 +50,11 @@ public class PageBuilderParameterDAO implements IPageBuilderParameterDAO
     private static final String SQL_QUERY_SELECT = " SELECT parameter_value FROM myportal_page_builder_parameter WHERE parameter_key = ? ";
     private static final String SQL_QUERY_UPDATE = " UPDATE myportal_page_builder_parameter SET parameter_value = ? WHERE parameter_key = ? ";
     private static final String SQL_QUERY_SELECT_ALL = " SELECT parameter_key, parameter_value FROM myportal_page_builder_parameter ORDER BY parameter_key ASC ";
+    private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_page_builder_parameter WHERE parameter_key LIKE 'column_style_%' ";
+    private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_page_builder_parameter (parameter_key, parameter_value) VALUES ( ?,? ) ";
 
     /**
-     * Load all the default values
-     * @param plugin Plugin
-     * @return a list of ReferenceItem
+     * {@inheritDoc}
      */
     public ReferenceList selectAll( Plugin plugin )
     {
@@ -78,10 +78,7 @@ public class PageBuilderParameterDAO implements IPageBuilderParameterDAO
     }
 
     /**
-     * Load the parameter value
-     * @param strParameterKey the parameter key
-     * @param plugin {@link Plugin}
-     * @return The parameter value
+     * {@inheritDoc}
      */
     public ReferenceItem load( String strParameterKey, Plugin plugin )
     {
@@ -104,9 +101,7 @@ public class PageBuilderParameterDAO implements IPageBuilderParameterDAO
     }
 
     /**
-     * Update the parameter
-     * @param param the parameter
-     * @param plugin {@link Plugin}
+     * {@inheritDoc}
      */
     public void store( ReferenceItem param, Plugin plugin )
     {
@@ -115,6 +110,31 @@ public class PageBuilderParameterDAO implements IPageBuilderParameterDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
         daoUtil.setString( nIndex++, param.getName(  ) );
         daoUtil.setString( nIndex++, param.getCode(  ) );
+
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAllColumnStyles( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void insert( ReferenceItem param, Plugin plugin )
+    {
+        int nIndex = 1;
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
+        daoUtil.setString( nIndex++, param.getCode(  ) );
+        daoUtil.setString( nIndex++, param.getName(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );

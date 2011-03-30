@@ -4,7 +4,8 @@
     <!-- DAO -->
     <bean id="myportal.widgetDAO"  class="fr.paris.lutece.plugins.myportal.business.WidgetDAO" />
     <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
-    <bean id="myportal.styleDAO"  class="fr.paris.lutece.plugins.myportal.business.StyleDAO" />
+    <bean id="myportal.widgetStyleDAO" class="fr.paris.lutece.plugins.myportal.business.WidgetStyleDAO" />
+    <bean id="myportal.columnStyleDAO" class="fr.paris.lutece.plugins.myportal.business.ColumnStyleDAO" />
     <bean id="myportal.userPageConfigDAO" class="fr.paris.lutece.plugins.myportal.business.UserPageConfigDAO" />
     <bean id="myportal.defaultPageBuilderDAO" class="fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderDAO" />
     <bean id="myportal.pageBuilderParameterDAO" class="fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterDAO" />

@@ -41,6 +41,7 @@ import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.security.LuteceUser;
@@ -149,8 +150,8 @@ public class MyPortalApp implements XPageApplication
     {
         XPage page = new XPage(  );
 
-        page.setTitle( AppPropertiesService.getProperty( PROPERTY_PAGE_TITLE ) );
-        page.setPathLabel( AppPropertiesService.getProperty( PROPERTY_PAGE_PATH ) );
+        page.setTitle( I18nService.getLocalizedString( PROPERTY_PAGE_TITLE, request.getLocale(  ) ) );
+        page.setPathLabel( I18nService.getLocalizedString( PROPERTY_PAGE_PATH, request.getLocale(  ) ) );
 
         String strAction = request.getParameter( PARAMETER_ACTION );
 

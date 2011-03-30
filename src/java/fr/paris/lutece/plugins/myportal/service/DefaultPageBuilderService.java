@@ -39,9 +39,10 @@ import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
 import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
 import fr.paris.lutece.portal.business.user.AdminUser;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,13 +59,16 @@ import java.util.Map;
  */
 public final class DefaultPageBuilderService
 {
-    private static final String PROPERTY_COLUMN_COUNT = "myportal.defaultPageBuilder.columnCount";
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
+
+    // PARAMETERS
+    private static final String PARAMETER_NB_COLUMNS = "nb_columns";
 
     // MARKS
     private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
     private static final String MARK_NB_COLUMNS = "nb_columns";
+    private static final String MARK_COLUMNS_STYLE = "column_styles";
     private static DefaultPageBuilderService _singleton;
 
     /**
@@ -95,7 +99,16 @@ public final class DefaultPageBuilderService
      */
     public int getColumnCount(  )
     {
-        return AppPropertiesService.getPropertyInt( PROPERTY_COLUMN_COUNT, CONSTANTE_DEFAULT_COLUMN_COUNT );
+        int nNbColumns = CONSTANTE_DEFAULT_COLUMN_COUNT;
+        ReferenceItem nbColumns = getPageBuilderParameterDefaultValue( PARAMETER_NB_COLUMNS );
+
+        if ( ( nbColumns != null ) && StringUtils.isNotBlank( nbColumns.getName(  ) ) &&
+                StringUtils.isNumeric( nbColumns.getName(  ) ) )
+        {
+            nNbColumns = Integer.parseInt( nbColumns.getName(  ) );
+        }
+
+        return nNbColumns;
     }
 
     /**
@@ -229,6 +242,15 @@ public final class DefaultPageBuilderService
     }
 
     /**
+     * Remove widget Components that are in a column > to the given column max
+     * @param nColumnMax the column max
+     */
+    public void doRemoveByColumnMax( int nColumnMax )
+    {
+        DefaultPageBuilderHome.removeByColumnMax( nColumnMax );
+    }
+
+    /**
      * Builds the map to with column id as key, and <code>true</code> as value if column is well ordered, <code>false</code> otherwise.
      * @return the map
      */
@@ -252,12 +274,10 @@ public final class DefaultPageBuilderService
      */
     public Map<String, Object> getManageAdvancedParameters( AdminUser user )
     {
-        ReferenceList listDefaultValues = getWidgetParamDefaultValues(  );
-        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
-
         Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, listDefaultValues );
-        model.put( MARK_NB_COLUMNS, nNbColumns );
+        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, getPageBuilderParamDefaultValues(  ) );
+        model.put( MARK_NB_COLUMNS, getColumnCount(  ) );
+        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance(  ).getColumnStyles(  ) );
 
         return model;
     }
@@ -266,7 +286,7 @@ public final class DefaultPageBuilderService
      * Get the list of widget parameter default values
      * @return a {@link ReferenceList}
      */
-    public ReferenceList getWidgetParamDefaultValues(  )
+    public ReferenceList getPageBuilderParamDefaultValues(  )
     {
         return PageBuilderParameterHome.findAll(  );
     }
@@ -276,7 +296,7 @@ public final class DefaultPageBuilderService
      * @param strParameterKey the parameter key
      * @return a {@link ReferenceItem}
      */
-    public ReferenceItem getWidgetParameterDefaultValue( String strParameterKey )
+    public ReferenceItem getPageBuilderParameterDefaultValue( String strParameterKey )
     {
         return PageBuilderParameterHome.findByKey( strParameterKey );
     }
@@ -317,9 +337,26 @@ public final class DefaultPageBuilderService
      * Update a widget parameter default value
      * @param param the parameter
      */
-    public void updateWidgetParameterDefaultValue( ReferenceItem param )
+    public void updatePageBuilderParameterDefaultValue( ReferenceItem param )
     {
         PageBuilderParameterHome.update( param );
+    }
+
+    /**
+     * Remove all column styles
+     */
+    public void removeAllColumnStyleFromPageBuilderParameter(  )
+    {
+        PageBuilderParameterHome.removeAllColumnStyles(  );
+    }
+
+    /**
+     * Add a new parameter
+     * @param param the parameter
+     */
+    public void addNewPageBuilderParameter( ReferenceItem param )
+    {
+        PageBuilderParameterHome.create( param );
     }
 
     /**

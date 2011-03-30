@@ -47,18 +47,18 @@ import java.util.List;
  * This class provides instances management methods (create, find, ...) for Style objects
  *
  */
-public final class StyleHome
+public final class WidgetStyleHome
 {
     // Static variable pointed at the DAO instance
-    private static final String BEAN_MYPORTAL_STYLEDAO = "myportal.styleDAO";
+    private static final String BEAN_MYPORTAL_WIDGETSTYLEDAO = "myportal.widgetStyleDAO";
     private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-    private static IStyleDAO _dao = (IStyleDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_STYLEDAO );
+    private static IWidgetStyleDAO _dao = (IWidgetStyleDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_WIDGETSTYLEDAO );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private StyleHome(  )
+    private WidgetStyleHome(  )
     {
     }
 

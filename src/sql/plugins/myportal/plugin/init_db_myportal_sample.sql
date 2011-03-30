@@ -11,6 +11,14 @@ INSERT INTO myportal_category (id_category, name, description) VALUES
 (4,'Restaurants administratifs','Menus des restaurants administratifs');
 
 --
+-- Dumping data into table myportal_column_style
+--
+INSERT INTO myportal_column_style (id_style, name, css_class) VALUES 
+(0,'Défaut' , 'myportal-column');
+INSERT INTO myportal_column_style (id_style, name, css_class) VALUES 
+(1,'Widgets non amovibles' , 'myportal-column-fixed' );
+
+--
 -- Dumping data into table myportal_widget_style
 --
 INSERT INTO myportal_widget_style (id_style, name, css_class) VALUES 

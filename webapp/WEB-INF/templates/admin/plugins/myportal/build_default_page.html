@@ -57,6 +57,17 @@
 		</#if>
 </#macro>
 
+<#function getName code reference_list>
+	<#if reference_list?has_content>
+		<#list reference_list as reference_item>
+			<#if reference_item.code = code>
+  				<#return reference_item.name>
+  			</#if>
+  		</#list>
+	</#if>
+	<#return "">
+</#function>
+
 <div id="content-box-actions">
 	<form method="post"  action="jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp">
         <input type="submit" value="#i18n{myportal.build_default_page.buttonAddWidget}" class="button bt-toolbar" />
@@ -73,11 +84,13 @@
 	<#list list_available_columns as column_refItem>
 		<#if column_refItem.code != ''>
 			<#assign column_key = column_refItem.code />
+			<#assign id_column_style = getName( 'column_style_' + column_key, list_param_default_values )>
+			<#assign column_style_name = getName( id_column_style, column_styles )>
 			<div class="highlight-box">
-				<h2>#i18n{myportal.build_default_page.labelColumn} ${column_key}<#if column_fixed == column_key> - #i18n{myportal.build_default_page.labelFixed}</#if></h2>
+				<h2>#i18n{myportal.build_default_page.labelColumn} ${column_key} - #i18n{myportal.build_default_page.labelStyle} "${column_style_name}" </h2>
 				<#if map_column_order_status[column_key]?exists && !map_column_order_status[column_key]>
 					<p>
-						<a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labeReorder}</a>
+						<a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labelReorder}</a>
 					</p>
 				</#if>
 				<@widgetComponentTable items=map_widget_components[column_key] list_available_orders_columns=map_available_orders[column_key] />

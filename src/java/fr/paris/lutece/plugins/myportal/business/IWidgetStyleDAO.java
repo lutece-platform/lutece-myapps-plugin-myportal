@@ -31,52 +31,63 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.business.parameter;
+package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.util.ReferenceItem;
-import fr.paris.lutece.util.ReferenceList;
+
+import java.util.List;
 
 
 /**
  *
- * IMyAppsParameterDAO
- *
- */
-public interface IPageBuilderParameterDAO
+* IStyleDAO Interface
+*
+*/
+public interface IWidgetStyleDAO
 {
     /**
-    * Load all the parameter default values
-    * @param plugin Plugin
-    * @return a list of ReferenceItem
+    * Generates a new primary key
+    * @param plugin The Plugin
+    * @return The new primary key
     */
-    ReferenceList selectAll( Plugin plugin );
+    int newPrimaryKey( Plugin plugin );
 
     /**
-    * Load the parameter value
-    * @param strParameterKey the parameter key
-    * @param plugin Plugin
-    * @return The parameter
+     * Insert a new record in the table.
+     * @param style instance of the Style object to inssert
+     * @param plugin the Plugin
+     */
+    void insert( Style style, Plugin plugin );
+
+    /**
+    * Update the record in the table
+    * @param style the reference of the Style
+    * @param plugin the Plugin
     */
-    ReferenceItem load( String strParameterKey, Plugin plugin );
+    void store( Style style, Plugin plugin );
 
     /**
-     * Update the parameter value
-     * @param param The parameter
-     * @param plugin Plugin
+     * Delete a record from the table
+     * @param nIdStyle int identifier of the Style to delete
+     * @param plugin the Plugin
      */
-    void store( ReferenceItem param, Plugin plugin );
+    void delete( int nIdStyle, Plugin plugin );
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Finders
 
     /**
-     * Delete all parameter associated to the column style
-     * @param plugin Plugin
+     * Load the data from the table
+     * @param nKey The identifier of the style
+     * @param plugin the Plugin
+     * @return The instance of the style
      */
-    void deleteAllColumnStyles( Plugin plugin );
+    Style load( int nKey, Plugin plugin );
 
     /**
-     * Insert a new parameter
-     * @param param the parameter
-     * @param plugin Plugin
-     */
-    void insert( ReferenceItem param, Plugin plugin );
+    * Load the data of all the style objects and returns them as a List
+    * @param plugin the Plugin
+    * @return The List which contains the data of all the style objects
+    */
+    List<Style> selectStylesList( Plugin plugin );
 }

@@ -79,6 +79,14 @@ public interface IDefaultPageBuilderDAO
     void delete( int nIdWidgetComponent, Plugin plugin );
 
     /**
+     * Delete the records that have a column > to the given nColumnMax
+     *
+     * @param nColumnMax the column max
+     * @param plugin {@link Plugin}
+     */
+    void deleteByColumnMax( int nColumnMax, Plugin plugin );
+
+    /**
      * Delete all record from the table
      *
      * @param plugin {@link Plugin}

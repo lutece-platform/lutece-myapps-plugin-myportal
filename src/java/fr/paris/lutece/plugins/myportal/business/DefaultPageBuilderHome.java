@@ -103,8 +103,17 @@ public final class DefaultPageBuilderHome
     }
 
     /**
-     * Remove the widgetComponent whose identifier is specified in parameter
+     * Delete the records that have a column > to the given nColumnMax
      *
+     * @param nColumnMax the column max
+     */
+    public static void removeByColumnMax( int nColumnMax )
+    {
+        _dao.deleteByColumnMax( nColumnMax, _plugin );
+    }
+
+    /**
+     * Remove the widgetComponent whose identifier is specified in parameter
      */
     public static void removeAll(  )
     {

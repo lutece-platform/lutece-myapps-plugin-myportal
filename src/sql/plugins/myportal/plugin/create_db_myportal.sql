@@ -11,6 +11,17 @@ PRIMARY KEY (id_category)
 );
 
 --
+-- Structure for table myportal_column_style
+--
+DROP TABLE IF EXISTS myportal_column_style;
+CREATE TABLE myportal_column_style (		
+id_style int(11) NOT NULL default '0',
+name varchar(50) NOT NULL default '',
+css_class varchar(50) NOT NULL default '',
+PRIMARY KEY (id_style)
+);
+
+--
 -- Structure for table myportal_default_page
 --
 DROP TABLE IF EXISTS myportal_default_page;

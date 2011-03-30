@@ -88,4 +88,21 @@ public final class PageBuilderParameterHome
     {
         _dao.store( param, _plugin );
     }
+
+    /**
+     * Remove all parameters associated to the column styles
+     */
+    public static void removeAllColumnStyles(  )
+    {
+        _dao.deleteAllColumnStyles( _plugin );
+    }
+
+    /**
+     * Insert a new parameter
+     * @param param the parameter
+     */
+    public static void create( ReferenceItem param )
+    {
+        _dao.insert( param, _plugin );
+    }
 }

@@ -43,7 +43,7 @@ import java.util.List;
 * IStyleDAO Interface
 *
 */
-public interface IStyleDAO
+public interface IColumnStyleDAO
 {
     /**
     * Generates a new primary key

@@ -171,7 +171,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getStyles(  ) );
+        model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
         model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
         model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
         model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
@@ -346,7 +346,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 model.put( MARK_WIDGET, widget );
                 model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
                 model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-                model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getStyles(  ) );
+                model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
                 model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
                 model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
                 model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );

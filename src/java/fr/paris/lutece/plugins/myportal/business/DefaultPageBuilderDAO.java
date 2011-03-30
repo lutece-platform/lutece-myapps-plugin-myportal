@@ -54,6 +54,7 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_default_page ";
     private static final String SQL_QUERY_DELETE_BY_ID_WIDGET_CONFIG = SQL_QUERY_DELETE +
         " WHERE id_widget_component = ? ";
+    private static final String SQL_QUERY_DELETE_BY_COLUMN_MAX = SQL_QUERY_DELETE + " WHERE widget_column > ? ";
     private static final String SQL_QUERY_SELECT = " SELECT DISTINCT a.id_widget_component, a.id_widget, a.widget_order, a.widget_column, b.name, c.name " +
         " FROM myportal_default_page a INNER JOIN myportal_widget b ON a.id_widget = b.id_widget " +
         " INNER JOIN myportal_widget_style INNER JOIN myportal_widget_style c ON b.id_style = c.id_style ";
@@ -103,6 +104,20 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_BY_ID_WIDGET_CONFIG, plugin );
 
         daoUtil.setInt( 1, nIdWidgetComponent );
+
+        daoUtil.executeUpdate(  );
+
+        daoUtil.free(  );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteByColumnMax( int nColumnMax, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_BY_COLUMN_MAX, plugin );
+
+        daoUtil.setInt( 1, nColumnMax );
 
         daoUtil.executeUpdate(  );
 

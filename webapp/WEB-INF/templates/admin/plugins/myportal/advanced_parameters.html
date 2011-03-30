@@ -12,26 +12,27 @@
 <div class="highlight-box">
 	<form method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
 		<p>
-   			<label>#i18n{myportal.manage_advanced_parameters.labelColumnFixed} : </label>
-   			<select name="column_fixed">
-   				<#assign default_column = getName( 'column_fixed', list_param_default_values )>
-   				<#if default_column == "0">
-   					<option value="0">#i18n{myportal.manage_advanced_parameters.labelNoColumnFixed}</option>
-   				<#else>
-   					<option value="0" selected="selected">#i18n{myportal.manage_advanced_parameters.labelNoColumnFixed}</option>
-   				</#if>
-   				<#list 1..nb_columns as column>
-   					<#if default_column == "" + column>
-   						<option value="${column}" selected="selected">${column}</option>
-   					<#else>
-   						<option value="${column}">${column}</option>
-   					</#if>
-   				</#list>
-   			</select>
-			<br />
-			<label>&nbsp;</label>
-			#i18n{myportal.manage_advanced_parameters.labelColumnFixedComment}
+   			<label>#i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
+   			<input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
 		</p>
+		<#if ( nb_columns > 0 )>
+			<#list 1..nb_columns as i>
+				<#assign column_style_name = 'column_style_' + i>
+				<#assign column_style_code = getName( column_style_name, list_param_default_values )>
+				<p>
+					<label>#i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
+					<select name="column_style_${i}">
+						<#list column_styles as style>
+							<#if column_style_code?? && column_style_code == style.code>
+								<option value="${style.code}" selected="selected">${style.name}</option>
+							<#else>
+								<option value="${style.code}">${style.name}</option>
+							</#if>
+						</#list>
+					</select>
+				</p>
+			</#list>
+		</#if>
 		<br />
 		<p>
 			<input type="submit" class="button" value="#i18n{myportal.manage_advanced_parameters.buttonModify}" />

@@ -33,7 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
-import fr.paris.lutece.plugins.myportal.business.StyleHome;
+import fr.paris.lutece.plugins.myportal.business.ColumnStyleHome;
+import fr.paris.lutece.plugins.myportal.business.Style;
+import fr.paris.lutece.plugins.myportal.business.WidgetStyleHome;
 import fr.paris.lutece.util.ReferenceList;
 
 
@@ -70,8 +72,27 @@ public final class StyleService
      * Load the data of all the style objects and returns them in form of a list
      * @return the list which contains the data of all the style objects
      */
-    public ReferenceList getStyles(  )
+    public ReferenceList getWidgetStyles(  )
     {
-        return StyleHome.getStyles(  );
+        return WidgetStyleHome.getStyles(  );
+    }
+
+    /**
+     * Load the data of all the style objects and returns them in form of a list
+     * @return the list which contains the data of all the style objects
+     */
+    public ReferenceList getColumnStyles(  )
+    {
+        return ColumnStyleHome.getStyles(  );
+    }
+
+    /**
+     * Get the column style
+     * @param nIdStyle the ID style
+     * @return a {@link Style}
+     */
+    public Style getColumnStyle( int nIdStyle )
+    {
+        return ColumnStyleHome.findByPrimaryKey( nIdStyle );
     }
 }

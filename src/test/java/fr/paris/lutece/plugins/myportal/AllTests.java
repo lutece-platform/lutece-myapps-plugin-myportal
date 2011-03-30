@@ -34,9 +34,10 @@
 package fr.paris.lutece.plugins.myportal;
 
 import fr.paris.lutece.plugins.myportal.business.CategoryTest;
+import fr.paris.lutece.plugins.myportal.business.ColumnStyleTest;
 import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderTest;
-import fr.paris.lutece.plugins.myportal.business.StyleTest;
 import fr.paris.lutece.plugins.myportal.business.UserPageConfigTest;
+import fr.paris.lutece.plugins.myportal.business.WidgetStyleTest;
 import fr.paris.lutece.plugins.myportal.business.WidgetTest;
 import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterTest;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderServiceTest;
@@ -68,7 +69,8 @@ public final class AllTests
         suite.addTest( new TestSuite( PageBuilderParameterTest.class ) );
         suite.addTest( new TestSuite( CategoryTest.class ) );
         suite.addTest( new TestSuite( DefaultPageBuilderTest.class ) );
-        suite.addTest( new TestSuite( StyleTest.class ) );
+        suite.addTest( new TestSuite( WidgetStyleTest.class ) );
+        suite.addTest( new TestSuite( ColumnStyleTest.class ) );
         suite.addTest( new TestSuite( UserPageConfigTest.class ) );
         suite.addTest( new TestSuite( WidgetTest.class ) );
         suite.addTest( new TestSuite( WidgetHandlerServiceTest.class ) );
