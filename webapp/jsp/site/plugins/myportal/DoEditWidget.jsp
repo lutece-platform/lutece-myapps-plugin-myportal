@@ -1,5 +1,5 @@
 <jsp:useBean id="myPortalApp" scope="request" class="fr.paris.lutece.plugins.myportal.web.MyPortalApp" />
 
 <%
-    response.sendRedirect( myPortalApp.doRemoveWidget( request ));
+    response.sendRedirect( myPortalApp.doEditWidget( request ));
 %>

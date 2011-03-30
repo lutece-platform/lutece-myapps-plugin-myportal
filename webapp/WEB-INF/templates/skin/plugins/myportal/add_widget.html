@@ -11,53 +11,31 @@
 
 <#if widgets_list?has_content>
 	<div id="myportal-widgets-list-content">
-		<form method="post" action="jsp/site/plugins/myportal/DoAddWidget.jsp">
-   			<ul class="myportal-widget">
-   				<#list widgets_list as widget>
-   					<#assign has_widget = hasWidget( user_widget_ids, widget.idWidget )>
-   					<li 
-   						<#if has_widget>
-   							class="selected"
-   						</#if>
-   					>
-   						<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" title="${widget.description}" height="30px"/>
-   						<br />
-   						<b>${widget.name}</b>
-   						<br />
-   						<input type="radio" name="id_widget" value="${widget.idWidget}" 
-   							<#if has_widget>
-   								disabled="disabled" 
-   							</#if>
-   						/>
-   					</li>
-   				</#list>
-   			</ul>
-   			<div class="clear">&nbsp;</div>
-   			<p>
-                <label for="column">#i18n{myportal.add_widget.labelColumn} :</label>
-                <select name="column">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <#if tab_index??>
-                	<input type="hidden" name="tab_index" value="${tab_index}" />
-                <#else>
-	                <br />
-	                <label for="id_tab">#i18n{myportal.add_widget.labelTab} :</label>
-	                <select name="tab_index">
-	                	<#assign index = 1>
-						<#list tabs_list as tab>
-							<option value="${index}">${tab.name}</option>
-							<#assign index = index + 1>
-						</#list>
-					</select>
-				</#if>
-			</p>
-			<p>
-				<input type="submit" value="#i18n{myportal.add_widget.labelAdd}" />
-			</p>
-		</form>
+		<ul class="myportal-widget">
+   			<#list widgets_list as widget>
+   				<#assign has_widget = hasWidget( user_widget_ids, widget.idWidget )>
+   				<li 
+   					<#if has_widget>
+   						class="selected"
+   					</#if>
+   				>
+   					<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" title="${widget.description}" height="30px"/>
+   					<br />
+   					<b>${widget.name}</b>
+   					<br />
+   					<form method="post" action="jsp/site/plugins/myportal/DoAddWidget.jsp">
+	   					<input type="hidden" name="id_widget" value="${widget.idWidget}" />
+	   					<input type="hidden" name="tab_index" value="${tab_index}" />
+	   					<input type="submit" value="#i18n{myportal.add_widget.labelAdd}" 
+	   						<#if has_widget>
+	   							disabled="disabled" 
+	   						</#if>
+	   					/>
+   					</form>
+   				</li>
+   			</#list>
+   		</ul>
+   		<div class="clear">&nbsp;</div>
 		<@paginationAdmin paginator=paginator />
 	</div>
 <#else>

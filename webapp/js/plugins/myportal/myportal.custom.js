@@ -9,8 +9,7 @@ $(function() {
     $( ".myportal-portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
     .find( ".myportal-portlet-header" )
     .addClass( "ui-widget-header ui-corner-all" )
-    .prepend( "<span class='ui-icon ui-icon-circle-triangle-n icon-collapse'></span>")
-    .prepend( "<span class='ui-icon ui-icon-circle-close icon-close'></span>")
+    .append( "<span class='ui-icon ui-icon-circle-triangle-n icon-collapse'></span>")
     .end()
     .find( ".myportal-portlet-content" );
 

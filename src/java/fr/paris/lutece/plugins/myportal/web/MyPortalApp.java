@@ -37,6 +37,7 @@ import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
+import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
@@ -73,6 +74,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MyPortalApp implements XPageApplication
 {
+    // CONSTANTS
+    private static final String LINE = "-";
+
     // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
     private static final String TEMPLATE_BROWSE_CATEGORIES = "skin/plugins/myportal/browse_categories.html";
@@ -80,6 +84,7 @@ public class MyPortalApp implements XPageApplication
     private static final String TEMPLATE_MYPORTAL_NAVIGATION = "skin/plugins/myportal/myportal_navigation.html";
     private static final String TEMPLATE_MYPORTAL_ADD_TAB = "skin/plugins/myportal/myportal_add_tab.html";
     private static final String TEMPLATE_MYPORTAL_EDIT_TAB = "skin/plugins/myportal/myportal_edit_tab.html";
+    private static final String TEMPLATE_MYPORTAL_EDIT_WIDGET = "skin/plugins/myportal/myportal_edit_widget.html";
     private static final String TEMPLATE_BROWSE_ESSENTIAL_WIDGETS = "skin/plugins/myportal/browse_essential_widgets.html";
     private static final String TEMPLATE_BROWSE_NEW_WIDGETS = "skin/plugins/myportal/browse_new_widgets.html";
     private static final String TEMPLATE_SEARCH_WIDGETS = "skin/plugins/myportal/search_widgets.html";
@@ -113,12 +118,15 @@ public class MyPortalApp implements XPageApplication
     private static final String MARK_SEARCH_WIDGETS_NAME = "search_widgets_name";
     private static final String MARK_TAB_INDEX = "tab_index";
     private static final String MARK_USER_WIDGET_IDS = "user_widget_ids";
+    private static final String MARK_WIDGET = "widget";
+    private static final String MARK_NB_COLUMNS = "nb_columns";
 
     // PROPERTIES
-    private static final String PROPERTY_PAGE_PATH = "myportal.pagePathLabel";
-    private static final String PROPERTY_PAGE_TITLE = "myportal.pageTitle";
+    private static final String PROPERTY_PAGE_PATH = "myportal.myportal.pagePathLabel";
+    private static final String PROPERTY_PAGE_TITLE = "myportal.myportal.pageTitle";
     private static final String PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO = "myportal.listWidgets.itemsPerPageInFO";
     private static final String PROPERTY_URL_RETURN = "myportal.urlReturn";
+    private static final String PROPERTY_DEFAULT_COLUMN = "myportal.defaultColumn";
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
@@ -127,6 +135,7 @@ public class MyPortalApp implements XPageApplication
     private static final String ACTION_SEARCH_WIDGETS = "search_widgets";
     private static final String ACTION_ADD_TAB = "add_tab";
     private static final String ACTION_EDIT_TAB = "edit_tab";
+    private static final String ACTION_EDIT_WIDGET = "edit_widget";
 
     // JSP
     private static final String JSP_URL_BROWSE_CATEGORIES_WIDGETS = "jsp/site/plugins/myportal/BrowseCategoriesWidgets.jsp";
@@ -164,6 +173,10 @@ public class MyPortalApp implements XPageApplication
             else if ( ACTION_EDIT_TAB.equals( strAction ) )
             {
                 page.setContent( getMyPortalEditTab( request ) );
+            }
+            else if ( ACTION_EDIT_WIDGET.equals( strAction ) )
+            {
+                page.setContent( getMyPortalEditWidget( request ) );
             }
             else
             {
@@ -348,17 +361,39 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
-        String strColumn = request.getParameter( PARAMETER_COLUMN );
 
         if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) &&
-                StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) &&
                 StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
         {
             int nIdWidget = Integer.parseInt( strIdWidget );
-            int nColumn = Integer.parseInt( strColumn );
+            int nColumn = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_COLUMN, 1 );
             int nTabIndex = Integer.parseInt( strTabIndex );
 
             _pageService.addWidget( getUser( request ), nIdWidget, nTabIndex, nColumn );
+        }
+
+        return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
+    }
+
+    /**
+     * Edit a widget
+     * @param request The HTTP request
+     * @return the forward url
+     */
+    public String doEditWidget( HttpServletRequest request )
+    {
+        String strIdTab = request.getParameter( PARAMETER_TAB_INDEX );
+        String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
+        String strColumn = request.getParameter( PARAMETER_COLUMN );
+
+        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) &&
+                StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) &&
+                StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) )
+        {
+            int nIdTab = Integer.parseInt( strIdTab );
+            int nIdWidget = Integer.parseInt( strIdWidget );
+            int nColumn = Integer.parseInt( strColumn );
+            _pageService.editWidget( getUser( request ), nIdTab, nIdWidget, nColumn );
         }
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
@@ -372,12 +407,23 @@ public class MyPortalApp implements XPageApplication
     public String doRemoveWidget( HttpServletRequest request )
     {
         String strWidget = request.getParameter( PARAMETER_WIDGET );
+        String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
 
-        int nIdWidget = Integer.parseInt( strWidget.substring( "widget-".length(  ) ) );
+        if ( StringUtils.isNotBlank( strWidget ) )
+        {
+            String strWidgetCssId = PARAMETER_WIDGET + LINE;
+            int nIdWidget = Integer.parseInt( strWidget.substring( strWidgetCssId.length(  ) ) );
 
-        _pageService.removeWidget( getUser( request ), nIdWidget );
+            _pageService.removeWidget( getUser( request ), nIdWidget );
+        }
+        else if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
+        {
+            int nIdWidget = Integer.parseInt( strIdWidget );
 
-        return "Widget removed"; // todo : use properties conf to permit url rewriting
+            _pageService.removeWidget( getUser( request ), nIdWidget );
+        }
+
+        return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
 
     /**
@@ -566,9 +612,6 @@ public class MyPortalApp implements XPageApplication
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
 
-        String strBaseUrl = AppPathService.getBaseUrl( request );
-        model.put( MARK_BASE_URL, strBaseUrl );
-
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale(  ), model );
 
         return template.getHtml(  );
@@ -588,31 +631,38 @@ public class MyPortalApp implements XPageApplication
     }
 
     /**
+     * Get the content of editing a tab
      * @param request {@link HttpServletRequest}
      * @return the html code
      */
     public String getMyPortalEditTab( HttpServletRequest request )
     {
+        String strHtml = StringUtils.EMPTY;
         String strTabId = request.getParameter( PARAMETER_TAB_INDEX );
-        int nIdTab = Integer.parseInt( strTabId );
-        nIdTab--;
 
-        List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
-        TabConfig tabConfig = listTabs.get( nIdTab );
+        if ( StringUtils.isNotBlank( strTabId ) && StringUtils.isNumeric( strTabId ) )
+        {
+            int nIdTab = Integer.parseInt( strTabId );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+            List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
+            TabConfig tabConfig = listTabs.get( nIdTab - 1 );
 
-        String strBaseUrl = AppPathService.getBaseUrl( request );
-        model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_TAB_INDEX, nIdTab );
-        model.put( MARK_TAB_NAME, tabConfig.getName(  ) );
+            Map<String, Object> model = new HashMap<String, Object>(  );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale(  ), model );
+            model.put( MARK_TAB_INDEX, nIdTab );
+            model.put( MARK_TAB_NAME, tabConfig.getName(  ) );
 
-        return template.getHtml(  );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale(  ),
+                    model );
+
+            strHtml = template.getHtml(  );
+        }
+
+        return strHtml;
     }
 
     /**
+     * Edit a tab
      * @param request The HTTP request
      * @return the forward url
      */
@@ -620,9 +670,10 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabNewName = request.getParameter( PARAMETER_TAB_NAME );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
+
         if ( StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
         {
-        	int nIdTab = Integer.parseInt( strTabIndex );
+            int nIdTab = Integer.parseInt( strTabIndex );
 
             _pageService.editTab( getUser( request ), strTabNewName, nIdTab );
         }
@@ -631,22 +682,63 @@ public class MyPortalApp implements XPageApplication
     }
 
     /**
+     * Delete a tab
      * @param request The HTTP request
      * @return the forward url
      */
     public String doDelTab( HttpServletRequest request )
     {
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
+
         if ( StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
         {
-        	int nIdTab = Integer.parseInt( strTabIndex );
-        	// The first tab cannot be deleted
-        	if ( nIdTab != 0 )
-        	{
-        		_pageService.delTab( getUser( request ), nIdTab );
-        	}
+            int nIdTab = Integer.parseInt( strTabIndex );
+
+            // The first tab cannot be deleted
+            if ( nIdTab != 1 )
+            {
+                _pageService.delTab( getUser( request ), nIdTab );
+            }
         }
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
+    }
+
+    /**
+     * Get the content of editing a widget
+     * @param request {@link HttpServletRequest}
+     * @return the html code
+     */
+    public String getMyPortalEditWidget( HttpServletRequest request )
+    {
+        String strHtml = StringUtils.EMPTY;
+        String strIdTab = request.getParameter( PARAMETER_TAB_INDEX );
+        String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
+
+        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) &&
+                StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
+        {
+            int nIdTab = Integer.parseInt( strIdTab );
+            int nIdWidget = Integer.parseInt( strIdWidget );
+            int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
+
+            Widget widget = WidgetService.instance(  ).getWidget( nIdWidget );
+
+            if ( widget != null )
+            {
+                Map<String, Object> model = new HashMap<String, Object>(  );
+
+                model.put( MARK_TAB_INDEX, nIdTab );
+                model.put( MARK_WIDGET, widget );
+                model.put( MARK_NB_COLUMNS, nNbColumns );
+
+                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_WIDGET,
+                        request.getLocale(  ), model );
+
+                strHtml = template.getHtml(  );
+            }
+        }
+
+        return strHtml;
     }
 }

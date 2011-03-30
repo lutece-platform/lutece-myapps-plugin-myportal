@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.Style;
 import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
@@ -71,11 +72,14 @@ public class PageBuilder implements IPageBuilder
     private static final String NEWLINE_CHAR = "(\\r|\\n)";
     private static final String ID_TAB = "tabs-";
     private static final String ID_WIDGET = "widget-";
+    private static final String RETURN_FALSE = "return false;";
     private static final String CLASS_MYPORTAL_PORTLET_HEADER = "myportal-portlet-header";
     private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
     private static final String CLASS_MYPORTAL_ICON = "myportal-icon";
     private static final String CLASS_UI_ICON_PLUS = "ui-icon ui-icon-plus";
     private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
+    private static final String CLASS_UI_ICON_ARROW_4 = "ui-icon ui-icon-arrow-4";
+    private static final String CLASS_ICON_CLOSE = "ui-icon ui-icon-circle-close icon-close";
     private static final String CLASS_CEEBOX = "ceebox";
 
     // PARAMETERS
@@ -83,10 +87,12 @@ public class PageBuilder implements IPageBuilder
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_TAB_INDEX = "tab_index";
     private static final String PARAMETER_COLUMN_STYLE = "column_style_";
+    private static final String PARAMETER_ID_WIDGET = "id_widget";
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
     private static final String ACTION_EDIT_TAB = "edit_tab";
+    private static final String ACTION_EDIT_WIDGET = "edit_widget";
 
     // HTML CONSTANTS
     private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
@@ -107,9 +113,11 @@ public class PageBuilder implements IPageBuilder
     private static final String ATTRIBUTE_ID = "id";
     private static final String ATTRIBUTE_CLASS = "class";
     private static final String ATTRIBUTE_VALUE_JS = "text/javascript";
+    private static final String ATTRIBUTE_ONCLICK = "onclick";
 
     // JSP
     private static final String JSP_RUNSTANDALONEAPP = "jsp/site/RunStandaloneApp.jsp";
+    private static final String JSP_DO_REMOVE_WIDGET = "jsp/site/plugins/myportal/DoRemoveWidget.jsp";
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -212,7 +220,52 @@ public class PageBuilder implements IPageBuilder
     }
 
     /**
+     * Build the html code for widget links
+     *
+     * @param nTabIndex the tab index
+     * @param widget the widget
+     * @return the html code
+     */
+    private String buildWidgetLinks( int nTabIndex, Widget widget )
+    {
+        StringBuffer sbContent = new StringBuffer(  );
+
+        if ( widget.getStatus(  ) != WidgetStatusEnum.MANDATORY.getId(  ) )
+        {
+            UrlItem urlRemoveWidget = new UrlItem( JSP_DO_REMOVE_WIDGET );
+            urlRemoveWidget.addParameter( PARAMETER_ID_WIDGET, widget.getIdWidget(  ) );
+
+            Map<String, String> listAttributesRemoveWidget = buildAttributes( ATTRIBUTE_HREF, urlRemoveWidget.getUrl(  ) );
+            listAttributesRemoveWidget.put( ATTRIBUTE_ONCLICK, RETURN_FALSE );
+
+            UrlItem urlEditWidget = new UrlItem( AppPathService.getPortalUrl(  ) );
+            urlEditWidget.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
+            urlEditWidget.addParameter( PARAMETER_ACTION, ACTION_EDIT_WIDGET );
+            urlEditWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
+            urlEditWidget.addParameter( PARAMETER_ID_WIDGET, widget.getIdWidget(  ) );
+
+            Map<String, String> listAttributesEditWidget = buildAttributes( ATTRIBUTE_HREF, urlEditWidget.getUrl(  ) );
+            listAttributesEditWidget.put( ATTRIBUTE_ONCLICK, RETURN_FALSE );
+
+            XmlUtil.beginElement( sbContent, TAG_A, listAttributesRemoveWidget );
+            XmlUtil.addElement( sbContent, TAG_SPAN, StringUtils.EMPTY,
+                buildAttributes( ATTRIBUTE_CLASS, CLASS_ICON_CLOSE ) );
+            XmlUtil.endElement( sbContent, TAG_A );
+
+            XmlUtil.beginElement( sbContent, TAG_A, listAttributesEditWidget );
+            XmlUtil.addElement( sbContent, TAG_SPAN, StringUtils.EMPTY,
+                buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_ARROW_4 ) );
+            XmlUtil.endElement( sbContent, TAG_A );
+        }
+
+        XmlUtil.addElement( sbContent, TAG_SPAN, widget.getName(  ) );
+
+        return sbContent.toString(  );
+    }
+
+    /**
      * Build the tab content
+     *
      * @param tab the tab
      * @param sb the content of the htlm code
      * @param nTab the index of the tab
@@ -254,7 +307,7 @@ public class PageBuilder implements IPageBuilder
                 Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_CLASS, widget.getCssClass(  ) );
                 listAttributes.put( ATTRIBUTE_ID, ID_WIDGET + widget.getIdWidget(  ) );
                 XmlUtil.beginElement( sbWidget, TAG_DIV, listAttributes );
-                XmlUtil.addElement( sbWidget, TAG_DIV, widget.getName(  ),
+                XmlUtil.addElement( sbWidget, TAG_DIV, buildWidgetLinks( nTab, widget ),
                     buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
                 XmlUtil.addElement( sbWidget, TAG_DIV,
                     WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user, request ),
@@ -289,6 +342,7 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Get the column style from the column number
+     *
      * @param nColumn the column number
      * @return the {@link Style}
      */

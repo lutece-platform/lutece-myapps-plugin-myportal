@@ -255,7 +255,7 @@ public class MyPortalPageService
     {
         PageConfig pageConfig = getPageConfigUser( user );
         List<TabConfig> listTabs = pageConfig.getTabList(  );
-        TabConfig tabConfig = listTabs.get( nIdTab );
+        TabConfig tabConfig = listTabs.get( nIdTab - 1 );
         tabConfig.setName( strTabNewName );
 
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
@@ -271,7 +271,42 @@ public class MyPortalPageService
     {
         PageConfig pageConfig = getPageConfigUser( user );
         List<TabConfig> listTabs = pageConfig.getTabList(  );
-        listTabs.remove( nIdTab );
+        listTabs.remove( nIdTab - 1 );
+
+        String strJson = PageConfigJsonUtil.buildJson( pageConfig );
+        setPageConfigUser( user, strJson );
+    }
+
+    /**
+     * Edit a widget
+     * @param user the {@link LuteceUser}
+     * @param nIdTab the ID tab
+     * @param nIdWidget the ID widget
+     * @param nColumn the column
+     */
+    public void editWidget( LuteceUser user, int nIdTab, int nIdWidget, int nColumn )
+    {
+        PageConfig pageConfig = getPageConfigUser( user );
+        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        TabConfig tabConfig = listTabs.get( nIdTab - 1 );
+        List<WidgetConfig> listWidgets = tabConfig.getWidgetList(  );
+
+        for ( int i = 0; i < listWidgets.size(  ); i++ )
+        {
+            WidgetConfig widget = listWidgets.get( i );
+
+            if ( widget.getWidgetId(  ) == nIdWidget )
+            {
+                listWidgets.remove( i );
+
+                break;
+            }
+        }
+
+        WidgetConfig widgetConfig = new WidgetConfig(  );
+        widgetConfig.setWidgetId( nIdWidget );
+        widgetConfig.setColumn( nColumn );
+        listWidgets.add( widgetConfig );
 
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
         setPageConfigUser( user, strJson );

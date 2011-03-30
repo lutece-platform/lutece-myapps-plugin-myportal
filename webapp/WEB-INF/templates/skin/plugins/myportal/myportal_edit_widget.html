@@ -1,0 +1,21 @@
+<div class="myportal-ceebox">
+	<form method="post" action="jsp/site/plugins/myportal/DoEditWidget.jsp">
+		<h2>#i18n{myportal.myportal_edit_widget.labelEditWidget} : ${widget.name}</h2>
+		<p>
+			<label for="column">#i18n{myportal.myportal_edit_widget.labelColumn}</label>
+			<#if ( nb_columns > 0 )>
+				<select name="column">
+					<#list 1..nb_columns as column>
+						<option value="${column}">${column}</option>
+					</#list>
+				</select>
+			</#if>
+		</p>
+		<p>
+			<input type="hidden" name="tab_index" value="${tab_index}" />
+			<input type="hidden" name="id_widget" value="${widget.idWidget}" />
+			<input type="submit" value="#i18n{myportal.myportal_edit_widget.labelButtonModify}" />
+		</p>
+	</form>
+	<div class="clear"></div>
+</div>
