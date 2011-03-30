@@ -620,9 +620,12 @@ public class MyPortalApp implements XPageApplication
     {
         String strTabNewName = request.getParameter( PARAMETER_TAB_NAME );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
-        int nIdTab = Integer.parseInt( strTabIndex );
+        if ( StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
+        {
+        	int nIdTab = Integer.parseInt( strTabIndex );
 
-        _pageService.editTab( getUser( request ), strTabNewName, nIdTab );
+            _pageService.editTab( getUser( request ), strTabNewName, nIdTab );
+        }
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
@@ -634,9 +637,15 @@ public class MyPortalApp implements XPageApplication
     public String doDelTab( HttpServletRequest request )
     {
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
-        int nIdTab = Integer.parseInt( strTabIndex );
-
-        _pageService.delTab( getUser( request ), nIdTab );
+        if ( StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
+        {
+        	int nIdTab = Integer.parseInt( strTabIndex );
+        	// The first tab cannot be deleted
+        	if ( nIdTab != 0 )
+        	{
+        		_pageService.delTab( getUser( request ), nIdTab );
+        	}
+        }
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
