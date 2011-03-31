@@ -745,4 +745,15 @@ public class MyPortalApp implements XPageApplication
 
         return strHtml;
     }
+
+
+    /**
+     * Get tabs of my portal used by MyPortal.jsp
+     * @param request The HTTP request
+     * @return tabs
+     */
+    public String getTabs( HttpServletRequest request )
+    {
+        return _pageService.getUserPage( getUser(request), request);
+    }
 }
