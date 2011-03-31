@@ -35,15 +35,14 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
+import fr.paris.lutece.plugins.myportal.service.cache.WidgetContentCacheService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
-import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 import fr.paris.lutece.portal.service.cache.CacheService;
+import fr.paris.lutece.portal.service.cache.ICacheKeyService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
-
-import org.apache.commons.lang.StringUtils;
+import fr.paris.lutece.portal.web.PortalJspBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,108 +53,69 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * WidgetContentService store widget content into a cache
  */
-public final class WidgetContentService extends AbstractCacheableService
+public class WidgetContentService
 {
-    private static final String SERVICE_NAME = "MyPortal Widget Content Service";
-
     // CONSTANTS
     private static final String TRUE = "true";
 
-    // CACHES
-    private static final String CACHE_WIDGET = "[widget:";
-    private static final String CACHE_END = "]";
+    // CACHE KEYS
+    private static final String KEY_WIDGET = "widget";
 
     // PROPERTIES
     private static final String PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE = "myportal.cache.widgetContentService.enable";
-    private static WidgetContentService _singleton;
 
-    /** Private constructor */
-    private WidgetContentService(  )
-    {
-    }
+    // VARIABLES
+    private ICacheKeyService _cksWidgetContent;
+    private WidgetContentCacheService _cacheWidgetContent = WidgetContentCacheService.getInstance(  );
 
     /**
-     * {@inheritDoc }
+     * Constructor
      */
-    public String getName(  )
+    public WidgetContentService(  )
     {
-        return SERVICE_NAME;
-    }
-
-    /**
-     * Gets the unique instance of the service
-     * @return The unique instance
-     */
-    public static synchronized WidgetContentService instance(  )
-    {
-        if ( _singleton == null )
-        {
-            _singleton = new WidgetContentService(  );
-        }
-
-        return _singleton;
+        init(  );
     }
 
     /**
      * Init service
      */
-    public void init(  )
+    private void init(  )
     {
         String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE, TRUE );
         boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
 
         if ( bCacheEnable )
         {
-            initCache( getName(  ) );
+            _cacheWidgetContent.initCache(  );
         }
         else
         {
-            CacheService.registerCacheableService( this );
+            CacheService.registerCacheableService( _cacheWidgetContent );
         }
     }
 
     /**
      * Get the widget content
-     * @param nWidgetId The Widget ID
+     * @param nIdWidget The Widget ID
      * @param user The Lutece user
      * @param request {@link HttpServletRequest}
      * @return The widget Content
      */
-    public String getWidgetContent( int nWidgetId, LuteceUser user, HttpServletRequest request )
+    public String getWidgetContent( int nIdWidget, LuteceUser user, HttpServletRequest request )
     {
-        String strKey = getKey( nWidgetId );
-        Map<String, String> mapWidgetContent = (Map<String, String>) getFromCache( strKey );
-        String strWidget = StringUtils.EMPTY;
+        Widget widget = WidgetHome.findByPrimaryKey( nIdWidget );
+        String strType = widget.getWidgetType(  );
+        WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
+        String strKey = handler.isCustomizable(  ) ? getKey( nIdWidget, user ) : getKey( nIdWidget );
+        String widgetContent = (String) _cacheWidgetContent.getFromCache( strKey );
 
-        if ( mapWidgetContent == null )
+        if ( widgetContent == null )
         {
-            mapWidgetContent = new HashMap<String, String>(  );
-
-            Widget widget = WidgetHome.findByPrimaryKey( nWidgetId );
-            String strType = widget.getWidgetType(  );
-            WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-            strWidget = handler.renderWidget( widget, user, request );
-            mapWidgetContent.put( user.getName(  ), strWidget );
-            putInCache( strKey, mapWidgetContent );
-        }
-        else
-        {
-            strWidget = mapWidgetContent.get( user.getName(  ) );
-
-            if ( strWidget == null )
-            {
-                removeCache( nWidgetId );
-
-                Widget widget = WidgetHome.findByPrimaryKey( nWidgetId );
-                String strType = widget.getWidgetType(  );
-                WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-                strWidget = handler.renderWidget( widget, user, request );
-                mapWidgetContent.put( user.getName(  ), strWidget );
-                putInCache( strKey, mapWidgetContent );
-            }
+            widgetContent = handler.renderWidget( widget, user, request );
+            _cacheWidgetContent.putInCache( strKey, widgetContent );
         }
 
-        return strWidget;
+        return widgetContent;
     }
 
     /**
@@ -164,18 +124,41 @@ public final class WidgetContentService extends AbstractCacheableService
      */
     public void removeCache( int nId )
     {
-        try
-        {
-            if ( isCacheEnable(  ) && ( getCache(  ) != null ) )
-            {
-                String strKey = getKey( nId );
-                getCache(  ).remove( strKey );
-            }
-        }
-        catch ( IllegalStateException e )
-        {
-            AppLogService.error( e.getMessage(  ), e );
-        }
+        removeCache( nId, null );
+    }
+
+    /**
+     * Remove the cache by a given name
+     * @param nId the name of the cache to remove
+     * @param user the {@link LuteceUser}
+     */
+    public void removeCache( int nId, LuteceUser user )
+    {
+        String strKey = ( user != null ) ? getKey( nId, user ) : getKey( nId );
+        _cacheWidgetContent.removeCache( strKey );
+    }
+
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setWidgetContentCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksWidgetContent = cacheKeyService;
+    }
+
+    /**
+     * Get the cache key for a widget
+     * @param nId the id
+     * @param user the {@link LuteceUser}
+     * @return the key
+     */
+    private String getKey( int nId, LuteceUser user )
+    {
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_WIDGET, Integer.toString( nId ) );
+
+        return _cksWidgetContent.getKey( mapParams, PortalJspBean.MODE_HTML, user );
     }
 
     /**
@@ -185,11 +168,6 @@ public final class WidgetContentService extends AbstractCacheableService
      */
     private String getKey( int nId )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_WIDGET );
-        sbKey.append( nId );
-        sbKey.append( CACHE_END );
-
-        return sbKey.toString(  );
+        return getKey( nId, null );
     }
 }

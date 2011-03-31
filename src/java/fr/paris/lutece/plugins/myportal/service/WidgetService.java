@@ -42,85 +42,76 @@ import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
-import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.plugins.myportal.service.cache.WidgetCacheService;
 import fr.paris.lutece.portal.service.cache.CacheService;
+import fr.paris.lutece.portal.service.cache.ICacheKeyService;
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.web.PortalJspBean;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * Widget Service class : retrieve Widget description from a cache
  */
-public final class WidgetService extends AbstractCacheableService
+public class WidgetService
 {
-    private static final String SERVICE_NAME = "MyPortal Widget Service";
-
-    // CACHE
-    private static final String CACHE_ESSENTIAL_WIDGETS = "[essential widgets list]";
-    private static final String CACHE_NEW_WIDGETS = "[new widgets list]";
-    private static final String CACHE_WIDGET = "[widget:";
-    private static final String CACHE_ICON = "[icon:";
-    private static final String CACHE_CATEGORY_WIDGET_LIST = "[category widget list:";
-    private static final String CACHE_END = "]";
+    // CACHE KEYS
+    private static final String KEY_ESSENTIAL_WIDGETS = "essential_widgets";
+    private static final String KEY_NEW_WIDGETS = "new_widgets";
+    private static final String KEY_WIDGET = "widget";
+    private static final String KEY_ICON = "icon";
+    private static final String KEY_CATEGORY_WIDGET_LIST = "category_widgets";
 
     // CONSTANTS
     private static final String COMMA = ",";
     private static final String TRUE = "true";
+    private static final String NONE = "-";
 
     // PROPERTIES
     private static final String PROPERTY_ACCEPTED_ICON_FORMATS = "myportal.acceptedIconFormats";
     private static final String PROPERTY_CACHE_WIDGETSERVICE_ENABLE = "myportal.cache.widgetService.enable";
-    private static WidgetService _singleton;
 
-    /** Private constructor */
-    private WidgetService(  )
+    // VARIABLES
+    private ICacheKeyService _cksWidget;
+    private ICacheKeyService _cksIcon;
+    private ICacheKeyService _cksEssentialWidgets;
+    private ICacheKeyService _cksNewWidgets;
+    private ICacheKeyService _cksCategoryWidgets;
+    private WidgetContentService _widgetContentService;
+    private WidgetCacheService _cacheWidget = WidgetCacheService.getInstance(  );
+
+    /**
+     * constructor
+     */
+    public WidgetService(  )
     {
+        init(  );
     }
 
     /**
-     * {@inheritDoc }
+     * Init Service
      */
-    public String getName(  )
-    {
-        return SERVICE_NAME;
-    }
-
-    /**
-     * Gets the unique instance of the service
-     * @return The unique instance
-     */
-    public static synchronized WidgetService instance(  )
-    {
-        if ( _singleton == null )
-        {
-            _singleton = new WidgetService(  );
-        }
-
-        return _singleton;
-    }
-
-    /**
-     * Init service
-     */
-    public void init(  )
+    private void init(  )
     {
         String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETSERVICE_ENABLE, TRUE );
         boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
 
         if ( bCacheEnable )
         {
-            initCache( getName(  ) );
+            _cacheWidget.initCache(  );
         }
         else
         {
-            CacheService.registerCacheableService( this );
+            CacheService.registerCacheableService( _cacheWidget );
         }
     }
 
@@ -132,12 +123,12 @@ public final class WidgetService extends AbstractCacheableService
     public Widget getWidget( int nWidgetId )
     {
         String strKey = getKey( nWidgetId );
-        Widget widget = (Widget) getFromCache( strKey );
+        Widget widget = (Widget) _cacheWidget.getFromCache( strKey );
 
         if ( widget == null )
         {
             widget = WidgetHome.findByPrimaryKey( nWidgetId );
-            putInCache( strKey, widget );
+            _cacheWidget.putInCache( strKey, widget );
         }
 
         return widget;
@@ -160,12 +151,12 @@ public final class WidgetService extends AbstractCacheableService
     public ImageResource getIconResource( int nWidgetId )
     {
         String strKey = getIconKey( nWidgetId );
-        ImageResource img = (ImageResource) getFromCache( strKey );
+        ImageResource img = (ImageResource) _cacheWidget.getFromCache( strKey );
 
         if ( img == null )
         {
             img = WidgetHome.getIconResource( nWidgetId );
-            putInCache( strKey, img );
+            _cacheWidget.putInCache( strKey, img );
         }
 
         return img;
@@ -208,7 +199,7 @@ public final class WidgetService extends AbstractCacheableService
     public List<Widget> getWidgetsByCategoryId( int nCategoryId )
     {
         String strKey = getCategoryListKey( nCategoryId );
-        List<Widget> listWidgets = (List<Widget>) getFromCache( strKey );
+        List<Widget> listWidgets = (List<Widget>) _cacheWidget.getFromCache( strKey );
 
         if ( listWidgets == null )
         {
@@ -217,7 +208,7 @@ public final class WidgetService extends AbstractCacheableService
             wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
-            putInCache( strKey, listWidgets );
+            _cacheWidget.putInCache( strKey, listWidgets );
         }
 
         return listWidgets;
@@ -229,8 +220,8 @@ public final class WidgetService extends AbstractCacheableService
      */
     public List<Widget> getEssentialWidgets(  )
     {
-        String strKey = getEssentiaWidgetsKey(  );
-        List<Widget> listWidgets = (List<Widget>) getFromCache( strKey );
+        String strKey = getEssentialWidgetsKey(  );
+        List<Widget> listWidgets = (List<Widget>) _cacheWidget.getFromCache( strKey );
 
         if ( listWidgets == null )
         {
@@ -239,7 +230,7 @@ public final class WidgetService extends AbstractCacheableService
             wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
-            putInCache( strKey, listWidgets );
+            _cacheWidget.putInCache( strKey, listWidgets );
         }
 
         return listWidgets;
@@ -252,7 +243,7 @@ public final class WidgetService extends AbstractCacheableService
     public List<Widget> getNewWidgets(  )
     {
         String strKey = getNewWidgetsKey(  );
-        List<Widget> listWidgets = (List<Widget>) getFromCache( strKey );
+        List<Widget> listWidgets = (List<Widget>) _cacheWidget.getFromCache( strKey );
 
         if ( listWidgets == null )
         {
@@ -261,7 +252,7 @@ public final class WidgetService extends AbstractCacheableService
             wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
-            putInCache( strKey, listWidgets );
+            _cacheWidget.putInCache( strKey, listWidgets );
         }
 
         return listWidgets;
@@ -288,7 +279,7 @@ public final class WidgetService extends AbstractCacheableService
      */
     public void createWidget( Widget widget )
     {
-        resetCache(  );
+        _cacheWidget.resetCache(  );
         WidgetHome.create( widget );
     }
 
@@ -298,8 +289,8 @@ public final class WidgetService extends AbstractCacheableService
      */
     public void removeWidget( int nWidgetId )
     {
-        resetCache(  );
-        WidgetContentService.instance(  ).removeCache( nWidgetId );
+        _cacheWidget.resetCache(  );
+        _widgetContentService.removeCache( nWidgetId );
         WidgetHome.remove( nWidgetId );
     }
 
@@ -310,8 +301,8 @@ public final class WidgetService extends AbstractCacheableService
      */
     public void updateWidget( Widget widget, boolean bUpdateIcon )
     {
-        resetCache(  );
-        WidgetContentService.instance(  ).removeCache( widget.getIdWidget(  ) );
+        _cacheWidget.resetCache(  );
+        _widgetContentService.removeCache( widget.getIdWidget(  ) );
         WidgetHome.update( widget, bUpdateIcon );
     }
 
@@ -350,6 +341,61 @@ public final class WidgetService extends AbstractCacheableService
         return WidgetHome.getPublicMandatoryWidgets(  );
     }
 
+    // SETTERS
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setWidgetCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksWidget = cacheKeyService;
+    }
+
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setIconCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksIcon = cacheKeyService;
+    }
+
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setEssentialWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksEssentialWidgets = cacheKeyService;
+    }
+
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setNewWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksNewWidgets = cacheKeyService;
+    }
+
+    /**
+     * Set the cache key service
+     * @param cacheKeyService the _cacheKeyService to set
+     */
+    public void setCategoryWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
+    {
+        _cksCategoryWidgets = cacheKeyService;
+    }
+
+    /**
+     * Set the widget content service
+     * @param widgetContentService the widget content service
+     */
+    public void setWidgetContentService( WidgetContentService widgetContentService )
+    {
+        _widgetContentService = widgetContentService;
+    }
+
     // BUILD CACHE KEYS
 
     /**
@@ -359,12 +405,10 @@ public final class WidgetService extends AbstractCacheableService
      */
     private String getKey( int nId )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_WIDGET );
-        sbKey.append( nId );
-        sbKey.append( CACHE_END );
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_WIDGET, Integer.toString( nId ) );
 
-        return sbKey.toString(  );
+        return _cksWidget.getKey( mapParams, PortalJspBean.MODE_HTML, null );
     }
 
     /**
@@ -374,12 +418,10 @@ public final class WidgetService extends AbstractCacheableService
      */
     private String getIconKey( int nId )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_ICON );
-        sbKey.append( nId );
-        sbKey.append( CACHE_END );
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_ICON, Integer.toString( nId ) );
 
-        return sbKey.toString(  );
+        return _cksIcon.getKey( mapParams, PortalJspBean.MODE_HTML, null );
     }
 
     /**
@@ -389,24 +431,22 @@ public final class WidgetService extends AbstractCacheableService
      */
     private String getCategoryListKey( int nId )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_CATEGORY_WIDGET_LIST );
-        sbKey.append( nId );
-        sbKey.append( CACHE_END );
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_CATEGORY_WIDGET_LIST, Integer.toString( nId ) );
 
-        return sbKey.toString(  );
+        return _cksCategoryWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );
     }
 
     /**
      * Get the cache key for the list of essential widgets
      * @return the key
      */
-    private String getEssentiaWidgetsKey(  )
+    private String getEssentialWidgetsKey(  )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_ESSENTIAL_WIDGETS );
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_ESSENTIAL_WIDGETS, NONE );
 
-        return sbKey.toString(  );
+        return _cksEssentialWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );
     }
 
     /**
@@ -415,9 +455,9 @@ public final class WidgetService extends AbstractCacheableService
      */
     private String getNewWidgetsKey(  )
     {
-        StringBuilder sbKey = new StringBuilder(  );
-        sbKey.append( CACHE_NEW_WIDGETS );
+        Map<String, String> mapParams = new HashMap<String, String>(  );
+        mapParams.put( KEY_NEW_WIDGETS, NONE );
 
-        return sbKey.toString(  );
+        return _cksNewWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );
     }
 }

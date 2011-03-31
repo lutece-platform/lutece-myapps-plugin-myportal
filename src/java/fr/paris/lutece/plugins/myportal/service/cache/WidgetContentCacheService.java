@@ -31,48 +31,65 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.service.handler;
+package fr.paris.lutece.plugins.myportal.service.cache;
 
-import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-
-import javax.servlet.http.HttpServletRequest;
+import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
+import fr.paris.lutece.portal.service.util.AppLogService;
 
 
 /**
- *
- * WidgetHandler
- *
+ * WidgetContentCacheService
  */
-public interface WidgetHandler
+public final class WidgetContentCacheService extends AbstractCacheableService
 {
-    /**
-     * Get the name of the handler
-     * @return the name
-     */
-    String getName(  );
+    private static final String SERVICE_NAME = "MyPortal Widget Content Cache Service";
+    private static WidgetContentCacheService _singleton;
 
     /**
-     * Get the description of the handler
-     * @return the description
+     * Constructor
      */
-    String getDescription(  );
+    private WidgetContentCacheService(  )
+    {
+    }
 
     /**
-     * Render a widget
-     * @param widget the widget
-     * @param user the {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
-     * @return a data
+     * Get the instance of WidgetContentCacheService
+     * @return an instance of WidgetContentCacheService
      */
-    String renderWidget( Widget widget, LuteceUser user, HttpServletRequest request );
+    public static WidgetContentCacheService getInstance(  )
+    {
+        if ( _singleton == null )
+        {
+            _singleton = new WidgetContentCacheService(  );
+        }
+
+        return _singleton;
+    }
 
     /**
-     * Check if the widget is customizable or not.
-     * <br />
-     * In other words, if the wiget is indeed customizable, the content depends on
-     * the {@link LuteceUse}.
-     * @return true if it is customizable, false otherwise
+     * {@inheritDoc }
      */
-    boolean isCustomizable(  );
+    public String getName(  )
+    {
+        return SERVICE_NAME;
+    }
+
+    /**
+     * Remove the cache by a key
+     * @param strKey the cache key
+     */
+    public void removeCache( String strKey )
+    {
+        try
+        {
+            if ( isCacheEnable(  ) && ( getCache(  ) != null ) )
+            {
+                getCache(  ).remove( strKey );
+            }
+        }
+        catch ( IllegalStateException e )
+        {
+            AppLogService.error( e.getMessage(  ), e );
+        }
+    }
 }

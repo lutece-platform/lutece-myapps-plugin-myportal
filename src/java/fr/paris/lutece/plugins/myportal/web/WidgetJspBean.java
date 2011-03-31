@@ -36,11 +36,13 @@ package fr.paris.lutece.plugins.myportal.web;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.StyleService;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -71,6 +73,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 {
     // Right
     public static final String RIGHT_MANAGE_MYPORTAL_WIDGET = "MYPORTAL_WIDGET_MANAGEMENT";
+    private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
 
     // Parameters
     private static final String PARAMETER_ID_WIDGET = "id_widget";
@@ -121,10 +124,12 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private static final String MESSAGE_ERROR = "myportal.message.error";
     private static final String MESSAGE_ERROR_ICON_FORMAT_NOT_CORRECT = "myportal.message.errorIconFormatNotCorrect";
 
-    //Variables
+    // Variables
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
+    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_WIDGETSERVICE );
 
     /**
      * Returns the list of widget
@@ -143,7 +148,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         UrlItem url = new UrlItem( JSP_URL_MANAGE_WIDGETS );
         String strUrl = url.getUrl(  );
-        Collection<Widget> listWidgets = WidgetService.instance(  ).getWidgetsList(  );
+        Collection<Widget> listWidgets = _widgetService.getWidgetsList(  );
         LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
                 PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 
@@ -230,12 +235,12 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 {
                     String strMimeType = itemIcon.getContentType(  );
 
-                    if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
+                    if ( _widgetService.isIconMimeTypeCorrect( strMimeType ) )
                     {
                         byte[] bytes = itemIcon.get(  );
                         widget.setIconContent( bytes );
                         widget.setIconMimeType( strMimeType );
-                        WidgetService.instance(  ).createWidget( widget );
+                        _widgetService.createWidget( widget );
 
                         strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                     }
@@ -250,7 +255,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 {
                     widget.setIconContent( null );
                     widget.setIconMimeType( StringUtils.EMPTY );
-                    WidgetService.instance(  ).createWidget( widget );
+                    _widgetService.createWidget( widget );
 
                     strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
@@ -310,7 +315,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
         {
             int nWidgetId = Integer.parseInt( strWidgetId );
-            WidgetService.instance(  ).removeWidget( nWidgetId );
+            _widgetService.removeWidget( nWidgetId );
 
             strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
         }
@@ -338,7 +343,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         if ( StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) )
         {
             int nWidgetId = Integer.parseInt( strWidgetId );
-            Widget widget = WidgetService.instance(  ).getWidget( nWidgetId );
+            Widget widget = _widgetService.getWidget( nWidgetId );
 
             if ( widget != null )
             {
@@ -393,7 +398,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 StringUtils.isNotBlank( strWidgetType ) )
         {
             int nWidgetId = Integer.parseInt( strWidgetId );
-            Widget widget = WidgetService.instance(  ).getWidget( nWidgetId );
+            Widget widget = _widgetService.getWidget( nWidgetId );
 
             if ( widget != null )
             {
@@ -421,7 +426,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
                 }
                 else
                 {
-                    WidgetService.instance(  ).updateWidget( widget, bUpdateIcon );
+                    _widgetService.updateWidget( widget, bUpdateIcon );
                     strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
             }
@@ -457,12 +462,12 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             {
                 String strMimeType = itemIcon.getContentType(  );
 
-                if ( WidgetService.instance(  ).isIconMimeTypeCorrect( strMimeType ) )
+                if ( _widgetService.isIconMimeTypeCorrect( strMimeType ) )
                 {
                     byte[] bytes = itemIcon.get(  );
                     widget.setIconContent( bytes );
                     widget.setIconMimeType( strMimeType );
-                    WidgetService.instance(  ).updateWidget( widget, true );
+                    _widgetService.updateWidget( widget, true );
                     strUrl = JSP_REDIRECT_TO_MANAGE_WIDGETS;
                 }
                 else

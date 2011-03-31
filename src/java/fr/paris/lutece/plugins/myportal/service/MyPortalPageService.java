@@ -54,14 +54,36 @@ import javax.servlet.http.HttpServletRequest;
  * MyPortalPageService
  *
  */
-public class MyPortalPageService
+public final class MyPortalPageService
 {
     // PROPERTIES
     private static final String PROPERTY_PAGECONFIG_NAME = "myportal.defaultPageBuilder.pageConfig.name";
     private static final String PROPERTY_TABCONFIG_NAME = "myportal.defaultPageBuilder.tabConfig.name";
     private static final String BEAN_MYPORTAL_PAGEBUILDER = "myportal.pageBuilder";
+    private static MyPortalPageService _singleton;
     private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
             BEAN_MYPORTAL_PAGEBUILDER );
+
+    /**
+     * Constructor
+     */
+    private MyPortalPageService(  )
+    {
+    }
+
+    /**
+     * Get the instance of MyPortalPageService
+     * @return the instance of MyPortalPageService
+     */
+    public static MyPortalPageService getInstance(  )
+    {
+        if ( _singleton == null )
+        {
+            _singleton = new MyPortalPageService(  );
+        }
+
+        return _singleton;
+    }
 
     /**
      * Gets the page for a given user

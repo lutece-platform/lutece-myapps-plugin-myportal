@@ -51,7 +51,5 @@ public class MyPortalPlugin extends PluginDefaultImplementation
     public void init(  )
     {
         WidgetImgProvider.getInstance(  ).init(  );
-        WidgetService.instance(  ).init(  );
-        WidgetContentService.instance(  ).init(  );
     }
 }

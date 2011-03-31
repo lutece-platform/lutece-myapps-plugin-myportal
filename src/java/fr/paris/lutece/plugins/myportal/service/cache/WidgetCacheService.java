@@ -31,48 +31,45 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.service.handler;
+package fr.paris.lutece.plugins.myportal.service.cache;
 
-import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-
-import javax.servlet.http.HttpServletRequest;
+import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
 
 /**
- *
- * WidgetHandler
- *
+ * WidgetCacheService
  */
-public interface WidgetHandler
+public final class WidgetCacheService extends AbstractCacheableService
 {
-    /**
-     * Get the name of the handler
-     * @return the name
-     */
-    String getName(  );
+    private static final String SERVICE_NAME = "MyPortal Widget Cache Service";
+    private static WidgetCacheService _singleton;
 
     /**
-     * Get the description of the handler
-     * @return the description
+     * constructor
      */
-    String getDescription(  );
+    private WidgetCacheService(  )
+    {
+    }
 
     /**
-     * Render a widget
-     * @param widget the widget
-     * @param user the {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
-     * @return a data
+     * Get the instance of WidgetCacheService
+     * @return an instance of WidgetCacheService
      */
-    String renderWidget( Widget widget, LuteceUser user, HttpServletRequest request );
+    public static WidgetCacheService getInstance(  )
+    {
+        if ( _singleton == null )
+        {
+            _singleton = new WidgetCacheService(  );
+        }
+
+        return _singleton;
+    }
 
     /**
-     * Check if the widget is customizable or not.
-     * <br />
-     * In other words, if the wiget is indeed customizable, the content depends on
-     * the {@link LuteceUse}.
-     * @return true if it is customizable, false otherwise
+     * {@inheritDoc }
      */
-    boolean isCustomizable(  );
+    public String getName(  )
+    {
+        return SERVICE_NAME;
+    }
 }

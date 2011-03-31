@@ -118,6 +118,8 @@ public class PageBuilder implements IPageBuilder
     // JSP
     private static final String JSP_RUNSTANDALONEAPP = "jsp/site/RunStandaloneApp.jsp";
     private static final String JSP_DO_REMOVE_WIDGET = "jsp/site/plugins/myportal/DoRemoveWidget.jsp";
+    private WidgetContentService _widgetContentService;
+    private WidgetService _widgetService;
 
     /**
      * Build the page given a page config and a LuteceUser
@@ -298,7 +300,7 @@ public class PageBuilder implements IPageBuilder
 
         for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
         {
-            Widget widget = WidgetService.instance(  ).getWidget( widgetConfig.getWidgetId(  ) );
+            Widget widget = _widgetService.getWidget( widgetConfig.getWidgetId(  ) );
 
             if ( ( widget != null ) && ( widgetConfig.getColumn(  ) <= nNbColumns ) )
             {
@@ -310,7 +312,7 @@ public class PageBuilder implements IPageBuilder
                 XmlUtil.addElement( sbWidget, TAG_DIV, buildWidgetLinks( nTab, widget ),
                     buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
                 XmlUtil.addElement( sbWidget, TAG_DIV,
-                    WidgetContentService.instance(  ).getWidgetContent( widgetConfig.getWidgetId(  ), user, request ),
+                    _widgetContentService.getWidgetContent( widgetConfig.getWidgetId(  ), user, request ),
                     buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
                 XmlUtil.endElement( sbWidget, TAG_DIV );
             }
@@ -361,5 +363,23 @@ public class PageBuilder implements IPageBuilder
         }
 
         return style;
+    }
+
+    /**
+     * Set the widget content service
+     * @param widgetContentService the widget content service
+     */
+    public void setWidgetContentService( WidgetContentService widgetContentService )
+    {
+        _widgetContentService = widgetContentService;
+    }
+
+    /**
+     * Set the widget service
+     * @param widgetService the widget content service
+     */
+    public void setWidgetService( WidgetService widgetService )
+    {
+        _widgetService = widgetService;
     }
 }

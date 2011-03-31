@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.myportal.service;
 import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.image.ImageResourceManager;
 import fr.paris.lutece.portal.service.image.ImageResourceProvider;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 /**
@@ -45,8 +46,11 @@ import fr.paris.lutece.portal.service.image.ImageResourceProvider;
  */
 public final class WidgetImgProvider implements ImageResourceProvider
 {
+    private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
     private static final String IMAGE_RESOURCE_TYPE_ID = "myportal_widget_icon";
     private static WidgetImgProvider _singleton;
+    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_WIDGETSERVICE );
 
     /**
      * Contructor
@@ -104,6 +108,6 @@ public final class WidgetImgProvider implements ImageResourceProvider
      */
     public ImageResource getImageResource( int nWidgetId )
     {
-        return WidgetService.instance(  ).getIconResource( nWidgetId );
+        return _widgetService.getIconResource( nWidgetId );
     }
 }

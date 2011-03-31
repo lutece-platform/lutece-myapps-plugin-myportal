@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
+
+	<!-- WidgetContentService -->
+    <bean id="myportal.widgetContentCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>widget</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.widgetContentService" class="fr.paris.lutece.plugins.myportal.service.WidgetContentService">
+        <property name="widgetContentCacheKeyService" ref="myportal.widgetContentCacheKeyService" />
+    </bean>
+    
+    <!-- WidgetService -->
+    <bean id="myportal.widgetCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>widget</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.iconCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>icon</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.essentialWidgetsCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>essential_widget</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.newWidgetsCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>new_widgets</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.categoryWidgetsCacheKeyService" class="fr.paris.lutece.portal.service.cache.DefaultCacheKeyService" >
+        <property name="allowedParametersList" >
+            <list>
+                <value>category_widgets</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="myportal.widgetService" class="fr.paris.lutece.plugins.myportal.service.WidgetService">
+        <property name="widgetCacheKeyService" ref="myportal.widgetCacheKeyService" />
+        <property name="iconCacheKeyService" ref="myportal.iconCacheKeyService" />
+        <property name="essentialWidgetsCacheKeyService" ref="myportal.essentialWidgetsCacheKeyService" />
+        <property name="newWidgetsCacheKeyService" ref="myportal.newWidgetsCacheKeyService" />
+        <property name="categoryWidgetsCacheKeyService" ref="myportal.categoryWidgetsCacheKeyService" />
+        <property name="widgetContentService" ref="myportal.widgetContentService" />
+    </bean>
+    
     <!-- DAO -->
     <bean id="myportal.widgetDAO"  class="fr.paris.lutece.plugins.myportal.business.WidgetDAO" />
     <bean id="myportal.categoryDAO"  class="fr.paris.lutece.plugins.myportal.business.CategoryDAO" />
@@ -14,6 +72,9 @@
     <bean id="myportal.widgetHandlerHTML"  class="fr.paris.lutece.plugins.myportal.service.handler.HtmlWidgetHandler" />
 
     <!-- Page Builder -->
-    <bean id="myportal.pageBuilder"  class="fr.paris.lutece.plugins.myportal.service.PageBuilder" />
-    
+    <bean id="myportal.pageBuilder"  class="fr.paris.lutece.plugins.myportal.service.PageBuilder">
+    	<property name="widgetContentService" ref="myportal.widgetContentService" />
+    	<property name="widgetService" ref="myportal.widgetService" />
+    </bean>
+
 </beans>

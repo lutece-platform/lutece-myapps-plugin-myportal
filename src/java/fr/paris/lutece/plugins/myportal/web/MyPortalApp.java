@@ -48,6 +48,7 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
@@ -76,6 +77,7 @@ public class MyPortalApp implements XPageApplication
 {
     // CONSTANTS
     private static final String LINE = "-";
+    private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
 
     // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
@@ -144,7 +146,9 @@ public class MyPortalApp implements XPageApplication
     private static final String JSP_URL_SEARCH_WIDGETS = "jsp/site/plugins/myportal/SearchWidgets.jsp";
 
     // private fields
-    private MyPortalPageService _pageService = new MyPortalPageService(  );
+    private MyPortalPageService _pageService = MyPortalPageService.getInstance(  );
+    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_WIDGETSERVICE );
 
     /**
      * Returns the content of the page myportal.
@@ -308,7 +312,7 @@ public class MyPortalApp implements XPageApplication
 
         if ( category != null )
         {
-            listWidgets = WidgetService.instance(  ).getWidgetsByCategoryId( category.getIdCategory(  ) );
+            listWidgets = _widgetService.getWidgetsByCategoryId( category.getIdCategory(  ) );
         }
         else
         {
@@ -342,7 +346,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
-        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
+        model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS,
                 request.getLocale(  ), model );
@@ -447,7 +451,7 @@ public class MyPortalApp implements XPageApplication
      */
     public String getBrowseEssentialWidgets( HttpServletRequest request )
     {
-        List<Widget> listWidgets = WidgetService.instance(  ).getEssentialWidgets(  );
+        List<Widget> listWidgets = _widgetService.getEssentialWidgets(  );
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
@@ -474,7 +478,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
-        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
+        model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS,
                 request.getLocale(  ), model );
@@ -489,7 +493,7 @@ public class MyPortalApp implements XPageApplication
      */
     public String getBrowseNewWidgets( HttpServletRequest request )
     {
-        List<Widget> listWidgets = WidgetService.instance(  ).getNewWidgets(  );
+        List<Widget> listWidgets = _widgetService.getNewWidgets(  );
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
@@ -516,7 +520,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
-        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
+        model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ),
                 model );
@@ -539,7 +543,7 @@ public class MyPortalApp implements XPageApplication
             strName = StringUtils.EMPTY;
         }
 
-        List<Widget> listWidgets = WidgetService.instance(  ).getWidgetsByName( strName );
+        List<Widget> listWidgets = _widgetService.getWidgetsByName( strName );
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
 
@@ -567,7 +571,7 @@ public class MyPortalApp implements XPageApplication
         model.put( MARK_LIST_TAB, listTabs );
         model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
-        model.put( MARK_USER_WIDGET_IDS, WidgetService.instance(  ).getUserWidgetIds( getUser( request ) ) );
+        model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale(  ), model );
 
@@ -722,7 +726,7 @@ public class MyPortalApp implements XPageApplication
             int nIdWidget = Integer.parseInt( strIdWidget );
             int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
 
-            Widget widget = WidgetService.instance(  ).getWidget( nIdWidget );
+            Widget widget = _widgetService.getWidget( nIdWidget );
 
             if ( widget != null )
             {

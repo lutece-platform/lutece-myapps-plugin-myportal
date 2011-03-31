@@ -72,4 +72,12 @@ public class HtmlWidgetHandler implements WidgetHandler
     {
         return DESCRIPTION;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isCustomizable(  )
+    {
+        return false;
+    }
 }

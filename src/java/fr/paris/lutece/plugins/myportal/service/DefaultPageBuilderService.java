@@ -39,6 +39,7 @@ import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
 import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
 import fr.paris.lutece.portal.business.user.AdminUser;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
@@ -59,8 +60,10 @@ import java.util.Map;
  */
 public final class DefaultPageBuilderService
 {
+    // CONSTANTS
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
+    private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
 
     // PARAMETERS
     private static final String PARAMETER_NB_COLUMNS = "nb_columns";
@@ -70,6 +73,8 @@ public final class DefaultPageBuilderService
     private static final String MARK_NB_COLUMNS = "nb_columns";
     private static final String MARK_COLUMNS_STYLE = "column_styles";
     private static DefaultPageBuilderService _singleton;
+    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
+            BEAN_MYPORTAL_WIDGETSERVICE );
 
     /**
      * Private Constructor
@@ -310,7 +315,7 @@ public final class DefaultPageBuilderService
         Collection<Widget> listWidgets = new ArrayList<Widget>(  );
         List<Integer> listWidgetIds = DefaultPageBuilderHome.findWidgetIds(  );
 
-        for ( Widget widget : WidgetService.instance(  ).getPublicMandatoryWidgets(  ) )
+        for ( Widget widget : _widgetService.getPublicMandatoryWidgets(  ) )
         {
             boolean bHasWidget = false;
 
