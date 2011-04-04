@@ -1,5 +1,5 @@
 $(function() {
-    $( "#tabs" ).tabs({ cookie: { expires: 90 } }).find(">.ui-tabs-nav").sortable({ axis: "x", items: "li:gt(0)" });
+    $( "#tabs" ).tabs({cookie: { expires: 90 }}).find(">.ui-tabs-nav").sortable({ axis: "x", items: "li:gt(0)" });
 
     $( ".myportal-column" ).sortable({
     	connectWith: ".myportal-column",
