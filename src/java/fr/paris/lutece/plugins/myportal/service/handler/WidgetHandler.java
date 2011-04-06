@@ -71,7 +71,7 @@ public interface WidgetHandler
      * Check if the widget is customizable or not.
      * <br />
      * In other words, if the wiget is indeed customizable, the content depends on
-     * the {@link LuteceUse}.
+     * the {@link LuteceUser}.
      * @return true if it is customizable, false otherwise
      */
     boolean isCustomizable(  );
