@@ -746,7 +746,6 @@ public class MyPortalApp implements XPageApplication
         return strHtml;
     }
 
-
     /**
      * Get tabs of my portal used by MyPortal.jsp
      * @param request The HTTP request
@@ -754,6 +753,6 @@ public class MyPortalApp implements XPageApplication
      */
     public String getTabs( HttpServletRequest request )
     {
-        return _pageService.getUserPage( getUser(request), request);
+        return _pageService.getUserPage( getUser( request ), request );
     }
 }

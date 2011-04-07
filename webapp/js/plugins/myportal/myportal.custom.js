@@ -1,5 +1,5 @@
 $(function() {
-    $( "#tabs" ).tabs({cookie: { expires: 90 }}).find(">.ui-tabs-nav").sortable({ axis: "x", items: "li:gt(0)" });
+    $( "#tabs" ).tabs({cookie: { expires: 90 }}).find(">.ui-tabs-nav").sortable({ axis: "x", items: "li.myportal-tab:gt(0)" });
 
     $( ".myportal-column" ).sortable({
     	connectWith: ".myportal-column",
@@ -44,7 +44,7 @@ $(function() {
  */
 function saveCurrentConf(  ) {
 	var strJson = '{"page":{"name":"Ma page","tabs":[';
-	$( "#tabs>ul>li" ).each( function( tabIndex ) {
+	$( "#tabs>ul>li.myportal-tab" ).each( function( tabIndex ) {
 		var tabId = $( this ).children("a").attr( "href" );
 		var tabName = $( this ).children( "a" ).html(  );
 		strJson += '{"name": "' + tabName + '","widgets":[';

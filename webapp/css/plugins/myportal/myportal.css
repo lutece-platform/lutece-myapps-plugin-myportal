@@ -36,6 +36,11 @@
     padding: 0.4em;
 }
 
+.myportal-label-added {
+	background: url(../../../images/skin/plugins/myportal/ok.png) no-repeat;
+	padding-left: 20px;
+}
+
 .ui-sortable-placeholder { 
     border: 1px dotted black;
     visibility: visible !important;
@@ -136,10 +141,9 @@
 
 #myportal-widgets-list-content ul.myportal-widget li {
 	float: left;
-	margin-left: 5px;
-	margin-right: 5px;
+	margin: 5px;
 	text-align: center;
-	padding: 5px;
+	padding: 0;
 }
 
 #myportal-widgets-list-content ul.myportal-widget li.selected {

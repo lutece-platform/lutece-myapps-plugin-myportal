@@ -77,10 +77,12 @@ public class PageBuilder implements IPageBuilder
     private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
     private static final String CLASS_MYPORTAL_ICON = "myportal-icon";
     private static final String CLASS_UI_ICON_PLUS = "ui-icon ui-icon-plus";
+    private static final String CLASS_UI_ICON_CIRCLE_PLUS = "ui-icon ui-icon-circle-plus";
     private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
     private static final String CLASS_UI_ICON_ARROW_4 = "ui-icon ui-icon-arrow-4";
     private static final String CLASS_ICON_CLOSE = "ui-icon ui-icon-circle-close icon-close";
     private static final String CLASS_CEEBOX = "ceebox";
+    private static final String CLASS_MYPORTAL_TAB = "myportal-tab";
 
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
@@ -93,6 +95,7 @@ public class PageBuilder implements IPageBuilder
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
     private static final String ACTION_EDIT_TAB = "edit_tab";
     private static final String ACTION_EDIT_WIDGET = "edit_widget";
+    private static final String ACTION_ADD_TAB = "add_tab";
 
     // HTML CONSTANTS
     private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
@@ -160,6 +163,8 @@ public class PageBuilder implements IPageBuilder
             nTab++;
         }
 
+        buildAddTabLink( sb );
+
         XmlUtil.endElement( sb, TAG_UL );
 
         nTab = 1;
@@ -185,7 +190,7 @@ public class PageBuilder implements IPageBuilder
     private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab, String strBaseUrl )
     {
         StringBuffer sbContent = new StringBuffer(  );
-        XmlUtil.beginElement( sbContent, TAG_LI );
+        XmlUtil.beginElement( sbContent, TAG_LI, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_TAB ) );
         XmlUtil.addElement( sbContent, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
 
         // Url for adding a new widget
@@ -219,6 +224,54 @@ public class PageBuilder implements IPageBuilder
         XmlUtil.endElement( sbContent, TAG_LI );
 
         return sbContent.toString(  );
+    }
+
+    /**
+     * Build the add tab link
+     * @param sb the content of the html code
+     */
+    private void buildAddTabLink( StringBuffer sb )
+    {
+        // JS ON
+        UrlItem urlForJs = new UrlItem( JSP_RUNSTANDALONEAPP );
+        urlForJs.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
+        urlForJs.addParameter( PARAMETER_ACTION, ACTION_ADD_TAB );
+
+        Map<String, String> listAttributesAddTab = buildAttributes( ATTRIBUTE_HREF, urlForJs.getUrlWithEntity(  ) );
+        listAttributesAddTab.put( ATTRIBUTE_CLASS, CLASS_CEEBOX );
+
+        // Build the url
+        StringBuffer sbJs = new StringBuffer(  );
+        XmlUtil.beginElement( sbJs, TAG_LI );
+        XmlUtil.beginElement( sbJs, TAG_A, listAttributesAddTab );
+        XmlUtil.addElement( sbJs, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_CIRCLE_PLUS ) );
+        XmlUtil.endElement( sbJs, TAG_A );
+        XmlUtil.endElement( sbJs, TAG_LI );
+
+        StringBuilder sbJsContent = new StringBuilder(  );
+
+        sbJsContent.append( BEGIN_JS_DOCUMENT_WRITE );
+        sbJsContent.append( sbJs.toString(  ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
+        sbJsContent.append( END_JS_DOCUMENT_WRITE );
+
+        // JS OFF
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
+        url.addParameter( PARAMETER_ACTION, ACTION_ADD_TAB );
+        listAttributesAddTab = buildAttributes( ATTRIBUTE_HREF, url.getUrlWithEntity(  ) );
+        listAttributesAddTab.put( ATTRIBUTE_CLASS, CLASS_CEEBOX );
+
+        StringBuffer sbContent = new StringBuffer(  );
+        XmlUtil.beginElement( sbContent, TAG_LI );
+        XmlUtil.beginElement( sbContent, TAG_A, listAttributesAddTab );
+        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE,
+            buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_CIRCLE_PLUS ) );
+        XmlUtil.endElement( sbContent, TAG_A );
+        XmlUtil.endElement( sbContent, TAG_LI );
+
+        // Main html content
+        XmlUtil.addElement( sb, TAG_JS, sbJsContent.toString(  ), buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
+        XmlUtil.addElement( sb, TAG_NOJS, sbContent.toString(  ) );
     }
 
     /**

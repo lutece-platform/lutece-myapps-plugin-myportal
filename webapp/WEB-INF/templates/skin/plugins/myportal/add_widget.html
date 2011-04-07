@@ -26,11 +26,11 @@
    					<form method="post" action="jsp/site/plugins/myportal/DoAddWidget.jsp">
 	   					<input type="hidden" name="id_widget" value="${widget.idWidget}" />
 	   					<input type="hidden" name="tab_index" value="${tab_index}" />
-	   					<input type="submit" value="#i18n{myportal.add_widget.labelAdd}" 
-	   						<#if has_widget>
-	   							disabled="disabled" 
-	   						</#if>
-	   					/>
+	   					<#if has_widget>
+	   						<span class="myportal-label-added">#i18n{myportal.add_widget.labelAdded}</span>
+	   					<#else>
+	   						<input type="submit" value="#i18n{myportal.add_widget.labelAdd}" />
+	   					</#if>
    					</form>
    				</li>
    			</#list>
