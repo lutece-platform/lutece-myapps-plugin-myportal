@@ -31,14 +31,6 @@
             <feature-url>jsp/admin/plugins/myportal/ManageWidgets.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
 		</admin-feature>
-        <admin-feature>
-            <feature-id>MYPORTAL_CATEGORY_MANAGEMENT</feature-id>
-            <feature-title>myportal.adminFeature.myportal_category_management.name</feature-title>
-            <feature-description>myportal.adminFeature.myportal_category_management.description</feature-description>
-            <feature-level>1</feature-level>
-            <feature-url>jsp/admin/plugins/myportal/ManageCategories.jsp</feature-url>
-            <feature-icon-url></feature-icon-url>
-		</admin-feature>
 		<admin-feature>
             <feature-id>MYPORTAL_DEFAULT_PAGE_BUILDER</feature-id>
             <feature-title>myportal.adminFeature.myportal_default_page_builder.name</feature-title>
