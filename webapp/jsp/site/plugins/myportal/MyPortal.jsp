@@ -149,7 +149,7 @@
 
         </div>
 
-        <script src="js/jquery/jquery-1.5.min.js" type="text/javascript"></script>
+        <script src="js/jquery/jquery-1.5.2.min.js" type="text/javascript"></script>
         <script src="js/jquery/plugins/treeview/jquery.cookie.js" type="text/javascript"></script>
         <script src="js/jquery/plugins/treeview/jquery.treeview.pack.js" type="text/javascript"></script>
         <script src="js/jquery/plugins/ui/datepicker/ui.datepicker.js" type="text/javascript"></script>
