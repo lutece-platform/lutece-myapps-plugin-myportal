@@ -14,12 +14,16 @@
     <copyright>Copyright (c) City of Paris</copyright>
     <db-pool-required>1</db-pool-required>
 
-    <!-- Specific plugin CSS stylesheet -->
     <css-stylesheets>
+        <css-stylesheets-scope>xpage</css-stylesheets-scope>
         <css-stylesheet>myportal/jquery-ui-1.8.10.custom.css</css-stylesheet>
         <css-stylesheet>myportal/ceebox/css/ceebox-min.css</css-stylesheet>
         <css-stylesheet>myportal/myportal.css</css-stylesheet>
     </css-stylesheets>
+    <javascript-files>
+        <javascript-files-scope>xpage</javascript-files-scope>
+        <javascript-file>myportal/myportal.js</javascript-file>
+    </javascript-files>
 
     <!-- Admin features parameters -->
     <admin-features>
@@ -30,45 +34,38 @@
             <feature-level>1</feature-level>
             <feature-url>jsp/admin/plugins/myportal/ManageWidgets.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
-		</admin-feature>
-		<admin-feature>
+        </admin-feature>
+        <admin-feature>
             <feature-id>MYPORTAL_DEFAULT_PAGE_BUILDER</feature-id>
             <feature-title>myportal.adminFeature.myportal_default_page_builder.name</feature-title>
             <feature-description>myportal.adminFeature.myportal_default_page_builder.description</feature-description>
             <feature-level>1</feature-level>
             <feature-url>jsp/admin/plugins/myportal/BuildDefaultPage.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
-		</admin-feature>
+        </admin-feature>
     </admin-features>
-    
-  	<!-- XPages parameters -->
+
+    <!-- XPages parameters -->
     <applications>
         <application>
             <application-id>myportal</application-id>
             <application-class>fr.paris.lutece.plugins.myportal.web.MyPortalApp</application-class>
         </application>
     </applications>
-    
+
     <!-- RBAC Resources -->
-	<rbac-resource-types>
-		<rbac-resource-type>
-			<rbac-resource-type-class>
-				fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService
-			</rbac-resource-type-class>
-		</rbac-resource-type>
-	</rbac-resource-types>
-	
-	<!-- Admin Dashboard components -->
+    <rbac-resource-types>
+        <rbac-resource-type>
+            <rbac-resource-type-class>fr.paris.lutece.plugins.myportal.service.MyPortalResourceIdService</rbac-resource-type-class>
+        </rbac-resource-type>
+    </rbac-resource-types>
+
+    <!-- Admin Dashboard components -->
     <admindashboard-components>
-    	<admindashboard-component>
+        <admindashboard-component>
             <dashboard-component-name>myPortalAdminDashboardComponent</dashboard-component-name>
             <dashboard-component-class>fr.paris.lutece.plugins.myportal.web.MyPortalAdminDashboardComponent</dashboard-component-class>
         </admindashboard-component>
     </admindashboard-components>
-    
-    <!-- JS -->
-    <javascript-files>
-         <javascript-file>myportal/myportal.js</javascript-file>
-    </javascript-files>
-</plug-in>
 
+</plug-in>
