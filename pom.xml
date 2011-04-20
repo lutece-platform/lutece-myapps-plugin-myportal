@@ -57,4 +57,10 @@
         <jiraProjectName>MYPORTAL</jiraProjectName>
         <jiraComponentId>10036</jiraComponentId>
     </properties>
+    
+    <scm>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-myportal</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-myportal</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/cms/plugin-myportal</url>
+    </scm>
 </project>
