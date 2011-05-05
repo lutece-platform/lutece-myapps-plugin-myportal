@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2010, Mairie de Paris
+ * Copyright (c) 2002-2009, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,49 +31,63 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.myportal.service.handler;
+package fr.paris.lutece.plugins.myportal.business.icon;
 
-import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.plugin.Plugin;
 
-import javax.servlet.http.HttpServletRequest;
-
+import java.util.List;
 
 
 /**
  *
- * WidgetHandler
+ * IIconDAO
  *
  */
-public interface WidgetHandler
+public interface IIconDAO
 {
     /**
-     * Get the name of the handler
-     * @return the name
+     * Insert a new record in the table.
+     *
+     * @param icon instance of the Icon object to insert
+     * @param plugin the plugin
      */
-    String getName(  );
+    void insert( Icon icon, Plugin plugin );
 
     /**
-     * Get the description of the handler
-     * @return the description
+     * update record in the table.
+     *
+     * @param  icon instance of the Icon object to update
+     * @param plugin the plugin
      */
-    String getDescription(  );
+    void store( Icon icon, Plugin plugin );
 
     /**
-     * Render a widget
-     * @param widget the widget
-     * @param user the {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
-     * @return a data
+     * update icon metadata in the table.
+     *
+     * @param  icon instance of the Icon object to update
+     * @param plugin the plugin
      */
-    String renderWidget( Widget widget, LuteceUser user, HttpServletRequest request );
+    void storeMetadata( Icon icon, Plugin plugin );
 
     /**
-     * Check if the widget is customizable or not.
-     * <br />
-     * In other words, if the wiget is indeed customizable, the content depends on
-     * the {@link LuteceUser}.
-     * @return true if it is customizable, false otherwise
+     * Load the icon Object
+     * @param nIdIcon the icon id
+     * @param plugin the plugin
+     * @return the icon Object
      */
-    boolean isCustomizable(  );
+    Icon load( int nIdIcon, Plugin plugin );
+
+    /**
+     * Delete the Icon Object
+     * @param nIdIcon theicon id
+     * @param plugin the plugin
+     */
+    void delete( int nIdIcon, Plugin plugin );
+
+    /**
+     * select all Icons
+     * @param plugin the plugin
+     * @return a list of Icon
+     */
+    List<Icon> selectAll( Plugin plugin );
 }

@@ -67,6 +67,7 @@
     <bean id="myportal.userPageConfigDAO" class="fr.paris.lutece.plugins.myportal.business.UserPageConfigDAO" />
     <bean id="myportal.defaultPageBuilderDAO" class="fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderDAO" />
     <bean id="myportal.pageBuilderParameterDAO" class="fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterDAO" />
+    <bean id="myportal.iconDAO"  class="fr.paris.lutece.plugins.myportal.business.icon.IconDAO" />
 
     <!-- Widget handler -->
     <bean id="myportal.widgetHandlerHTML"  class="fr.paris.lutece.plugins.myportal.service.handler.HtmlWidgetHandler" />

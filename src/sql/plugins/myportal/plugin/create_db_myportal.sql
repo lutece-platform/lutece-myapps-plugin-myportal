@@ -33,6 +33,22 @@ widget_order int(11) NOT NULL default '0',
 PRIMARY KEY (id_widget_component)
 );
 
+-- -------------------------------------------
+-- Structure for table myportal_icon --
+-- -------------------------------------------
+DROP TABLE IF EXISTS myportal_icon;
+CREATE TABLE myportal_icon
+(
+ 	id_icon INT DEFAULT 0 NOT NULL,
+	name VARCHAR(255) DEFAULT NULL,
+	mime_type VARCHAR(50) DEFAULT NULL,
+	file_value LONG VARBINARY,
+	width INT DEFAULT NULL,
+	height INT DEFAULT NULL,
+	PRIMARY KEY (id_icon)
+);
+
+
 --
 -- Structure for table myportal_page_builder_parameter
 --
