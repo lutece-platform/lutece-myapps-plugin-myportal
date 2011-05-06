@@ -1,3 +1,5 @@
+<#include "macro_myportal.html" />
+
 <div class="content-box">
 	<h2>#i18n{myportal.modify_widget.tableLabel}</h2>
     <form method="post" enctype="multipart/form-data" name="modify_widget" action="jsp/admin/plugins/myportal/DoModifyWidget.jsp">
@@ -10,6 +12,10 @@
             <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" value="${widget.description}" tabindex="1" />
         </p>
         <p>
+            <label for="id_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
+            <@radioIconList name="id_icon" default_value=widget.idIcon icons=icons_list />        </p>
+        <p>
+        <p>
             <label for="id_category" >#i18n{myportal.modify_widget.labelId_category} :</label>
             <@combo name="id_category" default_value="${widget.idCategory}" items=categories_list />
         </p>
@@ -20,20 +26,6 @@
         <p>
             <label for="id_style" >#i18n{myportal.modify_widget.labelStyle} :</label>
             <@combo name="id_style" default_value="${widget.idStyle}" items=widget_styles_list />
-        </p>
-        <p>
-            <label for="widget_icon" >#i18n{myportal.modify_widget.labelIcon} * :</label>
-            <#if widget.hasIcon(  )>
-				<input name="update_file" type="checkbox" class="checkbox" />
-			<#else>
-				<input type="hidden" name="update_file" value="1" />
-			</#if>
-			<input type="file" name="widget_icon" id="widget_icon" size="60" />
-			<#if widget.hasIcon(  )>
-				<br />
-				<label>&nbsp;</label>
-				<img src="image?resource_type=myportal_widget_icon&amp;id=${widget.idWidget}" alt="${widget.description}" height="30" />
-			</#if>
         </p>
         <p>
             <label for="widget_config_data" >#i18n{myportal.modify_widget.labelConfigData} :</label>

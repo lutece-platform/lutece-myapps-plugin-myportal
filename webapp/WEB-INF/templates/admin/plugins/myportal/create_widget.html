@@ -1,3 +1,5 @@
+<#include "macro_myportal.html" />
+
 <div class="content-box" >
     <h2>#i18n{myportal.create_widget.tableLabel}</h2>
     <form method="post" enctype="multipart/form-data" name="create_widget" id="create_widget" action="jsp/admin/plugins/myportal/DoCreateWidget.jsp">
@@ -10,6 +12,10 @@
             <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
         </p>
         <p>
+            <label for="id_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
+            <@radioIconList name="id_icon" default_value=-1 icons=icons_list />        </p>
+        <p>
+        <p>
             <label for="id_category" >#i18n{myportal.create_widget.labelId_category} :</label>
             <@combo name="id_category" default_value="" items=categories_list />
         </p>
@@ -21,11 +27,6 @@
             <label for="id_style" >#i18n{myportal.create_widget.labelStyle} :</label>
             <@combo name="id_style" default_value="" items=widget_styles_list />
         </p>
-        <p>
-            <label for="widget_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
-            <input type="file" name="widget_icon" id="widget_icon" size="60" />
-        </p>
-        <p>
             <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} :</label>
             <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data" tabindex="9" ></textarea>
         </p>

@@ -33,11 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
 
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,17 +51,15 @@ public final class WidgetDAO implements IWidgetDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = " SELECT max( id_widget ) FROM myportal_widget ";
-    private static final String SQL_QUERY_SELECT = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
+    private static final String SQL_QUERY_SELECT = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
         " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " +
         " WHERE a.id_widget = ?";
-    private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, icon_content, icon_mime_type, config_data , id_style, status, is_essential, is_new ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, id_icon, config_data , id_style, status, is_essential, is_new ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_widget WHERE id_widget = ? ";
-    private static final String SQL_QUERY_UPDATE = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, icon_content = ?, icon_mime_type = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
-    private static final String SQL_QUERY_UPDATE_WITHOUT_ICON = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
-    private static final String SQL_QUERY_SELECTALL = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
+    private static final String SQL_QUERY_UPDATE = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, id_icon = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
+    private static final String SQL_QUERY_SELECTALL = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
         " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style ";
-    private static final String SQL_QUERY_SELECT_RESOURCE_IMAGE = " SELECT icon_content, icon_mime_type FROM myportal_widget WHERE id_widget = ? ";
-    private static final String SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.icon_mime_type, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
+    private static final String SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
         " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " +
         " WHERE a.status = ? OR a.status = ? ";
     private static final String SQL_ORDER_BY = " ORDER BY ";
@@ -123,8 +119,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setString( nIndex++, widget.getDescription(  ) );
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
-        daoUtil.setBytes( nIndex++, widget.getIconContent(  ) );
-        daoUtil.setString( nIndex++, widget.getIconMimeType(  ) );
+        daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
         daoUtil.setString( nIndex++, widget.getConfigData(  ) );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
@@ -159,7 +154,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setDescription( daoUtil.getString( nIndex++ ) );
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
-            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
             widget.setConfigData( daoUtil.getString( nIndex++ ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
@@ -191,12 +186,11 @@ public final class WidgetDAO implements IWidgetDAO
     /**
      * Update the record in the table
      * @param widget The reference of the widget
-     * @param bUpdateIcon true if it must also update the icon, false otherwise
      * @param plugin The plugin
      */
-    public void store( Widget widget, boolean bUpdateIcon, Plugin plugin )
+    public void store( Widget widget, Plugin plugin )
     {
-        String strSQL = bUpdateIcon ? SQL_QUERY_UPDATE : SQL_QUERY_UPDATE_WITHOUT_ICON;
+        String strSQL = SQL_QUERY_UPDATE;
         DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
 
         int nIndex = 1;
@@ -204,21 +198,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setString( nIndex++, widget.getDescription(  ) );
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
-
-        if ( bUpdateIcon )
-        {
-            if ( widget.getIconContent(  ) == null )
-            {
-                daoUtil.setBytes( nIndex++, null );
-                daoUtil.setString( nIndex++, StringUtils.EMPTY );
-            }
-            else
-            {
-                daoUtil.setBytes( nIndex++, widget.getIconContent(  ) );
-                daoUtil.setString( nIndex++, widget.getIconMimeType(  ) );
-            }
-        }
-
+        daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
         daoUtil.setString( nIndex++, widget.getConfigData(  ) );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
@@ -253,7 +233,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setDescription( daoUtil.getString( nIndex++ ) );
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
-            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
             widget.setConfigData( daoUtil.getString( nIndex++ ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
@@ -268,30 +248,6 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.free(  );
 
         return widgetsList;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ImageResource getIconResource( int nWidgetId, Plugin plugin )
-    {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_RESOURCE_IMAGE, plugin );
-        daoUtil.setInt( 1, nWidgetId );
-        daoUtil.executeQuery(  );
-
-        ImageResource image = null;
-
-        if ( daoUtil.next(  ) )
-        {
-            int nIndex = 1;
-            image = new ImageResource(  );
-            image.setImage( daoUtil.getBytes( nIndex++ ) );
-            image.setMimeType( daoUtil.getString( nIndex++ ) );
-        }
-
-        daoUtil.free(  );
-
-        return image;
     }
 
     /**
@@ -316,7 +272,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setDescription( daoUtil.getString( nIndex++ ) );
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
-            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
             widget.setConfigData( daoUtil.getString( nIndex++ ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
@@ -356,7 +312,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setDescription( daoUtil.getString( nIndex++ ) );
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
-            widget.setIconMimeType( daoUtil.getString( nIndex++ ) );
+            widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
             widget.setConfigData( daoUtil.getString( nIndex++ ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );

@@ -51,7 +51,6 @@ public class MyPortalPlugin extends PluginDefaultImplementation
     @Override
     public void init(  )
     {
-        WidgetImgProvider.getInstance(  ).init(  );
         IconService.getInstance(  ).register(  );
 
     }

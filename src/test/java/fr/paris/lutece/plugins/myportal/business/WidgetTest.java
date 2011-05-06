@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.test.LuteceTestCase;
 
 
@@ -48,10 +47,8 @@ public class WidgetTest extends LuteceTestCase
     private static final String CONFIGDATA2 = "ConfigData2";
     private static final String DESCRIPTION1 = "Description1";
     private static final String DESCRIPTION2 = "Description2";
-    private static final byte[] ICONCONTENT1 = { 1 };
-    private static final byte[] ICONCONTENT2 = { 2 };
-    private static final String ICONMIMETYPE1 = "IconMimeType1";
-    private static final String ICONMIMETYPE2 = "IconMimeType2";
+    private static final int IDICON1 = 1;
+    private static final int IDICON2 = 2;
     private static final int IDCATEGORY1 = 1;
     private static final int IDCATEGORY2 = 2;
     private static final int IDSTYLE1 = 0;
@@ -77,8 +74,7 @@ public class WidgetTest extends LuteceTestCase
         widget.setIdWidget( WidgetHome.newPrimaryKey(  ) );
         widget.setConfigData( CONFIGDATA1 );
         widget.setDescription( DESCRIPTION1 );
-        widget.setIconContent( ICONCONTENT1 );
-        widget.setIconMimeType( ICONMIMETYPE1 );
+        widget.setIdIcon( IDICON1 );
         widget.setIdCategory( IDCATEGORY1 );
         widget.setIdStyle( IDSTYLE1 );
         widget.setIsEssential( ISESSENTIAL1 );
@@ -91,18 +87,10 @@ public class WidgetTest extends LuteceTestCase
         WidgetHome.create( widget );
 
         Widget widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget(  ) );
-        ImageResource img = WidgetHome.getIconResource( widget.getIdWidget(  ) );
-        widgetStored.setIconContent( img.getImage(  ) );
         assertEquals( widgetStored.getIdWidget(  ), widget.getIdWidget(  ) );
         assertEquals( widgetStored.getConfigData(  ), widget.getConfigData(  ) );
         assertEquals( widgetStored.getDescription(  ), widget.getDescription(  ) );
-
-        for ( int i = 0; i < widgetStored.getIconContent(  ).length; i++ )
-        {
-            assertEquals( widgetStored.getIconContent(  )[i], widget.getIconContent(  )[i] );
-        }
-
-        assertEquals( widgetStored.getIconMimeType(  ), widget.getIconMimeType(  ) );
+        assertEquals( widgetStored.getIdIcon(  ), widget.getIdIcon(  ) );
         assertEquals( widgetStored.getIdCategory(  ), widget.getIdCategory(  ) );
         assertEquals( widgetStored.getIdStyle(  ), widget.getIdStyle(  ) );
         assertEquals( widgetStored.getIsEssential(  ), widget.getIsEssential(  ) );
@@ -115,8 +103,7 @@ public class WidgetTest extends LuteceTestCase
         // Update test
         widget.setConfigData( CONFIGDATA2 );
         widget.setDescription( DESCRIPTION2 );
-        widget.setIconContent( ICONCONTENT2 );
-        widget.setIconMimeType( ICONMIMETYPE2 );
+        widget.setIdIcon( IDICON2 );
         widget.setIdCategory( IDCATEGORY2 );
         widget.setIdStyle( IDSTYLE2 );
         widget.setIsEssential( ISESSENTIAL2 );
@@ -124,20 +111,12 @@ public class WidgetTest extends LuteceTestCase
         widget.setName( NAME2 );
         widget.setStatus( STATUS2 );
         widget.setWidgetType( WIDGETTYPE2 );
-        WidgetHome.update( widget, true );
+        WidgetHome.update( widget );
         widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget(  ) );
-        img = WidgetHome.getIconResource( widget.getIdWidget(  ) );
-        widgetStored.setIconContent( img.getImage(  ) );
         assertEquals( widgetStored.getIdWidget(  ), widget.getIdWidget(  ) );
         assertEquals( widgetStored.getConfigData(  ), widget.getConfigData(  ) );
         assertEquals( widgetStored.getDescription(  ), widget.getDescription(  ) );
-
-        for ( int i = 0; i < widgetStored.getIconContent(  ).length; i++ )
-        {
-            assertEquals( widgetStored.getIconContent(  )[i], widget.getIconContent(  )[i] );
-        }
-
-        assertEquals( widgetStored.getIconMimeType(  ), widget.getIconMimeType(  ) );
+        assertEquals( widgetStored.getIdIcon(  ), widget.getIdIcon(  ) );
         assertEquals( widgetStored.getIdCategory(  ), widget.getIdCategory(  ) );
         assertEquals( widgetStored.getIdStyle(  ), widget.getIdStyle(  ) );
         assertEquals( widgetStored.getIsEssential(  ), widget.getIsEssential(  ) );

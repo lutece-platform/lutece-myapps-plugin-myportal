@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.Collection;
@@ -64,10 +63,9 @@ public interface IWidgetDAO
     /**
     * Update the record in the table
     * @param widget the reference of the Widget
-    * @param bUpdateIcon true if it must also update the icon, false otherwise
     * @param plugin the Plugin
     */
-    void store( Widget widget, boolean bUpdateIcon, Plugin plugin );
+    void store( Widget widget, Plugin plugin );
 
     /**
      * Delete a record from the table
@@ -93,14 +91,6 @@ public interface IWidgetDAO
     * @return The collection which contains the data of all the widget objects
     */
     Collection<Widget> selectWidgetsList( Plugin plugin );
-
-    /**
-     * Get the icon resource
-     * @param nWidgetId the ID widget
-     * @param plugin {@link Plugin}
-     * @return an {@link ImageResource}
-     */
-    ImageResource getIconResource( int nWidgetId, Plugin plugin );
 
     /**
      * Get the list of public or mandatory widgets

@@ -34,7 +34,6 @@
 package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
-import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -87,12 +86,11 @@ public final class WidgetHome
     /**
      * Update of the widget which is specified in parameter
      * @param widget The instance of the Widget which contains the data to store
-     * @param bUpdateIcon true if it must update the icon, false otherwise
      * @return The instance of the  widget which has been updated
      */
-    public static Widget update( Widget widget, boolean bUpdateIcon )
+    public static Widget update( Widget widget )
     {
-        _dao.store( widget, bUpdateIcon, _plugin );
+        _dao.store( widget, _plugin );
 
         return widget;
     }
@@ -126,16 +124,6 @@ public final class WidgetHome
     public static Collection<Widget> getWidgetsList(  )
     {
         return _dao.selectWidgetsList( _plugin );
-    }
-
-    /**
-     * Get the icon resource
-     * @param nWidgetId the id widget
-     * @return an {@link ImageResource}
-     */
-    public static ImageResource getIconResource( int nWidgetId )
-    {
-        return _dao.getIconResource( nWidgetId, _plugin );
     }
 
     /**

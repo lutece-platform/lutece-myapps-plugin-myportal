@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -56,8 +55,7 @@ public class Widget implements Serializable
     private String _strStyle;
     private int _nIdStyle;
     private String _strWidgetType;
-    private String _strIconMimeType;
-    private byte[] _iconContent;
+    private int _nIdIcon;
     private String _strConfigData;
     private String _strCssClass;
     private int _nStatus;
@@ -152,6 +150,24 @@ public class Widget implements Serializable
     public void setCategory( String strCategory )
     {
         _strCategory = strCategory;
+    }
+
+    /**
+     * Returns the IdIcon
+     * @return The IdIcon
+     */
+    public int getIdIcon(  )
+    {
+        return _nIdIcon;
+    }
+
+    /**
+     * Sets the IdIcon
+     * @param nIdIcon The IdIcon
+     */
+    public void setIdIcon( int nIdIcon )
+    {
+        _nIdIcon = nIdIcon;
     }
 
     /**
@@ -262,50 +278,6 @@ public class Widget implements Serializable
         return _nStatus;
     }
 
-    /**
-     * Set the icon mime type
-     * @param strIconMimeType the icon mime type
-     */
-    public void setIconMimeType( String strIconMimeType )
-    {
-        _strIconMimeType = strIconMimeType;
-    }
-
-    /**
-     * Get the icon mime type
-     * @return the icon mime type
-     */
-    public String getIconMimeType(  )
-    {
-        return _strIconMimeType;
-    }
-
-    /**
-     * Set the icon content
-     * @param iconContent the icon content
-     */
-    public void setIconContent( byte[] iconContent )
-    {
-        _iconContent = iconContent;
-    }
-
-    /**
-     * Get the icon content
-     * @return the icon content
-     */
-    public byte[] getIconContent(  )
-    {
-        return _iconContent;
-    }
-
-    /**
-     * Check if the widget has an icon or not
-     * @return true if it has an icon, false otherwise
-     */
-    public boolean hasIcon(  )
-    {
-        return StringUtils.isNotBlank( _strIconMimeType );
-    }
 
     /**
      * Set the widget as essential

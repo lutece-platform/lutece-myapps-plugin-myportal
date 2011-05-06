@@ -45,12 +45,10 @@ import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.plugins.myportal.service.cache.WidgetCacheService;
 import fr.paris.lutece.portal.service.cache.CacheService;
 import fr.paris.lutece.portal.service.cache.ICacheKeyService;
-import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,53 +141,6 @@ public class WidgetService
         return WidgetHome.getWidgetsList(  );
     }
 
-    /**
-     * Get the image resource
-     * @param nWidgetId the id widget
-     * @return an {@link ImageResource}
-     */
-    public ImageResource getIconResource( int nWidgetId )
-    {
-        String strKey = getIconKey( nWidgetId );
-        ImageResource img = (ImageResource) _cacheWidget.getFromCache( strKey );
-
-        if ( img == null )
-        {
-            img = WidgetHome.getIconResource( nWidgetId );
-            _cacheWidget.putInCache( strKey, img );
-        }
-
-        return img;
-    }
-
-    /**
-     * Check if the mime type is correct or not (list of correct mime types on
-     * the <b>myportal.properties</b>).
-     * @param strMimeType the mime type to check
-     * @return true if it is correct, false otherwise
-     */
-    public boolean isIconMimeTypeCorrect( String strMimeType )
-    {
-        boolean bIsCorrect = false;
-        String strAcceptedFormats = AppPropertiesService.getProperty( PROPERTY_ACCEPTED_ICON_FORMATS );
-
-        if ( StringUtils.isNotBlank( strAcceptedFormats ) )
-        {
-            String[] listAcceptedFormats = strAcceptedFormats.split( COMMA );
-
-            for ( String strFormat : listAcceptedFormats )
-            {
-                if ( strFormat.equals( strMimeType ) )
-                {
-                    bIsCorrect = true;
-
-                    break;
-                }
-            }
-        }
-
-        return bIsCorrect;
-    }
 
     /**
      * Get the list of widgets given an id category
@@ -297,13 +248,12 @@ public class WidgetService
     /**
      * Update a widget. If the cache is enable, it will reset the cache.
      * @param widget The {@link Widget}
-     * @param bUpdateIcon true if it must also update the icon, false otherwise
      */
-    public void updateWidget( Widget widget, boolean bUpdateIcon )
+    public void updateWidget( Widget widget )
     {
         _cacheWidget.resetCache(  );
         _widgetContentService.removeCache( widget.getIdWidget(  ) );
-        WidgetHome.update( widget, bUpdateIcon );
+        WidgetHome.update( widget );
     }
 
     /**
