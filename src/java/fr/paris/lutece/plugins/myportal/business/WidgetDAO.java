@@ -120,7 +120,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
         daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setString( nIndex++, widget.getConfigData(  ) );
+        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes() );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
         daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
@@ -155,7 +155,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ )) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -199,7 +199,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
         daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setString( nIndex++, widget.getConfigData(  ) );
+        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes() );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
         daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
@@ -234,7 +234,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ ) ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -273,7 +273,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ )) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -313,7 +313,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( daoUtil.getString( nIndex++ ) );
+            widget.setConfigData( new String( daoUtil.getString( nIndex++ ).getBytes()) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
