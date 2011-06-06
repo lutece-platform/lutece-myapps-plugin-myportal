@@ -30,7 +30,7 @@ $(function() {
          $( this ).parents( ".myportal-portlet:first" ).hide();
     });
 
-    $( ".myportal-column" ).disableSelection();
+    //$( ".myportal-column" ).disableSelection();
 
     // Ceebox init
     jQuery(document).ready(function(){
