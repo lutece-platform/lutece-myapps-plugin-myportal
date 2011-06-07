@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<plug-in>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?><plug-in>
     <name>myportal</name>
     <class>fr.paris.lutece.plugins.myportal.service.MyPortalPlugin</class>
-    <version>0.9.0</version>
-    <documentation></documentation>
-    <installation></installation>
-    <changes></changes>
-    <user-guide></user-guide>
+    <version>1.0.0</version>
+    <documentation/>
+    <installation/>
+    <changes/>
+    <user-guide/>
     <description>myportal.plugin.description</description>
     <provider>myportal.plugin.provider</provider>
     <provider-url>http://www.lutece.paris.fr</provider-url>
@@ -33,7 +32,7 @@
             <feature-description>myportal.adminFeature.myportal_widget_management.description</feature-description>
             <feature-level>1</feature-level>
             <feature-url>jsp/admin/plugins/myportal/ManageWidgets.jsp</feature-url>
-            <feature-icon-url></feature-icon-url>
+            <feature-icon-url/>
         </admin-feature>
         <admin-feature>
             <feature-id>MYPORTAL_DEFAULT_PAGE_BUILDER</feature-id>
@@ -41,7 +40,7 @@
             <feature-description>myportal.adminFeature.myportal_default_page_builder.description</feature-description>
             <feature-level>1</feature-level>
             <feature-url>jsp/admin/plugins/myportal/BuildDefaultPage.jsp</feature-url>
-            <feature-icon-url></feature-icon-url>
+            <feature-icon-url/>
         </admin-feature>
     </admin-features>
 
