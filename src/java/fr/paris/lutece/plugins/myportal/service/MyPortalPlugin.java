@@ -52,6 +52,5 @@ public class MyPortalPlugin extends PluginDefaultImplementation
     public void init(  )
     {
         IconService.getInstance(  ).register(  );
-
     }
 }

@@ -39,7 +39,6 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import javax.servlet.http.HttpServletRequest;
 
 
-
 /**
  *
  * WidgetHandler

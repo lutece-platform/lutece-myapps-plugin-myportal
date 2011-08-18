@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 import java.io.Serializable;
 
 
@@ -277,7 +276,6 @@ public class Widget implements Serializable
     {
         return _nStatus;
     }
-
 
     /**
      * Set the widget as essential

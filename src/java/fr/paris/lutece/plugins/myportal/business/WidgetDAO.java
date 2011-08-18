@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.myportal.business;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,7 +119,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
         daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes() );
+        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes(  ) );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
         daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
@@ -155,7 +154,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ )) );
+            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ ) ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -199,7 +198,7 @@ public final class WidgetDAO implements IWidgetDAO
         daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
         daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
         daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes() );
+        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes(  ) );
         daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
         daoUtil.setInt( nIndex++, widget.getStatus(  ) );
         daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
@@ -273,7 +272,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ )) );
+            widget.setConfigData( new String( daoUtil.getBytes( nIndex++ ) ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -313,7 +312,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( new String( daoUtil.getString( nIndex++ ).getBytes()) );
+            widget.setConfigData( new String( daoUtil.getString( nIndex++ ).getBytes(  ) ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );

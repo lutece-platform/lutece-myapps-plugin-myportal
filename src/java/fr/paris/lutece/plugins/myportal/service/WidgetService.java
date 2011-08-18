@@ -49,7 +49,6 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -140,7 +139,6 @@ public class WidgetService
     {
         return WidgetHome.getWidgetsList(  );
     }
-
 
     /**
      * Get the list of widgets given an id category
