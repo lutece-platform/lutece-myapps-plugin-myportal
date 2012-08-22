@@ -1,128 +1,112 @@
 <#macro widgetComponentTable items=[] list_available_orders_columns=[] order=true>
-	<#if items?exists && items?size &gt; 0>
-	<table class="table table-striped table-condensed">
-			<tr> <#-- header -->
-				<th>#i18n{myportal.build_default_page.columnName}</th>
-				<th>#i18n{myportal.build_default_page.columnColumn}</th>
-				<#if order><th>#i18n{myportal.build_default_page.columnOrder}</th></#if>
-				<th>#i18n{myportal.build_default_page.columnStyle}</th>
-				<th>#i18n{myportal.build_default_page.columnActions}</th>
-			</tr>
-		<#list items as widgetComponent>
-				<tr>
-					<td>${widgetComponent.widgetName}</td>
-					<td>
-						<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
-	<fieldset>
-							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
-							<#if !widgetComponent.order?exists || widgetComponent.order == 0 >
-								<#assign widget_order = 1 />
-							<#else>
-								<#assign widget_order = widgetComponent.order />
-							</#if>
-							<input type="hidden" name="widget_order" value="${widget_order}" />
-							<div class="controls">
-	<@combo name="widget_column" default_value="${widgetComponent.column!}" items=list_available_columns />
-		</div>
-	</div>
-							<button class="btn btn-primary" type="submit" >#i18n{myportal.build_default_page.buttonSetColumn}</button>
-	
-						</fieldset>
-</form>
-					</td>
-					<#if order>
-					<td>
-						<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
-	<fieldset>
-							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
-							<#if !widgetComponent.column?exists  || widgetComponent.column == 0>
-								<#assign widget_column = 1 />
-							<#else>
-								<#assign widget_column = widgetComponent.column />
-							</#if>
-							<input type="hidden" name="widget_column" value="${widget_column}"/>
-							<div class="controls">
-	<@combo name="widget_order" default_value="${widgetComponent.order!}" items=list_available_orders_columns />
-		</div>
-	</div>
-							
-							<button class="btn btn-primary" type="submit" >#i18n{myportal.build_default_page.buttonMove}</button>
-	
-						</fieldset>
-</form>
-					</td>
-					</#if>
-					<td>${widgetComponent.styleName}</td>
-					<td>
-						<form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoRemoveWidgetComponent.jsp">
-	<fieldset>
-							<input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}" />
-							<button class="btn btn-primary" type="submit" >#i18n{myportal.build_default_page.buttonRemove}</button>
-	
-						</fieldset>
-</form>
-					</td>
-				</tr>
-		</#list>
-		</table>
-		<#else>
-			
-				#i18n{myportal.build_default_page.message.emptyGroup}
-			
-		</#if>
+<#if items?exists && items?size &gt; 0>
+<table class="table table-striped table-condensed">
+    <tr> <#-- header -->
+        <th>#i18n{myportal.build_default_page.columnName}</th>
+        <th>#i18n{myportal.build_default_page.columnColumn}</th>
+        <#if order><th>#i18n{myportal.build_default_page.columnOrder}</th></#if>
+        <th>#i18n{myportal.build_default_page.columnStyle}</th>
+        <th>#i18n{myportal.build_default_page.columnActions}</th>
+    </tr>
+    <#list items as widgetComponent>
+    <tr>
+        <td>${widgetComponent.widgetName}</td>
+        <td>
+            <form class="form-horizontal" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
+                <fieldset>
+                    <input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
+                    <#if !widgetComponent.order?exists || widgetComponent.order == 0 >
+                    <#assign widget_order = 1 />
+                    <#else>
+                    <#assign widget_order = widgetComponent.order />
+                    </#if>
+                    <input type="hidden" name="widget_order" value="${widget_order}" />
+                    <@comboWithParams name="widget_column" default_value="${widgetComponent.column!}" additionalParameters="class=\"span1\"" items=list_available_columns />
+                    <button class="btn btn-primary btn-mini" type="submit" >#i18n{myportal.build_default_page.buttonSetColumn}</button>
+
+                </fieldset>
+            </form>
+        </td>
+        <#if order>
+        <td>
+            <form class="form-inline" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp" method="post">
+                <input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}"/>
+                <#if !widgetComponent.column?exists  || widgetComponent.column == 0>
+                <#assign widget_column = 1 />
+                <#else>
+                <#assign widget_column = widgetComponent.column />
+                </#if>
+                <input type="hidden" name="widget_column" value="${widget_column}"/>
+                <@comboWithParams name="widget_order" default_value="${widgetComponent.order!}" additionalParameters="class=\"span1\"" items=list_available_orders_columns />
+
+                <button class="btn btn-primary btn-mini" type="submit" >#i18n{myportal.build_default_page.buttonMove}</button>
+
+                </fieldset>
+            </form>
+        </td>
+        </#if>
+        <td>${widgetComponent.styleName}</td>
+        <td>
+            <form class="form-inline" method="post" action="jsp/admin/plugins/myportal/DoRemoveWidgetComponent.jsp">
+                <input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}" />
+                <button class="btn btn-danger btn-mini" type="submit" title="#i18n{myportal.build_default_page.buttonRemove}" >
+                    <i class="icon-trash icon-white"></i>
+                </button>
+            </form>
+        </td>
+    </tr>
+    </#list>
+</table>
+<#else>
+
+#i18n{myportal.build_default_page.message.emptyGroup}
+
+</#if>
 </#macro>
 
 <#function getName code reference_list>
-	<#if reference_list?has_content>
-		<#list reference_list as reference_item>
-			<#if reference_item.code = code>
-  				<#return reference_item.name>
-  			</#if>
-  		</#list>
-	</#if>
-	<#return "">
+<#if reference_list?has_content>
+<#list reference_list as reference_item>
+<#if reference_item.code = code>
+<#return reference_item.name>
+</#if>
+</#list>
+</#if>
+<#return "">
 </#function>
 
 <div class="btn-group pull-right">
-	<form class="form-horizontal" method="post"  action="jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp">
-	<fieldset>
-        <button class="btn btn-primary pull-right" type="submit" >
-	<i class="icon-plus icon-white" ></i>
-<span class="hidden-phone" >#i18n{myportal.build_default_page.buttonAddWidget}</span>
-</button>
-	
-    </fieldset>
-</form>
+    <a class="btn btn-primary" href="jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp">
+        <i class="icon-plus icon-white" ></i>
+        <span class="hidden-phone" >#i18n{myportal.build_default_page.buttonAddWidget}</span>
+    </a>
     <#if permission_manage_advanced_parameters>
-    	<form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp">
-	<fieldset>
-	        <button class="btn btn-primary pull-right" type="submit" >
-	<i class="icon-plus icon-white" ></i>
-<span class="hidden-phone" >#i18n{myportal.build_default_page.buttonManageAdvancedParameters}</span>
-</button>
-	
-	    </fieldset>
-</form>
+    <a class="btn btn-primary" href="jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp">
+        <i class="icon-wrench icon-white" ></i>
+        <span class="hidden-phone" >#i18n{myportal.build_default_page.buttonManageAdvancedParameters}</span>
+    </a>
     </#if>
 </div>
+
+
 <div class="row">
-	<legend>#i18n{myportal.build_default_page.pageTitle}</legend>
-	<#-- column lists -->
-	<#list list_available_columns as column_refItem>
-		<#if column_refItem.code != ''>
-			<#assign column_key = column_refItem.code />
-			<#assign id_column_style = getName( 'column_style_' + column_key, list_param_default_values )>
-			<#assign column_style_name = getName( id_column_style, column_styles )>
-			<div class="well">
-				<legend>#i18n{myportal.build_default_page.labelColumn} ${column_key} - #i18n{myportal.build_default_page.labelStyle} "${column_style_name}" </legend>
-				<#if map_column_order_status[column_key]?exists && !map_column_order_status[column_key]>
-					
-						<a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labelReorder}</a>
-					
-				</#if>
-				<@widgetComponentTable items=map_widget_components[column_key] list_available_orders_columns=map_available_orders[column_key] />
-				<#-- suggest reorder if the column is not well ordered -->
-			</div>
-		</#if>
-	</#list>
+    <legend>#i18n{myportal.build_default_page.pageTitle}</legend>
+    <#-- column lists -->
+    <#list list_available_columns as column_refItem>
+    <#if column_refItem.code != ''>
+    <#assign column_key = column_refItem.code />
+    <#assign id_column_style = getName( 'column_style_' + column_key, list_param_default_values )>
+    <#assign column_style_name = getName( id_column_style, column_styles )>
+    <div class="well">
+        <legend>#i18n{myportal.build_default_page.labelColumn} ${column_key} - #i18n{myportal.build_default_page.labelStyle} "${column_style_name}" </legend>
+        <#if map_column_order_status[column_key]?exists && !map_column_order_status[column_key]>
+
+        <a class="alert" href="jsp/admin/plugins/myportal/DoReorderColumn.jsp?column=${column_key}">#i18n{myportal.build_default_page.labelReorder}</a>
+
+        </#if>
+        <@widgetComponentTable items=map_widget_components[column_key] list_available_orders_columns=map_available_orders[column_key] />
+        <#-- suggest reorder if the column is not well ordered -->
+    </div>
+    </#if>
+    </#list>
 </div>

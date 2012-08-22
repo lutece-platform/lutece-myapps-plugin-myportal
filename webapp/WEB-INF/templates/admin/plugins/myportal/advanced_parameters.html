@@ -1,49 +1,51 @@
 <#function getName code reference_list>
-	<#if reference_list?has_content>
-		<#list reference_list as reference_item>
-			<#if reference_item.code = code>
-  				<#return reference_item.name>
-  			</#if>
-  		</#list>
-	</#if>
-	<#return "">
+<#if reference_list?has_content>
+<#list reference_list as reference_item>
+<#if reference_item.code = code>
+<#return reference_item.name>
+</#if>
+</#list>
+</#if>
+<#return "">
 </#function>
 
 <div class="well">
-	<form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
-	<fieldset>
-		
-   			<div class="control-group">
-		<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
-   			<div class="controls">
-	<input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
-		</div>
-	</div>
-		
-		<#if ( nb_columns > 0 )>
-			<#list 1..nb_columns as i>
-				<#assign column_style_name = 'column_style_' + i>
-				<#assign column_style_code = getName( column_style_name, list_param_default_values )>
-				
-					<div class="control-group">
-		<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
-					<select name="column_style_${i}">
-						<#list column_styles as style>
-							<#if column_style_code?? && column_style_code == style.code>
-								<option value="${style.code}" selected="selected">${style.name}</option>
-							<#else>
-								<option value="${style.code}">${style.name}</option>
-							</#if>
-						</#list>
-					</select>
-				
-			</#list>
-		</#if>
-		<br />
-		
-			<button class="btn btn-primary" type="submit" >#i18n{myportal.manage_advanced_parameters.buttonModify}</button>
-	
-		
-	</fieldset>
-</form>
+    <form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
+                <div class="controls">
+                    <input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
+                </div>
+            </div>
+
+            <#if ( nb_columns > 0 )>
+            <#list 1..nb_columns as i>
+            <#assign column_style_name = 'column_style_' + i>
+            <#assign column_style_code = getName( column_style_name, list_param_default_values )>
+
+            <div class="control-group">
+                <label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
+                <div class="controls">
+                    <select name="column_style_${i}">
+                        <#list column_styles as style>
+                        <#if column_style_code?? && column_style_code == style.code>
+                        <option value="${style.code}" selected="selected">${style.name}</option>
+                        <#else>
+                        <option value="${style.code}">${style.name}</option>
+                        </#if>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+            </#list>
+            </#if>
+            <br />
+
+            <button class="btn btn-primary" type="submit" >#i18n{myportal.manage_advanced_parameters.buttonModify}</button>
+
+
+        </fieldset>
+    </form>
 </div>
