@@ -1,52 +1,86 @@
 <#include "macro_myportal.html" />
 
-<div class="content-box" >
-    <h2>#i18n{myportal.create_widget.tableLabel}</h2>
-    <form method="post" enctype="multipart/form-data" name="create_widget" id="create_widget" action="jsp/admin/plugins/myportal/DoCreateWidget.jsp">
-        <p>
-            <label for="widget_name" >#i18n{myportal.create_widget.labelName} * :</label>
-            <input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" tabindex="1" />
-        </p>
-        <p>
-            <label for="widget_description" >#i18n{myportal.create_widget.labelDescription} * :</label>
-            <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
-        </p>
-        <p>
-            <label for="id_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
-            <@radioIconList name="id_icon" default_value=-1 icons=icons_list />        </p>
-        <p>
-        <p>
-            <label for="id_category" >#i18n{myportal.create_widget.labelId_category} :</label>
-            <@combo name="id_category" default_value="" items=categories_list />
-        </p>
-        <p>
-            <label for="widget_type" >#i18n{myportal.create_widget.labelWidget_type} :</label>
-            <@combo name="widget_type" default_value="" items=widget_types_list />
-        </p>
-        <p>
-            <label for="id_style" >#i18n{myportal.create_widget.labelStyle} :</label>
-            <@combo name="id_style" default_value="" items=widget_styles_list />
-        </p>
-            <label for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} :</label>
+<div class="row" >
+    <legend>#i18n{myportal.create_widget.tableLabel}</legend>
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" name="create_widget" id="create_widget" action="jsp/admin/plugins/myportal/DoCreateWidget.jsp">
+	<fieldset>
+        
+            <div class="control-group">
+		<label class="control-label" for="widget_name" >#i18n{myportal.create_widget.labelName} * :</label>
+            <div class="controls">
+	<input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" tabindex="1" />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="widget_description" >#i18n{myportal.create_widget.labelDescription} * :</label>
+            <div class="controls">
+	<input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" tabindex="2" />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="id_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
+            <@radioIconList name="id_icon" default_value=-1 icons=icons_list />        
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="id_category" >#i18n{myportal.create_widget.labelId_category} :</label>
+            <div class="controls">
+	<@combo name="id_category" default_value="" items=categories_list />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="widget_type" >#i18n{myportal.create_widget.labelWidget_type} :</label>
+            <div class="controls">
+	<@combo name="widget_type" default_value="" items=widget_types_list />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="id_style" >#i18n{myportal.create_widget.labelStyle} :</label>
+            <div class="controls">
+	<@combo name="id_style" default_value="" items=widget_styles_list />
+		</div>
+	</div>
+        
+            <div class="control-group">
+		<label class="control-label" for="widget_config_data" >#i18n{myportal.create_widget.labelConfigData} :</label>
             <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data" tabindex="9" ></textarea>
-        </p>
-        <p>
-        	<label for="widget_status" >#i18n{myportal.create_widget.labelStatus} :</label>
+        
+        
+        	<div class="control-group">
+		<label class="control-label" for="widget_status" >#i18n{myportal.create_widget.labelStatus} :</label>
         	<select name="widget_status">
         		<option value="${status_draft}"> #i18n{myportal.create_widget.labelStatusDraft}</option>
         		<option value="${status_mandatory}"> #i18n{myportal.create_widget.labelStatusMandatory}</option>
         		<option value="${status_public}"> #i18n{myportal.create_widget.labelStatusPublic}</option>
         	</select>
-        </p>
-        <p>
-        	<label for="is_essential">#i18n{myportal.create_widget.labelFeature} :</label>
-        	<input type="checkbox" name="is_essential" value="1" />&nbsp;#i18n{myportal.create_widget.labelEssential}
+        
+        
+        	<div class="control-group">
+		<label class="control-label" for="is_essential">#i18n{myportal.create_widget.labelFeature} :</label>
+        	<div class="controls">
+	<input type="checkbox" name="is_essential" value="1" />
+		</div>
+	</div>&nbsp;#i18n{myportal.create_widget.labelEssential}
         	<br />
-        	<label for="is_new">&nbsp;</label>
-        	<input type="checkbox" name="is_new" value="1" />&nbsp;#i18n{myportal.create_widget.labelNew}
-        </p>
-        <p>
-            <input type="submit" value="#i18n{myportal.create_widget.buttonValidate}" class="button" tabindex="10" />
-        </p>
-    </form>
+        	<div class="control-group">
+		<label class="control-label" for="is_new">&nbsp;</label>
+        	<div class="controls">
+	<input type="checkbox" name="is_new" value="1" />
+		</div>
+	</div>&nbsp;#i18n{myportal.create_widget.labelNew}
+        
+        
+            <button class="btn btn-primary" type="submit" >#i18n{myportal.create_widget.buttonValidate}</button>
+	
+        
+    </fieldset>
+</form>
 </div>

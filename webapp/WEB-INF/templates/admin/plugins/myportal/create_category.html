@@ -1,16 +1,27 @@
-<div class="content-box" >
-    <h2>#i18n{myportal.create_category.tableLabel}</h2>
-    <form method="post"  name="create_category" id="create_category" action="jsp/admin/plugins/myportal/DoCreateCategory.jsp">
-        <p>
-            <label for="category_name" >#i18n{myportal.create_category.labelName} * :</label>
-            <input type="text" id="category_name" name="category_name" size="60" maxlength="50" tabindex="1" />
-        </p>
-        <p>
-            <label for="category_description" >#i18n{myportal.create_category.labelDescription} * :</label>
-            <input type="text" id="category_description" name="category_description" size="60" maxlength="50" tabindex="1" />
-        </p>
-        <p>   
-            <input type="submit" value="#i18n{myportal.create_category.buttonValidate}" class="button" tabindex="3" />
-        </p>
+<div class="row" >
+    <legend>#i18n{myportal.create_category.tableLabel}</legend>
+    <form class="form-horizontal" method="post"  name="create_category" id="create_category" action="jsp/admin/plugins/myportal/DoCreateCategory.jsp">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label" for="category_name" >#i18n{myportal.create_category.labelName} * :</label>
+                <div class="controls">
+                    <input type="text" id="category_name" name="category_name" size="60" maxlength="50" tabindex="1" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="category_description" >#i18n{myportal.create_category.labelDescription} * :</label>
+                <div class="controls">
+                    <input type="text" id="category_description" name="category_description" size="60" maxlength="50" tabindex="1" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit" >#i18n{myportal.create_category.buttonValidate}</button>
+                <a class="btn" href="jsp/admin/plugins/myportal/ManageCategories.jsp" >#i18n{myportal.modify_category.buttonCancel}</a>
+            </div>
+
+        </fieldset>
     </form>
 </div>

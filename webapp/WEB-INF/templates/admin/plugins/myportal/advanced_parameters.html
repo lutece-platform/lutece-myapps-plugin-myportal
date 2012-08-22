@@ -9,18 +9,24 @@
 	<#return "">
 </#function>
 
-<div class="highlight-box">
-	<form method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
-		<p>
-   			<label>#i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
-   			<input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
-		</p>
+<div class="well">
+	<form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
+	<fieldset>
+		
+   			<div class="control-group">
+		<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
+   			<div class="controls">
+	<input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
+		</div>
+	</div>
+		
 		<#if ( nb_columns > 0 )>
 			<#list 1..nb_columns as i>
 				<#assign column_style_name = 'column_style_' + i>
 				<#assign column_style_code = getName( column_style_name, list_param_default_values )>
-				<p>
-					<label>#i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
+				
+					<div class="control-group">
+		<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
 					<select name="column_style_${i}">
 						<#list column_styles as style>
 							<#if column_style_code?? && column_style_code == style.code>
@@ -30,12 +36,14 @@
 							</#if>
 						</#list>
 					</select>
-				</p>
+				
 			</#list>
 		</#if>
 		<br />
-		<p>
-			<input type="submit" class="button" value="#i18n{myportal.manage_advanced_parameters.buttonModify}" />
-		</p>
-	</form>
+		
+			<button class="btn btn-primary" type="submit" >#i18n{myportal.manage_advanced_parameters.buttonModify}</button>
+	
+		
+	</fieldset>
+</form>
 </div>

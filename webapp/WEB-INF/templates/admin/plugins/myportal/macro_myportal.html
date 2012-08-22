@@ -1,7 +1,10 @@
 <#macro radioIconList name default_value icons >
    <#list icons as icon>
     <#if default_value=icon.id> 			
-    <input checked="checked" class="radio" type="radio" name="${name}" value="${icon.id}" />
+    <div class="controls">
+	<input checked="checked" class="radio" type="radio" name="${name}" value="${icon.id}" />
+		</div>
+	</div>
     <img  src="image?resource_type=myportal_icon_img&id=${icon.id}"
       <#if icon.width!=-1>
         width="${icon.width}"
@@ -11,7 +14,10 @@
       </#if> 
 	/>
       <#else>
-      <input class="radio" type="radio" name="${name}" value="${icon.id}" />
+      <div class="controls">
+	<input class="radio" type="radio" name="${name}" value="${icon.id}" />
+		</div>
+	</div>
     <img  src="image?resource_type=myportal_icon_img&id=${icon.id}"
       <#if icon.width!=-1>
         width="${icon.width}"
