@@ -269,4 +269,23 @@ public class MyPortalAuthentication implements LuteceAuthentication
     {
         return null;
     }
+
+	/**
+	 * 
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLostLoginPageUrl( )
+	{
+		return null;
+	}
+
+	/**
+	 * 
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateDateLastLogin( LuteceUser user, HttpServletRequest request )
+	{
+	}
 }
