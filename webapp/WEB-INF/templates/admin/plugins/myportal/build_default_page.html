@@ -22,7 +22,7 @@
                     </#if>
                     <input type="hidden" name="widget_order" value="${widget_order}" />
                     <@comboWithParams name="widget_column" default_value="${widgetComponent.column!}" additionalParameters="class=\"span1\"" items=list_available_columns />
-                    <button class="btn btn-primary btn-mini" type="submit" >#i18n{myportal.build_default_page.buttonSetColumn}</button>
+                    <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.build_default_page.buttonSetColumn}</button>
 
                 </fieldset>
             </form>
@@ -39,7 +39,7 @@
                 <input type="hidden" name="widget_column" value="${widget_column}"/>
                 <@comboWithParams name="widget_order" default_value="${widgetComponent.order!}" additionalParameters="class=\"span1\"" items=list_available_orders_columns />
 
-                <button class="btn btn-primary btn-mini" type="submit" >#i18n{myportal.build_default_page.buttonMove}</button>
+                <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.build_default_page.buttonMove}</button>
 
                 </fieldset>
             </form>
@@ -49,7 +49,7 @@
         <td>
             <form class="form-inline" method="post" action="jsp/admin/plugins/myportal/DoRemoveWidgetComponent.jsp">
                 <input type="hidden" name="id_widget_component" value="${widgetComponent.idWidgetComponent}" />
-                <button class="btn btn-danger btn-mini" type="submit" title="#i18n{myportal.build_default_page.buttonRemove}" >
+                <button class="btn btn-danger btn-small" type="submit" title="#i18n{myportal.build_default_page.buttonRemove}" >
                     <i class="icon-trash icon-white"></i>
                 </button>
             </form>
