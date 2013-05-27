@@ -1,7 +1,8 @@
 <div class="row-fluid">
-    <legend> #i18n{myportal.create_icon.title}</legend>
-    <form class="form-horizontal" action="jsp/admin/plugins/myportal/DoCreateIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data" >
-        <fieldset>
+	<div class="span12">
+       <fieldset>
+		<legend> #i18n{myportal.create_icon.title}</legend>
+			<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoCreateIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data" >
             <div class="control-group">
                 <label class="control-label" for="name">#i18n{myportal.create_icon.label_name} * : </label>
                 <div class="controls">
@@ -19,26 +20,27 @@
             <div class="control-group">
                 <label class="control-label" for="width">#i18n{myportal.create_icon.label_width} : </label>
                 <div class="controls">
-                    <input type="text" name="width" id="" size="4" value=""  maxlength="255"/>
+                    <input type="text" name="width" id="" class="input-mini" value=""  maxlength="255"/>
                     <span class="help-block">#i18n{myportal.create_icon.label_width_comment}</span>
                 </div>
             </div>
-
-
             <div class="control-group">
                 <label class="control-label" for="height">#i18n{myportal.create_icon.label_height} : </label>
                 <div class="controls">
-                    <input type="text" name="height" id="" size="4" value=""  maxlength="255"/>
+                    <input type="text" name="height" id="" class="input-mini" value=""  maxlength="255"/>
                     <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
                 </div>
             </div>
-
             <div class="form-actions">
-                <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.create_icon.button_save}</button>
-                <a class="btn btn-small" href="jsp/admin/plugins/myportal/ManageIcons.jsp" >#i18n{myportal.create_icon.button_cancel}</a>
+                <button class="btn btn-primary btn-small" type="submit">
+					<i class="icon-ok icon-white"></i>&nbsp;#i18n{myportal.create_icon.button_save}
+				</button>
+                <a class="btn btn-small" href="jsp/admin/plugins/myportal/ManageIcons.jsp" >
+					<i class="icon-remove-circle"></i>&nbsp;#i18n{myportal.create_icon.button_cancel}
+				</a>
             </div>
-
-        </fieldset>
-    </form>
+			</form>
+		</fieldset>
+	</div>
 </div>
 

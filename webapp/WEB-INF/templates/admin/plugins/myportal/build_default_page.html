@@ -21,7 +21,7 @@
                     <#assign widget_order = widgetComponent.order />
                     </#if>
                     <input type="hidden" name="widget_order" value="${widget_order}" />
-                    <@comboWithParams name="widget_column" default_value="${widgetComponent.column!}" additionalParameters="class=\"span1\"" items=list_available_columns />
+                    <@comboWithParams name="widget_column" default_value="${widgetComponent.column!}" additionalParameters="class=\"input-mini\"" items=list_available_columns />
                     <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.build_default_page.buttonSetColumn}</button>
 
                 </fieldset>
@@ -37,7 +37,7 @@
                 <#assign widget_column = widgetComponent.column />
                 </#if>
                 <input type="hidden" name="widget_column" value="${widget_column}"/>
-                <@comboWithParams name="widget_order" default_value="${widgetComponent.order!}" additionalParameters="class=\"span1\"" items=list_available_orders_columns />
+                <@comboWithParams name="widget_order" default_value="${widgetComponent.order!}" additionalParameters="class=\"input-mini\"" items=list_available_orders_columns />
 
                 <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.build_default_page.buttonMove}</button>
 

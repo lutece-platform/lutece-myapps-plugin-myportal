@@ -1,7 +1,8 @@
 <div class="row-fluid">
-    <legend>#i18n{myportal.modify_icon.title} : ${icon.name}</legend>
-    <form class="form-horizontal" action="jsp/admin/plugins/myportal/DoModifyIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data">
-        <fieldset>
+	<div class="span12">
+       <fieldset>
+		<legend>#i18n{myportal.modify_icon.title} : ${icon.name}</legend>
+		<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoModifyIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data">
             <input name="id_icon" value="${icon.id}" type="hidden">
             <div class="control-group">
                 <label class="control-label" for="name">#i18n{myportal.create_icon.label_name} * : </label>
@@ -10,23 +11,14 @@
                     <span class="help-block">#i18n{myportal.create_icon.label_name_comment}</span>
                 </div>
             </div>
-
             <div class="control-group">
-                <label class="control-label" for="id_file" >#i18n{myportal.create_icon.label_file} * : </label>
-                <img  src="image?resource_type=myportal_icon_img&id=${icon.id}"
-                      <#if icon.width!=-1>
-                      width="${icon.width}"
-                      </#if> 
-                      <#if icon.height!=-1>
-                      height="${icon.height}"
-                      </#if> 
-                      />
-                      <div class="controls">
+                <label class="control-label" for="id_file" >#i18n{myportal.create_icon.label_file} *</label>
+                 <div class="controls">
+					<img  src="image?resource_type=myportal_icon_img&id=${icon.id}" <#if icon.width!=-1> width="${icon.width}"</#if><#if icon.height!=-1> height="${icon.height}"</#if>>
                     <input type="file" id="id_file" name="id_file" />
                     <span class="help-block">#i18n{myportal.create_icon.label_file_comment}</span>
                 </div>
             </div>
-
             <div class="control-group">
                 <label class="control-label" for="width">#i18n{myportal.create_icon.label_width} : </label>
                 <#if icon.width?exists&&icon.width!=-1>
@@ -42,7 +34,6 @@
             </div>
             </div>
             </#if> 
-
             <div class="control-group">
                 <label class="control-label" for="height">#i18n{myportal.create_icon.label_height} : </label>
                 <#if icon.height?exists&&icon.height!=-1>
@@ -56,15 +47,14 @@
                 <input type="text" name="height" id="" size="4" value=""  maxlength="255"/>
                 <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
             </div>
-           
             </#if> 
-
             <div class="form-actions">
                 <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.create_icon.button_save}</button>
                 <a class="btn btn-small" href="jsp/admin/plugins/myportal/ManageIcons.jsp" >#i18n{myportal.create_icon.button_cancel}</a>
             </div>
-
+		</form>
         </fieldset>
-    </form>
+	</div>
 </div>
+
 
