@@ -1,0 +1,18 @@
+<div id="widget-${idWidget!}" class="${cssWidget!}">
+	<div class="myportal-portlet-header">
+	
+		<a onclick="return false;" href="jsp/site/plugins/myportal/DoRemoveWidget.jsp?id_widget=${idWidget}">
+			<span class="ui-icon ui-icon-circle-close icon-close"></span>
+		</a>
+		<a onclick="return false;" href="jsp/site/Portal.jsp?page=myportal&action=edit_widget&tab_index=${tabIndex!}&id_widget=${idWidget!}">
+			<span class="ui-icon ui-icon-arrow-4"></span>
+		</a>
+		
+		<span>${WidgetName!}</span>
+	</div>
+	
+	<div class="myportal-portlet-content">
+		${contentWidget!}
+	</div>
+
+</div>

@@ -35,21 +35,22 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.plugins.myportal.business.Style;
 import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
+import fr.paris.lutece.plugins.myportal.business.WidgetsTag;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.url.UrlItem;
-import fr.paris.lutece.util.xml.XmlUtil;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,67 +64,44 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PageBuilder implements IPageBuilder
 {
-    // CONSTANTS
-    private static final String QUESTION_MARK = "?";
-    private static final String EQUAL = "=";
-    private static final String ANCHOR = "#";
-    private static final String HTML_SPACE = "&nbsp;";
-    private static final String SPACE = " ";
-    private static final String NEWLINE_CHAR = "(\\r|\\n)";
-    private static final String ID_TAB = "tabs-";
-    private static final String ID_WIDGET = "widget-";
-    private static final String RETURN_FALSE = "return false;";
-    private static final String CLASS_MYPORTAL_PORTLET_HEADER = "myportal-portlet-header";
-    private static final String CLASS_MYPORTAL_PORTLET_CONTENT = "myportal-portlet-content";
-    private static final String CLASS_MYPORTAL_ICON = "myportal-icon";
-    private static final String CLASS_UI_ICON_PLUS = "ui-icon ui-icon-plus";
-    private static final String CLASS_UI_ICON_CIRCLE_PLUS = "ui-icon ui-icon-circle-plus";
-    private static final String CLASS_UI_ICON_PENCIL = "ui-icon ui-icon-pencil";
-    private static final String CLASS_UI_ICON_ARROW_4 = "ui-icon ui-icon-arrow-4";
-    private static final String CLASS_ICON_CLOSE = "ui-icon ui-icon-circle-close icon-close";
-    private static final String CLASS_CEEBOX = "ceebox";
-    private static final String CLASS_MYPORTAL_TAB = "myportal-tab";
+
 
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
     private static final String PARAMETER_ACTION = "action";
     private static final String PARAMETER_TAB_INDEX = "tab_index";
     private static final String PARAMETER_COLUMN_STYLE = "column_style_";
-    private static final String PARAMETER_ID_WIDGET = "id_widget";
 
     // ACTIONS
     private static final String ACTION_BROWSE_CATEGORIES = "browse_categories";
     private static final String ACTION_EDIT_TAB = "edit_tab";
-    private static final String ACTION_EDIT_WIDGET = "edit_widget";
-    private static final String ACTION_ADD_TAB = "add_tab";
-
-    // HTML CONSTANTS
-    private static final String BEGIN_JS_DOCUMENT_WRITE = "document.write('";
-    private static final String END_JS_DOCUMENT_WRITE = "');";
-
-    // TAGS
-    private static final String TAG_UL = "ul";
-    private static final String TAG_LI = "li";
-    private static final String TAG_A = "a";
-    private static final String TAG_JS = "script";
-    private static final String TAG_NOJS = "noscript";
-    private static final String TAG_DIV = "div";
-    private static final String TAG_SPAN = "span";
-
-    // ATTRIBUTES
-    private static final String ATTRIBUTE_TYPE = "type";
-    private static final String ATTRIBUTE_HREF = "href";
-    private static final String ATTRIBUTE_ID = "id";
-    private static final String ATTRIBUTE_CLASS = "class";
-    private static final String ATTRIBUTE_VALUE_JS = "text/javascript";
-    private static final String ATTRIBUTE_ONCLICK = "onclick";
+    private static final String NEWLINE_CHAR = "(\\r|\\n)";
 
     // JSP
     private static final String JSP_RUNSTANDALONEAPP = "jsp/site/RunStandaloneApp.jsp";
-    private static final String JSP_DO_REMOVE_WIDGET = "jsp/site/plugins/myportal/DoRemoveWidget.jsp";
     private WidgetContentService _widgetContentService;
     private WidgetService _widgetService;
+    
+    //MARKER
+    private static final String MARK_URL_ADDWIDGET="urlAddWidget";
+    private static final String MARK_URL_EDITTAB="urlEditTab";
 
+    private static final String MARK_TAB_NAME="tabName";    
+    private static final String MARK_ID_WIDGET="idWidget";
+    private static final String MARK_CSS_WIDGET="cssWidget";
+    private static final String MARK_TAB_INDEX="tabIndex";
+    private static final String MARK_WIDGET_NAME="WidgetName";
+    private static final String MARK_WIDGET_CONTENT= "contentWidget";
+    private static final String MARK_LIST_WIDGET_TAG= "listWidgetTag";
+
+    
+    //Template
+    
+    private static final String TEMPLATE_TAB_LINKS ="/skin/plugins/myportal/widget/tab_links.html";
+    private static final String TEMPLATE_WIDGET ="/skin/plugins/myportal/widget/widget.html";
+    private static final String TEMPLATE_WIGET_PAGE ="/skin/plugins/myportal/widget/widgets_page.html";
+
+    
     /**
      * Build the page given a page config and a LuteceUser
      *
@@ -139,33 +117,15 @@ public class PageBuilder implements IPageBuilder
         List<TabConfig> listTabs = pageConfig.getTabList(  );
 
         int nTab = 1;
-        XmlUtil.beginElement( sb, TAG_UL );
 
         for ( TabConfig tab : listTabs )
         {
-            /* Tab when JS is on */
-            StringBuilder sbJsContent = new StringBuilder(  );
-
-            // Url of the tab link
-            String strUrl = ANCHOR + ID_TAB + nTab;
-            sbJsContent.append( BEGIN_JS_DOCUMENT_WRITE );
-            sbJsContent.append( buildTabLinks( strUrl, nTab, tab, JSP_RUNSTANDALONEAPP )
-                                    .replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
-            sbJsContent.append( END_JS_DOCUMENT_WRITE );
-            XmlUtil.addElement( sb, TAG_JS, sbJsContent.toString(  ),
-                buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
-
-            /* Tab when JS is off */
-            strUrl = AppPathService.getPortalUrl(  ) + QUESTION_MARK + PARAMETER_PAGE + EQUAL +
-                MyPortalPlugin.PLUGIN_NAME + strUrl;
-            XmlUtil.addElement( sb, TAG_NOJS, buildTabLinks( strUrl, nTab, tab, AppPathService.getPortalUrl(  ) ) );
-
+           
+            StringBuilder sbContent = new StringBuilder(  );
+            sbContent.append( buildTabLinks( nTab, tab, JSP_RUNSTANDALONEAPP, request.getLocale( ) ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
+            sb.append(sbContent);
             nTab++;
         }
-
-        buildAddTabLink( sb );
-
-        XmlUtil.endElement( sb, TAG_UL );
 
         nTab = 1;
 
@@ -187,137 +147,34 @@ public class PageBuilder implements IPageBuilder
      * @param strBaseUrl the base url
      * @return the html code
      */
-    private String buildTabLinks( String strUrl, int nTabIndex, TabConfig tab, String strBaseUrl )
+    private String buildTabLinks(  int nTabIndex, TabConfig tab, String strBaseUrl, Locale locale )
     {
-        StringBuffer sbContent = new StringBuffer(  );
-        XmlUtil.beginElement( sbContent, TAG_LI, buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_TAB ) );
-        XmlUtil.addElement( sbContent, TAG_A, tab.getName(  ), buildAttributes( ATTRIBUTE_HREF, strUrl ) );
-
+        Map<String, Object> model = new HashMap<String, Object>( );
+                
+        
+        model.put( MARK_TAB_NAME, tab.getName(  ) );
+        
         // Url for adding a new widget
         UrlItem urlAddWidget = new UrlItem( strBaseUrl );
         urlAddWidget.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
         urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-
-        // Attributes of the link to add a new widget
-        Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_HREF, urlAddWidget.getUrlWithEntity(  ) );
-        listAttributes.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
-
-        XmlUtil.beginElement( sbContent, TAG_A, listAttributes );
-        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PLUS ) );
-        XmlUtil.endElement( sbContent, TAG_A );
+        
+        model.put( MARK_URL_ADDWIDGET, urlAddWidget.getUrlWithEntity(  ) );
 
         // Url for editing a tab
         UrlItem urlEditTab = new UrlItem( strBaseUrl );
         urlEditTab.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         urlEditTab.addParameter( PARAMETER_ACTION, ACTION_EDIT_TAB );
         urlEditTab.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-
-        // Attributes of the link to edit a tab
-        Map<String, String> listAttributesEditTab = buildAttributes( ATTRIBUTE_HREF, urlEditTab.getUrlWithEntity(  ) );
-        listAttributesEditTab.put( ATTRIBUTE_CLASS, CLASS_MYPORTAL_ICON + SPACE + CLASS_CEEBOX );
-
-        XmlUtil.beginElement( sbContent, TAG_A, listAttributesEditTab );
-        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_PENCIL ) );
-        XmlUtil.endElement( sbContent, TAG_A );
-
-        XmlUtil.endElement( sbContent, TAG_LI );
-
-        return sbContent.toString(  );
+        model.put( MARK_URL_EDITTAB, urlEditTab.getUrlWithEntity(  ) );
+        model.put(MARK_TAB_INDEX, nTabIndex);
+        
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TAB_LINKS, locale, model );
+        
+        return template.getHtml();
     }
-
-    /**
-     * Build the add tab link
-     * @param sb the content of the html code
-     */
-    private void buildAddTabLink( StringBuffer sb )
-    {
-        // JS ON
-        UrlItem urlForJs = new UrlItem( JSP_RUNSTANDALONEAPP );
-        urlForJs.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
-        urlForJs.addParameter( PARAMETER_ACTION, ACTION_ADD_TAB );
-
-        Map<String, String> listAttributesAddTab = buildAttributes( ATTRIBUTE_HREF, urlForJs.getUrlWithEntity(  ) );
-        listAttributesAddTab.put( ATTRIBUTE_CLASS, CLASS_CEEBOX );
-
-        // Build the url
-        StringBuffer sbJs = new StringBuffer(  );
-        XmlUtil.beginElement( sbJs, TAG_LI );
-        XmlUtil.beginElement( sbJs, TAG_A, listAttributesAddTab );
-        XmlUtil.addElement( sbJs, TAG_SPAN, HTML_SPACE, buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_CIRCLE_PLUS ) );
-        XmlUtil.endElement( sbJs, TAG_A );
-        XmlUtil.endElement( sbJs, TAG_LI );
-
-        StringBuilder sbJsContent = new StringBuilder(  );
-
-        sbJsContent.append( BEGIN_JS_DOCUMENT_WRITE );
-        sbJsContent.append( sbJs.toString(  ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
-        sbJsContent.append( END_JS_DOCUMENT_WRITE );
-
-        // JS OFF
-        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
-        url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
-        url.addParameter( PARAMETER_ACTION, ACTION_ADD_TAB );
-        listAttributesAddTab = buildAttributes( ATTRIBUTE_HREF, url.getUrlWithEntity(  ) );
-        listAttributesAddTab.put( ATTRIBUTE_CLASS, CLASS_CEEBOX );
-
-        StringBuffer sbContent = new StringBuffer(  );
-        XmlUtil.beginElement( sbContent, TAG_LI );
-        XmlUtil.beginElement( sbContent, TAG_A, listAttributesAddTab );
-        XmlUtil.addElement( sbContent, TAG_SPAN, HTML_SPACE,
-            buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_CIRCLE_PLUS ) );
-        XmlUtil.endElement( sbContent, TAG_A );
-        XmlUtil.endElement( sbContent, TAG_LI );
-
-        // Main html content
-        XmlUtil.addElement( sb, TAG_JS, sbJsContent.toString(  ), buildAttributes( ATTRIBUTE_TYPE, ATTRIBUTE_VALUE_JS ) );
-        XmlUtil.addElement( sb, TAG_NOJS, sbContent.toString(  ) );
-    }
-
-    /**
-     * Build the html code for widget links
-     *
-     * @param nTabIndex the tab index
-     * @param widget the widget
-     * @return the html code
-     */
-    private String buildWidgetLinks( int nTabIndex, Widget widget )
-    {
-        StringBuffer sbContent = new StringBuffer(  );
-
-        if ( widget.getStatus(  ) != WidgetStatusEnum.MANDATORY.getId(  ) )
-        {
-            UrlItem urlRemoveWidget = new UrlItem( JSP_DO_REMOVE_WIDGET );
-            urlRemoveWidget.addParameter( PARAMETER_ID_WIDGET, widget.getIdWidget(  ) );
-
-            Map<String, String> listAttributesRemoveWidget = buildAttributes( ATTRIBUTE_HREF, urlRemoveWidget.getUrl(  ) );
-            listAttributesRemoveWidget.put( ATTRIBUTE_ONCLICK, RETURN_FALSE );
-
-            UrlItem urlEditWidget = new UrlItem( AppPathService.getPortalUrl(  ) );
-            urlEditWidget.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
-            urlEditWidget.addParameter( PARAMETER_ACTION, ACTION_EDIT_WIDGET );
-            urlEditWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-            urlEditWidget.addParameter( PARAMETER_ID_WIDGET, widget.getIdWidget(  ) );
-
-            Map<String, String> listAttributesEditWidget = buildAttributes( ATTRIBUTE_HREF, urlEditWidget.getUrl(  ) );
-            listAttributesEditWidget.put( ATTRIBUTE_ONCLICK, RETURN_FALSE );
-
-            XmlUtil.beginElement( sbContent, TAG_A, listAttributesRemoveWidget );
-            XmlUtil.addElement( sbContent, TAG_SPAN, StringUtils.EMPTY,
-                buildAttributes( ATTRIBUTE_CLASS, CLASS_ICON_CLOSE ) );
-            XmlUtil.endElement( sbContent, TAG_A );
-
-            XmlUtil.beginElement( sbContent, TAG_A, listAttributesEditWidget );
-            XmlUtil.addElement( sbContent, TAG_SPAN, StringUtils.EMPTY,
-                buildAttributes( ATTRIBUTE_CLASS, CLASS_UI_ICON_ARROW_4 ) );
-            XmlUtil.endElement( sbContent, TAG_A );
-        }
-
-        XmlUtil.addElement( sbContent, TAG_SPAN, widget.getName(  ) );
-
-        return sbContent.toString(  );
-    }
-
+   
     /**
      * Build the tab content
      *
@@ -329,71 +186,69 @@ public class PageBuilder implements IPageBuilder
      */
     private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user, HttpServletRequest request )
     {
-        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
-        List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
+        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );       
+        Map<String, Object> model = new HashMap<String, Object>( );
 
+        List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
+        List<WidgetsTag> listTag = new ArrayList<WidgetsTag>(  );
+       
+        
         for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
         {
-            StringBuffer sbCol = new StringBuffer(  );
             Style style = getColumnStyle( nColumn );
-
+            WidgetsTag wdTag= new WidgetsTag();
             if ( style != null )
             {
-                XmlUtil.beginElement( sbCol, TAG_DIV, buildAttributes( ATTRIBUTE_CLASS, style.getCssClass(  ) ) );
+            	wdTag.setCssClass(style.getCssClass( ));
+            	
             }
             else
             {
-                XmlUtil.beginElement( sbCol, TAG_DIV );
+            	wdTag.setCssClass(StringUtils.EMPTY);
             }
+            listTag.add(wdTag);
+            listCol.add(new StringBuffer());
 
-            listCol.add( sbCol );
-        }
-
-        StringBuilder sbContent = new StringBuilder(  );
+        }       
 
         for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
         {
+        	
             Widget widget = _widgetService.getWidget( widgetConfig.getWidgetId(  ) );
+            StringBuffer sbWidget = listCol.get( widgetConfig.getColumn(  ) - 1 );
+            
+            model.put( MARK_ID_WIDGET, widgetConfig.getWidgetId(  ) );
 
             if ( ( widget != null ) && ( widgetConfig.getColumn(  ) <= nNbColumns ) )
             {
-                StringBuffer sbWidget = listCol.get( widgetConfig.getColumn(  ) - 1 );
 
-                Map<String, String> listAttributes = buildAttributes( ATTRIBUTE_CLASS, widget.getCssClass(  ) );
-                listAttributes.put( ATTRIBUTE_ID, ID_WIDGET + widget.getIdWidget(  ) );
-                XmlUtil.beginElement( sbWidget, TAG_DIV, listAttributes );
-                XmlUtil.addElement( sbWidget, TAG_DIV, buildWidgetLinks( nTab, widget ),
-                    buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_HEADER ) );
-                XmlUtil.addElement( sbWidget, TAG_DIV,
-                    _widgetContentService.getWidgetContent( widgetConfig.getWidgetId(  ), user, request ),
-                    buildAttributes( ATTRIBUTE_CLASS, CLASS_MYPORTAL_PORTLET_CONTENT ) );
-                XmlUtil.endElement( sbWidget, TAG_DIV );
+                model.put( MARK_CSS_WIDGET, widget.getCssClass(  ) );               
+                model.put( MARK_TAB_INDEX, nTab );
+                model.put( MARK_WIDGET_NAME, widget.getName( ) );
+                model.put( MARK_WIDGET_CONTENT, _widgetContentService.getWidgetContent( widgetConfig.getWidgetId(  ), user, request ) );
+                
+              
             }
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIDGET, request.getLocale( ), model );
+            sbWidget.append(template.getHtml( ));
+            
         }
 
         for ( int i = 0; i < nNbColumns; i++ )
         {
-            XmlUtil.endElement( listCol.get( i ), TAG_DIV );
-            sbContent.append( listCol.get( i ) );
+        	WidgetsTag wdTag = listTag.get( i );
+        	wdTag.setContent(listCol.get(i).toString());
         }
+        
 
-        XmlUtil.addElement( sb, TAG_DIV, sbContent.toString(  ), buildAttributes( ATTRIBUTE_ID, ID_TAB + nTab ) );
+        model.put(MARK_LIST_WIDGET_TAG, listTag);
+        model.put( MARK_TAB_INDEX, nTab );
+        
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIGET_PAGE, request.getLocale( ), model );
+        
+        sb.append( new StringBuffer(template.getHtml()) );
     }
 
-    /**
-     * Build the attributes for the tag
-     *
-     * @param strName  the attribute name
-     * @param strValue the attribute value
-     * @return a map
-     */
-    private Map<String, String> buildAttributes( String strName, String strValue )
-    {
-        Map<String, String> listAttributes = new HashMap<String, String>(  );
-        listAttributes.put( strName, strValue );
-
-        return listAttributes;
-    }
 
     /**
      * Get the column style from the column number

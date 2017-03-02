@@ -1,0 +1,32 @@
+<ul>
+<script type="text/javascript">
+document.write('<li class="myportal-tab">
+	<a href="#tabs-${tabIndex}">${tabName!}</a>
+	<a href="${urlAddWidget!}" class="myportal-icon ceebox">
+		<span class="ui-icon ui-icon-plus">&nbsp;</span>
+	</a>
+	<a href="${urlEditTab!}" class="myportal-icon ceebox">
+		<span class="ui-icon ui-icon-pencil">&nbsp;</span>
+	</a>
+</li>');
+</script>
+
+<noscript><li class="myportal-tab">
+	<a href="jsp/site/Portal.jsp?page=myportal#tabs-${tabIndex}">${tabName!}</a>
+	<a href="${urlAddWidget!}" class="myportal-icon ceebox">
+		<span class="ui-icon ui-icon-plus">&nbsp;</span>
+	</a>
+	<a href="${urlEditTab!}" class="myportal-icon ceebox">
+		<span class="ui-icon ui-icon-pencil">&nbsp;</span>
+	</a>
+</li>
+</noscript>
+<script type="text/javascript">document.write('<li><a href="jsp/site/RunStandaloneApp.jsp?page=myportal&#38;action=add_tab" class="ceebox"><span class="ui-icon ui-icon-circle-plus">&nbsp;</span></a></li>');</script>
+<noscript>
+<li>
+<a href="jsp/site/Portal.jsp?page=myportal&#38;action=add_tab" class="ceebox">
+<span class="ui-icon ui-icon-circle-plus">&nbsp;</span>
+</a>
+</li>
+</noscript>
+</ul>
