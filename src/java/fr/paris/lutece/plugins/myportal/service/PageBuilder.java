@@ -93,6 +93,7 @@ public class PageBuilder implements IPageBuilder
     private static final String MARK_WIDGET_NAME="WidgetName";
     private static final String MARK_WIDGET_CONTENT= "contentWidget";
     private static final String MARK_LIST_WIDGET_TAG= "listWidgetTag";
+    private static final String MARK_TAB_LINKS= "tabLinks";
 
     
     //Template
@@ -100,6 +101,7 @@ public class PageBuilder implements IPageBuilder
     private static final String TEMPLATE_TAB_LINKS ="/skin/plugins/myportal/widget/tab_links.html";
     private static final String TEMPLATE_WIDGET ="/skin/plugins/myportal/widget/widget.html";
     private static final String TEMPLATE_WIGET_PAGE ="/skin/plugins/myportal/widget/widgets_page.html";
+    private static final String TEMPLATE_WIGET_TABS ="/skin/plugins/myportal/widget/tabs.html";
 
     
     /**
@@ -113,20 +115,24 @@ public class PageBuilder implements IPageBuilder
     public String buildPage( PageConfig pageConfig, LuteceUser user, HttpServletRequest request )
     {
         StringBuffer sb = new StringBuffer(  );
-
+        Map<String, Object> model = new HashMap<String, Object>( );
         List<TabConfig> listTabs = pageConfig.getTabList(  );
 
         int nTab = 1;
+        StringBuilder sbContent = new StringBuilder(  );
 
         for ( TabConfig tab : listTabs )
         {
            
-            StringBuilder sbContent = new StringBuilder(  );
             sbContent.append( buildTabLinks( nTab, tab, JSP_RUNSTANDALONEAPP, request.getLocale( ) ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
-            sb.append(sbContent);
+            //sb.append(sbContent);
             nTab++;
         }
-
+        
+        model.put(MARK_TAB_LINKS, sbContent.toString( ));
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIGET_TABS, request.getLocale( ), model );
+        sb.append(template.getHtml( ));
+        
         nTab = 1;
 
         for ( TabConfig tab : listTabs )
