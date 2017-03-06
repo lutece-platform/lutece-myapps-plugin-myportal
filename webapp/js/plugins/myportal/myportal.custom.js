@@ -26,7 +26,7 @@ $(function() {
 
     $( ".myportal-portlet-header .icon-close" ).click(function() {
          var id = $( this ).parents( ".myportal-portlet:first" ).attr('id');
-         $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoRemoveWidget.jsp", data: "widget=" + id });
+         $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoRemoveWidget.jsp", data: "id_widget=" + id });
          $( this ).parents( ".myportal-portlet:first" ).hide();
     });
 
