@@ -340,7 +340,7 @@ public class IconJspBean extends PluginAdminPageJspBean
             return AdminMessageService.getMessageUrl( request, MESSAGE_NUMERIC_FIELD, tabRequiredFields,
                 AdminMessage.TYPE_STOP );
         }
-        if ( ( bIsDisplayInFO == null ) || bIsDisplayInFO != "true" )
+        if ( ( bIsDisplayInFO == null ) || !bIsDisplayInFO.equals("true") )
         {
         	bIsDisplayInFO = "false";
         }

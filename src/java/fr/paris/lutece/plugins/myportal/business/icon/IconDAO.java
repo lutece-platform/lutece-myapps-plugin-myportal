@@ -60,7 +60,7 @@ public class IconDAO implements IIconDAO
         " WHERE id_icon=?";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_icon  WHERE id_icon=? ";
     
-    private static final String SQL_QUERY_FIND_ICON_FO = "SELECT id_icon,name,mime_type,file_value,width,height,dispolay_fo" +
+    private static final String SQL_QUERY_FIND_ICON_FO = "SELECT id_icon,name,mime_type,width,height,dispolay_fo" +
             " FROM myportal_icon WHERE dispolay_fo=?";
 
     /**
