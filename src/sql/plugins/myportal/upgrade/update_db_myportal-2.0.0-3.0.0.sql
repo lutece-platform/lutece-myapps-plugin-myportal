@@ -1,0 +1,1 @@
+ALTER TABLE myportal_icon ADD COLUMN dispolay_fo SMALLINT DEFAULT 0,

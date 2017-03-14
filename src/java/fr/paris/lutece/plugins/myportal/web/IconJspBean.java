@@ -84,6 +84,7 @@ public class IconJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_WIDTH = "width";
     private static final String PARAMETER_HEIGHT = "height";
     private static final String PARAMETER_CANCEL = "cancel";
+    private static final String PARAMETER_IS_DIPLAY_IN_FO = "isDisplayFO";
 
     //	 other constants
     private static final String EMPTY_STRING = "";
@@ -295,7 +296,8 @@ public class IconJspBean extends PluginAdminPageJspBean
         String strName = request.getParameter( PARAMETER_NAME );
         String strWidth = request.getParameter( PARAMETER_WIDTH );
         String strHeight = request.getParameter( PARAMETER_HEIGHT );
-
+        String bIsDisplayInFO = request.getParameter( PARAMETER_IS_DIPLAY_IN_FO );
+        
         int nWidth = convertStringToInt( strWidth );
         int nHeight = convertStringToInt( strHeight );
 
@@ -338,8 +340,12 @@ public class IconJspBean extends PluginAdminPageJspBean
             return AdminMessageService.getMessageUrl( request, MESSAGE_NUMERIC_FIELD, tabRequiredFields,
                 AdminMessage.TYPE_STOP );
         }
-
+        if ( ( bIsDisplayInFO == null ) || bIsDisplayInFO != "true" )
+        {
+        	bIsDisplayInFO = "false";
+        }
         icon.setName( strName );
+        icon.setDispolayFO(Boolean.parseBoolean( bIsDisplayInFO ));
 
         if ( ( fileItem != null ) && ( fileItem.getName(  ) != null ) && !EMPTY_STRING.equals( fileItem.getName(  ) ) )
         {

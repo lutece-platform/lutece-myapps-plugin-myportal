@@ -45,6 +45,7 @@ CREATE TABLE myportal_icon
 	file_value LONG VARBINARY,
 	width INT DEFAULT NULL,
 	height INT DEFAULT NULL,
+	dispolay_fo SMALLINT DEFAULT '0',
 	PRIMARY KEY (id_icon)
 );
 

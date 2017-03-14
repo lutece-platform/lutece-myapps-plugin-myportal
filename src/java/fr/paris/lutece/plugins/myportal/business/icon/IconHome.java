@@ -33,7 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.business.icon;
 
+import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.List;
@@ -46,6 +48,7 @@ public final class IconHome
 {
     // Static variable pointed at the DAO instance
     private static IIconDAO _dao = (IIconDAO) SpringContextService.getPluginBean( "myportal", "myportal.iconDAO" );
+    private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -126,5 +129,16 @@ public final class IconHome
     public static List<Icon> getListIcons( Plugin plugin )
     {
         return _dao.selectAll( plugin );
+    }
+    
+    /**
+     * return the list of all icon to display in front
+     * @param diplayFO 
+     * @param plugin the plugin
+     * @return a list of icon
+     */
+    public static List<Icon> getListIconsFO( boolean diplayFO )
+    {
+        return _dao.selectIconFO( diplayFO, _plugin );
     }
 }

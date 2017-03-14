@@ -90,4 +90,12 @@ public interface IIconDAO
      * @return a list of Icon
      */
     List<Icon> selectAll( Plugin plugin );
+    
+    /**
+     * select all Icons to display in front
+     * @param displayInFo
+     * @param plugin
+     * @return
+     */
+    List<Icon> selectIconFO (boolean displayInFo, Plugin plugin );
 }

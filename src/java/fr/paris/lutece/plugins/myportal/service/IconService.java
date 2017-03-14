@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import java.util.List;
+
 import fr.paris.lutece.plugins.myportal.business.icon.Icon;
 import fr.paris.lutece.plugins.myportal.business.icon.IconHome;
 import fr.paris.lutece.portal.service.image.ImageResource;
@@ -122,5 +124,15 @@ public class IconService implements ImageResourceProvider
         url.addParameter( Parameters.RESOURCE_ID, Integer.toString( nEntryUrl ) );
 
         return url.getUrlWithEntity(  );
+    }
+    
+    /**
+     * @return  the icon list to display in FO
+     * 
+     */
+    public List<Icon> getIconFO( ){
+    	
+    	return IconHome.getListIconsFO( true );
+    
     }
 }

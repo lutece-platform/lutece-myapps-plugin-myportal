@@ -47,6 +47,7 @@ public class Icon implements IReferenceItem
     private String _strMimeType;
     private int _nWidth;
     private int _nHeight;
+    private boolean _bDispolayFO;
 
     /**
     *
@@ -145,7 +146,7 @@ public class Icon implements IReferenceItem
     {
         return _nWidth;
     }
-
+    
     /**
      * @param width the icon width
      */
@@ -153,4 +154,22 @@ public class Icon implements IReferenceItem
     {
         _nWidth = width;
     }
+
+    /**
+     * @param display the icon in front
+     */
+    public void setDispolayFO( boolean display )
+    {
+        _bDispolayFO = display;
+    }
+    
+    /**
+     * @return display the icon in front
+     */
+    public boolean getDispolayFO(  )
+    {
+        return _bDispolayFO;
+    }
+
+    
 }
