@@ -48,20 +48,20 @@ import java.util.List;
 public class IconDAO implements IIconDAO
 {
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_icon ) FROM myportal_icon";
-    private static final String SQL_QUERY_FIND_BY_PRIMARY_KEY = "SELECT id_icon,name,mime_type,file_value,width,height,dispolay_fo" +
+    private static final String SQL_QUERY_FIND_BY_PRIMARY_KEY = "SELECT id_icon,name,mime_type,file_value,width,height,display_fo" +
         " FROM myportal_icon WHERE id_icon=?";
-    private static final String SQL_QUERY_SELECT_ICON = "SELECT id_icon,name,mime_type,width,height,dispolay_fo" +
+    private static final String SQL_QUERY_SELECT_ICON = "SELECT id_icon,name,mime_type,width,height,display_fo" +
         " FROM myportal_icon ORDER BY name DESC  ";
     private static final String SQL_QUERY_INSERT = "INSERT INTO  myportal_icon " +
-        "(id_icon,name,mime_type,file_value,width,height,dispolay_fo)VALUES(?,?,?,?,?,?,?)";
-    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_icon  SET id_icon=?,name=?,mime_type=?,file_value=?,width=?,height=?,dispolay_fo=?" +
+        "(id_icon,name,mime_type,file_value,width,height,display_fo)VALUES(?,?,?,?,?,?,?)";
+    private static final String SQL_QUERY_UPDATE = "UPDATE myportal_icon  SET id_icon=?,name=?,mime_type=?,file_value=?,width=?,height=?,display_fo=?" +
         " WHERE id_icon=?";
-    private static final String SQL_QUERY_UPDATE_METADATA = "UPDATE myportal_icon  SET id_icon=?,name=?,width=?,height=?,dispolay_fo=?" +
+    private static final String SQL_QUERY_UPDATE_METADATA = "UPDATE myportal_icon  SET id_icon=?,name=?,width=?,height=?,display_fo=?" +
         " WHERE id_icon=?";
     private static final String SQL_QUERY_DELETE = "DELETE FROM myportal_icon  WHERE id_icon=? ";
     
-    private static final String SQL_QUERY_FIND_ICON_FO = "SELECT id_icon,name,mime_type,width,height,dispolay_fo" +
-            " FROM myportal_icon WHERE dispolay_fo=?";
+    private static final String SQL_QUERY_FIND_ICON_FO = "SELECT id_icon,name,mime_type,width,height,display_fo" +
+            " FROM myportal_icon WHERE display_fo=?";
 
     /**
          * Generates a new primary key
