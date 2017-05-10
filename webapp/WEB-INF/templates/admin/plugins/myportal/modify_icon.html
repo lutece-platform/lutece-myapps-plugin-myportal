@@ -1,29 +1,29 @@
 <div class="row-fluid">
 	<div class="span12">
        <fieldset>
-		<legend>#i18n{myportal.modify_icon.title} : ${icon.name}</legend>
+		<legend>#i18n{myportal.modify_icon.title} : ${icone.name}</legend>
 		<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoModifyIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data">
-            <input name="id_icon" value="${icon.id}" type="hidden">
+            <input name="id_icon" value="${icone.id}" type="hidden">
             <div class="control-group">
                 <label class="control-label" for="name">#i18n{myportal.create_icon.label_name} * : </label>
                 <div class="controls">
-                    <input type="text" name="name" id="" size="80" value="${icon.name}"  maxlength="255"/>
+                    <input type="text" name="name" id="" size="80" value="${icone.name}"  maxlength="255"/>
                     <span class="help-block">#i18n{myportal.create_icon.label_name_comment}</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="id_file" >#i18n{myportal.create_icon.label_file} *</label>
                  <div class="controls">
-					<img  src="image?resource_type=myportal_icon_img&id=${icon.id}" <#if icon.width!=-1> width="${icon.width}"</#if><#if icon.height!=-1> height="${icon.height}"</#if>>
+					<img  src="image?resource_type=myportal_icon_img&id=${icone.id}" <#if icone.width!=-1> width="${icone.width}"</#if><#if icone.height!=-1> height="${icone.height}"</#if>>
                     <input type="file" id="id_file" name="id_file" />
                     <span class="help-block">#i18n{myportal.create_icon.label_file_comment}</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="width">#i18n{myportal.create_icon.label_width} : </label>
-                <#if icon.width?exists&&icon.width!=-1>
+                <#if icone.width?exists&&icone.width!=-1>
                 <div class="controls">
-                    <input type="text" name="width" id="" size="4" value="${icon.width}"  maxlength="255"/>
+                    <input type="text" name="width" id="" size="4" value="${icone.width}"  maxlength="255"/>
                     <span class="help-block">#i18n{myportal.create_icon.label_width_comment}</span>
                 </div>
             </div>
@@ -36,9 +36,9 @@
             </#if> 
             <div class="control-group">
                 <label class="control-label" for="height">#i18n{myportal.create_icon.label_height} : </label>
-                <#if icon.height?exists&&icon.height!=-1>
+                <#if icone.height?exists&&icone.height!=-1>
                 <div class="controls">
-                    <input type="text" name="height" id="" size="4" value="${icon.height}"  maxlength="255"/>
+                    <input type="text" name="height" id="" size="4" value="${icone.height}"  maxlength="255"/>
                     <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
                 </div>
             </div>
@@ -48,10 +48,10 @@
                 <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
             </div>
             </#if>
-             div class="control-group">
+            <div class="control-group">
                 <label class="control-label" for="isDisplayFO">#i18n{myportal.create_icon.label_displayFO} : </label>
                 <div class="controls">
-                	  <input type="checkbox" id="isDisplayFO" name="isDisplayFO" value="true" <#if isDisplayFO > checked <#/if>  >
+                	  <input type="checkbox" id="isDisplayFO" name="isDisplayFO" value="true" <#if icone.dispolayFO > checked </#if>  >
                     <span class="help-block">#i18n{myportal.create_icon.label_displayFO_comment}</span>
                 </div>
             </div>
@@ -63,5 +63,4 @@
         </fieldset>
 	</div>
 </div>
-
 

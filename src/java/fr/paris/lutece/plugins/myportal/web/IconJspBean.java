@@ -54,6 +54,7 @@ import org.apache.commons.fileupload.FileItem;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,7 +73,7 @@ public class IconJspBean extends PluginAdminPageJspBean
 
     //	Markers
     private static final String MARK_ICON_LIST = "icon_list";
-    private static final String MARK_ICON = "icon";
+    private static final String MARK_ICON = "icone";
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
 
@@ -121,7 +122,7 @@ public class IconJspBean extends PluginAdminPageJspBean
      */
     public String getManageIcon( HttpServletRequest request )
     {
-        HashMap model = new HashMap(  );
+    	Map<String, Object> model = new HashMap<String, Object>( );
         List<Icon> listDirectoryXsl = IconHome.getListIcons( getPlugin(  ) );
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
         _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
@@ -196,7 +197,7 @@ public class IconJspBean extends PluginAdminPageJspBean
             throw new AccessDeniedException(  );
         }
 
-        HashMap model = new HashMap(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         model.put( MARK_ICON, icon );
         setPageTitleProperty( PROPERTY_MODIFY_ICON );
