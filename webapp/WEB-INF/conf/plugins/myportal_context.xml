@@ -12,6 +12,7 @@
     </bean>
     <bean id="myportal.widgetContentService" class="fr.paris.lutece.plugins.myportal.service.WidgetContentService">
         <property name="widgetContentCacheKeyService" ref="myportal.widgetContentCacheKeyService" />
+        <property name="widgetService" ref="myportal.widgetService" />
     </bean>
     
     <!-- WidgetService -->

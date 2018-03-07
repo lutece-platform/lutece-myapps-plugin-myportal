@@ -66,6 +66,7 @@ public class WidgetContentService
 
     // VARIABLES
     private ICacheKeyService _cksWidgetContent;
+    private WidgetService _widgetService;
     private WidgetContentCacheService _cacheWidgetContent = WidgetContentCacheService.getInstance(  );
 
     /**
@@ -103,7 +104,7 @@ public class WidgetContentService
      */
     public String getWidgetContent( int nIdWidget, LuteceUser user, HttpServletRequest request )
     {
-        Widget widget = WidgetHome.findByPrimaryKey( nIdWidget );
+        Widget widget = _widgetService.getWidget(nIdWidget);
         String strType = widget.getWidgetType(  );
         WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
         String strKey = handler.isCustomizable(  ) ? getKey( nIdWidget, user ) : getKey( nIdWidget );
@@ -146,8 +147,19 @@ public class WidgetContentService
     {
         _cksWidgetContent = cacheKeyService;
     }
+    
+    
+    
 
     /**
+     * Set the widget service
+     * @param widgetService the widget service
+     */
+	public void setWidgetService(WidgetService widgetService) {
+		_widgetService = widgetService;
+	}
+
+	/**
      * Get the cache key for a widget
      * @param nId the id
      * @param user the {@link LuteceUser}
