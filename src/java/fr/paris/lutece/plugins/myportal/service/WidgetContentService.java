@@ -64,6 +64,8 @@ public class WidgetContentService
     // PROPERTIES
     private static final String PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE = "myportal.cache.widgetContentService.enable";
 
+    public static final String BEAN_NAME = "myportal.widgetContentService";
+    
     // VARIABLES
     private ICacheKeyService _cksWidgetContent;
     private WidgetService _widgetService;
