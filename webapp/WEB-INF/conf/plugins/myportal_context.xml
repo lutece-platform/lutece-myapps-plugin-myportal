@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 <beans>
 
 	<!-- WidgetContentService -->
@@ -77,6 +77,15 @@
     <bean id="myportal.pageBuilder"  class="fr.paris.lutece.plugins.myportal.service.PageBuilder">
     	<property name="widgetContentService" ref="myportal.widgetContentService" />
     	<property name="widgetService" ref="myportal.widgetService" />
+    	<property name="defaultPageBuilderService" ref="myportal.defaultPageBuilderService" />
     </bean>
+    
+    <!-- Service -->
+    <bean id="myportal.categoryService" class="fr.paris.lutece.plugins.myportal.service.CategoryService"/>
+    <bean id="myportal.defaultPageBuilderService" class="fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService">
+    	<property name="widgetService" ref="myportal.widgetService" />
+    </bean>
+
+   
 
 </beans>

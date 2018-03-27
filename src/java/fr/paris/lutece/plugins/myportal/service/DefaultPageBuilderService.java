@@ -64,6 +64,9 @@ public final class DefaultPageBuilderService
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
     private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
+    
+    
+    public static final String BEAN_NAME = "myportal.defaultPageBuilderService";
 
     // PARAMETERS
     private static final String PARAMETER_NB_COLUMNS = "nb_columns";
@@ -72,9 +75,7 @@ public final class DefaultPageBuilderService
     private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
     private static final String MARK_NB_COLUMNS = "nb_columns";
     private static final String MARK_COLUMNS_STYLE = "column_styles";
-    private static DefaultPageBuilderService _singleton;
-    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_WIDGETSERVICE );
+    private WidgetService _widgetService;
 
     /**
      * Private Constructor
@@ -83,19 +84,6 @@ public final class DefaultPageBuilderService
     {
     }
 
-    /**
-     * Return the unique instance
-     * @return The instance
-     */
-    public static synchronized DefaultPageBuilderService getInstance(  )
-    {
-        if ( _singleton == null )
-        {
-            _singleton = new DefaultPageBuilderService(  );
-        }
-
-        return _singleton;
-    }
 
     /**
      * Returns the column count, with {@link DefaultPageBuilderService#PROPERTY_COLUMN_COUNT}.
@@ -287,13 +275,19 @@ public final class DefaultPageBuilderService
         return model;
     }
 
+    private ReferenceList pageBuilderParameters;
+    
     /**
      * Get the list of widget parameter default values
      * @return a {@link ReferenceList}
      */
     public ReferenceList getPageBuilderParamDefaultValues(  )
     {
-        return PageBuilderParameterHome.findAll(  );
+    	if(pageBuilderParameters == null)
+    	{
+    		pageBuilderParameters = PageBuilderParameterHome.findAll(  );
+    	}
+        return pageBuilderParameters;
     }
 
     /**
@@ -303,6 +297,16 @@ public final class DefaultPageBuilderService
      */
     public ReferenceItem getPageBuilderParameterDefaultValue( String strParameterKey )
     {
+    	if(pageBuilderParameters != null)
+    	{
+	    	for (ReferenceItem referenceItem : pageBuilderParameters) {
+				if( strParameterKey.equals(referenceItem.getCode( ) ) )
+				{
+					return referenceItem;
+				}
+			}
+	    	pageBuilderParameters = null;
+    	}
         return PageBuilderParameterHome.findByKey( strParameterKey );
     }
 
@@ -344,6 +348,7 @@ public final class DefaultPageBuilderService
      */
     public void updatePageBuilderParameterDefaultValue( ReferenceItem param )
     {
+    	pageBuilderParameters = null;
         PageBuilderParameterHome.update( param );
     }
 
@@ -352,6 +357,7 @@ public final class DefaultPageBuilderService
      */
     public void removeAllColumnStyleFromPageBuilderParameter(  )
     {
+    	pageBuilderParameters = null;
         PageBuilderParameterHome.removeAllColumnStyles(  );
     }
 
@@ -361,6 +367,7 @@ public final class DefaultPageBuilderService
      */
     public void addNewPageBuilderParameter( ReferenceItem param )
     {
+    	pageBuilderParameters = null;
         PageBuilderParameterHome.create( param );
     }
 
@@ -429,4 +436,16 @@ public final class DefaultPageBuilderService
             }
         }
     }
+
+
+	public WidgetService getWidgetService() {
+		return _widgetService;
+	}
+
+
+	public void setWidgetService(WidgetService widgetService) {
+		this._widgetService = widgetService;
+	}
+    
+    
 }

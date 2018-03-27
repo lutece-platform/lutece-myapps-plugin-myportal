@@ -33,6 +33,9 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import java.util.Collection;
+import java.util.List;
+
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.CategoryHome;
 import fr.paris.lutece.plugins.myportal.business.Widget;
@@ -40,18 +43,18 @@ import fr.paris.lutece.plugins.myportal.business.WidgetFilter;
 import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.util.ReferenceList;
 
-import java.util.Collection;
-import java.util.List;
-
 
 /**
  *
  * CategoryService
  *
  */
-public final class CategoryService
+public class CategoryService
 {
-    private static CategoryService _singleton;
+	public static final String BEAN_NAME = "myportal.categoryService";
+	
+	private Collection<Category> categories;
+	
 
     /**
      * Private constructor
@@ -61,27 +64,17 @@ public final class CategoryService
     }
 
     /**
-     * Get the instance of {@link CategoryService}
-     *
-     * @return an instance of {@link CategoryService}
-     */
-    public static synchronized CategoryService getInstance(  )
-    {
-        if ( _singleton == null )
-        {
-            _singleton = new CategoryService(  );
-        }
-
-        return _singleton;
-    }
-
-    /**
      * Load the data of all the category objects and returns them in form of a collection
      * @return the collection which contains the data of all the category objects
      */
     public Collection<Category> getCategoriesList(  )
     {
-        return CategoryHome.getCategoriesList(  );
+    	if(categories == null)
+    	{
+    		categories = CategoryHome.getCategoriesList(  );
+    	}
+    	
+        return categories;
     }
 
     /**
@@ -90,7 +83,14 @@ public final class CategoryService
      */
     public ReferenceList getCategories(  )
     {
-        return CategoryHome.getCategories(  );
+    	 ReferenceList list = new ReferenceList(  );
+
+         for ( Category category : getCategoriesList(  ) )
+         {
+        	 list.addItem( category.getIdCategory(  ), category.getName(  ) );
+         }
+    	
+        return list;
     }
 
     /**
@@ -100,6 +100,16 @@ public final class CategoryService
      */
     public Category findByPrimaryKey( int nCategoryId )
     {
+    	if(categories != null)
+    	{
+    		for (Category category : categories) {
+				if(category.getIdCategory() == nCategoryId)
+				{
+					return category;
+				}
+			}
+    		categories = null;
+    	}
         return CategoryHome.findByPrimaryKey( nCategoryId );
     }
 
@@ -110,6 +120,7 @@ public final class CategoryService
      */
     public Category createCategory( Category category )
     {
+    	categories = null;
         return CategoryHome.create( category );
     }
 
@@ -135,6 +146,7 @@ public final class CategoryService
         }
         else
         {
+        	categories = null;
             CategoryHome.remove( nCategoryId );
         }
 
@@ -148,6 +160,7 @@ public final class CategoryService
      */
     public Category updateCategory( Category category )
     {
+    	categories = null;
         return CategoryHome.update( category );
     }
 

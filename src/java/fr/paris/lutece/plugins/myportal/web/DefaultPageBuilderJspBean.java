@@ -45,6 +45,7 @@ import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.rbac.RBACService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
@@ -121,7 +122,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String JSP_BUILD_DEFAULT_PAGE = "BuildDefaultPage.jsp";
     private static final String JSP_URL_BUILD_DEFAULT_PAGE_WIDGETS_LIST = "jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp";
     private static final String JSP_URL_MANAGE_ADVANCED_PARAMETERS = "jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp";
-    private DefaultPageBuilderService _service = DefaultPageBuilderService.getInstance(  );
+    private DefaultPageBuilderService _service =  SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
@@ -397,7 +398,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         }
 
         // Remove the widgets that are in a column > to the column max
-        DefaultPageBuilderService.getInstance(  ).doRemoveByColumnMax( nNbColumns );
+        _service.doRemoveByColumnMax( nNbColumns );
 
         return AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_ADVANCED_PARAMETERS;
     }

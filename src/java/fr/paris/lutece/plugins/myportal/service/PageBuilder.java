@@ -40,6 +40,7 @@ import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.html.HtmlTemplate;
@@ -102,6 +103,9 @@ public class PageBuilder implements IPageBuilder
     private static final String TEMPLATE_WIDGET ="/skin/plugins/myportal/widget/widget.html";
     private static final String TEMPLATE_WIGET_PAGE ="/skin/plugins/myportal/widget/widgets_page.html";
     private static final String TEMPLATE_WIGET_TABS ="/skin/plugins/myportal/widget/tabs.html";
+    
+    
+    private DefaultPageBuilderService defaultPageBuilderService;
 
     
     /**
@@ -192,7 +196,7 @@ public class PageBuilder implements IPageBuilder
      */
     private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user, HttpServletRequest request )
     {
-        int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );       
+        int nNbColumns = defaultPageBuilderService.getColumnCount(  );       
         Map<String, Object> model = new HashMap<String, Object>( );
 
         List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
@@ -265,8 +269,7 @@ public class PageBuilder implements IPageBuilder
     private Style getColumnStyle( int nColumn )
     {
         Style style = null;
-        ReferenceItem columnStyle = DefaultPageBuilderService.getInstance(  )
-                                                             .getPageBuilderParameterDefaultValue( PARAMETER_COLUMN_STYLE +
+        ReferenceItem columnStyle = defaultPageBuilderService.getPageBuilderParameterDefaultValue( PARAMETER_COLUMN_STYLE +
                 nColumn );
 
         if ( ( columnStyle != null ) && StringUtils.isNotBlank( columnStyle.getName(  ) ) &&
@@ -296,4 +299,14 @@ public class PageBuilder implements IPageBuilder
     {
         _widgetService = widgetService;
     }
+
+	public DefaultPageBuilderService getDefaultPageBuilderService() {
+		return defaultPageBuilderService;
+	}
+
+	public void setDefaultPageBuilderService(DefaultPageBuilderService defaultPageBuilderService) {
+		this.defaultPageBuilderService = defaultPageBuilderService;
+	}
+    
+    
 }

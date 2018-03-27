@@ -54,6 +54,7 @@ import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -130,6 +131,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private int _nItemsPerPage;
     private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
             BEAN_MYPORTAL_WIDGETSERVICE );
+    
+    private CategoryService categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
 
     /**
      * Returns the list of widget
@@ -174,7 +177,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         setPageTitleProperty( PROPERTY_PAGE_TITLE_CREATE_WIDGET );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
+        model.put( MARK_CATEGORIES_LIST, categoryService.getCategories(  ) );
         model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
         model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
@@ -319,7 +322,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             {
                 Map<String, Object> model = new HashMap<String, Object>(  );
                 model.put( MARK_WIDGET, widget );
-                model.put( MARK_CATEGORIES_LIST, CategoryService.getInstance(  ).getCategories(  ) );
+                model.put( MARK_CATEGORIES_LIST, categoryService.getCategories(  ) );
                 model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
                 model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
                 model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );

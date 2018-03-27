@@ -39,6 +39,7 @@ import fr.paris.lutece.portal.business.rbac.RBAC;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.dashboard.admin.AdminDashboardComponent;
 import fr.paris.lutece.portal.service.rbac.RBACService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
@@ -59,6 +60,9 @@ public class MyPortalAdminDashboardComponent extends AdminDashboardComponent
     // TEMPLATES
     private static final String TEMPLATE_ADMIN_DASHBOARD = "admin/plugins/myportal/myportal_admindashboard.html";
 
+
+    private DefaultPageBuilderService defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+
     /**
      * {@inheritDoc}
      */
@@ -70,7 +74,7 @@ public class MyPortalAdminDashboardComponent extends AdminDashboardComponent
         if ( RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
                     MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, user ) )
         {
-            Map<String, Object> model = DefaultPageBuilderService.getInstance(  ).getManageAdvancedParameters( user );
+            Map<String, Object> model = defaultPageBuilderService.getManageAdvancedParameters( user );
 
             HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
 

@@ -63,6 +63,8 @@ public final class MyPortalPageService
     private static MyPortalPageService _singleton;
     private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
             BEAN_MYPORTAL_PAGEBUILDER );
+    
+    private DefaultPageBuilderService defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
 
     /**
      * Constructor
@@ -109,7 +111,7 @@ public final class MyPortalPageService
 
         if ( userConf == null )
         {
-            int nNbColumns = DefaultPageBuilderService.getInstance(  ).getColumnCount(  );
+            int nNbColumns = defaultPageBuilderService.getColumnCount(  );
             PageConfig pageConfig = new PageConfig(  );
             pageConfig.setName( AppPropertiesService.getProperty( PROPERTY_PAGECONFIG_NAME ) );
 
@@ -121,8 +123,7 @@ public final class MyPortalPageService
 
             for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
             {
-                List<WidgetComponent> listWidgetComponents = DefaultPageBuilderService.getInstance(  )
-                                                                                      .getWidgetComponents( nColumn );
+                List<WidgetComponent> listWidgetComponents = defaultPageBuilderService.getWidgetComponents( nColumn );
 
                 for ( WidgetComponent widgetComponent : listWidgetComponents )
                 {
