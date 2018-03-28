@@ -33,8 +33,12 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.plugins.myportal.business.WidgetHome;
 import fr.paris.lutece.plugins.myportal.service.cache.WidgetContentCacheService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandler;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
@@ -44,17 +48,13 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 
 /**
  * WidgetContentService store widget content into a cache
  */
 public class WidgetContentService
 {
+	public static final String BEAN_NAME = "myportal.widgetContentService";
     // CONSTANTS
     private static final String TRUE = "true";
 
@@ -64,12 +64,12 @@ public class WidgetContentService
     // PROPERTIES
     private static final String PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE = "myportal.cache.widgetContentService.enable";
 
-    public static final String BEAN_NAME = "myportal.widgetContentService";
-    
     // VARIABLES
     private ICacheKeyService _cksWidgetContent;
     private WidgetService _widgetService;
     private WidgetContentCacheService _cacheWidgetContent = WidgetContentCacheService.getInstance(  );
+    
+    
 
     /**
      * Constructor

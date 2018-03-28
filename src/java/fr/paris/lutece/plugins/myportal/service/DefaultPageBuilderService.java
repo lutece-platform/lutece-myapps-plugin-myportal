@@ -33,24 +33,23 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
-import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
-import fr.paris.lutece.plugins.myportal.business.Widget;
-import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
-import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
-import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
-import fr.paris.lutece.portal.business.user.AdminUser;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-import fr.paris.lutece.util.ReferenceItem;
-import fr.paris.lutece.util.ReferenceList;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import fr.paris.lutece.plugins.myportal.business.DefaultPageBuilderHome;
+import fr.paris.lutece.plugins.myportal.business.Widget;
+import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
+import fr.paris.lutece.plugins.myportal.business.WidgetComponentFilter;
+import fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameterHome;
+import fr.paris.lutece.portal.business.user.AdminUser;
+import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.ReferenceList;
 
 
 /**
@@ -63,10 +62,8 @@ public final class DefaultPageBuilderService
     // CONSTANTS
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
-    private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
     
     
-    public static final String BEAN_NAME = "myportal.defaultPageBuilderService";
 
     // PARAMETERS
     private static final String PARAMETER_NB_COLUMNS = "nb_columns";
@@ -75,7 +72,12 @@ public final class DefaultPageBuilderService
     private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
     private static final String MARK_NB_COLUMNS = "nb_columns";
     private static final String MARK_COLUMNS_STYLE = "column_styles";
+    
+    public static final String BEAN_NAME = "myportal.defaultPageBuilderService";
+    
     private WidgetService _widgetService;
+    
+    private ReferenceList _pageBuilderParameters;
 
     /**
      * Private Constructor
@@ -275,7 +277,6 @@ public final class DefaultPageBuilderService
         return model;
     }
 
-    private ReferenceList pageBuilderParameters;
     
     /**
      * Get the list of widget parameter default values
@@ -283,11 +284,11 @@ public final class DefaultPageBuilderService
      */
     public ReferenceList getPageBuilderParamDefaultValues(  )
     {
-    	if(pageBuilderParameters == null)
+    	if(_pageBuilderParameters == null)
     	{
-    		pageBuilderParameters = PageBuilderParameterHome.findAll(  );
+    		_pageBuilderParameters = PageBuilderParameterHome.findAll(  );
     	}
-        return pageBuilderParameters;
+        return _pageBuilderParameters;
     }
 
     /**
@@ -297,15 +298,15 @@ public final class DefaultPageBuilderService
      */
     public ReferenceItem getPageBuilderParameterDefaultValue( String strParameterKey )
     {
-    	if(pageBuilderParameters != null)
+    	if(_pageBuilderParameters != null)
     	{
-	    	for (ReferenceItem referenceItem : pageBuilderParameters) {
+	    	for (ReferenceItem referenceItem : _pageBuilderParameters) {
 				if( strParameterKey.equals(referenceItem.getCode( ) ) )
 				{
 					return referenceItem;
 				}
 			}
-	    	pageBuilderParameters = null;
+	    	_pageBuilderParameters = null;
     	}
         return PageBuilderParameterHome.findByKey( strParameterKey );
     }
@@ -348,7 +349,7 @@ public final class DefaultPageBuilderService
      */
     public void updatePageBuilderParameterDefaultValue( ReferenceItem param )
     {
-    	pageBuilderParameters = null;
+    	_pageBuilderParameters = null;
         PageBuilderParameterHome.update( param );
     }
 
@@ -357,7 +358,7 @@ public final class DefaultPageBuilderService
      */
     public void removeAllColumnStyleFromPageBuilderParameter(  )
     {
-    	pageBuilderParameters = null;
+    	_pageBuilderParameters = null;
         PageBuilderParameterHome.removeAllColumnStyles(  );
     }
 
@@ -367,7 +368,7 @@ public final class DefaultPageBuilderService
      */
     public void addNewPageBuilderParameter( ReferenceItem param )
     {
-    	pageBuilderParameters = null;
+    	_pageBuilderParameters = null;
         PageBuilderParameterHome.create( param );
     }
 
@@ -438,12 +439,23 @@ public final class DefaultPageBuilderService
     }
 
 
-	public WidgetService getWidgetService() {
+    /**
+     * getter widgetService
+     * @return the widgetService
+     */
+	public WidgetService getWidgetService() 
+	{
 		return _widgetService;
 	}
 
 
-	public void setWidgetService(WidgetService widgetService) {
+	
+	/**
+	 * setter widgetService
+	 * @param widgetService the widgetService
+	 */
+	public void setWidgetService(WidgetService widgetService) 
+	{
 		this._widgetService = widgetService;
 	}
     

@@ -33,6 +33,15 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
@@ -59,16 +68,6 @@ import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -148,11 +147,10 @@ public class MyPortalApp implements XPageApplication
 
     // private fields
     private MyPortalPageService _pageService = MyPortalPageService.getInstance(  );
-    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_WIDGETSERVICE );
+    private WidgetService _widgetService = SpringContextService.getBean(BEAN_MYPORTAL_WIDGETSERVICE );
     
-    private CategoryService categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
-    private DefaultPageBuilderService defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
+    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
 
 
 
@@ -272,7 +270,7 @@ public class MyPortalApp implements XPageApplication
 
         if ( StringUtils.isBlank( strCategoryId ) )
         {
-            Category category = categoryService.findFirstCategory(  );
+            Category category = _categoryService.findFirstCategory(  );
             strCategoryId = Integer.toString( category.getIdCategory(  ) );
         }
 
@@ -282,7 +280,7 @@ public class MyPortalApp implements XPageApplication
 
         Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_CATEGORIES_LIST, categoryService.getCategoriesList(  ) );
+        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategoriesList(  ) );
         model.put( MARK_CATEGORY_ID_CATEGORY, strCategoryId );
         model.put( MARK_WIDGETS_LIST_HTML, strWidgetsListHtml );
         model.put( MARK_TAB_INDEX, strTabIndex );
@@ -308,11 +306,11 @@ public class MyPortalApp implements XPageApplication
         if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
         {
             int nCategoryId = Integer.parseInt( strCategoryId );
-            category = categoryService.findByPrimaryKey( nCategoryId );
+            category = _categoryService.findByPrimaryKey( nCategoryId );
         }
         else
         {
-            category = categoryService.findFirstCategory(  );
+            category = _categoryService.findFirstCategory(  );
             strCategoryId = Integer.toString( category.getIdCategory(  ) );
         }
 
@@ -730,7 +728,7 @@ public class MyPortalApp implements XPageApplication
         {
             int nIdTab = Integer.parseInt( strIdTab );
             int nIdWidget = Integer.parseInt( strIdWidget );
-            int nNbColumns = defaultPageBuilderService.getColumnCount(  );
+            int nNbColumns = _defaultPageBuilderService.getColumnCount(  );
 
             Widget widget = _widgetService.getWidget( nIdWidget );
 

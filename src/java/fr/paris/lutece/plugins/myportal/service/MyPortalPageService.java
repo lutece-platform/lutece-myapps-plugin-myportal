@@ -33,6 +33,11 @@
  */
 package fr.paris.lutece.plugins.myportal.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import fr.paris.lutece.plugins.myportal.business.UserPageConfig;
 import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.WidgetComponent;
@@ -42,11 +47,6 @@ import fr.paris.lutece.plugins.myportal.business.page.WidgetConfig;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -61,10 +61,9 @@ public final class MyPortalPageService
     private static final String PROPERTY_TABCONFIG_NAME = "myportal.defaultPageBuilder.tabConfig.name";
     private static final String BEAN_MYPORTAL_PAGEBUILDER = "myportal.pageBuilder";
     private static MyPortalPageService _singleton;
-    private IPageBuilder _pageBuilder = (IPageBuilder) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_PAGEBUILDER );
+    private IPageBuilder _pageBuilder = SpringContextService.getBean(BEAN_MYPORTAL_PAGEBUILDER );
     
-    private DefaultPageBuilderService defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
 
     /**
      * Constructor
@@ -111,7 +110,7 @@ public final class MyPortalPageService
 
         if ( userConf == null )
         {
-            int nNbColumns = defaultPageBuilderService.getColumnCount(  );
+            int nNbColumns = _defaultPageBuilderService.getColumnCount(  );
             PageConfig pageConfig = new PageConfig(  );
             pageConfig.setName( AppPropertiesService.getProperty( PROPERTY_PAGECONFIG_NAME ) );
 
@@ -123,7 +122,7 @@ public final class MyPortalPageService
 
             for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
             {
-                List<WidgetComponent> listWidgetComponents = defaultPageBuilderService.getWidgetComponents( nColumn );
+                List<WidgetComponent> listWidgetComponents = _defaultPageBuilderService.getWidgetComponents( nColumn );
 
                 for ( WidgetComponent widgetComponent : listWidgetComponents )
                 {

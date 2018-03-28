@@ -33,6 +33,15 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.myportal.business.Category;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -46,16 +55,6 @@ import fr.paris.lutece.portal.web.util.LocalizedPaginator;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -102,7 +101,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     private static final String MESSAGE_ERROR = "myportal.message.error";
     private static final String MESSAGE_CANNOT_REMOVE_CATEGORY = "myportal.message.cannotRemoveCategory";
     
-    private CategoryService categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
+    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
 
     //Variables
     private int _nDefaultItemsPerPage;
@@ -126,7 +125,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
         UrlItem url = new UrlItem( JSP_MANAGE_CATEGORYS );
         String strUrl = url.getUrl(  );
-        Collection<Category> listCategories = categoryService.getCategoriesList(  );
+        Collection<Category> listCategories = _categoryService.getCategoriesList(  );
         LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCategories, _nItemsPerPage, strUrl,
                 PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
 
@@ -176,7 +175,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
             category.setName( strName );
             category.setDescription( strDescription );
 
-            categoryService.createCategory( category );
+            _categoryService.createCategory( category );
 
             strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
         }
@@ -231,7 +230,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
         {
             int nId = Integer.parseInt( strCategoryId );
 
-            if ( !categoryService.removeCategory( nId ) )
+            if ( !_categoryService.removeCategory( nId ) )
             {
                 strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
             }
@@ -265,7 +264,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
         if ( StringUtils.isNotBlank( strCategoryId ) && StringUtils.isNumeric( strCategoryId ) )
         {
             int nId = Integer.parseInt( strCategoryId );
-            Category category = categoryService.findByPrimaryKey( nId );
+            Category category = _categoryService.findByPrimaryKey( nId );
 
             Map<String, Object> model = new HashMap<String, Object>(  );
             model.put( MARK_CATEGORY, category );
@@ -301,13 +300,13 @@ public class CategoryJspBean extends PluginAdminPageJspBean
             if ( StringUtils.isNotBlank( strName ) && StringUtils.isNotBlank( strDescription ) )
             {
                 int nId = Integer.parseInt( strCategoryId );
-                Category category = categoryService.findByPrimaryKey( nId );
+                Category category = _categoryService.findByPrimaryKey( nId );
 
                 if ( category != null )
                 {
                     category.setName( strName );
                     category.setDescription( strDescription );
-                    categoryService.updateCategory( category );
+                    _categoryService.updateCategory( category );
 
                     strUrl = JSP_REDIRECT_TO_MANAGE_CATEGORIES;
                 }

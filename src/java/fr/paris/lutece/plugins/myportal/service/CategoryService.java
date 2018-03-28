@@ -49,11 +49,11 @@ import fr.paris.lutece.util.ReferenceList;
  * CategoryService
  *
  */
-public class CategoryService
+public final class CategoryService
 {
 	public static final String BEAN_NAME = "myportal.categoryService";
 	
-	private Collection<Category> categories;
+	private Collection<Category> _categories;
 	
 
     /**
@@ -69,12 +69,12 @@ public class CategoryService
      */
     public Collection<Category> getCategoriesList(  )
     {
-    	if(categories == null)
+    	if(_categories == null)
     	{
-    		categories = CategoryHome.getCategoriesList(  );
+    		_categories = CategoryHome.getCategoriesList(  );
     	}
     	
-        return categories;
+        return _categories;
     }
 
     /**
@@ -100,15 +100,15 @@ public class CategoryService
      */
     public Category findByPrimaryKey( int nCategoryId )
     {
-    	if(categories != null)
+    	if(_categories != null)
     	{
-    		for (Category category : categories) {
+    		for (Category category : _categories) {
 				if(category.getIdCategory() == nCategoryId)
 				{
 					return category;
 				}
 			}
-    		categories = null;
+    		_categories = null;
     	}
         return CategoryHome.findByPrimaryKey( nCategoryId );
     }
@@ -120,7 +120,7 @@ public class CategoryService
      */
     public Category createCategory( Category category )
     {
-    	categories = null;
+    	_categories = null;
         return CategoryHome.create( category );
     }
 
@@ -146,7 +146,7 @@ public class CategoryService
         }
         else
         {
-        	categories = null;
+        	_categories = null;
             CategoryHome.remove( nCategoryId );
         }
 
@@ -160,7 +160,7 @@ public class CategoryService
      */
     public Category updateCategory( Category category )
     {
-    	categories = null;
+    	_categories = null;
         return CategoryHome.update( category );
     }
 

@@ -33,11 +33,19 @@
  */
 package fr.paris.lutece.plugins.myportal.web;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.myportal.business.Widget;
 import fr.paris.lutece.plugins.myportal.business.WidgetStatusEnum;
 import fr.paris.lutece.plugins.myportal.business.icon.IconHome;
 import fr.paris.lutece.plugins.myportal.service.CategoryService;
-import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
 import fr.paris.lutece.plugins.myportal.service.StyleService;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerService;
@@ -52,16 +60,6 @@ import fr.paris.lutece.portal.web.util.LocalizedPaginator;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -129,10 +127,9 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
-    private WidgetService _widgetService = (WidgetService) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_WIDGETSERVICE );
+    private WidgetService _widgetService = SpringContextService.getBean(BEAN_MYPORTAL_WIDGETSERVICE );
     
-    private CategoryService categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
+    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
 
     /**
      * Returns the list of widget
@@ -177,7 +174,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         setPageTitleProperty( PROPERTY_PAGE_TITLE_CREATE_WIDGET );
 
         Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_CATEGORIES_LIST, categoryService.getCategories(  ) );
+        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories(  ) );
         model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
         model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
         model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
@@ -322,7 +319,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             {
                 Map<String, Object> model = new HashMap<String, Object>(  );
                 model.put( MARK_WIDGET, widget );
-                model.put( MARK_CATEGORIES_LIST, categoryService.getCategories(  ) );
+                model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories(  ) );
                 model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
                 model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
                 model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
