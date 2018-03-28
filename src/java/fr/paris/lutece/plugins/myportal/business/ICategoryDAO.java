@@ -37,64 +37,81 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.Collection;
 
-
 /**
  *
-* ICategoryDAO Interface
-*
-*/
+ * ICategoryDAO Interface
+ *
+ */
 public interface ICategoryDAO
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
+     * Generates a new primary key
+     * 
+     * @param plugin
+     *            The Plugin
+     * @return The new primary key
+     */
     int newPrimaryKey( Plugin plugin );
 
     /**
      * Insert a new record in the table.
-     * @param category instance of the Category object to inssert
-     * @param plugin the Plugin
+     * 
+     * @param category
+     *            instance of the Category object to inssert
+     * @param plugin
+     *            the Plugin
      */
     void insert( Category category, Plugin plugin );
 
     /**
-    * Update the record in the table
-    * @param category the reference of the Category
-    * @param plugin the Plugin
-    */
+     * Update the record in the table
+     * 
+     * @param category
+     *            the reference of the Category
+     * @param plugin
+     *            the Plugin
+     */
     void store( Category category, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nIdCategory int identifier of the Category to delete
-     * @param plugin the Plugin
+     * 
+     * @param nIdCategory
+     *            int identifier of the Category to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nIdCategory, Plugin plugin );
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the category
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the category
+     * @param plugin
+     *            the Plugin
      * @return The instance of the category
      */
     Category load( int nKey, Plugin plugin );
 
     /**
-    * Load the data of all the category objects and returns them as a collection
-    * @param plugin the Plugin
-    * @return The collection which contains the data of all the category objects
-    */
+     * Load the data of all the category objects and returns them as a collection
+     * 
+     * @param plugin
+     *            the Plugin
+     * @return The collection which contains the data of all the category objects
+     */
     Collection<Category> selectCategoriesList( Plugin plugin );
 
     /**
      * Select the first category
-     * @param plugin {@link Plugin}
-     * @return a {@link Category
+     * 
+     * @param plugin
+     *            {@link Plugin}
+     * @return a {@link Category
      */
     Category selectFirstCategory( Plugin plugin );
 }

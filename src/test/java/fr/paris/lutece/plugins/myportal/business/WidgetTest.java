@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * WidgetTest
@@ -67,11 +66,11 @@ public class WidgetTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.Widget
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        Widget widget = new Widget(  );
-        widget.setIdWidget( WidgetHome.newPrimaryKey(  ) );
+        Widget widget = new Widget( );
+        widget.setIdWidget( WidgetHome.newPrimaryKey( ) );
         widget.setConfigData( CONFIGDATA1 );
         widget.setDescription( DESCRIPTION1 );
         widget.setIdIcon( IDICON1 );
@@ -86,19 +85,19 @@ public class WidgetTest extends LuteceTestCase
         // Create test
         WidgetHome.create( widget );
 
-        Widget widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget(  ) );
-        assertEquals( widgetStored.getIdWidget(  ), widget.getIdWidget(  ) );
-        assertEquals( widgetStored.getConfigData(  ), widget.getConfigData(  ) );
-        assertEquals( widgetStored.getDescription(  ), widget.getDescription(  ) );
-        assertEquals( widgetStored.getIdIcon(  ), widget.getIdIcon(  ) );
-        assertEquals( widgetStored.getIdCategory(  ), widget.getIdCategory(  ) );
-        assertEquals( widgetStored.getIdStyle(  ), widget.getIdStyle(  ) );
-        assertEquals( widgetStored.getIsEssential(  ), widget.getIsEssential(  ) );
-        assertEquals( widgetStored.getIsNew(  ), widget.getIsNew(  ) );
-        assertEquals( widgetStored.getName(  ), widget.getName(  ) );
-        assertEquals( widgetStored.getStatus(  ), widget.getStatus(  ) );
-        assertEquals( widgetStored.getName(  ), widget.getName(  ) );
-        assertEquals( widgetStored.getWidgetType(  ), widget.getWidgetType(  ) );
+        Widget widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget( ) );
+        assertEquals( widgetStored.getIdWidget( ), widget.getIdWidget( ) );
+        assertEquals( widgetStored.getConfigData( ), widget.getConfigData( ) );
+        assertEquals( widgetStored.getDescription( ), widget.getDescription( ) );
+        assertEquals( widgetStored.getIdIcon( ), widget.getIdIcon( ) );
+        assertEquals( widgetStored.getIdCategory( ), widget.getIdCategory( ) );
+        assertEquals( widgetStored.getIdStyle( ), widget.getIdStyle( ) );
+        assertEquals( widgetStored.getIsEssential( ), widget.getIsEssential( ) );
+        assertEquals( widgetStored.getIsNew( ), widget.getIsNew( ) );
+        assertEquals( widgetStored.getName( ), widget.getName( ) );
+        assertEquals( widgetStored.getStatus( ), widget.getStatus( ) );
+        assertEquals( widgetStored.getName( ), widget.getName( ) );
+        assertEquals( widgetStored.getWidgetType( ), widget.getWidgetType( ) );
 
         // Update test
         widget.setConfigData( CONFIGDATA2 );
@@ -112,26 +111,26 @@ public class WidgetTest extends LuteceTestCase
         widget.setStatus( STATUS2 );
         widget.setWidgetType( WIDGETTYPE2 );
         WidgetHome.update( widget );
-        widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget(  ) );
-        assertEquals( widgetStored.getIdWidget(  ), widget.getIdWidget(  ) );
-        assertEquals( widgetStored.getConfigData(  ), widget.getConfigData(  ) );
-        assertEquals( widgetStored.getDescription(  ), widget.getDescription(  ) );
-        assertEquals( widgetStored.getIdIcon(  ), widget.getIdIcon(  ) );
-        assertEquals( widgetStored.getIdCategory(  ), widget.getIdCategory(  ) );
-        assertEquals( widgetStored.getIdStyle(  ), widget.getIdStyle(  ) );
-        assertEquals( widgetStored.getIsEssential(  ), widget.getIsEssential(  ) );
-        assertEquals( widgetStored.getIsNew(  ), widget.getIsNew(  ) );
-        assertEquals( widgetStored.getName(  ), widget.getName(  ) );
-        assertEquals( widgetStored.getStatus(  ), widget.getStatus(  ) );
-        assertEquals( widgetStored.getName(  ), widget.getName(  ) );
-        assertEquals( widgetStored.getWidgetType(  ), widget.getWidgetType(  ) );
+        widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget( ) );
+        assertEquals( widgetStored.getIdWidget( ), widget.getIdWidget( ) );
+        assertEquals( widgetStored.getConfigData( ), widget.getConfigData( ) );
+        assertEquals( widgetStored.getDescription( ), widget.getDescription( ) );
+        assertEquals( widgetStored.getIdIcon( ), widget.getIdIcon( ) );
+        assertEquals( widgetStored.getIdCategory( ), widget.getIdCategory( ) );
+        assertEquals( widgetStored.getIdStyle( ), widget.getIdStyle( ) );
+        assertEquals( widgetStored.getIsEssential( ), widget.getIsEssential( ) );
+        assertEquals( widgetStored.getIsNew( ), widget.getIsNew( ) );
+        assertEquals( widgetStored.getName( ), widget.getName( ) );
+        assertEquals( widgetStored.getStatus( ), widget.getStatus( ) );
+        assertEquals( widgetStored.getName( ), widget.getName( ) );
+        assertEquals( widgetStored.getWidgetType( ), widget.getWidgetType( ) );
 
         // List test
-        WidgetHome.getWidgetsList(  );
+        WidgetHome.getWidgetsList( );
 
         // Delete test
-        WidgetHome.remove( widget.getIdWidget(  ) );
-        widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget(  ) );
+        WidgetHome.remove( widget.getIdWidget( ) );
+        widgetStored = WidgetHome.findByPrimaryKey( widget.getIdWidget( ) );
         assertNull( widgetStored );
     }
 }

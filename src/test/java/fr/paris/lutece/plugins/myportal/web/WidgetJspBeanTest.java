@@ -43,7 +43,6 @@ import fr.paris.lutece.test.MokeHttpServletRequest;
 
 import java.util.List;
 
-
 /**
  *
  * WidgetJspBeanTest
@@ -56,19 +55,21 @@ public class WidgetJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getManageWidgets method of class fr.paris.lutece.plugins.myportal.web.WidgetJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetManageWidgets(  ) throws AccessDeniedException
+    public void testGetManageWidgets( ) throws AccessDeniedException
     {
         System.out.println( "getManageWidgets" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        WidgetJspBean instance = new WidgetJspBean(  );
+        WidgetJspBean instance = new WidgetJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getManageWidgets( request );
@@ -78,19 +79,21 @@ public class WidgetJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getCreateWidget method of class fr.paris.lutece.plugins.myportal.web.WidgetJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetCreateWidget(  ) throws AccessDeniedException
+    public void testGetCreateWidget( ) throws AccessDeniedException
     {
         System.out.println( "getCreateWidget" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        WidgetJspBean instance = new WidgetJspBean(  );
+        WidgetJspBean instance = new WidgetJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getCreateWidget( request );
@@ -100,19 +103,21 @@ public class WidgetJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getConfirmRemoveWidget method of class fr.paris.lutece.plugins.myportal.web.WidgetJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetConfirmRemoveWidget(  ) throws AccessDeniedException
+    public void testGetConfirmRemoveWidget( ) throws AccessDeniedException
     {
         System.out.println( "getConfirmRemoveWidget" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        WidgetJspBean instance = new WidgetJspBean(  );
+        WidgetJspBean instance = new WidgetJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getConfirmRemoveWidget( request );
@@ -122,25 +127,27 @@ public class WidgetJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getModifyWidget method of class fr.paris.lutece.plugins.myportal.web.WidgetJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetModifyWidget(  ) throws AccessDeniedException
+    public void testGetModifyWidget( ) throws AccessDeniedException
     {
         System.out.println( "getModifyWidget" );
 
-        List<Widget> listWidgets = (List<Widget>) WidgetHome.getWidgetsList(  );
+        List<Widget> listWidgets = (List<Widget>) WidgetHome.getWidgetsList( );
 
-        if ( listWidgets.size(  ) > 0 )
+        if ( listWidgets.size( ) > 0 )
         {
             Widget widget = listWidgets.get( 0 );
-            MokeHttpServletRequest request = new MokeHttpServletRequest(  );
-            request.addMokeParameters( PARAMETER_ID_WIDGET, Integer.toString( widget.getIdWidget(  ) ) );
+            MokeHttpServletRequest request = new MokeHttpServletRequest( );
+            request.addMokeParameters( PARAMETER_ID_WIDGET, Integer.toString( widget.getIdWidget( ) ) );
 
             AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-            user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+            user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
             request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-            WidgetJspBean instance = new WidgetJspBean(  );
+            WidgetJspBean instance = new WidgetJspBean( );
             instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
             String result = instance.getModifyWidget( request );

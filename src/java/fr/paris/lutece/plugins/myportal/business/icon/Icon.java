@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business.icon;
 
-
 /**
  *
  * Icon
@@ -43,24 +42,26 @@ public class Icon implements IReferenceItem
 {
     private int _nId;
     private String _strName;
-    private byte[] _byValue;
+    private byte [ ] _byValue;
     private String _strMimeType;
     private int _nWidth;
     private int _nHeight;
     private boolean _bDispolayFO;
 
     /**
-    *
-    * @return the id of the icon
-    */
-    public int getId(  )
+     *
+     * @return the id of the icon
+     */
+    public int getId( )
     {
         return _nId;
     }
 
     /**
      * set the id of the icon
-     * @param idIcon the id of the icon
+     * 
+     * @param idIcon
+     *            the id of the icon
      */
     public void setId( int idIcon )
     {
@@ -72,7 +73,7 @@ public class Icon implements IReferenceItem
      *
      * @return the icon name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
@@ -80,7 +81,8 @@ public class Icon implements IReferenceItem
     /**
      * Set the icon name
      *
-     * @param strName the icon name
+     * @param strName
+     *            the icon name
      */
     public void setName( String strName )
     {
@@ -89,34 +91,40 @@ public class Icon implements IReferenceItem
 
     /**
      * get the icon file value
+     * 
      * @return the icon file value
      */
-    public byte[] getValue(  )
+    public byte [ ] getValue( )
     {
         return _byValue;
     }
 
     /**
      * set the icon file value
-     * @param value the file value
+     * 
+     * @param value
+     *            the file value
      */
-    public void setValue( byte[] value )
+    public void setValue( byte [ ] value )
     {
         _byValue = value;
     }
 
     /**
      * the icon mime type
+     * 
      * @return the icon mime type
      */
-    public String getMimeType(  )
+    public String getMimeType( )
     {
         return _strMimeType;
     }
 
     /**
      * set the icon mime type
-     * @param mimeType the icon mime type
+     * 
+     * @param mimeType
+     *            the icon mime type
      */
     public void setMimeType( String mimeType )
     {
@@ -124,15 +132,16 @@ public class Icon implements IReferenceItem
     }
 
     /**
-         * @return the icon height
-         */
-    public int getHeight(  )
+     * @return the icon height
+     */
+    public int getHeight( )
     {
         return _nHeight;
     }
 
     /**
-     * @param height the  icon height
+     * @param height
+     *            the icon height
      */
     public void setHeight( int height )
     {
@@ -142,13 +151,14 @@ public class Icon implements IReferenceItem
     /**
      * @return the icon width
      */
-    public int getWidth(  )
+    public int getWidth( )
     {
         return _nWidth;
     }
-    
+
     /**
-     * @param width the icon width
+     * @param width
+     *            the icon width
      */
     public void setWidth( int width )
     {
@@ -156,20 +166,20 @@ public class Icon implements IReferenceItem
     }
 
     /**
-     * @param display the icon in front
+     * @param display
+     *            the icon in front
      */
     public void setDispolayFO( boolean display )
     {
         _bDispolayFO = display;
     }
-    
+
     /**
      * @return display the icon in front
      */
-    public boolean getDispolayFO(  )
+    public boolean getDispolayFO( )
     {
         return _bDispolayFO;
     }
 
-    
 }

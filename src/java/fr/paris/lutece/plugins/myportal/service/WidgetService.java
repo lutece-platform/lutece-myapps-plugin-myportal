@@ -55,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Widget Service class : retrieve Widget description from a cache
  */
@@ -84,27 +83,27 @@ public class WidgetService
     private ICacheKeyService _cksNewWidgets;
     private ICacheKeyService _cksCategoryWidgets;
     private WidgetContentService _widgetContentService;
-    private WidgetCacheService _cacheWidget = WidgetCacheService.getInstance(  );
+    private WidgetCacheService _cacheWidget = WidgetCacheService.getInstance( );
 
     /**
      * constructor
      */
-    public WidgetService(  )
+    public WidgetService( )
     {
-        init(  );
+        init( );
     }
 
     /**
      * Init Service
      */
-    private void init(  )
+    private void init( )
     {
         String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETSERVICE_ENABLE, TRUE );
         boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
 
         if ( bCacheEnable )
         {
-            _cacheWidget.initCache(  );
+            _cacheWidget.initCache( );
         }
         else
         {
@@ -114,7 +113,9 @@ public class WidgetService
 
     /**
      * Returns widgets description from the cache
-     * @param nWidgetId The Widget ID
+     * 
+     * @param nWidgetId
+     *            The Widget ID
      * @return The widget object
      */
     public Widget getWidget( int nWidgetId )
@@ -133,16 +134,19 @@ public class WidgetService
 
     /**
      * Load the data of all the widget objects and returns them in form of a collection
+     * 
      * @return the collection which contains the data of all the widget objects
      */
-    public Collection<Widget> getWidgetsList(  )
+    public Collection<Widget> getWidgetsList( )
     {
-        return WidgetHome.getWidgetsList(  );
+        return WidgetHome.getWidgetsList( );
     }
 
     /**
      * Get the list of widgets given an id category
-     * @param nCategoryId the id category
+     * 
+     * @param nCategoryId
+     *            the id category
      * @return a list of {@link Widget}
      */
     public List<Widget> getWidgetsByCategoryId( int nCategoryId )
@@ -152,9 +156,9 @@ public class WidgetService
 
         if ( listWidgets == null )
         {
-            WidgetFilter wFilter = new WidgetFilter(  );
+            WidgetFilter wFilter = new WidgetFilter( );
             wFilter.setIdCategory( nCategoryId );
-            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId( ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
             _cacheWidget.putInCache( strKey, listWidgets );
@@ -165,18 +169,19 @@ public class WidgetService
 
     /**
      * Get the list of essential widgets
+     * 
      * @return a list of {@link Widget}
      */
-    public List<Widget> getEssentialWidgets(  )
+    public List<Widget> getEssentialWidgets( )
     {
-        String strKey = getEssentialWidgetsKey(  );
+        String strKey = getEssentialWidgetsKey( );
         List<Widget> listWidgets = (List<Widget>) _cacheWidget.getFromCache( strKey );
 
         if ( listWidgets == null )
         {
-            WidgetFilter wFilter = new WidgetFilter(  );
+            WidgetFilter wFilter = new WidgetFilter( );
             wFilter.setIsEssential( WidgetFilter.FILTER_TRUE );
-            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId( ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
             _cacheWidget.putInCache( strKey, listWidgets );
@@ -187,18 +192,19 @@ public class WidgetService
 
     /**
      * Get the list of new widgets
+     * 
      * @return a list of {@link Widget}
      */
-    public List<Widget> getNewWidgets(  )
+    public List<Widget> getNewWidgets( )
     {
-        String strKey = getNewWidgetsKey(  );
+        String strKey = getNewWidgetsKey( );
         List<Widget> listWidgets = (List<Widget>) _cacheWidget.getFromCache( strKey );
 
         if ( listWidgets == null )
         {
-            WidgetFilter wFilter = new WidgetFilter(  );
+            WidgetFilter wFilter = new WidgetFilter( );
             wFilter.setIsNew( WidgetFilter.FILTER_TRUE );
-            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+            wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId( ) );
             wFilter.setIsWideSearch( false );
             listWidgets = WidgetHome.getWidgetsByFilter( wFilter );
             _cacheWidget.putInCache( strKey, listWidgets );
@@ -209,14 +215,16 @@ public class WidgetService
 
     /**
      * Get the list of widgets given a name
-     * @param strName the name
+     * 
+     * @param strName
+     *            the name
      * @return a list of {@link Widget}
      */
     public List<Widget> getWidgetsByName( String strName )
     {
-        WidgetFilter wFilter = new WidgetFilter(  );
+        WidgetFilter wFilter = new WidgetFilter( );
         wFilter.setName( strName );
-        wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId(  ) );
+        wFilter.setStatus( WidgetStatusEnum.PUBLIC.getId( ) );
         wFilter.setIsWideSearch( false );
 
         return WidgetHome.getWidgetsByFilter( wFilter );
@@ -224,55 +232,63 @@ public class WidgetService
 
     /**
      * Create a new widget. If the cache is enable, it will reset the cache.
-     * @param widget The {@link Widget}
+     * 
+     * @param widget
+     *            The {@link Widget}
      */
     public void createWidget( Widget widget )
     {
-        _cacheWidget.resetCache(  );
+        _cacheWidget.resetCache( );
         WidgetHome.create( widget );
     }
 
     /**
      * Remove a widget. If the cache is enable, it will reset the cache.
-     * @param nWidgetId the widget ID
+     * 
+     * @param nWidgetId
+     *            the widget ID
      */
     public void removeWidget( int nWidgetId )
     {
-        _cacheWidget.resetCache(  );
+        _cacheWidget.resetCache( );
         _widgetContentService.removeCache( nWidgetId );
         WidgetHome.remove( nWidgetId );
     }
 
     /**
      * Update a widget. If the cache is enable, it will reset the cache.
-     * @param widget The {@link Widget}
+     * 
+     * @param widget
+     *            The {@link Widget}
      */
     public void updateWidget( Widget widget )
     {
-        _cacheWidget.resetCache(  );
-        _widgetContentService.removeCache( widget.getIdWidget(  ) );
+        _cacheWidget.resetCache( );
+        _widgetContentService.removeCache( widget.getIdWidget( ) );
         WidgetHome.update( widget );
     }
 
     /**
      * Get the widget IDs from a given LuteceUser
-     * @param user the {@link LuteceUser}
+     * 
+     * @param user
+     *            the {@link LuteceUser}
      * @return a list of widget IDs
      */
     public List<Integer> getUserWidgetIds( LuteceUser user )
     {
-        List<Integer> listWidgetIds = new ArrayList<Integer>(  );
-        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName(  ) );
+        List<Integer> listWidgetIds = new ArrayList<Integer>( );
+        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName( ) );
 
         if ( userConf != null )
         {
-            PageConfig pageConfig = PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
+            PageConfig pageConfig = PageConfigJsonUtil.parseJson( userConf.getUserPageConfig( ) );
 
-            for ( TabConfig tabConfig : pageConfig.getTabList(  ) )
+            for ( TabConfig tabConfig : pageConfig.getTabList( ) )
             {
-                for ( WidgetConfig widgetConfig : tabConfig.getWidgetList(  ) )
+                for ( WidgetConfig widgetConfig : tabConfig.getWidgetList( ) )
                 {
-                    listWidgetIds.add( widgetConfig.getWidgetId(  ) );
+                    listWidgetIds.add( widgetConfig.getWidgetId( ) );
                 }
             }
         }
@@ -282,17 +298,20 @@ public class WidgetService
 
     /**
      * Get the list of public or mandatory widgets
+     * 
      * @return the list widgets
      */
-    public List<Widget> getPublicMandatoryWidgets(  )
+    public List<Widget> getPublicMandatoryWidgets( )
     {
-        return WidgetHome.getPublicMandatoryWidgets(  );
+        return WidgetHome.getPublicMandatoryWidgets( );
     }
 
     // SETTERS
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setWidgetCacheKeyService( ICacheKeyService cacheKeyService )
     {
@@ -301,7 +320,9 @@ public class WidgetService
 
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setIconCacheKeyService( ICacheKeyService cacheKeyService )
     {
@@ -310,7 +331,9 @@ public class WidgetService
 
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setEssentialWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
     {
@@ -319,7 +342,9 @@ public class WidgetService
 
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setNewWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
     {
@@ -328,7 +353,9 @@ public class WidgetService
 
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setCategoryWidgetsCacheKeyService( ICacheKeyService cacheKeyService )
     {
@@ -337,7 +364,9 @@ public class WidgetService
 
     /**
      * Set the widget content service
-     * @param widgetContentService the widget content service
+     * 
+     * @param widgetContentService
+     *            the widget content service
      */
     public void setWidgetContentService( WidgetContentService widgetContentService )
     {
@@ -348,12 +377,14 @@ public class WidgetService
 
     /**
      * Get the cache key for the widget
-     * @param nId the id
+     * 
+     * @param nId
+     *            the id
      * @return the key
      */
     private String getKey( int nId )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_WIDGET, Integer.toString( nId ) );
 
         return _cksWidget.getKey( mapParams, PortalJspBean.MODE_HTML, null );
@@ -361,12 +392,14 @@ public class WidgetService
 
     /**
      * Get the cache key for the icon
-     * @param nId the id
+     * 
+     * @param nId
+     *            the id
      * @return the key
      */
     private String getIconKey( int nId )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_ICON, Integer.toString( nId ) );
 
         return _cksIcon.getKey( mapParams, PortalJspBean.MODE_HTML, null );
@@ -374,12 +407,14 @@ public class WidgetService
 
     /**
      * Get the cache key for the category list
-     * @param nId the id
+     * 
+     * @param nId
+     *            the id
      * @return the key
      */
     private String getCategoryListKey( int nId )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_CATEGORY_WIDGET_LIST, Integer.toString( nId ) );
 
         return _cksCategoryWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );
@@ -387,11 +422,12 @@ public class WidgetService
 
     /**
      * Get the cache key for the list of essential widgets
+     * 
      * @return the key
      */
-    private String getEssentialWidgetsKey(  )
+    private String getEssentialWidgetsKey( )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_ESSENTIAL_WIDGETS, NONE );
 
         return _cksEssentialWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );
@@ -399,11 +435,12 @@ public class WidgetService
 
     /**
      * Get the cache key for the list of new widgets
+     * 
      * @return the key
      */
-    private String getNewWidgetsKey(  )
+    private String getNewWidgetsKey( )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_NEW_WIDGETS, NONE );
 
         return _cksNewWidgets.getKey( mapParams, PortalJspBean.MODE_HTML, null );

@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * UserPageConfigTest
@@ -51,30 +50,30 @@ public class UserPageConfigTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.UserPageConfig
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        UserPageConfig userPageConfig = new UserPageConfig(  );
+        UserPageConfig userPageConfig = new UserPageConfig( );
         userPageConfig.setUserGuid( USERGUID1 );
         userPageConfig.setUserPageConfig( USERPAGECONFIG1 );
 
         // Create test
         UserPageConfigHome.create( userPageConfig );
 
-        UserPageConfig userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid(  ) );
-        assertEquals( userPageConfigStored.getUserGuid(  ), userPageConfig.getUserGuid(  ) );
-        assertEquals( userPageConfigStored.getUserPageConfig(  ), userPageConfig.getUserPageConfig(  ) );
+        UserPageConfig userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid( ) );
+        assertEquals( userPageConfigStored.getUserGuid( ), userPageConfig.getUserGuid( ) );
+        assertEquals( userPageConfigStored.getUserPageConfig( ), userPageConfig.getUserPageConfig( ) );
 
         // Update test
         userPageConfig.setUserPageConfig( USERPAGECONFIG2 );
         UserPageConfigHome.update( userPageConfig );
-        userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid(  ) );
-        assertEquals( userPageConfigStored.getUserGuid(  ), userPageConfig.getUserGuid(  ) );
-        assertEquals( userPageConfigStored.getUserPageConfig(  ), userPageConfig.getUserPageConfig(  ) );
+        userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid( ) );
+        assertEquals( userPageConfigStored.getUserGuid( ), userPageConfig.getUserGuid( ) );
+        assertEquals( userPageConfigStored.getUserPageConfig( ), userPageConfig.getUserPageConfig( ) );
 
         // Delete test
-        UserPageConfigHome.remove( userPageConfig.getUserGuid(  ) );
-        userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid(  ) );
+        UserPageConfigHome.remove( userPageConfig.getUserGuid( ) );
+        userPageConfigStored = UserPageConfigHome.findByPrimaryKey( userPageConfig.getUserGuid( ) );
         assertNull( userPageConfigStored );
     }
 }

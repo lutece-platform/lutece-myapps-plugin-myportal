@@ -48,7 +48,6 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
-
 /**
  *
  * MyPortalPageService
@@ -61,26 +60,27 @@ public final class MyPortalPageService
     private static final String PROPERTY_TABCONFIG_NAME = "myportal.defaultPageBuilder.tabConfig.name";
     private static final String BEAN_MYPORTAL_PAGEBUILDER = "myportal.pageBuilder";
     private static MyPortalPageService _singleton;
-    private IPageBuilder _pageBuilder = SpringContextService.getBean(BEAN_MYPORTAL_PAGEBUILDER );
-    
-    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private IPageBuilder _pageBuilder = SpringContextService.getBean( BEAN_MYPORTAL_PAGEBUILDER );
+
+    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean( DefaultPageBuilderService.BEAN_NAME );
 
     /**
      * Constructor
      */
-    private MyPortalPageService(  )
+    private MyPortalPageService( )
     {
     }
 
     /**
      * Get the instance of MyPortalPageService
+     * 
      * @return the instance of MyPortalPageService
      */
-    public static MyPortalPageService getInstance(  )
+    public static MyPortalPageService getInstance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new MyPortalPageService(  );
+            _singleton = new MyPortalPageService( );
         }
 
         return _singleton;
@@ -88,8 +88,11 @@ public final class MyPortalPageService
 
     /**
      * Gets the page for a given user
-     * @param user The user
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param user
+     *            The user
+     * @param request
+     *            {@link HttpServletRequest}
      * @return The page
      */
     public String getUserPage( LuteceUser user, HttpServletRequest request )
@@ -101,24 +104,26 @@ public final class MyPortalPageService
 
     /**
      * Get the page config of the given user
-     * @param user a {@link LuteceUser}
+     * 
+     * @param user
+     *            a {@link LuteceUser}
      * @return a {@link PageConfig}
      */
     private PageConfig getPageConfigUser( LuteceUser user )
     {
-        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName(  ) );
+        UserPageConfig userConf = UserPageConfigHome.findByPrimaryKey( user.getName( ) );
 
         if ( userConf == null )
         {
-            int nNbColumns = _defaultPageBuilderService.getColumnCount(  );
-            PageConfig pageConfig = new PageConfig(  );
+            int nNbColumns = _defaultPageBuilderService.getColumnCount( );
+            PageConfig pageConfig = new PageConfig( );
             pageConfig.setName( AppPropertiesService.getProperty( PROPERTY_PAGECONFIG_NAME ) );
 
-            List<TabConfig> listTabConfigs = new ArrayList<TabConfig>(  );
-            TabConfig tabConfig = new TabConfig(  );
+            List<TabConfig> listTabConfigs = new ArrayList<TabConfig>( );
+            TabConfig tabConfig = new TabConfig( );
             tabConfig.setName( AppPropertiesService.getProperty( PROPERTY_TABCONFIG_NAME ) );
 
-            List<WidgetConfig> listWidgetConfigs = new ArrayList<WidgetConfig>(  );
+            List<WidgetConfig> listWidgetConfigs = new ArrayList<WidgetConfig>( );
 
             for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
             {
@@ -126,8 +131,8 @@ public final class MyPortalPageService
 
                 for ( WidgetComponent widgetComponent : listWidgetComponents )
                 {
-                    WidgetConfig widgetConfig = new WidgetConfig(  );
-                    widgetConfig.setWidgetId( widgetComponent.getIdWidget(  ) );
+                    WidgetConfig widgetConfig = new WidgetConfig( );
+                    widgetConfig.setWidgetId( widgetComponent.getIdWidget( ) );
                     widgetConfig.setColumn( nColumn );
                     listWidgetConfigs.add( widgetConfig );
                 }
@@ -136,26 +141,30 @@ public final class MyPortalPageService
             tabConfig.setWidgetList( listWidgetConfigs );
             listTabConfigs.add( tabConfig );
             pageConfig.setTabList( listTabConfigs );
-            userConf = new UserPageConfig(  );
-            userConf.setUserGuid( user.getName(  ) );
+            userConf = new UserPageConfig( );
+            userConf.setUserGuid( user.getName( ) );
             userConf.setUserPageConfig( PageConfigJsonUtil.buildJson( pageConfig ) );
 
             /*
-            userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID );
-            userConf.setUserGuid( user.getName(  ) );
+             * userConf = UserPageConfigHome.findByPrimaryKey( DEFAULT_GUID ); userConf.setUserGuid( user.getName( ) );
              */
             UserPageConfigHome.create( userConf );
         }
 
-        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig(  ) );
+        return PageConfigJsonUtil.parseJson( userConf.getUserPageConfig( ) );
     }
 
     /**
      * Add a widget to a page of an user
-     * @param user The user
-     * @param nIdWidget The widget ID
-     * @param nTabIndex The tab index
-     * @param nColumn The column
+     * 
+     * @param user
+     *            The user
+     * @param nIdWidget
+     *            The widget ID
+     * @param nTabIndex
+     *            The tab index
+     * @param nColumn
+     *            The column
      */
     public void addWidget( LuteceUser user, int nIdWidget, int nTabIndex, int nColumn )
     {
@@ -164,7 +173,7 @@ public final class MyPortalPageService
 
         int nIndex = 1;
 
-        for ( TabConfig tabConfig : pageConfig.getTabList(  ) )
+        for ( TabConfig tabConfig : pageConfig.getTabList( ) )
         {
             if ( nIndex == nTabIndex )
             {
@@ -178,8 +187,8 @@ public final class MyPortalPageService
 
         if ( tab != null )
         {
-            List<WidgetConfig> listWidgets = tab.getWidgetList(  );
-            WidgetConfig widget = new WidgetConfig(  );
+            List<WidgetConfig> listWidgets = tab.getWidgetList( );
+            WidgetConfig widget = new WidgetConfig( );
             widget.setWidgetId( nIdWidget );
             widget.setColumn( nColumn );
             listWidgets.add( widget );
@@ -189,22 +198,25 @@ public final class MyPortalPageService
 
     /**
      * Remove a widget from an user's page
-     * @param user The user
-     * @param nIdWidget The widget ID
+     * 
+     * @param user
+     *            The user
+     * @param nIdWidget
+     *            The widget ID
      */
     public void removeWidget( LuteceUser user, int nIdWidget )
     {
         PageConfig pageConfig = getPageConfigUser( user );
 
-        for ( TabConfig tab : pageConfig.getTabList(  ) )
+        for ( TabConfig tab : pageConfig.getTabList( ) )
         {
-            List<WidgetConfig> listWidgets = tab.getWidgetList(  );
+            List<WidgetConfig> listWidgets = tab.getWidgetList( );
 
-            for ( int i = 0; i < listWidgets.size(  ); i++ )
+            for ( int i = 0; i < listWidgets.size( ); i++ )
             {
                 WidgetConfig widget = listWidgets.get( i );
 
-                if ( widget.getWidgetId(  ) == nIdWidget )
+                if ( widget.getWidgetId( ) == nIdWidget )
                 {
                     listWidgets.remove( i );
                     updateConfig( user, pageConfig );
@@ -217,66 +229,81 @@ public final class MyPortalPageService
 
     /**
      * Update an user page config
-     * @param user the user
-     * @param pageConfig the page config
+     * 
+     * @param user
+     *            the user
+     * @param pageConfig
+     *            the page config
      */
     private void updateConfig( LuteceUser user, PageConfig pageConfig )
     {
-        UserPageConfig userConf = new UserPageConfig(  );
-        userConf.setUserGuid( user.getName(  ) );
+        UserPageConfig userConf = new UserPageConfig( );
+        userConf.setUserGuid( user.getName( ) );
         userConf.setUserPageConfig( PageConfigJsonUtil.buildJson( pageConfig ) );
         UserPageConfigHome.update( userConf );
     }
 
     /**
      * Set a page config to the given user
-     * @param usr the {@link LuteceUser}
-     * @param strUserPageConfig the user page config
+     * 
+     * @param usr
+     *            the {@link LuteceUser}
+     * @param strUserPageConfig
+     *            the user page config
      */
     public void setPageConfigUser( LuteceUser usr, String strUserPageConfig )
     {
-        UserPageConfig userPageConfig = new UserPageConfig(  );
-        userPageConfig.setUserGuid( usr.getName(  ) );
+        UserPageConfig userPageConfig = new UserPageConfig( );
+        userPageConfig.setUserGuid( usr.getName( ) );
         userPageConfig.setUserPageConfig( strUserPageConfig );
         UserPageConfigHome.update( userPageConfig );
     }
 
     /**
      * Get the list of tabs of the given user
-     * @param user the {@link LuteceUser}
+     * 
+     * @param user
+     *            the {@link LuteceUser}
      * @return a list of {@link TabConfig}
      */
     public List<TabConfig> getTabList( LuteceUser user )
     {
         PageConfig pageConfig = getPageConfigUser( user );
 
-        return pageConfig.getTabList(  );
+        return pageConfig.getTabList( );
     }
 
     /**
      * Add a new tab to the given user
-     * @param user the {@link LuteceUser}
-     * @param strTabName the name of the new tab
+     * 
+     * @param user
+     *            the {@link LuteceUser}
+     * @param strTabName
+     *            the name of the new tab
      */
     public void addTab( LuteceUser user, String strTabName )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        TabConfig tab = new TabConfig(  );
+        TabConfig tab = new TabConfig( );
         tab.setName( strTabName );
-        pageConfig.getTabList(  ).add( tab );
+        pageConfig.getTabList( ).add( tab );
         updateConfig( user, pageConfig );
     }
 
     /**
      * change tab name
-     * @param user the {@link LuteceUser}
-     * @param strTabNewName the new name of the tab
-     * @param nIdTab the id tab
+     * 
+     * @param user
+     *            the {@link LuteceUser}
+     * @param strTabNewName
+     *            the new name of the tab
+     * @param nIdTab
+     *            the id tab
      */
     public void editTab( LuteceUser user, String strTabNewName, int nIdTab )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        List<TabConfig> listTabs = pageConfig.getTabList( );
         TabConfig tabConfig = listTabs.get( nIdTab - 1 );
         tabConfig.setName( strTabNewName );
 
@@ -286,13 +313,16 @@ public final class MyPortalPageService
 
     /**
      * del tab name
-     * @param user the {@link LuteceUser}
-     * @param nIdTab the id tab
+     * 
+     * @param user
+     *            the {@link LuteceUser}
+     * @param nIdTab
+     *            the id tab
      */
     public void delTab( LuteceUser user, int nIdTab )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        List<TabConfig> listTabs = pageConfig.getTabList( );
         listTabs.remove( nIdTab - 1 );
 
         String strJson = PageConfigJsonUtil.buildJson( pageConfig );
@@ -301,23 +331,28 @@ public final class MyPortalPageService
 
     /**
      * Edit a widget
-     * @param user the {@link LuteceUser}
-     * @param nIdTab the ID tab
-     * @param nIdWidget the ID widget
-     * @param nColumn the column
+     * 
+     * @param user
+     *            the {@link LuteceUser}
+     * @param nIdTab
+     *            the ID tab
+     * @param nIdWidget
+     *            the ID widget
+     * @param nColumn
+     *            the column
      */
     public void editWidget( LuteceUser user, int nIdTab, int nIdWidget, int nColumn )
     {
         PageConfig pageConfig = getPageConfigUser( user );
-        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        List<TabConfig> listTabs = pageConfig.getTabList( );
         TabConfig tabConfig = listTabs.get( nIdTab - 1 );
-        List<WidgetConfig> listWidgets = tabConfig.getWidgetList(  );
+        List<WidgetConfig> listWidgets = tabConfig.getWidgetList( );
 
-        for ( int i = 0; i < listWidgets.size(  ); i++ )
+        for ( int i = 0; i < listWidgets.size( ); i++ )
         {
             WidgetConfig widget = listWidgets.get( i );
 
-            if ( widget.getWidgetId(  ) == nIdWidget )
+            if ( widget.getWidgetId( ) == nIdWidget )
             {
                 listWidgets.remove( i );
 
@@ -325,7 +360,7 @@ public final class MyPortalPageService
             }
         }
 
-        WidgetConfig widgetConfig = new WidgetConfig(  );
+        WidgetConfig widgetConfig = new WidgetConfig( );
         widgetConfig.setWidgetId( nIdWidget );
         widgetConfig.setColumn( nColumn );
         listWidgets.add( widgetConfig );

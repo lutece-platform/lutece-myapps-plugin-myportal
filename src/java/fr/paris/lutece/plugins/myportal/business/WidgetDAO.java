@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  *
  * This class provides Data Access methods for Widget objects
@@ -50,17 +49,17 @@ public final class WidgetDAO implements IWidgetDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = " SELECT max( id_widget ) FROM myportal_widget ";
-    private static final String SQL_QUERY_SELECT = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
-        " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " +
-        " WHERE a.id_widget = ?";
+    private static final String SQL_QUERY_SELECT = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new "
+            + " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style "
+            + " WHERE a.id_widget = ?";
     private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_widget ( id_widget, name, description, id_category, widget_type, id_icon, config_data , id_style, status, is_essential, is_new ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_widget WHERE id_widget = ? ";
     private static final String SQL_QUERY_UPDATE = " UPDATE myportal_widget SET name = ?, description = ?, id_category = ?, widget_type = ?, id_icon = ?, config_data = ?, id_style = ?, status = ?, is_essential = ?, is_new = ? WHERE id_widget = ? ";
-    private static final String SQL_QUERY_SELECTALL = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
-        " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style ";
-    private static final String SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new " +
-        " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style " +
-        " WHERE a.status = ? OR a.status = ? ";
+    private static final String SQL_QUERY_SELECTALL = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new "
+            + " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style ";
+    private static final String SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS = " SELECT a.id_widget, a.name, a.description, a.id_category, a.widget_type, a.id_icon, a.config_data, a.status, b.name, a.id_style, c.name, c.css_class, a.is_essential, a.is_new "
+            + " FROM myportal_widget a INNER JOIN myportal_category b ON a.id_category = b.id_category INNER JOIN myportal_widget_style c ON a.id_style = c.id_style "
+            + " WHERE a.status = ? OR a.status = ? ";
     private static final String SQL_ORDER_BY = " ORDER BY ";
     private static final String SQL_ASC = " ASC ";
     private static final String SQL_NAME = " a.name ";
@@ -79,32 +78,37 @@ public final class WidgetDAO implements IWidgetDAO
 
     /**
      * Generates a new primary key
-     * @param plugin The Plugin
+     * 
+     * @param plugin
+     *            The Plugin
      * @return The new primary key
      */
     public int newPrimaryKey( Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         int nKey;
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
             // if the table is empty
             nKey = 1;
         }
 
         nKey = daoUtil.getInt( 1 ) + 1;
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
 
     /**
      * Insert a new record in the table.
-     * @param widget instance of the Widget object to insert
-     * @param plugin The plugin
+     * 
+     * @param widget
+     *            instance of the Widget object to insert
+     * @param plugin
+     *            The plugin
      */
     public void insert( Widget widget, Plugin plugin )
     {
@@ -113,40 +117,43 @@ public final class WidgetDAO implements IWidgetDAO
         int nIndex = 1;
         widget.setIdWidget( newPrimaryKey( plugin ) );
 
-        daoUtil.setInt( nIndex++, widget.getIdWidget(  ) );
-        daoUtil.setString( nIndex++, widget.getName(  ) );
-        daoUtil.setString( nIndex++, widget.getDescription(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
-        daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
-        daoUtil.setInt( nIndex++, widget.getStatus(  ) );
-        daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
-        daoUtil.setBoolean( nIndex++, widget.getIsNew(  ) );
+        daoUtil.setInt( nIndex++, widget.getIdWidget( ) );
+        daoUtil.setString( nIndex++, widget.getName( ) );
+        daoUtil.setString( nIndex++, widget.getDescription( ) );
+        daoUtil.setInt( nIndex++, widget.getIdCategory( ) );
+        daoUtil.setString( nIndex++, widget.getWidgetType( ) );
+        daoUtil.setInt( nIndex++, widget.getIdIcon( ) );
+        daoUtil.setBytes( nIndex++, widget.getConfigData( ).getBytes( ) );
+        daoUtil.setInt( nIndex++, widget.getIdStyle( ) );
+        daoUtil.setInt( nIndex++, widget.getStatus( ) );
+        daoUtil.setBoolean( nIndex++, widget.getIsEssential( ) );
+        daoUtil.setBoolean( nIndex++, widget.getIsNew( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the data of the widget from the table
-     * @param nId The identifier of the widget
-     * @param plugin The plugin
+     * 
+     * @param nId
+     *            The identifier of the widget
+     * @param plugin
+     *            The plugin
      * @return the instance of the Widget
      */
     public Widget load( int nId, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setInt( 1, nId );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         Widget widget = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            widget = new Widget(  );
+            widget = new Widget( );
 
             widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widget.setName( daoUtil.getString( nIndex++ ) );
@@ -164,28 +171,34 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIsNew( daoUtil.getBoolean( nIndex++ ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return widget;
     }
 
     /**
      * Delete a record from the table
-     * @param nWidgetId The identifier of the widget
-     * @param plugin The plugin
+     * 
+     * @param nWidgetId
+     *            The identifier of the widget
+     * @param plugin
+     *            The plugin
      */
     public void delete( int nWidgetId, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nWidgetId );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Update the record in the table
-     * @param widget The reference of the widget
-     * @param plugin The plugin
+     * 
+     * @param widget
+     *            The reference of the widget
+     * @param plugin
+     *            The plugin
      */
     public void store( Widget widget, Plugin plugin )
     {
@@ -193,39 +206,41 @@ public final class WidgetDAO implements IWidgetDAO
         DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
 
         int nIndex = 1;
-        daoUtil.setString( nIndex++, widget.getName(  ) );
-        daoUtil.setString( nIndex++, widget.getDescription(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdCategory(  ) );
-        daoUtil.setString( nIndex++, widget.getWidgetType(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdIcon(  ) );
-        daoUtil.setBytes( nIndex++, widget.getConfigData(  ).getBytes(  ) );
-        daoUtil.setInt( nIndex++, widget.getIdStyle(  ) );
-        daoUtil.setInt( nIndex++, widget.getStatus(  ) );
-        daoUtil.setBoolean( nIndex++, widget.getIsEssential(  ) );
-        daoUtil.setBoolean( nIndex++, widget.getIsNew(  ) );
+        daoUtil.setString( nIndex++, widget.getName( ) );
+        daoUtil.setString( nIndex++, widget.getDescription( ) );
+        daoUtil.setInt( nIndex++, widget.getIdCategory( ) );
+        daoUtil.setString( nIndex++, widget.getWidgetType( ) );
+        daoUtil.setInt( nIndex++, widget.getIdIcon( ) );
+        daoUtil.setBytes( nIndex++, widget.getConfigData( ).getBytes( ) );
+        daoUtil.setInt( nIndex++, widget.getIdStyle( ) );
+        daoUtil.setInt( nIndex++, widget.getStatus( ) );
+        daoUtil.setBoolean( nIndex++, widget.getIsEssential( ) );
+        daoUtil.setBoolean( nIndex++, widget.getIsNew( ) );
 
-        daoUtil.setInt( nIndex++, widget.getIdWidget(  ) );
+        daoUtil.setInt( nIndex++, widget.getIdWidget( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the data of all the widgets and returns them as a collection
-     * @param plugin The plugin
+     * 
+     * @param plugin
+     *            The plugin
      * @return The Collection which contains the data of all the widgets
      */
     public Collection<Widget> selectWidgetsList( Plugin plugin )
     {
         String strSQL = SQL_QUERY_SELECTALL + SQL_ORDER_BY + SQL_NAME + SQL_ASC;
-        Collection<Widget> widgetsList = new ArrayList<Widget>(  );
+        Collection<Widget> widgetsList = new ArrayList<Widget>( );
         DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            Widget widget = new Widget(  );
+            Widget widget = new Widget( );
 
             widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widget.setName( daoUtil.getString( nIndex++ ) );
@@ -244,7 +259,7 @@ public final class WidgetDAO implements IWidgetDAO
             widgetsList.add( widget );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return widgetsList;
     }
@@ -255,16 +270,16 @@ public final class WidgetDAO implements IWidgetDAO
     public List<Widget> getPublicMandatoryWidgets( Plugin plugin )
     {
         String strSQL = SQL_QUERY_SELECT_PUBLIC_MANDATORY_WIDGETS + SQL_ORDER_BY + SQL_NAME + SQL_ASC;
-        List<Widget> widgetsList = new ArrayList<Widget>(  );
+        List<Widget> widgetsList = new ArrayList<Widget>( );
         DAOUtil daoUtil = new DAOUtil( strSQL, plugin );
-        daoUtil.setInt( 1, WidgetStatusEnum.PUBLIC.getId(  ) );
-        daoUtil.setInt( 2, WidgetStatusEnum.MANDATORY.getId(  ) );
-        daoUtil.executeQuery(  );
+        daoUtil.setInt( 1, WidgetStatusEnum.PUBLIC.getId( ) );
+        daoUtil.setInt( 2, WidgetStatusEnum.MANDATORY.getId( ) );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            Widget widget = new Widget(  );
+            Widget widget = new Widget( );
 
             widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widget.setName( daoUtil.getString( nIndex++ ) );
@@ -283,7 +298,7 @@ public final class WidgetDAO implements IWidgetDAO
             widgetsList.add( widget );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return widgetsList;
     }
@@ -293,18 +308,18 @@ public final class WidgetDAO implements IWidgetDAO
      */
     public List<Widget> getWidgetsByFilter( WidgetFilter wFilter, Plugin plugin )
     {
-        List<Widget> widgetsList = new ArrayList<Widget>(  );
+        List<Widget> widgetsList = new ArrayList<Widget>( );
         StringBuilder sbSQL = new StringBuilder( buildSQLQuery( wFilter ) );
         sbSQL.append( SQL_ORDER_BY + SQL_NAME + SQL_ASC );
 
-        DAOUtil daoUtil = new DAOUtil( sbSQL.toString(  ), plugin );
+        DAOUtil daoUtil = new DAOUtil( sbSQL.toString( ), plugin );
         setFilterValues( wFilter, daoUtil );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            Widget widget = new Widget(  );
+            Widget widget = new Widget( );
 
             widget.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widget.setName( daoUtil.getString( nIndex++ ) );
@@ -312,7 +327,7 @@ public final class WidgetDAO implements IWidgetDAO
             widget.setIdCategory( daoUtil.getInt( nIndex++ ) );
             widget.setWidgetType( daoUtil.getString( nIndex++ ) );
             widget.setIdIcon( daoUtil.getInt( nIndex++ ) );
-            widget.setConfigData( new String( daoUtil.getString( nIndex++ ).getBytes(  ) ) );
+            widget.setConfigData( new String( daoUtil.getString( nIndex++ ).getBytes( ) ) );
             widget.setStatus( daoUtil.getInt( nIndex++ ) );
             widget.setCategory( daoUtil.getString( nIndex++ ) );
             widget.setIdStyle( daoUtil.getInt( nIndex++ ) );
@@ -323,14 +338,16 @@ public final class WidgetDAO implements IWidgetDAO
             widgetsList.add( widget );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return widgetsList;
     }
 
     /**
      * Build the SQL query with filter
-     * @param wFilter the filter
+     * 
+     * @param wFilter
+     *            the filter
      * @return a SQL query
      */
     private String buildSQLQuery( WidgetFilter wFilter )
@@ -338,67 +355,70 @@ public final class WidgetDAO implements IWidgetDAO
         StringBuilder sbSQL = new StringBuilder( SQL_QUERY_SELECTALL );
         int nIndex = 1;
 
-        if ( wFilter.containsName(  ) )
+        if ( wFilter.containsName( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_NAME );
         }
 
-        if ( wFilter.containsDescription(  ) )
+        if ( wFilter.containsDescription( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_DESCRIPTION );
         }
 
-        if ( wFilter.containsIdCategory(  ) )
+        if ( wFilter.containsIdCategory( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_ID_CATEGORY );
         }
 
-        if ( wFilter.containsIdStyle(  ) )
+        if ( wFilter.containsIdStyle( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_ID_STYLE );
         }
 
-        if ( wFilter.containsWidgetType(  ) )
+        if ( wFilter.containsWidgetType( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_WIDGET_TYPE );
         }
 
-        if ( wFilter.containsStatus(  ) )
+        if ( wFilter.containsStatus( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_STATUS );
         }
 
-        if ( wFilter.containsIsEssential(  ) )
+        if ( wFilter.containsIsEssential( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_IS_ESSENTIAL );
         }
 
-        if ( wFilter.containsIsNew(  ) )
+        if ( wFilter.containsIsNew( ) )
         {
-            nIndex = addSQLWhereOr( wFilter.getIsWideSearch(  ), sbSQL, nIndex );
+            nIndex = addSQLWhereOr( wFilter.getIsWideSearch( ), sbSQL, nIndex );
             sbSQL.append( SQL_FILTER_IS_NEW );
         }
 
-        return sbSQL.toString(  );
+        return sbSQL.toString( );
     }
 
     /**
-     * Add a <b>WHERE</b> or a <b>OR</b> depending of the index.
-     * <br/>
+     * Add a <b>WHERE</b> or a <b>OR</b> depending of the index. <br/>
      * <ul>
      * <li>if <code>nIndex</code> == 1, then we add a <b>WHERE</b></li>
      * <li>if <code>nIndex</code> != 1, then we add a <b>OR</b></li>
      * </ul>
-     * @param bIsWideSearch true if it is a wide search, false otherwise
-     * @param sbSQL the SQL query
-     * @param nIndex the index
+     * 
+     * @param bIsWideSearch
+     *            true if it is a wide search, false otherwise
+     * @param sbSQL
+     *            the SQL query
+     * @param nIndex
+     *            the index
      * @return the new index
      */
     private int addSQLWhereOr( boolean bIsWideSearch, StringBuilder sbSQL, int nIndex )
@@ -417,58 +437,61 @@ public final class WidgetDAO implements IWidgetDAO
 
     /**
      * Set the filter values on the DAOUtil
-     * @param wFilter the filter
-     * @param daoUtil the DAOUtil
+     * 
+     * @param wFilter
+     *            the filter
+     * @param daoUtil
+     *            the DAOUtil
      */
     private void setFilterValues( WidgetFilter wFilter, DAOUtil daoUtil )
     {
         int nIndex = 1;
 
-        if ( wFilter.containsName(  ) )
+        if ( wFilter.containsName( ) )
         {
-            daoUtil.setString( nIndex, PERCENT + wFilter.getName(  ) + PERCENT );
+            daoUtil.setString( nIndex, PERCENT + wFilter.getName( ) + PERCENT );
             nIndex++;
         }
 
-        if ( wFilter.containsDescription(  ) )
+        if ( wFilter.containsDescription( ) )
         {
-            daoUtil.setString( nIndex, PERCENT + wFilter.getDescription(  ) + PERCENT );
+            daoUtil.setString( nIndex, PERCENT + wFilter.getDescription( ) + PERCENT );
             nIndex++;
         }
 
-        if ( wFilter.containsIdCategory(  ) )
+        if ( wFilter.containsIdCategory( ) )
         {
-            daoUtil.setInt( nIndex, wFilter.getIdCategory(  ) );
+            daoUtil.setInt( nIndex, wFilter.getIdCategory( ) );
             nIndex++;
         }
 
-        if ( wFilter.containsIdStyle(  ) )
+        if ( wFilter.containsIdStyle( ) )
         {
-            daoUtil.setInt( nIndex, wFilter.getIdStyle(  ) );
+            daoUtil.setInt( nIndex, wFilter.getIdStyle( ) );
             nIndex++;
         }
 
-        if ( wFilter.containsWidgetType(  ) )
+        if ( wFilter.containsWidgetType( ) )
         {
-            daoUtil.setString( nIndex, PERCENT + wFilter.getWidgetType(  ) + PERCENT );
+            daoUtil.setString( nIndex, PERCENT + wFilter.getWidgetType( ) + PERCENT );
             nIndex++;
         }
 
-        if ( wFilter.containsStatus(  ) )
+        if ( wFilter.containsStatus( ) )
         {
-            daoUtil.setInt( nIndex, wFilter.getStatus(  ) );
+            daoUtil.setInt( nIndex, wFilter.getStatus( ) );
             nIndex++;
         }
 
-        if ( wFilter.containsIsEssential(  ) )
+        if ( wFilter.containsIsEssential( ) )
         {
-            daoUtil.setBoolean( nIndex, wFilter.getIsEssential(  ) == WidgetFilter.FILTER_TRUE );
+            daoUtil.setBoolean( nIndex, wFilter.getIsEssential( ) == WidgetFilter.FILTER_TRUE );
             nIndex++;
         }
 
-        if ( wFilter.containsIsNew(  ) )
+        if ( wFilter.containsIsNew( ) )
         {
-            daoUtil.setBoolean( nIndex, wFilter.getIsNew(  ) == WidgetFilter.FILTER_TRUE );
+            daoUtil.setBoolean( nIndex, wFilter.getIsNew( ) == WidgetFilter.FILTER_TRUE );
             nIndex++;
         }
     }

@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-
 /**
  *
  * This class provides instances management methods (create, find, ...) for UserPageConfig objects
@@ -55,14 +54,16 @@ public final class UserPageConfigHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private UserPageConfigHome(  )
+    private UserPageConfigHome( )
     {
     }
 
     /**
      * Create an instance of the userPageConfig class
-     * @param userPageConfig The instance of the UserPageConfig which contains the informations to store
-     * @return The  instance of userPageConfig which has been created with its primary key.
+     * 
+     * @param userPageConfig
+     *            The instance of the UserPageConfig which contains the informations to store
+     * @return The instance of userPageConfig which has been created with its primary key.
      */
     public static UserPageConfig create( UserPageConfig userPageConfig )
     {
@@ -73,8 +74,10 @@ public final class UserPageConfigHome
 
     /**
      * Update of the userPageConfig which is specified in parameter
-     * @param userPageConfig The instance of the UserPageConfig which contains the data to store
-     * @return The instance of the  userPageConfig which has been updated
+     * 
+     * @param userPageConfig
+     *            The instance of the UserPageConfig which contains the data to store
+     * @return The instance of the userPageConfig which has been updated
      */
     public static UserPageConfig update( UserPageConfig userPageConfig )
     {
@@ -85,19 +88,23 @@ public final class UserPageConfigHome
 
     /**
      * Remove the userPageConfig whose identifier is specified in parameter
-     * @param strUserGuid The user guid
+     * 
+     * @param strUserGuid
+     *            The user guid
      */
     public static void remove( String strUserGuid )
     {
         _dao.delete( strUserGuid, _plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Returns an instance of a userPageConfig whose identifier is specified in parameter
-     * @param strUserGuid The userPageConfig primary key
+     * 
+     * @param strUserGuid
+     *            The userPageConfig primary key
      * @return an instance of UserPageConfig
      */
     public static UserPageConfig findByPrimaryKey( String strUserGuid )

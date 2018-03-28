@@ -45,27 +45,26 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.web.constants.Parameters;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
  * Service for Url entry types. Provide ImageResource managemenent
  *
  */
 public class IconService implements ImageResourceProvider
 {
-    private static IconService _singleton = new IconService(  );
+    private static IconService _singleton = new IconService( );
     private static final String IMAGE_RESOURCE_TYPE_ID = "myportal_icon_img";
 
     /**
      * Creates a new instance of IconService
      */
-    IconService(  )
+    IconService( )
     {
     }
 
     /**
      * Initializes the service
      */
-    public void register(  )
+    public void register( )
     {
         ImageResourceManager.registerProvider( this );
     }
@@ -75,16 +74,18 @@ public class IconService implements ImageResourceProvider
      *
      * @return The unique instance
      */
-    public static IconService getInstance(  )
+    public static IconService getInstance( )
     {
         return _singleton;
     }
 
     /**
-    * Return the Resource id
-    * @param nIdResource The resource identifier
-    * @return The Resource Image
-    */
+     * Return the Resource id
+     * 
+     * @param nIdResource
+     *            The resource identifier
+     * @return The Resource Image
+     */
     public ImageResource getImageResource( int nIdResource )
     {
         Plugin plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
@@ -92,9 +93,9 @@ public class IconService implements ImageResourceProvider
 
         if ( icon != null )
         {
-            ImageResource imageResource = new ImageResource(  );
-            imageResource.setImage( icon.getValue(  ) );
-            imageResource.setMimeType( icon.getMimeType(  ) );
+            ImageResource imageResource = new ImageResource( );
+            imageResource.setImage( icon.getValue( ) );
+            imageResource.setMimeType( icon.getMimeType( ) );
 
             return imageResource;
         }
@@ -104,35 +105,39 @@ public class IconService implements ImageResourceProvider
 
     /**
      * Return the Resource Type id
+     * 
      * @return The Resource Type Id
      */
-    public String getResourceTypeId(  )
+    public String getResourceTypeId( )
     {
         return IMAGE_RESOURCE_TYPE_ID;
     }
 
     /**
      * Management of the image associated to the {@link EntryUrl}
-     * @param nEntryUrl The {@link EntryUrl} identifier
+     * 
+     * @param nEntryUrl
+     *            The {@link EntryUrl} identifier
      * @return The url of the resource
      */
     public static String getResourceImageEntryUrl( int nEntryUrl )
     {
-        String strResourceType = IconService.getInstance(  ).getResourceTypeId(  );
+        String strResourceType = IconService.getInstance( ).getResourceTypeId( );
         UrlItem url = new UrlItem( Parameters.IMAGE_SERVLET );
         url.addParameter( Parameters.RESOURCE_TYPE, strResourceType );
         url.addParameter( Parameters.RESOURCE_ID, Integer.toString( nEntryUrl ) );
 
-        return url.getUrlWithEntity(  );
+        return url.getUrlWithEntity( );
     }
-    
+
     /**
-     * @return  the icon list to display in FO
+     * @return the icon list to display in FO
      * 
      */
-    public List<Icon> getIconFO( ){
-    	
-    	return IconHome.getListIconsFO( true );
-    
+    public List<Icon> getIconFO( )
+    {
+
+        return IconHome.getListIconsFO( true );
+
     }
 }

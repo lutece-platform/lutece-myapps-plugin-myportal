@@ -49,7 +49,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * MyPortalAdminDashboardComponent
@@ -60,8 +59,7 @@ public class MyPortalAdminDashboardComponent extends AdminDashboardComponent
     // TEMPLATES
     private static final String TEMPLATE_ADMIN_DASHBOARD = "admin/plugins/myportal/myportal_admindashboard.html";
 
-
-    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean( DefaultPageBuilderService.BEAN_NAME );
 
     /**
      * {@inheritDoc}
@@ -72,13 +70,13 @@ public class MyPortalAdminDashboardComponent extends AdminDashboardComponent
         String strHtml = StringUtils.EMPTY;
 
         if ( RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                    MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, user ) )
+                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, user ) )
         {
             Map<String, Object> model = _defaultPageBuilderService.getManageAdvancedParameters( user );
 
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale( ), model );
 
-            strHtml = template.getHtml(  );
+            strHtml = template.getHtml( );
         }
 
         return strHtml;

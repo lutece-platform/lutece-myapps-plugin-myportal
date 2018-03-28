@@ -58,7 +58,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * class IconJspBean
@@ -66,18 +65,18 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IconJspBean extends PluginAdminPageJspBean
 {
-    //	templates
+    // templates
     private static final String TEMPLATE_MANAGE_ICON = "admin/plugins/myportal/manage_icon.html";
     private static final String TEMPLATE_CREATE_ICON = "admin/plugins/myportal/create_icon.html";
     private static final String TEMPLATE_MODIFY_ICON = "admin/plugins/myportal/modify_icon.html";
 
-    //	Markers
+    // Markers
     private static final String MARK_ICON_LIST = "icon_list";
     private static final String MARK_ICON = "icone";
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
 
-    //	parameters form
+    // parameters form
     private static final String PARAMETER_ID_ICON = "id_icon";
     private static final String PARAMETER_NAME = "name";
     private static final String PARAMETER_ID_FILE = "id_file";
@@ -87,15 +86,15 @@ public class IconJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_CANCEL = "cancel";
     private static final String PARAMETER_IS_DIPLAY_IN_FO = "isDisplayFO";
 
-    //	 other constants
+    // other constants
     private static final String EMPTY_STRING = "";
 
-    //	message
+    // message
     private static final String MESSAGE_CONFIRM_REMOVE_ICON = "myportal.message.confirm_remove_icon";
     private static final String MESSAGE_MANDATORY_FIELD = "myportal.message.mandatory.field";
     private static final String MESSAGE_NUMERIC_FIELD = "myportal.message.numeric_field";
 
-    //	properties
+    // properties
     private static final String PROPERTY_ITEM_PER_PAGE = "myportal.itemsPerPage";
     private static final String PROPERTY_MANAGE_ICON = "myportal.manage_icon.page_title";
     private static final String PROPERTY_MODIFY_ICON = "myportal.modify_icon.page_title";
@@ -105,66 +104,71 @@ public class IconJspBean extends PluginAdminPageJspBean
     private static final String FIELD_HEIGHT = "myportal.create_icon.label_height";
     private static final String FIELD_FILE = "myportal.create_icon.label_file";
 
-    //Jsp Definition
+    // Jsp Definition
     private static final String JSP_MANAGE_ICON = "jsp/admin/plugins/myportal/ManageIcons.jsp";
     private static final String JSP_DO_REMOVE_ICON = "jsp/admin/plugins/myportal/DoRemoveIcon.jsp";
     private static final String REGEX_ID = "^[\\d]+$";
 
-    //	session fields
+    // session fields
     private int _nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_ITEM_PER_PAGE, 15 );
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
 
     /**
      * Return management icon ( list of icon )
-     * @param request The Http request
+     * 
+     * @param request
+     *            The Http request
      * @return Html management icon
      */
     public String getManageIcon( HttpServletRequest request )
     {
-    	Map<String, Object> model = new HashMap<String, Object>( );
-        List<Icon> listDirectoryXsl = IconHome.getListIcons( getPlugin(  ) );
+        Map<String, Object> model = new HashMap<String, Object>( );
+        List<Icon> listDirectoryXsl = IconHome.getListIcons( getPlugin( ) );
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
-        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
-                _nDefaultItemsPerPage );
+        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage, _nDefaultItemsPerPage );
 
-        LocalizedPaginator paginator = new LocalizedPaginator( listDirectoryXsl, _nItemsPerPage,
-                getJspManageIcon( request ), PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
+        LocalizedPaginator paginator = new LocalizedPaginator( listDirectoryXsl, _nItemsPerPage, getJspManageIcon( request ), PARAMETER_PAGE_INDEX,
+                _strCurrentPageIndex, getLocale( ) );
 
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_NB_ITEMS_PER_PAGE, EMPTY_STRING + _nItemsPerPage );
-        model.put( MARK_ICON_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_ICON_LIST, paginator.getPageItems( ) );
         setPageTitleProperty( PROPERTY_MANAGE_ICON );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ICON, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ICON, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
      * Gets the icon creation page
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The directory xsl creation page
      */
     public String getCreateIcon( HttpServletRequest request )
     {
         setPageTitleProperty( PROPERTY_CREATE_ICON );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_ICON, getLocale(  ) );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_ICON, getLocale( ) );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Perform the icon creation
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The URL to go after performing the action
      */
     public String doCreateIcon( HttpServletRequest request )
     {
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
         {
-            Icon icon = new Icon(  );
+            Icon icon = new Icon( );
             String strError = getIconData( request, icon );
 
             if ( strError != null )
@@ -172,7 +176,7 @@ public class IconJspBean extends PluginAdminPageJspBean
                 return strError;
             }
 
-            IconHome.create( icon, getPlugin(  ) );
+            IconHome.create( icon, getPlugin( ) );
         }
 
         return getJspManageIcon( request );
@@ -180,21 +184,23 @@ public class IconJspBean extends PluginAdminPageJspBean
 
     /**
      * Gets the icon modification page
-     * @param request The HTTP request
-     * @throws AccessDeniedException the {@link AccessDeniedException}
+     * 
+     * @param request
+     *            The HTTP request
+     * @throws AccessDeniedException
+     *             the {@link AccessDeniedException}
      * @return The icon creation page
      */
-    public String getModifyIcon( HttpServletRequest request )
-        throws AccessDeniedException
+    public String getModifyIcon( HttpServletRequest request ) throws AccessDeniedException
     {
         Icon icon;
         String strIdIcon = request.getParameter( PARAMETER_ID_ICON );
         int nIdIcon = convertStringToInt( strIdIcon );
-        icon = IconHome.findByPrimaryKey( nIdIcon, getPlugin(  ) );
+        icon = IconHome.findByPrimaryKey( nIdIcon, getPlugin( ) );
 
         if ( ( icon == null ) )
         {
-            throw new AccessDeniedException(  );
+            throw new AccessDeniedException( );
         }
 
         Map<String, Object> model = new HashMap<String, Object>( );
@@ -202,30 +208,32 @@ public class IconJspBean extends PluginAdminPageJspBean
         model.put( MARK_ICON, icon );
         setPageTitleProperty( PROPERTY_MODIFY_ICON );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ICON, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ICON, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Perform the icon modification
-     * @param request The HTTP request
-     * @throws AccessDeniedException the {@link AccessDeniedException}
+     * 
+     * @param request
+     *            The HTTP request
+     * @throws AccessDeniedException
+     *             the {@link AccessDeniedException}
      * @return The URL to go after performing the action
      */
-    public String doModifyIcon( HttpServletRequest request )
-        throws AccessDeniedException
+    public String doModifyIcon( HttpServletRequest request ) throws AccessDeniedException
     {
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
         {
             Icon icon;
             String strIdIcon = request.getParameter( PARAMETER_ID_ICON );
             int nIdIcon = convertStringToInt( strIdIcon );
-            icon = IconHome.findByPrimaryKey( nIdIcon, getPlugin(  ) );
+            icon = IconHome.findByPrimaryKey( nIdIcon, getPlugin( ) );
 
             if ( ( icon == null ) )
             {
-                throw new AccessDeniedException(  );
+                throw new AccessDeniedException( );
             }
 
             String strError = getIconData( request, icon );
@@ -235,13 +243,13 @@ public class IconJspBean extends PluginAdminPageJspBean
                 return strError;
             }
 
-            if ( icon.getValue(  ) != null )
+            if ( icon.getValue( ) != null )
             {
-                IconHome.update( icon, getPlugin(  ) );
+                IconHome.update( icon, getPlugin( ) );
             }
             else
             {
-                IconHome.updateMetadata( icon, getPlugin(  ) );
+                IconHome.updateMetadata( icon, getPlugin( ) );
             }
         }
 
@@ -250,12 +258,14 @@ public class IconJspBean extends PluginAdminPageJspBean
 
     /**
      * Gets the confirmation page of delete icon
-     * @param request The HTTP request
-     * @throws AccessDeniedException the {@link AccessDeniedException}
+     * 
+     * @param request
+     *            The HTTP request
+     * @throws AccessDeniedException
+     *             the {@link AccessDeniedException}
      * @return the confirmation page of delete directory xsl
      */
-    public String getConfirmRemoveIcon( HttpServletRequest request )
-        throws AccessDeniedException
+    public String getConfirmRemoveIcon( HttpServletRequest request ) throws AccessDeniedException
     {
         String strIdIcon = request.getParameter( PARAMETER_ID_ICON );
         int nIdIcon = convertStringToInt( strIdIcon );
@@ -263,32 +273,36 @@ public class IconJspBean extends PluginAdminPageJspBean
         UrlItem url = new UrlItem( JSP_DO_REMOVE_ICON );
         url.addParameter( PARAMETER_ID_ICON, strIdIcon );
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_ICON, url.getUrl(  ),
-            AdminMessage.TYPE_CONFIRMATION );
+        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_ICON, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
     }
 
     /**
      * Perform the icon supression
-     * @param request The HTTP request
-     * @throws AccessDeniedException the {@link AccessDeniedException}
+     * 
+     * @param request
+     *            The HTTP request
+     * @throws AccessDeniedException
+     *             the {@link AccessDeniedException}
      * @return The URL to go after performing the action
      */
-    public String doRemoveIcon( HttpServletRequest request )
-        throws AccessDeniedException
+    public String doRemoveIcon( HttpServletRequest request ) throws AccessDeniedException
     {
         String strIdIcon = request.getParameter( PARAMETER_ID_ICON );
         int nIdIcon = convertStringToInt( strIdIcon );
 
-        IconHome.remove( nIdIcon, getPlugin(  ) );
+        IconHome.remove( nIdIcon, getPlugin( ) );
 
         return getJspManageIcon( request );
     }
 
     /**
-     * Get the request data and if there is no error insert the data in the icon object specified in parameter.
-     * return null if there is no error or else return the error page url
-     * @param  request the request
-     * @param icon the Icon Object
+     * Get the request data and if there is no error insert the data in the icon object specified in parameter. return null if there is no error or else return
+     * the error page url
+     * 
+     * @param request
+     *            the request
+     * @param icon
+     *            the Icon Object
      * @return null if there is no error or else return the error page url
      */
     private String getIconData( HttpServletRequest request, Icon icon )
@@ -298,60 +312,62 @@ public class IconJspBean extends PluginAdminPageJspBean
         String strWidth = request.getParameter( PARAMETER_WIDTH );
         String strHeight = request.getParameter( PARAMETER_HEIGHT );
         String bIsDisplayInFO = request.getParameter( PARAMETER_IS_DIPLAY_IN_FO );
-        
+
         int nWidth = convertStringToInt( strWidth );
         int nHeight = convertStringToInt( strHeight );
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         FileItem fileItem = multipartRequest.getFile( PARAMETER_ID_FILE );
 
-        if ( ( strName == null ) || strName.trim(  ).equals( EMPTY_STRING ) )
+        if ( ( strName == null ) || strName.trim( ).equals( EMPTY_STRING ) )
         {
             strError = FIELD_NAME;
         }
-        else if ( ( icon.getValue(  ) == null ) &&
-                ( ( fileItem == null ) ||
-                ( ( fileItem.getName(  ) == null ) && EMPTY_STRING.equals( fileItem.getName(  ) ) ) ) )
-        {
-            strError = FIELD_FILE;
-        }
+        else
+            if ( ( icon.getValue( ) == null ) && ( ( fileItem == null ) || ( ( fileItem.getName( ) == null ) && EMPTY_STRING.equals( fileItem.getName( ) ) ) ) )
+            {
+                strError = FIELD_FILE;
+            }
 
-        //Mandatory fields
+        // Mandatory fields
         if ( !strError.equals( EMPTY_STRING ) )
         {
-            Object[] tabRequiredFields = { I18nService.getLocalizedString( strError, getLocale(  ) ) };
+            Object [ ] tabRequiredFields = {
+                I18nService.getLocalizedString( strError, getLocale( ) )
+            };
 
-            return AdminMessageService.getMessageUrl( request, MESSAGE_MANDATORY_FIELD, tabRequiredFields,
-                AdminMessage.TYPE_STOP );
+            return AdminMessageService.getMessageUrl( request, MESSAGE_MANDATORY_FIELD, tabRequiredFields, AdminMessage.TYPE_STOP );
         }
 
-        if ( ( strWidth != null ) && ( !strWidth.trim(  ).equals( EMPTY_STRING ) ) && ( nWidth == -1 ) )
+        if ( ( strWidth != null ) && ( !strWidth.trim( ).equals( EMPTY_STRING ) ) && ( nWidth == -1 ) )
         {
             strError = FIELD_WIDTH;
         }
-        else if ( ( strHeight != null ) && ( !strHeight.trim(  ).equals( EMPTY_STRING ) ) && ( nHeight == -1 ) )
-        {
-            strError = FIELD_HEIGHT;
-        }
+        else
+            if ( ( strHeight != null ) && ( !strHeight.trim( ).equals( EMPTY_STRING ) ) && ( nHeight == -1 ) )
+            {
+                strError = FIELD_HEIGHT;
+            }
 
         if ( !strError.equals( EMPTY_STRING ) )
         {
-            Object[] tabRequiredFields = { I18nService.getLocalizedString( strError, getLocale(  ) ) };
+            Object [ ] tabRequiredFields = {
+                I18nService.getLocalizedString( strError, getLocale( ) )
+            };
 
-            return AdminMessageService.getMessageUrl( request, MESSAGE_NUMERIC_FIELD, tabRequiredFields,
-                AdminMessage.TYPE_STOP );
+            return AdminMessageService.getMessageUrl( request, MESSAGE_NUMERIC_FIELD, tabRequiredFields, AdminMessage.TYPE_STOP );
         }
-        if ( ( bIsDisplayInFO == null ) || !bIsDisplayInFO.equals("true") )
+        if ( ( bIsDisplayInFO == null ) || !bIsDisplayInFO.equals( "true" ) )
         {
-        	bIsDisplayInFO = "false";
+            bIsDisplayInFO = "false";
         }
         icon.setName( strName );
-        icon.setDispolayFO(Boolean.parseBoolean( bIsDisplayInFO ));
+        icon.setDispolayFO( Boolean.parseBoolean( bIsDisplayInFO ) );
 
-        if ( ( fileItem != null ) && ( fileItem.getName(  ) != null ) && !EMPTY_STRING.equals( fileItem.getName(  ) ) )
+        if ( ( fileItem != null ) && ( fileItem.getName( ) != null ) && !EMPTY_STRING.equals( fileItem.getName( ) ) )
         {
-            icon.setValue( fileItem.get(  ) );
-            icon.setMimeType( fileItem.getContentType(  ) );
+            icon.setValue( fileItem.get( ) );
+            icon.setMimeType( fileItem.getContentType( ) );
         }
         else
         {
@@ -366,7 +382,9 @@ public class IconJspBean extends PluginAdminPageJspBean
 
     /**
      * return the url of manage export format
-     * @param request the request
+     * 
+     * @param request
+     *            the request
      * @return the url of manage export format
      */
     private String getJspManageIcon( HttpServletRequest request )
@@ -378,7 +396,7 @@ public class IconJspBean extends PluginAdminPageJspBean
      * convert a string to int
      *
      * @param strParameter
-     * the string parameter to convert
+     *            the string parameter to convert
      * @return the conversion
      */
     public static int convertStringToInt( String strParameter )
@@ -392,7 +410,7 @@ public class IconJspBean extends PluginAdminPageJspBean
                 nIdParameter = Integer.parseInt( strParameter );
             }
         }
-        catch ( NumberFormatException ne )
+        catch( NumberFormatException ne )
         {
             AppLogService.error( ne );
         }

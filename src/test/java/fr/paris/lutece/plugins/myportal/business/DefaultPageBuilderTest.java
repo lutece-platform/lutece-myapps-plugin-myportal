@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * CategoryTest
@@ -53,11 +52,11 @@ public class DefaultPageBuilderTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.DefaultPageBuilder
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        WidgetComponent widgetComponent = new WidgetComponent(  );
-        widgetComponent.setIdWidgetComponent( DefaultPageBuilderHome.newPrimaryKey(  ) );
+        WidgetComponent widgetComponent = new WidgetComponent( );
+        widgetComponent.setIdWidgetComponent( DefaultPageBuilderHome.newPrimaryKey( ) );
         widgetComponent.setColumn( COLUMN1 );
         widgetComponent.setIdWidget( IDWIDGET1 );
         widgetComponent.setOrder( ORDER1 );
@@ -65,29 +64,29 @@ public class DefaultPageBuilderTest extends LuteceTestCase
         // Create test
         DefaultPageBuilderHome.create( widgetComponent );
 
-        WidgetComponent widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent(  ) );
-        assertEquals( widgetComponentStored.getIdWidgetComponent(  ), widgetComponent.getIdWidgetComponent(  ) );
-        assertEquals( widgetComponentStored.getIdWidget(  ), widgetComponent.getIdWidget(  ) );
-        assertEquals( widgetComponentStored.getOrder(  ), widgetComponent.getOrder(  ) );
+        WidgetComponent widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent( ) );
+        assertEquals( widgetComponentStored.getIdWidgetComponent( ), widgetComponent.getIdWidgetComponent( ) );
+        assertEquals( widgetComponentStored.getIdWidget( ), widgetComponent.getIdWidget( ) );
+        assertEquals( widgetComponentStored.getOrder( ), widgetComponent.getOrder( ) );
 
         // Update test
         widgetComponent.setColumn( COLUMN2 );
         widgetComponent.setIdWidget( IDWIDGET2 );
         widgetComponent.setOrder( ORDER2 );
         DefaultPageBuilderHome.update( widgetComponent );
-        widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent(  ) );
-        assertEquals( widgetComponentStored.getIdWidgetComponent(  ), widgetComponent.getIdWidgetComponent(  ) );
-        assertEquals( widgetComponentStored.getIdWidget(  ), widgetComponent.getIdWidget(  ) );
-        assertEquals( widgetComponentStored.getOrder(  ), widgetComponent.getOrder(  ) );
+        widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent( ) );
+        assertEquals( widgetComponentStored.getIdWidgetComponent( ), widgetComponent.getIdWidgetComponent( ) );
+        assertEquals( widgetComponentStored.getIdWidget( ), widgetComponent.getIdWidget( ) );
+        assertEquals( widgetComponentStored.getOrder( ), widgetComponent.getOrder( ) );
 
         // List test
-        DefaultPageBuilderHome.findAll(  );
-        DefaultPageBuilderHome.findColumns(  );
-        DefaultPageBuilderHome.findMaxOrder(  );
+        DefaultPageBuilderHome.findAll( );
+        DefaultPageBuilderHome.findColumns( );
+        DefaultPageBuilderHome.findMaxOrder( );
 
         // Delete test
-        DefaultPageBuilderHome.remove( widgetComponent.getIdWidgetComponent(  ) );
-        widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent(  ) );
+        DefaultPageBuilderHome.remove( widgetComponent.getIdWidgetComponent( ) );
+        widgetComponentStored = DefaultPageBuilderHome.findByPrimaryKey( widgetComponent.getIdWidgetComponent( ) );
         assertNull( widgetComponentStored );
     }
 }

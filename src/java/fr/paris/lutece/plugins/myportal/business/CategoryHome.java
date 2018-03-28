@@ -41,7 +41,6 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.Collection;
 
-
 /**
  *
  * This class provides instances management methods (create, find, ...) for Category objects
@@ -52,29 +51,31 @@ public final class CategoryHome
     // Static variable pointed at the DAO instance
     private static final String BEAN_MYPORTAL_CATEGORYDAO = "myportal.categoryDAO";
     private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-    private static ICategoryDAO _dao = (ICategoryDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_CATEGORYDAO );
+    private static ICategoryDAO _dao = (ICategoryDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME, BEAN_MYPORTAL_CATEGORYDAO );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private CategoryHome(  )
+    private CategoryHome( )
     {
     }
 
     /**
      * Generates a new primary key
+     * 
      * @return The new primary key
      */
-    public static int newPrimaryKey(  )
+    public static int newPrimaryKey( )
     {
         return _dao.newPrimaryKey( _plugin );
     }
 
     /**
      * Create an instance of the category class
-     * @param category The instance of the Category which contains the informations to store
-     * @return The  instance of category which has been created with its primary key.
+     * 
+     * @param category
+     *            The instance of the Category which contains the informations to store
+     * @return The instance of category which has been created with its primary key.
      */
     public static Category create( Category category )
     {
@@ -85,8 +86,10 @@ public final class CategoryHome
 
     /**
      * Update of the category which is specified in parameter
-     * @param category The instance of the Category which contains the data to store
-     * @return The instance of the  category which has been updated
+     * 
+     * @param category
+     *            The instance of the Category which contains the data to store
+     * @return The instance of the category which has been updated
      */
     public static Category update( Category category )
     {
@@ -97,19 +100,23 @@ public final class CategoryHome
 
     /**
      * Remove the category whose identifier is specified in parameter
-     * @param nCategoryId The category Id
+     * 
+     * @param nCategoryId
+     *            The category Id
      */
     public static void remove( int nCategoryId )
     {
         _dao.delete( nCategoryId, _plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Returns an instance of a category whose identifier is specified in parameter
-     * @param nKey The category primary key
+     * 
+     * @param nKey
+     *            The category primary key
      * @return an instance of Category
      */
     public static Category findByPrimaryKey( int nKey )
@@ -119,24 +126,26 @@ public final class CategoryHome
 
     /**
      * Load the data of all the category objects and returns them in form of a collection
+     * 
      * @return the collection which contains the data of all the category objects
      */
-    public static Collection<Category> getCategoriesList(  )
+    public static Collection<Category> getCategoriesList( )
     {
         return _dao.selectCategoriesList( _plugin );
     }
 
     /**
      * Load the data of all the category objects and returns them in form of a ReferenceList
+     * 
      * @return the ReferenceList which contains the data of all the category objects
      */
-    public static ReferenceList getCategories(  )
+    public static ReferenceList getCategories( )
     {
-        ReferenceList list = new ReferenceList(  );
+        ReferenceList list = new ReferenceList( );
 
         for ( Category category : _dao.selectCategoriesList( _plugin ) )
         {
-            list.addItem( category.getIdCategory(  ), category.getName(  ) );
+            list.addItem( category.getIdCategory( ), category.getName( ) );
         }
 
         return list;
@@ -144,9 +153,10 @@ public final class CategoryHome
 
     /**
      * Find the first category
+     * 
      * @return a {@link Category}
      */
-    public static Category findFirstCategory(  )
+    public static Category findFirstCategory( )
     {
         return _dao.selectFirstCategory( _plugin );
     }

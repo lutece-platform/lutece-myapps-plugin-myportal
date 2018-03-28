@@ -43,7 +43,6 @@ import fr.paris.lutece.test.MokeHttpServletRequest;
 
 import java.util.List;
 
-
 /**
  *
  * CategoryJspBeanTest
@@ -56,19 +55,21 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getManageCategories method of class fr.paris.lutece.plugins.myportal.web.CategoryJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetManageCategories(  ) throws AccessDeniedException
+    public void testGetManageCategories( ) throws AccessDeniedException
     {
         System.out.println( "getManageCategories" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        CategoryJspBean instance = new CategoryJspBean(  );
+        CategoryJspBean instance = new CategoryJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getManageCategories( request );
@@ -78,19 +79,21 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getCreateCategory method of class fr.paris.lutece.plugins.myportal.web.CategoryJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetCreateCategory(  ) throws AccessDeniedException
+    public void testGetCreateCategory( ) throws AccessDeniedException
     {
         System.out.println( "getCreateCategory" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        CategoryJspBean instance = new CategoryJspBean(  );
+        CategoryJspBean instance = new CategoryJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getCreateCategory( request );
@@ -100,19 +103,21 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getConfirmRemoveCategory method of class fr.paris.lutece.plugins.myportal.web.CategoryJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetConfirmRemoveCategory(  ) throws AccessDeniedException
+    public void testGetConfirmRemoveCategory( ) throws AccessDeniedException
     {
         System.out.println( "getConfirmRemoveCategory" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-        CategoryJspBean instance = new CategoryJspBean(  );
+        CategoryJspBean instance = new CategoryJspBean( );
         instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
         String result = instance.getConfirmRemoveCategory( request );
@@ -122,25 +127,27 @@ public class CategoryJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getModifyCategory method of class fr.paris.lutece.plugins.myportal.web.CategoryJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetModifyCategory(  ) throws AccessDeniedException
+    public void testGetModifyCategory( ) throws AccessDeniedException
     {
         System.out.println( "getModifyCategory" );
 
-        List<Category> listCategories = (List<Category>) CategoryHome.getCategoriesList(  );
+        List<Category> listCategories = (List<Category>) CategoryHome.getCategoriesList( );
 
-        if ( listCategories.size(  ) > 0 )
+        if ( listCategories.size( ) > 0 )
         {
             Category category = listCategories.get( 0 );
-            MokeHttpServletRequest request = new MokeHttpServletRequest(  );
-            request.addMokeParameters( PARAMETER_CATEGORY_ID_CATEGORY, Integer.toString( category.getIdCategory(  ) ) );
+            MokeHttpServletRequest request = new MokeHttpServletRequest( );
+            request.addMokeParameters( PARAMETER_CATEGORY_ID_CATEGORY, Integer.toString( category.getIdCategory( ) ) );
 
             AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-            user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+            user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
             request.registerAdminUserWithRigth( user, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
-            CategoryJspBean instance = new CategoryJspBean(  );
+            CategoryJspBean instance = new CategoryJspBean( );
             instance.init( request, WidgetJspBean.RIGHT_MANAGE_MYPORTAL_WIDGET );
 
             String result = instance.getModifyCategory( request );

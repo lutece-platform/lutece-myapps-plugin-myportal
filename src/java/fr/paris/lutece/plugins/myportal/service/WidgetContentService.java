@@ -48,13 +48,12 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 
-
 /**
  * WidgetContentService store widget content into a cache
  */
 public class WidgetContentService
 {
-	public static final String BEAN_NAME = "myportal.widgetContentService";
+    public static final String BEAN_NAME = "myportal.widgetContentService";
     // CONSTANTS
     private static final String TRUE = "true";
 
@@ -67,29 +66,27 @@ public class WidgetContentService
     // VARIABLES
     private ICacheKeyService _cksWidgetContent;
     private WidgetService _widgetService;
-    private WidgetContentCacheService _cacheWidgetContent = WidgetContentCacheService.getInstance(  );
-    
-    
+    private WidgetContentCacheService _cacheWidgetContent = WidgetContentCacheService.getInstance( );
 
     /**
      * Constructor
      */
-    public WidgetContentService(  )
+    public WidgetContentService( )
     {
-        init(  );
+        init( );
     }
 
     /**
      * Init service
      */
-    private void init(  )
+    private void init( )
     {
         String strCacheEnable = AppPropertiesService.getProperty( PROPERTY_CACHE_WIDGETCONTENTSERVICE_ENABLE, TRUE );
         boolean bCacheEnable = TRUE.equalsIgnoreCase( strCacheEnable );
 
         if ( bCacheEnable )
         {
-            _cacheWidgetContent.initCache(  );
+            _cacheWidgetContent.initCache( );
         }
         else
         {
@@ -99,17 +96,21 @@ public class WidgetContentService
 
     /**
      * Get the widget content
-     * @param nIdWidget The Widget ID
-     * @param user The Lutece user
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param nIdWidget
+     *            The Widget ID
+     * @param user
+     *            The Lutece user
+     * @param request
+     *            {@link HttpServletRequest}
      * @return The widget Content
      */
     public String getWidgetContent( int nIdWidget, LuteceUser user, HttpServletRequest request )
     {
-        Widget widget = _widgetService.getWidget(nIdWidget);
-        String strType = widget.getWidgetType(  );
-        WidgetHandler handler = WidgetHandlerService.instance(  ).getHandler( strType );
-        String strKey = handler.isCustomizable(  ) ? getKey( nIdWidget, user ) : getKey( nIdWidget );
+        Widget widget = _widgetService.getWidget( nIdWidget );
+        String strType = widget.getWidgetType( );
+        WidgetHandler handler = WidgetHandlerService.instance( ).getHandler( strType );
+        String strKey = handler.isCustomizable( ) ? getKey( nIdWidget, user ) : getKey( nIdWidget );
         String widgetContent = (String) _cacheWidgetContent.getFromCache( strKey );
 
         if ( widgetContent == null )
@@ -123,7 +124,9 @@ public class WidgetContentService
 
     /**
      * Remove the cache by a given name
-     * @param nId the name of the cache to remove
+     * 
+     * @param nId
+     *            the name of the cache to remove
      */
     public void removeCache( int nId )
     {
@@ -132,8 +135,11 @@ public class WidgetContentService
 
     /**
      * Remove the cache by a given name
-     * @param nId the name of the cache to remove
-     * @param user the {@link LuteceUser}
+     * 
+     * @param nId
+     *            the name of the cache to remove
+     * @param user
+     *            the {@link LuteceUser}
      */
     public void removeCache( int nId, LuteceUser user )
     {
@@ -143,33 +149,38 @@ public class WidgetContentService
 
     /**
      * Set the cache key service
-     * @param cacheKeyService the _cacheKeyService to set
+     * 
+     * @param cacheKeyService
+     *            the _cacheKeyService to set
      */
     public void setWidgetContentCacheKeyService( ICacheKeyService cacheKeyService )
     {
         _cksWidgetContent = cacheKeyService;
     }
-    
-    
-    
 
     /**
      * Set the widget service
-     * @param widgetService the widget service
+     * 
+     * @param widgetService
+     *            the widget service
      */
-	public void setWidgetService(WidgetService widgetService) {
-		_widgetService = widgetService;
-	}
+    public void setWidgetService( WidgetService widgetService )
+    {
+        _widgetService = widgetService;
+    }
 
-	/**
+    /**
      * Get the cache key for a widget
-     * @param nId the id
-     * @param user the {@link LuteceUser}
+     * 
+     * @param nId
+     *            the id
+     * @param user
+     *            the {@link LuteceUser}
      * @return the key
      */
     private String getKey( int nId, LuteceUser user )
     {
-        Map<String, String> mapParams = new HashMap<String, String>(  );
+        Map<String, String> mapParams = new HashMap<String, String>( );
         mapParams.put( KEY_WIDGET, Integer.toString( nId ) );
 
         return _cksWidgetContent.getKey( mapParams, PortalJspBean.MODE_HTML, user );
@@ -177,7 +188,9 @@ public class WidgetContentService
 
     /**
      * Get the cache key for a widget
-     * @param nId the id
+     * 
+     * @param nId
+     *            the id
      * @return the key
      */
     private String getKey( int nId )

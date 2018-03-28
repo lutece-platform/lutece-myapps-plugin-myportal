@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.myportal.service.handler;
 import fr.paris.lutece.test.LuteceTestCase;
 import fr.paris.lutece.util.ReferenceList;
 
-
 /**
  *
  * WidgetHandlerServiceTest
@@ -47,12 +46,12 @@ public class WidgetHandlerServiceTest extends LuteceTestCase
     /**
      * Test of getHandlers method of class fr.paris.lutece.plugins.myportal.service.handler.WidgetHandlerServiceTest
      */
-    public void testGetHandlers(  )
+    public void testGetHandlers( )
     {
         System.out.println( "getHandlers" );
 
-        WidgetHandlerService instance = WidgetHandlerService.instance(  );
-        ReferenceList result = instance.getHandlers(  );
+        WidgetHandlerService instance = WidgetHandlerService.instance( );
+        ReferenceList result = instance.getHandlers( );
         assertNotNull( result );
     }
 }

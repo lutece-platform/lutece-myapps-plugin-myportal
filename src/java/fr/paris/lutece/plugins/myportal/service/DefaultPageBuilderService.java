@@ -51,7 +51,6 @@ import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
-
 /**
  *
  * DefaultPageBuilderService
@@ -59,11 +58,11 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public final class DefaultPageBuilderService
 {
+	public static final String BEAN_NAME = "myportal.defaultPageBuilderService";
+	
     // CONSTANTS
     private static final int CONSTANTE_FIRST_ORDER = 1;
     private static final int CONSTANTE_DEFAULT_COLUMN_COUNT = 3;
-    
-    
 
     // PARAMETERS
     private static final String PARAMETER_NB_COLUMNS = "nb_columns";
@@ -72,36 +71,34 @@ public final class DefaultPageBuilderService
     private static final String MARK_LIST_PARAM_DEFAULT_VALUES = "list_param_default_values";
     private static final String MARK_NB_COLUMNS = "nb_columns";
     private static final String MARK_COLUMNS_STYLE = "column_styles";
-    
-    public static final String BEAN_NAME = "myportal.defaultPageBuilderService";
-    
+
+
     private WidgetService _widgetService;
-    
+
     private ReferenceList _pageBuilderParameters;
     private boolean _bPageBuilderParametersCache;
 
     /**
      * Private Constructor
      */
-    private DefaultPageBuilderService(  )
+    private DefaultPageBuilderService( )
     {
     }
 
-
     /**
-     * Returns the column count, with {@link DefaultPageBuilderService#PROPERTY_COLUMN_COUNT}.
-     * Default is {@link DefaultPageBuilderService#CONSTANTE_DEFAULT_COLUMN_COUNT}
+     * Returns the column count, with {@link DefaultPageBuilderService#PROPERTY_COLUMN_COUNT}. Default is
+     * {@link DefaultPageBuilderService#CONSTANTE_DEFAULT_COLUMN_COUNT}
+     * 
      * @return the column count
      */
-    public int getColumnCount(  )
+    public int getColumnCount( )
     {
         int nNbColumns = CONSTANTE_DEFAULT_COLUMN_COUNT;
         ReferenceItem nbColumns = getPageBuilderParameterDefaultValue( PARAMETER_NB_COLUMNS );
 
-        if ( ( nbColumns != null ) && StringUtils.isNotBlank( nbColumns.getName(  ) ) &&
-                StringUtils.isNumeric( nbColumns.getName(  ) ) )
+        if ( ( nbColumns != null ) && StringUtils.isNotBlank( nbColumns.getName( ) ) && StringUtils.isNumeric( nbColumns.getName( ) ) )
         {
-            nNbColumns = Integer.parseInt( nbColumns.getName(  ) );
+            nNbColumns = Integer.parseInt( nbColumns.getName( ) );
         }
 
         return nNbColumns;
@@ -109,12 +106,13 @@ public final class DefaultPageBuilderService
 
     /**
      *
-     * @param nColumn the column id
+     * @param nColumn
+     *            the column id
      * @return all WidgetComponent for this column
      */
     public List<WidgetComponent> getWidgetComponents( int nColumn )
     {
-        WidgetComponentFilter filter = new WidgetComponentFilter(  );
+        WidgetComponentFilter filter = new WidgetComponentFilter( );
         filter.setFilterColumn( nColumn );
 
         List<WidgetComponent> listWidgetComponents = DefaultPageBuilderHome.findByFilter( filter );
@@ -124,27 +122,32 @@ public final class DefaultPageBuilderService
 
     /**
      * Moves the widgetComponent.
-     * @param widgetComponent to move, with new values
-     * @param nOldColumn previous column id
-     * @param nOldOrder previous order
-     * @param bCreate <code>true</code> if this is a new widgetComponent, <code>false</code> otherwise.
+     * 
+     * @param widgetComponent
+     *            to move, with new values
+     * @param nOldColumn
+     *            previous column id
+     * @param nOldOrder
+     *            previous order
+     * @param bCreate
+     *            <code>true</code> if this is a new widgetComponent, <code>false</code> otherwise.
      */
     public void doMoveWidgetComponent( WidgetComponent widgetComponent, int nOldColumn, int nOldOrder, boolean bCreate )
     {
-        int nColumn = widgetComponent.getColumn(  );
-        int nOrder = widgetComponent.getOrder(  );
+        int nColumn = widgetComponent.getColumn( );
+        int nOrder = widgetComponent.getOrder( );
 
-        WidgetComponentFilter filter = new WidgetComponentFilter(  );
+        WidgetComponentFilter filter = new WidgetComponentFilter( );
         filter.setFilterColumn( nColumn );
 
         List<WidgetComponent> listColumnWidgetComponent = DefaultPageBuilderHome.findByFilter( filter );
 
-        if ( ( listColumnWidgetComponent != null ) && !listColumnWidgetComponent.isEmpty(  ) )
+        if ( ( listColumnWidgetComponent != null ) && !listColumnWidgetComponent.isEmpty( ) )
         {
             // sort by order
             Collections.sort( listColumnWidgetComponent );
 
-            int nMaxOrder = listColumnWidgetComponent.get( listColumnWidgetComponent.size(  ) - 1 ).getOrder(  );
+            int nMaxOrder = listColumnWidgetComponent.get( listColumnWidgetComponent.size( ) - 1 ).getOrder( );
 
             if ( ( nOldColumn == 0 ) || ( nOldColumn != nColumn ) )
             {
@@ -183,17 +186,18 @@ public final class DefaultPageBuilderService
 
     /**
      * Finds all widgetComponent with column and order set.
+     * 
      * @return a map where key is the column id, and value is the column's widgetComponent list.
      */
-    public Map<String, List<WidgetComponent>> getAllSetWidgetComponents(  )
+    public Map<String, List<WidgetComponent>> getAllSetWidgetComponents( )
     {
-        Map<String, List<WidgetComponent>> mapWidgetComponents = new HashMap<String, List<WidgetComponent>>(  );
+        Map<String, List<WidgetComponent>> mapWidgetComponents = new HashMap<String, List<WidgetComponent>>( );
 
-        List<WidgetComponent> listWidgetComponents = DefaultPageBuilderHome.findAll(  );
+        List<WidgetComponent> listWidgetComponents = DefaultPageBuilderHome.findAll( );
 
         for ( WidgetComponent widgetComponent : listWidgetComponents )
         {
-            int nColumn = widgetComponent.getColumn(  );
+            int nColumn = widgetComponent.getColumn( );
 
             String strColumn = Integer.toString( nColumn );
 
@@ -203,7 +207,7 @@ public final class DefaultPageBuilderService
             if ( listWidgetComponentsColumn == null )
             {
                 // the list does not exist, create it
-                listWidgetComponentsColumn = new ArrayList<WidgetComponent>(  );
+                listWidgetComponentsColumn = new ArrayList<WidgetComponent>( );
                 mapWidgetComponents.put( strColumn, listWidgetComponentsColumn );
             }
 
@@ -215,7 +219,9 @@ public final class DefaultPageBuilderService
 
     /**
      * Reorders column's widgetComponent
-     * @param nColumn the column to reorder
+     * 
+     * @param nColumn
+     *            the column to reorder
      */
     public void doReorderColumn( int nColumn )
     {
@@ -230,7 +236,9 @@ public final class DefaultPageBuilderService
 
     /**
      * Remove widget Component
-     * @param nIdWidgetComponent the ID of the widget component
+     * 
+     * @param nIdWidgetComponent
+     *            the ID of the widget component
      */
     public void doRemoveWidgetComponent( int nIdWidgetComponent )
     {
@@ -239,7 +247,9 @@ public final class DefaultPageBuilderService
 
     /**
      * Remove widget Components that are in a column > to the given column max
-     * @param nColumnMax the column max
+     * 
+     * @param nColumnMax
+     *            the column max
      */
     public void doRemoveByColumnMax( int nColumnMax )
     {
@@ -248,16 +258,17 @@ public final class DefaultPageBuilderService
 
     /**
      * Builds the map to with column id as key, and <code>true</code> as value if column is well ordered, <code>false</code> otherwise.
+     * 
      * @return the map
      */
-    public Map<String, Boolean> getOrderedColumnsStatus(  )
+    public Map<String, Boolean> getOrderedColumnsStatus( )
     {
-        Map<String, Boolean> mapOrderedStatus = new HashMap<String, Boolean>(  );
-        List<Integer> listColumns = DefaultPageBuilderHome.findColumns(  );
+        Map<String, Boolean> mapOrderedStatus = new HashMap<String, Boolean>( );
+        List<Integer> listColumns = DefaultPageBuilderHome.findColumns( );
 
         for ( Integer nIdColumn : listColumns )
         {
-            mapOrderedStatus.put( nIdColumn.toString(  ), isWellOrdered( nIdColumn ) );
+            mapOrderedStatus.put( nIdColumn.toString( ), isWellOrdered( nIdColumn ) );
         }
 
         return mapOrderedStatus;
@@ -265,70 +276,76 @@ public final class DefaultPageBuilderService
 
     /**
      * Get the model to manage the advanced parameters
-     * @param user the current {@link AdminUser}
+     * 
+     * @param user
+     *            the current {@link AdminUser}
      * @return the model
      */
     public Map<String, Object> getManageAdvancedParameters( AdminUser user )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, getPageBuilderParamDefaultValues(  ) );
-        model.put( MARK_NB_COLUMNS, getColumnCount(  ) );
-        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance(  ).getColumnStyles(  ) );
+        Map<String, Object> model = new HashMap<String, Object>( );
+        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, getPageBuilderParamDefaultValues( ) );
+        model.put( MARK_NB_COLUMNS, getColumnCount( ) );
+        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance( ).getColumnStyles( ) );
 
         return model;
     }
 
-    
     /**
      * Get the list of widget parameter default values
+     * 
      * @return a {@link ReferenceList}
      */
-    public ReferenceList getPageBuilderParamDefaultValues(  )
+    public ReferenceList getPageBuilderParamDefaultValues( )
     {
-    	if(!_bPageBuilderParametersCache)
-    	{
-    		_pageBuilderParameters = PageBuilderParameterHome.findAll(  );
-    		_bPageBuilderParametersCache = true;
-    	}
+        if ( !_bPageBuilderParametersCache )
+        {
+            _pageBuilderParameters = PageBuilderParameterHome.findAll( );
+            _bPageBuilderParametersCache = true;
+        }
         return _pageBuilderParameters;
     }
 
     /**
      * Get the parameter
-     * @param strParameterKey the parameter key
+     * 
+     * @param strParameterKey
+     *            the parameter key
      * @return a {@link ReferenceItem}
      */
     public ReferenceItem getPageBuilderParameterDefaultValue( String strParameterKey )
     {
-    	if(_bPageBuilderParametersCache)
-    	{
-	    	for (ReferenceItem referenceItem : _pageBuilderParameters) {
-				if( strParameterKey.equals(referenceItem.getCode( ) ) )
-				{
-					return referenceItem;
-				}
-			}
-	    	_bPageBuilderParametersCache = false;
-    	}
+        if ( _bPageBuilderParametersCache )
+        {
+            for ( ReferenceItem referenceItem : _pageBuilderParameters )
+            {
+                if ( strParameterKey.equals( referenceItem.getCode( ) ) )
+                {
+                    return referenceItem;
+                }
+            }
+            _bPageBuilderParametersCache = false;
+        }
         return PageBuilderParameterHome.findByKey( strParameterKey );
     }
 
     /**
      * Get the list of widgets that are not currently put on the default page builder
+     * 
      * @return the list of widgets
      */
-    public Collection<Widget> getWidgetsList(  )
+    public Collection<Widget> getWidgetsList( )
     {
-        Collection<Widget> listWidgets = new ArrayList<Widget>(  );
-        List<Integer> listWidgetIds = DefaultPageBuilderHome.findWidgetIds(  );
+        Collection<Widget> listWidgets = new ArrayList<Widget>( );
+        List<Integer> listWidgetIds = DefaultPageBuilderHome.findWidgetIds( );
 
-        for ( Widget widget : _widgetService.getPublicMandatoryWidgets(  ) )
+        for ( Widget widget : _widgetService.getPublicMandatoryWidgets( ) )
         {
             boolean bHasWidget = false;
 
             for ( int nWidgetId : listWidgetIds )
             {
-                if ( nWidgetId == widget.getIdWidget(  ) )
+                if ( nWidgetId == widget.getIdWidget( ) )
                 {
                     bHasWidget = true;
 
@@ -347,36 +364,42 @@ public final class DefaultPageBuilderService
 
     /**
      * Update a widget parameter default value
-     * @param param the parameter
+     * 
+     * @param param
+     *            the parameter
      */
     public void updatePageBuilderParameterDefaultValue( ReferenceItem param )
     {
-    	_bPageBuilderParametersCache = false;
+        _bPageBuilderParametersCache = false;
         PageBuilderParameterHome.update( param );
     }
 
     /**
      * Remove all column styles
      */
-    public void removeAllColumnStyleFromPageBuilderParameter(  )
+    public void removeAllColumnStyleFromPageBuilderParameter( )
     {
-    	_bPageBuilderParametersCache = false;
-        PageBuilderParameterHome.removeAllColumnStyles(  );
+        _bPageBuilderParametersCache = false;
+        PageBuilderParameterHome.removeAllColumnStyles( );
     }
 
     /**
      * Add a new parameter
-     * @param param the parameter
+     * 
+     * @param param
+     *            the parameter
      */
     public void addNewPageBuilderParameter( ReferenceItem param )
     {
-    	_bPageBuilderParametersCache = false;
+        _bPageBuilderParametersCache = false;
         PageBuilderParameterHome.create( param );
     }
 
     /**
      * Determines if the column is well ordered
-     * @param nColumn the column id
+     * 
+     * @param nColumn
+     *            the column id
      * @return true if well ordered, <code>false</code> otherwise.
      */
     private boolean isWellOrdered( int nColumn )
@@ -385,7 +408,7 @@ public final class DefaultPageBuilderService
 
         for ( WidgetComponent dc : getWidgetComponents( nColumn ) )
         {
-            if ( nOrder != dc.getOrder(  ) )
+            if ( nOrder != dc.getOrder( ) )
             {
                 return false;
             }
@@ -398,13 +421,17 @@ public final class DefaultPageBuilderService
 
     /**
      * Update the widgetComponent columns
-     * @param listColumnWidgetComponent the list of widget component
-     * @param widgetComponent the widget component to change the order
-     * @param nOrder the new order
-     * @param nOldOrder the old order
+     * 
+     * @param listColumnWidgetComponent
+     *            the list of widget component
+     * @param widgetComponent
+     *            the widget component to change the order
+     * @param nOrder
+     *            the new order
+     * @param nOldOrder
+     *            the old order
      */
-    private void updateWidgetComponentColumns( List<WidgetComponent> listColumnWidgetComponent,
-        WidgetComponent widgetComponent, int nOrder, int nOldOrder )
+    private void updateWidgetComponentColumns( List<WidgetComponent> listColumnWidgetComponent, WidgetComponent widgetComponent, int nOrder, int nOldOrder )
     {
         if ( nOrder < nOldOrder )
         {
@@ -412,7 +439,7 @@ public final class DefaultPageBuilderService
             {
                 if ( !wc.equals( widgetComponent ) )
                 {
-                    int nCurrentOrder = wc.getOrder(  );
+                    int nCurrentOrder = wc.getOrder( );
 
                     if ( ( nCurrentOrder >= nOrder ) && ( nCurrentOrder < nOldOrder ) )
                     {
@@ -422,44 +449,44 @@ public final class DefaultPageBuilderService
                 }
             }
         }
-        else if ( nOrder > nOldOrder )
-        {
-            for ( WidgetComponent wc : listColumnWidgetComponent )
+        else
+            if ( nOrder > nOldOrder )
             {
-                if ( !wc.equals( widgetComponent ) )
+                for ( WidgetComponent wc : listColumnWidgetComponent )
                 {
-                    int nCurrentOrder = wc.getOrder(  );
-
-                    if ( ( nCurrentOrder <= nOrder ) && ( nCurrentOrder > nOldOrder ) )
+                    if ( !wc.equals( widgetComponent ) )
                     {
-                        wc.setOrder( nCurrentOrder - 1 );
-                        DefaultPageBuilderHome.update( wc );
+                        int nCurrentOrder = wc.getOrder( );
+
+                        if ( ( nCurrentOrder <= nOrder ) && ( nCurrentOrder > nOldOrder ) )
+                        {
+                            wc.setOrder( nCurrentOrder - 1 );
+                            DefaultPageBuilderHome.update( wc );
+                        }
                     }
                 }
             }
-        }
     }
-
 
     /**
      * getter widgetService
+     * 
      * @return the widgetService
      */
-	public WidgetService getWidgetService() 
-	{
-		return _widgetService;
-	}
+    public WidgetService getWidgetService( )
+    {
+        return _widgetService;
+    }
 
+    /**
+     * setter widgetService
+     * 
+     * @param widgetService
+     *            the widgetService
+     */
+    public void setWidgetService( WidgetService widgetService )
+    {
+        this._widgetService = widgetService;
+    }
 
-	
-	/**
-	 * setter widgetService
-	 * @param widgetService the widgetService
-	 */
-	public void setWidgetService(WidgetService widgetService) 
-	{
-		this._widgetService = widgetService;
-	}
-    
-    
 }

@@ -68,7 +68,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * DefaultPageBuilderJspBean
@@ -122,43 +121,46 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
     private static final String JSP_BUILD_DEFAULT_PAGE = "BuildDefaultPage.jsp";
     private static final String JSP_URL_BUILD_DEFAULT_PAGE_WIDGETS_LIST = "jsp/admin/plugins/myportal/BuildDefaultPageWidgetsList.jsp";
     private static final String JSP_URL_MANAGE_ADVANCED_PARAMETERS = "jsp/admin/plugins/myportal/ManageAdvancedParameters.jsp";
-    private DefaultPageBuilderService _service =  SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private DefaultPageBuilderService _service = SpringContextService.getBean( DefaultPageBuilderService.BEAN_NAME );
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
 
     /**
      * Get the page to build the default page
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return a html code
      */
     public String getBuildDefaultPage( HttpServletRequest request )
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_BUILD_DEFAULT_PAGE );
 
-        Map<String, List<WidgetComponent>> mapWidgetComponents = _service.getAllSetWidgetComponents(  );
+        Map<String, List<WidgetComponent>> mapWidgetComponents = _service.getAllSetWidgetComponents( );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         model.put( MARK_MAP_WIDGET_COMPONENTS, mapWidgetComponents );
-        model.put( MARK_COLUMN_COUNT, _service.getColumnCount(  ) );
-        model.put( MARK_MAP_AVAILABLE_ORDERS, getMapAvailableOrders(  ) );
-        model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns(  ) );
-        model.put( MARK_MAP_COLUMN_ORDER_STATUS, _service.getOrderedColumnsStatus(  ) );
-        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, _service.getPageBuilderParamDefaultValues(  ) );
-        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance(  ).getColumnStyles(  ) );
-        model.put( MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS,
-            RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) );
+        model.put( MARK_COLUMN_COUNT, _service.getColumnCount( ) );
+        model.put( MARK_MAP_AVAILABLE_ORDERS, getMapAvailableOrders( ) );
+        model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns( ) );
+        model.put( MARK_MAP_COLUMN_ORDER_STATUS, _service.getOrderedColumnsStatus( ) );
+        model.put( MARK_LIST_PARAM_DEFAULT_VALUES, _service.getPageBuilderParamDefaultValues( ) );
+        model.put( MARK_COLUMNS_STYLE, StyleService.getInstance( ).getColumnStyles( ) );
+        model.put( MARK_PERMISSION_MANAGE_ADVANCED_PARAMETERS, RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BUILD_DEFAULT_PAGE, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BUILD_DEFAULT_PAGE, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Get the page of widgets list
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return a html code
      */
     public String getWidgetsListPage( HttpServletRequest request )
@@ -167,31 +169,32 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
         _nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE, 50 );
-        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
-                _nDefaultItemsPerPage );
+        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage, _nDefaultItemsPerPage );
 
         UrlItem url = new UrlItem( JSP_URL_BUILD_DEFAULT_PAGE_WIDGETS_LIST );
-        String strUrl = url.getUrl(  );
-        Collection<Widget> listWidgets = _service.getWidgetsList(  );
-        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
-                PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
+        String strUrl = url.getUrl( );
+        Collection<Widget> listWidgets = _service.getWidgetsList( );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX, _strCurrentPageIndex,
+                getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( _nItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
-        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
-        model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns(  ) );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems( ) );
+        model.put( MARK_LIST_AVAILABLE_COLUMNS, getListAvailableColumns( ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIDGETS_LIST, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIDGETS_LIST, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
-    * Reorders columns
-    * @param request the request
-    * @return url
-    */
+     * Reorders columns
+     * 
+     * @param request
+     *            the request
+     * @return url
+     */
     public String doReorderColumn( HttpServletRequest request )
     {
         String strUrl = StringUtils.EMPTY;
@@ -207,9 +210,9 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
                 _service.doReorderColumn( nColumn );
                 strUrl = JSP_BUILD_DEFAULT_PAGE;
             }
-            catch ( NumberFormatException nfe )
+            catch( NumberFormatException nfe )
             {
-                AppLogService.error( "DefaultPageBuilderJspBean.doReorderColumn : " + nfe.getMessage(  ), nfe );
+                AppLogService.error( "DefaultPageBuilderJspBean.doReorderColumn : " + nfe.getMessage( ), nfe );
 
                 strUrl = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
             }
@@ -224,7 +227,9 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Moves the widgetComponent
-     * @param request the request
+     * 
+     * @param request
+     *            the request
      * @return url
      */
     public String doMoveWidgetComponent( HttpServletRequest request )
@@ -240,8 +245,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         {
             int nWidgetComponentId = Integer.parseInt( strIdWidgetComponent );
             widgetComponent = DefaultPageBuilderHome.findByPrimaryKey( nWidgetComponentId );
-            nOldOrder = widgetComponent.getOrder(  );
-            nOldColumn = widgetComponent.getColumn(  );
+            nOldOrder = widgetComponent.getOrder( );
+            nOldColumn = widgetComponent.getColumn( );
         }
         else
         {
@@ -250,7 +255,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
             {
                 bCreate = true;
-                widgetComponent = new WidgetComponent(  );
+                widgetComponent = new WidgetComponent( );
 
                 int nWidgetId = Integer.parseInt( strIdWidget );
                 widgetComponent.setIdWidget( nWidgetId );
@@ -266,8 +271,8 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             String strOrder = request.getParameter( PARAMETER_WIDGET_ORDER );
             String strColumn = request.getParameter( PARAMETER_WIDGET_COLUMN );
 
-            if ( StringUtils.isNotBlank( strOrder ) && StringUtils.isNumeric( strOrder ) &&
-                    StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) )
+            if ( StringUtils.isNotBlank( strOrder ) && StringUtils.isNumeric( strOrder ) && StringUtils.isNotBlank( strColumn )
+                    && StringUtils.isNumeric( strColumn ) )
             {
                 int nOrder = Integer.parseInt( strOrder );
                 int nColumn = Integer.parseInt( strColumn );
@@ -290,7 +295,9 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Remove a widget component from the default page
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the url return
      */
     public String doRemoveWidgetComponent( HttpServletRequest request )
@@ -314,50 +321,53 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Returns the advanced parameters management interface
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the interface
      */
     public String getManageAdvancedParameters( HttpServletRequest request )
     {
         if ( !RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                    MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
+                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) )
         {
             return getBuildDefaultPage( request );
         }
 
         setPageTitleProperty( PROPERTY_PAGE_TITLE_MANAGE_ADVANCED_PARAMETERS );
 
-        Map<String, Object> model = _service.getManageAdvancedParameters( getUser(  ) );
+        Map<String, Object> model = _service.getManageAdvancedParameters( getUser( ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale(  ),
-                model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Modify the widget parameter default values
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the url return
-     * @throws AccessDeniedException access denied if the user does not have the permission
+     * @throws AccessDeniedException
+     *             access denied if the user does not have the permission
      */
-    public String doModifyWidgetParameterDefaultValues( HttpServletRequest request )
-        throws AccessDeniedException
+    public String doModifyWidgetParameterDefaultValues( HttpServletRequest request ) throws AccessDeniedException
     {
         if ( !RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                    MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
+                MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) )
         {
-            throw new AccessDeniedException(  );
+            throw new AccessDeniedException( );
         }
 
-        _service.removeAllColumnStyleFromPageBuilderParameter(  );
+        _service.removeAllColumnStyleFromPageBuilderParameter( );
 
-        ReferenceList listParams = _service.getPageBuilderParamDefaultValues(  );
-        int nNbColumns = _service.getColumnCount(  );
+        ReferenceList listParams = _service.getPageBuilderParamDefaultValues( );
+        int nNbColumns = _service.getColumnCount( );
 
         for ( ReferenceItem param : listParams )
         {
-            String strParamValue = request.getParameter( param.getCode(  ) );
+            String strParamValue = request.getParameter( param.getCode( ) );
 
             if ( StringUtils.isBlank( strParamValue ) )
             {
@@ -367,17 +377,16 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             param.setName( strParamValue );
             _service.updatePageBuilderParameterDefaultValue( param );
 
-            if ( PARAMETER_NB_COLUMNS.equals( param.getCode(  ) ) && StringUtils.isNotBlank( param.getName(  ) ) &&
-                    StringUtils.isNumeric( param.getName(  ) ) )
+            if ( PARAMETER_NB_COLUMNS.equals( param.getCode( ) ) && StringUtils.isNotBlank( param.getName( ) ) && StringUtils.isNumeric( param.getName( ) ) )
             {
-                nNbColumns = Integer.parseInt( param.getName(  ) );
+                nNbColumns = Integer.parseInt( param.getName( ) );
             }
         }
 
         // Add column styles
         for ( int i = 1; i <= nNbColumns; i++ )
         {
-            ReferenceItem param = new ReferenceItem(  );
+            ReferenceItem param = new ReferenceItem( );
             param.setCode( PARAMETER_COLUMN_STYLE + i );
 
             String strParamValue = request.getParameter( PARAMETER_COLUMN_STYLE + i );
@@ -388,7 +397,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
             }
 
             int nIdStyle = Integer.parseInt( strParamValue );
-            Style style = StyleService.getInstance(  ).getColumnStyle( nIdStyle );
+            Style style = StyleService.getInstance( ).getColumnStyle( nIdStyle );
 
             if ( style != null )
             {
@@ -405,16 +414,17 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Returns list with available column
+     * 
      * @return all available columns
      */
-    private ReferenceList getListAvailableColumns(  )
+    private ReferenceList getListAvailableColumns( )
     {
-        ReferenceList refList = new ReferenceList(  );
+        ReferenceList refList = new ReferenceList( );
 
         // add empty item
         refList.addItem( StringUtils.EMPTY, StringUtils.EMPTY );
 
-        for ( int nColumnIndex = 1; nColumnIndex <= _service.getColumnCount(  ); nColumnIndex++ )
+        for ( int nColumnIndex = 1; nColumnIndex <= _service.getColumnCount( ); nColumnIndex++ )
         {
             refList.addItem( nColumnIndex, Integer.toString( nColumnIndex ) );
         }
@@ -424,17 +434,18 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Builds all refList order for all columns
+     * 
      * @return the map with column id as key
      */
-    private Map<String, ReferenceList> getMapAvailableOrders(  )
+    private Map<String, ReferenceList> getMapAvailableOrders( )
     {
-        Map<String, ReferenceList> mapAvailableOrders = new HashMap<String, ReferenceList>(  );
+        Map<String, ReferenceList> mapAvailableOrders = new HashMap<String, ReferenceList>( );
 
         // get columns
-        for ( Integer nColumn : DefaultPageBuilderHome.findColumns(  ) )
+        for ( Integer nColumn : DefaultPageBuilderHome.findColumns( ) )
         {
             // get orders
-            mapAvailableOrders.put( nColumn.toString(  ), getListAvailableOrders( nColumn ) );
+            mapAvailableOrders.put( nColumn.toString( ), getListAvailableOrders( nColumn ) );
         }
 
         return mapAvailableOrders;
@@ -442,12 +453,14 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
 
     /**
      * Orders reference list for the given column
-     * @param nColumn column
+     * 
+     * @param nColumn
+     *            column
      * @return the refList
      */
     private ReferenceList getListAvailableOrders( int nColumn )
     {
-        ReferenceList refList = new ReferenceList(  );
+        ReferenceList refList = new ReferenceList( );
 
         // add empty item
         refList.addItem( StringUtils.EMPTY, StringUtils.EMPTY );

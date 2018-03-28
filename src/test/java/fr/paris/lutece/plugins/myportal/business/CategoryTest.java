@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * CategoryTest
@@ -51,39 +50,39 @@ public class CategoryTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.Category
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        Category category = new Category(  );
-        category.setIdCategory( CategoryHome.newPrimaryKey(  ) );
+        Category category = new Category( );
+        category.setIdCategory( CategoryHome.newPrimaryKey( ) );
         category.setName( NAME1 );
         category.setDescription( DESCRIPTION1 );
 
         // Create test
         CategoryHome.create( category );
 
-        Category categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory(  ) );
-        assertEquals( categoryStored.getIdCategory(  ), category.getIdCategory(  ) );
-        assertEquals( categoryStored.getName(  ), category.getName(  ) );
-        assertEquals( categoryStored.getDescription(  ), category.getDescription(  ) );
+        Category categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory( ) );
+        assertEquals( categoryStored.getIdCategory( ), category.getIdCategory( ) );
+        assertEquals( categoryStored.getName( ), category.getName( ) );
+        assertEquals( categoryStored.getDescription( ), category.getDescription( ) );
 
         // Update test
         category.setName( NAME2 );
         category.setDescription( DESCRIPTION2 );
         CategoryHome.update( category );
-        categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory(  ) );
-        assertEquals( categoryStored.getIdCategory(  ), category.getIdCategory(  ) );
-        assertEquals( categoryStored.getName(  ), category.getName(  ) );
-        assertEquals( categoryStored.getDescription(  ), category.getDescription(  ) );
+        categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory( ) );
+        assertEquals( categoryStored.getIdCategory( ), category.getIdCategory( ) );
+        assertEquals( categoryStored.getName( ), category.getName( ) );
+        assertEquals( categoryStored.getDescription( ), category.getDescription( ) );
 
         // List test
-        CategoryHome.getCategoriesList(  );
-        CategoryHome.getCategories(  );
-        CategoryHome.findFirstCategory(  );
+        CategoryHome.getCategoriesList( );
+        CategoryHome.getCategories( );
+        CategoryHome.findFirstCategory( );
 
         // Delete test
-        CategoryHome.remove( category.getIdCategory(  ) );
-        categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory(  ) );
+        CategoryHome.remove( category.getIdCategory( ) );
+        categoryStored = CategoryHome.findByPrimaryKey( category.getIdCategory( ) );
         assertNull( categoryStored );
     }
 }

@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.myportal.service.cache;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
-
 /**
  * WidgetContentCacheService
  */
@@ -48,19 +47,20 @@ public final class WidgetContentCacheService extends AbstractCacheableService
     /**
      * Constructor
      */
-    private WidgetContentCacheService(  )
+    private WidgetContentCacheService( )
     {
     }
 
     /**
      * Get the instance of WidgetContentCacheService
+     * 
      * @return an instance of WidgetContentCacheService
      */
-    public static WidgetContentCacheService getInstance(  )
+    public static WidgetContentCacheService getInstance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new WidgetContentCacheService(  );
+            _singleton = new WidgetContentCacheService( );
         }
 
         return _singleton;
@@ -69,27 +69,29 @@ public final class WidgetContentCacheService extends AbstractCacheableService
     /**
      * {@inheritDoc }
      */
-    public String getName(  )
+    public String getName( )
     {
         return SERVICE_NAME;
     }
 
     /**
      * Remove the cache by a key
-     * @param strKey the cache key
+     * 
+     * @param strKey
+     *            the cache key
      */
     public void removeCache( String strKey )
     {
         try
         {
-            if ( isCacheEnable(  ) && ( getCache(  ) != null ) )
+            if ( isCacheEnable( ) && ( getCache( ) != null ) )
             {
-                getCache(  ).remove( strKey );
+                getCache( ).remove( strKey );
             }
         }
-        catch ( IllegalStateException e )
+        catch( IllegalStateException e )
         {
-            AppLogService.error( e.getMessage(  ), e );
+            AppLogService.error( e.getMessage( ), e );
         }
     }
 }

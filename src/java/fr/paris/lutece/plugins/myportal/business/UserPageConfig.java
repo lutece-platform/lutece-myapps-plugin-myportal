@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 /**
  *
  * This is the business class for the object Object
@@ -47,16 +46,19 @@ public class UserPageConfig
 
     /**
      * Returns the UserGuid
+     * 
      * @return The UserGuid
      */
-    public String getUserGuid(  )
+    public String getUserGuid( )
     {
         return _strUserGuid;
     }
 
     /**
      * Sets the UserGuid
-     * @param strUserGuid The UserGuid
+     * 
+     * @param strUserGuid
+     *            The UserGuid
      */
     public void setUserGuid( String strUserGuid )
     {
@@ -65,16 +67,19 @@ public class UserPageConfig
 
     /**
      * Returns the UserPageConfig
+     * 
      * @return The UserPageConfig
      */
-    public String getUserPageConfig(  )
+    public String getUserPageConfig( )
     {
         return _strUserPageConfig;
     }
 
     /**
      * Sets the UserPageConfig
-     * @param strUserPageConfig The UserPageConfig
+     * 
+     * @param strUserPageConfig
+     *            The UserPageConfig
      */
     public void setUserPageConfig( String strUserPageConfig )
     {

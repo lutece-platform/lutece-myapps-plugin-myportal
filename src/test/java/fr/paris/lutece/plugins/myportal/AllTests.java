@@ -50,7 +50,6 @@ import fr.paris.lutece.plugins.myportal.web.WidgetJspBeanTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
  * This class is the main test suite for the package fr.paris.lutece.plugins.myportal
  */
@@ -58,13 +57,14 @@ public final class AllTests
 {
     /**
      * A set of tests
+     * 
      * @return Test the tests
      */
-    public static Test suite(  )
+    public static Test suite( )
     {
         TestSuite suite = new TestSuite( "*** Tests Plugin MyPortal " );
 
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTest( new TestSuite( PageBuilderParameterTest.class ) );
         suite.addTest( new TestSuite( CategoryTest.class ) );
         suite.addTest( new TestSuite( DefaultPageBuilderTest.class ) );
@@ -79,7 +79,7 @@ public final class AllTests
         suite.addTest( new TestSuite( MyPortalAdminDashboardComponentTest.class ) );
         suite.addTest( new TestSuite( WidgetJspBeanTest.class ) );
 
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 }

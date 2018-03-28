@@ -40,7 +40,6 @@ import fr.paris.lutece.portal.web.dashboard.AdminDashboardJspBean;
 import fr.paris.lutece.test.LuteceTestCase;
 import fr.paris.lutece.test.MokeHttpServletRequest;
 
-
 /**
  *
  * MyPortalAdminDashboardComponentTest
@@ -50,19 +49,21 @@ public class MyPortalAdminDashboardComponentTest extends LuteceTestCase
 {
     /**
      * Test of getDashboardData method of class fr.paris.lutece.plugins.myportal.web.MyPortalAdminDashboardComponent
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetDashboardData(  ) throws AccessDeniedException
+    public void testGetDashboardData( ) throws AccessDeniedException
     {
         System.out.println( "getMyPortalAdminDashboardData" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, AdminDashboardJspBean.RIGHT_MANAGE_ADMINDASHBOARD );
 
-        MyPortalAdminDashboardComponent instance = new MyPortalAdminDashboardComponent(  );
+        MyPortalAdminDashboardComponent instance = new MyPortalAdminDashboardComponent( );
 
         String result = instance.getDashboardData( user, request );
 

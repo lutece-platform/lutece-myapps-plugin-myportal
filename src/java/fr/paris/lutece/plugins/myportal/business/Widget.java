@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import java.io.Serializable;
 
-
 /**
  *
  * This is the business class for the object Widget
@@ -45,7 +44,7 @@ public class Widget implements Serializable
 {
     private static final long serialVersionUID = 6779038411191982156L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nIdWidget;
     private String _strName;
     private String _strDescription;
@@ -63,16 +62,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the IdWidget
+     * 
      * @return The IdWidget
      */
-    public int getIdWidget(  )
+    public int getIdWidget( )
     {
         return _nIdWidget;
     }
 
     /**
      * Sets the IdWidget
-     * @param nIdWidget The IdWidget
+     * 
+     * @param nIdWidget
+     *            The IdWidget
      */
     public void setIdWidget( int nIdWidget )
     {
@@ -81,16 +83,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
 
     /**
      * Sets the Name
-     * @param strName The Name
+     * 
+     * @param strName
+     *            The Name
      */
     public void setName( String strName )
     {
@@ -99,16 +104,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the Description
+     * 
      * @return The Description
      */
-    public String getDescription(  )
+    public String getDescription( )
     {
         return _strDescription;
     }
 
     /**
      * Sets the Description
-     * @param strDescription The Description
+     * 
+     * @param strDescription
+     *            The Description
      */
     public void setDescription( String strDescription )
     {
@@ -117,16 +125,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the IdCategory
+     * 
      * @return The IdCategory
      */
-    public int getIdCategory(  )
+    public int getIdCategory( )
     {
         return _nIdCategory;
     }
 
     /**
      * Sets the IdCategory
-     * @param nIdCategory The IdCategory
+     * 
+     * @param nIdCategory
+     *            The IdCategory
      */
     public void setIdCategory( int nIdCategory )
     {
@@ -135,16 +146,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the Category
+     * 
      * @return The Category
      */
-    public String getCategory(  )
+    public String getCategory( )
     {
         return _strCategory;
     }
 
     /**
      * Sets the Category
-     * @param strCategory The Category
+     * 
+     * @param strCategory
+     *            The Category
      */
     public void setCategory( String strCategory )
     {
@@ -153,16 +167,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the IdIcon
+     * 
      * @return The IdIcon
      */
-    public int getIdIcon(  )
+    public int getIdIcon( )
     {
         return _nIdIcon;
     }
 
     /**
      * Sets the IdIcon
-     * @param nIdIcon The IdIcon
+     * 
+     * @param nIdIcon
+     *            The IdIcon
      */
     public void setIdIcon( int nIdIcon )
     {
@@ -171,16 +188,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the IdStyle
+     * 
      * @return The IdStyle
      */
-    public int getIdStyle(  )
+    public int getIdStyle( )
     {
         return _nIdStyle;
     }
 
     /**
      * Sets the IdStyle
-     * @param nIdStyle The IdStyle
+     * 
+     * @param nIdStyle
+     *            The IdStyle
      */
     public void setIdStyle( int nIdStyle )
     {
@@ -189,16 +209,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the Style
+     * 
      * @return The Style
      */
-    public String getStyle(  )
+    public String getStyle( )
     {
         return _strStyle;
     }
 
     /**
      * Sets the Style
-     * @param strStyle The Style
+     * 
+     * @param strStyle
+     *            The Style
      */
     public void setStyle( String strStyle )
     {
@@ -207,16 +230,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the WidgetType
+     * 
      * @return The WidgetType
      */
-    public String getWidgetType(  )
+    public String getWidgetType( )
     {
         return _strWidgetType;
     }
 
     /**
      * Sets the WidgetType
-     * @param strWidgetType The WidgetType
+     * 
+     * @param strWidgetType
+     *            The WidgetType
      */
     public void setWidgetType( String strWidgetType )
     {
@@ -225,16 +251,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the ConfigData
+     * 
      * @return The ConfigData
      */
-    public String getConfigData(  )
+    public String getConfigData( )
     {
         return _strConfigData;
     }
 
     /**
      * Sets the ConfigData
-     * @param strConfigData The ConfigData
+     * 
+     * @param strConfigData
+     *            The ConfigData
      */
     public void setConfigData( String strConfigData )
     {
@@ -243,16 +272,19 @@ public class Widget implements Serializable
 
     /**
      * Returns the CssClass
+     * 
      * @return The CssClass
      */
-    public String getCssClass(  )
+    public String getCssClass( )
     {
         return _strCssClass;
     }
 
     /**
      * Sets the CssClass
-     * @param strCssClass The CssClass
+     * 
+     * @param strCssClass
+     *            The CssClass
      */
     public void setCssClass( String strCssClass )
     {
@@ -261,7 +293,9 @@ public class Widget implements Serializable
 
     /**
      * Set the status of the widget
-     * @param nStatus the status
+     * 
+     * @param nStatus
+     *            the status
      */
     public void setStatus( int nStatus )
     {
@@ -270,16 +304,19 @@ public class Widget implements Serializable
 
     /**
      * Get the status of the widget
+     * 
      * @return the status of the widget
      */
-    public int getStatus(  )
+    public int getStatus( )
     {
         return _nStatus;
     }
 
     /**
      * Set the widget as essential
-     * @param bIsEssential true if it is essential, false otherwise
+     * 
+     * @param bIsEssential
+     *            true if it is essential, false otherwise
      */
     public void setIsEssential( boolean bIsEssential )
     {
@@ -288,16 +325,19 @@ public class Widget implements Serializable
 
     /**
      * Check if the widget is essential
+     * 
      * @return true if it is essential, false otherwise
      */
-    public boolean getIsEssential(  )
+    public boolean getIsEssential( )
     {
         return _bIsEssential;
     }
 
     /**
      * Set the widget as new
-     * @param bIsNew true if it is new, false otherwise
+     * 
+     * @param bIsNew
+     *            true if it is new, false otherwise
      */
     public void setIsNew( boolean bIsNew )
     {
@@ -306,9 +346,10 @@ public class Widget implements Serializable
 
     /**
      * Check if the widget is new
+     * 
      * @return true if it is new, false otherwise
      */
-    public boolean getIsNew(  )
+    public boolean getIsNew( )
     {
         return _bIsNew;
     }

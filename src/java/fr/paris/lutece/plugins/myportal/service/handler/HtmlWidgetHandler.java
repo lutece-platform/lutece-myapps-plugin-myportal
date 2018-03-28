@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * Html Widget Handler
@@ -54,13 +53,13 @@ public class HtmlWidgetHandler implements WidgetHandler
      */
     public String renderWidget( Widget widget, LuteceUser user, HttpServletRequest request )
     {
-        return widget.getConfigData(  );
+        return widget.getConfigData( );
     }
 
     /**
      * {@inheritDoc }
      */
-    public String getName(  )
+    public String getName( )
     {
         return NAME;
     }
@@ -68,7 +67,7 @@ public class HtmlWidgetHandler implements WidgetHandler
     /**
      * {@inheritDoc }
      */
-    public String getDescription(  )
+    public String getDescription( )
     {
         return DESCRIPTION;
     }
@@ -76,7 +75,7 @@ public class HtmlWidgetHandler implements WidgetHandler
     /**
      * {@inheritDoc}
      */
-    public boolean isCustomizable(  )
+    public boolean isCustomizable( )
     {
         return false;
     }

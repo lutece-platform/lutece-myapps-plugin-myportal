@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business.icon;
 
-
 /**
  *
  * IReferenceItem
@@ -43,13 +42,14 @@ public interface IReferenceItem
 {
     /**
      * return the item id
+     * 
      * @return the item id
      */
-    int getId(  );
+    int getId( );
 
     /**
      *
      * @return the item name
      */
-    String getName(  );
+    String getName( );
 }

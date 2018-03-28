@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * StyleTest
@@ -51,38 +50,38 @@ public class ColumnStyleTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.Style
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        Style style = new Style(  );
-        style.setId( ColumnStyleHome.newPrimaryKey(  ) );
+        Style style = new Style( );
+        style.setId( ColumnStyleHome.newPrimaryKey( ) );
         style.setName( NAME1 );
         style.setCssClass( CSSCLASS1 );
 
         // Create test
         ColumnStyleHome.create( style );
 
-        Style styleStored = ColumnStyleHome.findByPrimaryKey( style.getId(  ) );
-        assertEquals( styleStored.getId(  ), style.getId(  ) );
-        assertEquals( styleStored.getName(  ), style.getName(  ) );
-        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
+        Style styleStored = ColumnStyleHome.findByPrimaryKey( style.getId( ) );
+        assertEquals( styleStored.getId( ), style.getId( ) );
+        assertEquals( styleStored.getName( ), style.getName( ) );
+        assertEquals( styleStored.getCssClass( ), style.getCssClass( ) );
 
         // Update test
         style.setName( NAME2 );
         style.setCssClass( CSSCLASS2 );
         ColumnStyleHome.update( style );
-        styleStored = ColumnStyleHome.findByPrimaryKey( style.getId(  ) );
-        assertEquals( styleStored.getId(  ), style.getId(  ) );
-        assertEquals( styleStored.getName(  ), style.getName(  ) );
-        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
+        styleStored = ColumnStyleHome.findByPrimaryKey( style.getId( ) );
+        assertEquals( styleStored.getId( ), style.getId( ) );
+        assertEquals( styleStored.getName( ), style.getName( ) );
+        assertEquals( styleStored.getCssClass( ), style.getCssClass( ) );
 
         // List test
-        ColumnStyleHome.getStyles(  );
-        ColumnStyleHome.getStylesList(  );
+        ColumnStyleHome.getStyles( );
+        ColumnStyleHome.getStylesList( );
 
         // Delete test
-        ColumnStyleHome.remove( style.getId(  ) );
-        styleStored = ColumnStyleHome.findByPrimaryKey( style.getId(  ) );
+        ColumnStyleHome.remove( style.getId( ) );
+        styleStored = ColumnStyleHome.findByPrimaryKey( style.getId( ) );
         assertNull( styleStored );
     }
 }

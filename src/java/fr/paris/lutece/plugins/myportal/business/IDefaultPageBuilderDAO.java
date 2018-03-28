@@ -37,7 +37,6 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.List;
 
-
 /**
  *
  * IDefaultPageBuilderDAO
@@ -48,7 +47,8 @@ public interface IDefaultPageBuilderDAO
     /**
      * Get a new PK
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      * @return the new PK
      */
     int newPrimaryKey( Plugin plugin );
@@ -56,16 +56,20 @@ public interface IDefaultPageBuilderDAO
     /**
      * Insert a new record in the table.
      *
-     * @param widgetComponent instance of the widgetComponent object to insert
-     * @param plugin {@link Plugin}
+     * @param widgetComponent
+     *            instance of the widgetComponent object to insert
+     * @param plugin
+     *            {@link Plugin}
      */
     void insert( WidgetComponent widgetComponent, Plugin plugin );
 
     /**
-     * Load the data of the IndexerAction  from the table
+     * Load the data of the IndexerAction from the table
      *
-     * @param nIdWidgetComponent the ID of the widget component
-     * @param plugin {@link Plugin}
+     * @param nIdWidgetComponent
+     *            the ID of the widget component
+     * @param plugin
+     *            {@link Plugin}
      * @return the instance of the WidgetComponent
      */
     WidgetComponent load( int nIdWidgetComponent, Plugin plugin );
@@ -73,38 +77,46 @@ public interface IDefaultPageBuilderDAO
     /**
      * Delete a record from the table
      *
-     * @param nIdWidgetComponent the ID of the widget component
-     * @param plugin {@link Plugin}
+     * @param nIdWidgetComponent
+     *            the ID of the widget component
+     * @param plugin
+     *            {@link Plugin}
      */
     void delete( int nIdWidgetComponent, Plugin plugin );
 
     /**
      * Delete the records that have a column > to the given nColumnMax
      *
-     * @param nColumnMax the column max
-     * @param plugin {@link Plugin}
+     * @param nColumnMax
+     *            the column max
+     * @param plugin
+     *            {@link Plugin}
      */
     void deleteByColumnMax( int nColumnMax, Plugin plugin );
 
     /**
      * Delete all record from the table
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      */
     void deleteAll( Plugin plugin );
 
     /**
      * Update the widgetComponent in the table
      *
-     * @param widgetComponent instance of the widgetComponent object to update
-     * @param plugin {@link Plugin}
+     * @param widgetComponent
+     *            instance of the widgetComponent object to update
+     * @param plugin
+     *            {@link Plugin}
      */
     void store( WidgetComponent widgetComponent, Plugin plugin );
 
     /**
      * Finds all WidgetComponent
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      * @return all WidgetComponent
      */
     List<WidgetComponent> selectAllWidgetComponents( Plugin plugin );
@@ -112,8 +124,10 @@ public interface IDefaultPageBuilderDAO
     /**
      * Finds all WidgetComponent matching filter
      *
-     * @param filter the filter
-     * @param plugin {@link Plugin}
+     * @param filter
+     *            the filter
+     * @param plugin
+     *            {@link Plugin}
      * @return all WidgetComponent matching filter
      */
     List<WidgetComponent> selectWidgetComponents( WidgetComponentFilter filter, Plugin plugin );
@@ -121,7 +135,8 @@ public interface IDefaultPageBuilderDAO
     /**
      * Returns the max order value, for all columns
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      * @return the max order
      */
     int selectMaxOrder( Plugin plugin );
@@ -129,8 +144,10 @@ public interface IDefaultPageBuilderDAO
     /**
      * Returns the max order value, for the given column
      *
-     * @param plugin {@link Plugin}
-     * @param nColumn the column
+     * @param plugin
+     *            {@link Plugin}
+     * @param nColumn
+     *            the column
      * @return the max order
      */
     int selectMaxOrder( int nColumn, Plugin plugin );
@@ -138,7 +155,8 @@ public interface IDefaultPageBuilderDAO
     /**
      * Returns the columns list
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      * @return the columns list
      */
     List<Integer> selectColumns( Plugin plugin );
@@ -146,7 +164,8 @@ public interface IDefaultPageBuilderDAO
     /**
      * Return the widget ids list
      *
-     * @param plugin {@link Plugin}
+     * @param plugin
+     *            {@link Plugin}
      * @return the widget ids list
      */
     List<Integer> selectWidgetIds( Plugin plugin );

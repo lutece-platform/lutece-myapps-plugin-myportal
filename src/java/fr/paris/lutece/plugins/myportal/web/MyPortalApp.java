@@ -69,7 +69,6 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
  * This class provides a simple implementation of an XPage
  */
@@ -146,29 +145,31 @@ public class MyPortalApp implements XPageApplication
     private static final String JSP_URL_SEARCH_WIDGETS = "jsp/site/plugins/myportal/SearchWidgets.jsp";
 
     // private fields
-    private MyPortalPageService _pageService = MyPortalPageService.getInstance(  );
-    private WidgetService _widgetService = SpringContextService.getBean(BEAN_MYPORTAL_WIDGETSERVICE );
-    
-    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
-    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
+    private MyPortalPageService _pageService = MyPortalPageService.getInstance( );
+    private WidgetService _widgetService = SpringContextService.getBean( BEAN_MYPORTAL_WIDGETSERVICE );
 
-
+    private CategoryService _categoryService = SpringContextService.getBean( CategoryService.BEAN_NAME );
+    private DefaultPageBuilderService _defaultPageBuilderService = SpringContextService.getBean( DefaultPageBuilderService.BEAN_NAME );
 
     /**
      * Returns the content of the page myportal.
-     * @param request The http request
-     * @param nMode The current mode
-     * @param plugin The plugin object
+     * 
+     * @param request
+     *            The http request
+     * @param nMode
+     *            The current mode
+     * @param plugin
+     *            The plugin object
      * @return the {@link XPage}
-     * @throws fr.paris.lutece.portal.service.message.SiteMessageException Message displayed if an exception occurs
+     * @throws fr.paris.lutece.portal.service.message.SiteMessageException
+     *             Message displayed if an exception occurs
      */
-    public XPage getPage( HttpServletRequest request, int nMode, Plugin plugin )
-        throws SiteMessageException
+    public XPage getPage( HttpServletRequest request, int nMode, Plugin plugin ) throws SiteMessageException
     {
-        XPage page = new XPage(  );
+        XPage page = new XPage( );
 
-        page.setTitle( I18nService.getLocalizedString( PROPERTY_PAGE_TITLE, request.getLocale(  ) ) );
-        page.setPathLabel( I18nService.getLocalizedString( PROPERTY_PAGE_PATH, request.getLocale(  ) ) );
+        page.setTitle( I18nService.getLocalizedString( PROPERTY_PAGE_TITLE, request.getLocale( ) ) );
+        page.setPathLabel( I18nService.getLocalizedString( PROPERTY_PAGE_PATH, request.getLocale( ) ) );
 
         String strAction = request.getParameter( PARAMETER_ACTION );
 
@@ -178,27 +179,29 @@ public class MyPortalApp implements XPageApplication
             {
                 page.setContent( getMyPortalAddTab( request ) );
             }
-            else if ( ACTION_EDIT_TAB.equals( strAction ) )
-            {
-                page.setContent( getMyPortalEditTab( request ) );
-            }
-            else if ( ACTION_EDIT_WIDGET.equals( strAction ) )
-            {
-                page.setContent( getMyPortalEditWidget( request ) );
-            }
             else
-            {
-                page.setContent( getMyPortalNavigation( request ) );
-            }
+                if ( ACTION_EDIT_TAB.equals( strAction ) )
+                {
+                    page.setContent( getMyPortalEditTab( request ) );
+                }
+                else
+                    if ( ACTION_EDIT_WIDGET.equals( strAction ) )
+                    {
+                        page.setContent( getMyPortalEditWidget( request ) );
+                    }
+                    else
+                    {
+                        page.setContent( getMyPortalNavigation( request ) );
+                    }
         }
         else
         {
             String strWidgets = _pageService.getUserPage( getUser( request ), request );
-            Map<String, Object> model = new HashMap<String, Object>(  );
+            Map<String, Object> model = new HashMap<String, Object>( );
             model.put( MARK_WIDGETS, strWidgets );
 
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale(  ), model );
-            page.setContent( template.getHtml(  ) );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_PAGE, request.getLocale( ), model );
+            page.setContent( template.getHtml( ) );
         }
 
         return page;
@@ -206,7 +209,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get the content of the page MyPortalNavigation
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getMyPortalNavigation( HttpServletRequest request )
@@ -225,24 +230,27 @@ public class MyPortalApp implements XPageApplication
                 strName = StringUtils.EMPTY;
             }
 
-            Map<String, Object> model = new HashMap<String, Object>(  );
+            Map<String, Object> model = new HashMap<String, Object>( );
 
             if ( ACTION_BROWSE_CATEGORIES.equals( strAction ) )
             {
                 strNavigationContentHtml = getBrowseCategories( request );
             }
-            else if ( ACTION_BROWSE_ESSENTIAL_WIDGETS.equals( strAction ) )
-            {
-                strNavigationContentHtml = getBrowseEssentialWidgets( request );
-            }
-            else if ( ACTION_BROWSE_NEW_WIDGETS.equals( strAction ) )
-            {
-                strNavigationContentHtml = getBrowseNewWidgets( request );
-            }
-            else if ( ACTION_SEARCH_WIDGETS.equals( strAction ) )
-            {
-                strNavigationContentHtml = getSearchWidgets( request );
-            }
+            else
+                if ( ACTION_BROWSE_ESSENTIAL_WIDGETS.equals( strAction ) )
+                {
+                    strNavigationContentHtml = getBrowseEssentialWidgets( request );
+                }
+                else
+                    if ( ACTION_BROWSE_NEW_WIDGETS.equals( strAction ) )
+                    {
+                        strNavigationContentHtml = getBrowseNewWidgets( request );
+                    }
+                    else
+                        if ( ACTION_SEARCH_WIDGETS.equals( strAction ) )
+                        {
+                            strNavigationContentHtml = getSearchWidgets( request );
+                        }
 
             String strBaseUrl = AppPathService.getBaseUrl( request );
             model.put( MARK_BASE_URL, strBaseUrl );
@@ -251,9 +259,8 @@ public class MyPortalApp implements XPageApplication
             model.put( MARK_SEARCH_WIDGETS_NAME, strName );
             model.put( MARK_TAB_INDEX, strTabIndex );
 
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_NAVIGATION,
-                    request.getLocale(  ), model );
-            strHtml = template.getHtml(  );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_NAVIGATION, request.getLocale( ), model );
+            strHtml = template.getHtml( );
         }
 
         return strHtml;
@@ -261,7 +268,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get Browse categories popup
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     public String getBrowseCategories( HttpServletRequest request )
@@ -270,29 +279,31 @@ public class MyPortalApp implements XPageApplication
 
         if ( StringUtils.isBlank( strCategoryId ) )
         {
-            Category category = _categoryService.findFirstCategory(  );
-            strCategoryId = Integer.toString( category.getIdCategory(  ) );
+            Category category = _categoryService.findFirstCategory( );
+            strCategoryId = Integer.toString( category.getIdCategory( ) );
         }
 
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strWidgetsListHtml = getBrowseCategoriesWidgets( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategoriesList(  ) );
+        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategoriesList( ) );
         model.put( MARK_CATEGORY_ID_CATEGORY, strCategoryId );
         model.put( MARK_WIDGETS_LIST_HTML, strWidgetsListHtml );
         model.put( MARK_TAB_INDEX, strTabIndex );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES, request.getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES, request.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get Add Widget Content
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     public String getBrowseCategoriesWidgets( HttpServletRequest request )
@@ -310,22 +321,22 @@ public class MyPortalApp implements XPageApplication
         }
         else
         {
-            category = _categoryService.findFirstCategory(  );
-            strCategoryId = Integer.toString( category.getIdCategory(  ) );
+            category = _categoryService.findFirstCategory( );
+            strCategoryId = Integer.toString( category.getIdCategory( ) );
         }
 
         if ( category != null )
         {
-            listWidgets = _widgetService.getWidgetsByCategoryId( category.getIdCategory(  ) );
+            listWidgets = _widgetService.getWidgetsByCategoryId( category.getIdCategory( ) );
         }
         else
         {
-            listWidgets = new ArrayList<Widget>(  );
+            listWidgets = new ArrayList<Widget>( );
         }
 
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
 
-        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl( ) );
         url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
         url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, strCategoryId );
@@ -338,31 +349,32 @@ public class MyPortalApp implements XPageApplication
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
-                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl( ), Paginator.PARAMETER_PAGE_INDEX,
+                strCurrentPageIndex, request.getLocale( ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems( ) );
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl( ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
         model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS,
-                request.getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_CATEGORIES_WIDGETS, request.getLocale( ), model );
 
-        strHtml = template.getHtml(  );
+        strHtml = template.getHtml( );
 
         return strHtml;
     }
 
     /**
      * Process add content - add a widget to the page
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doAddWidget( HttpServletRequest request )
@@ -370,8 +382,8 @@ public class MyPortalApp implements XPageApplication
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
 
-        if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) &&
-                StringUtils.isNotBlank( strTabIndex ) && StringUtils.isNumeric( strTabIndex ) )
+        if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) && StringUtils.isNotBlank( strTabIndex )
+                && StringUtils.isNumeric( strTabIndex ) )
         {
             int nIdWidget = Integer.parseInt( strIdWidget );
             int nColumn = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_COLUMN, 1 );
@@ -385,7 +397,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Edit a widget
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doEditWidget( HttpServletRequest request )
@@ -394,9 +408,8 @@ public class MyPortalApp implements XPageApplication
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
         String strColumn = request.getParameter( PARAMETER_COLUMN );
 
-        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) &&
-                StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) &&
-                StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) )
+        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) && StringUtils.isNotBlank( strIdWidget )
+                && StringUtils.isNumeric( strIdWidget ) && StringUtils.isNotBlank( strColumn ) && StringUtils.isNumeric( strColumn ) )
         {
             int nIdTab = Integer.parseInt( strIdTab );
             int nIdWidget = Integer.parseInt( strIdWidget );
@@ -409,7 +422,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Process delete - remove a widget from the page
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doRemoveWidget( HttpServletRequest request )
@@ -420,23 +435,26 @@ public class MyPortalApp implements XPageApplication
         if ( StringUtils.isNotBlank( strWidget ) )
         {
             String strWidgetCssId = PARAMETER_WIDGET + LINE;
-            int nIdWidget = Integer.parseInt( strWidget.substring( strWidgetCssId.length(  ) ) );
+            int nIdWidget = Integer.parseInt( strWidget.substring( strWidgetCssId.length( ) ) );
 
             _pageService.removeWidget( getUser( request ), nIdWidget );
         }
-        else if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
-        {
-            int nIdWidget = Integer.parseInt( strIdWidget );
+        else
+            if ( StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
+            {
+                int nIdWidget = Integer.parseInt( strIdWidget );
 
-            _pageService.removeWidget( getUser( request ), nIdWidget );
-        }
+                _pageService.removeWidget( getUser( request ), nIdWidget );
+            }
 
         return AppPropertiesService.getProperty( PROPERTY_URL_RETURN );
     }
 
     /**
      * Process save portal state
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doSavePortalState( HttpServletRequest request )
@@ -450,17 +468,19 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get the essential widgets list html
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getBrowseEssentialWidgets( HttpServletRequest request )
     {
-        List<Widget> listWidgets = _widgetService.getEssentialWidgets(  );
+        List<Widget> listWidgets = _widgetService.getEssentialWidgets( );
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
 
-        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl( ) );
         url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_ESSENTIAL_WIDGETS );
         url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
@@ -471,38 +491,39 @@ public class MyPortalApp implements XPageApplication
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
-                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl( ), Paginator.PARAMETER_PAGE_INDEX,
+                strCurrentPageIndex, request.getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems( ) );
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl( ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
         model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS,
-                request.getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_ESSENTIAL_WIDGETS, request.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get the new widgets list html
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getBrowseNewWidgets( HttpServletRequest request )
     {
-        List<Widget> listWidgets = _widgetService.getNewWidgets(  );
+        List<Widget> listWidgets = _widgetService.getNewWidgets( );
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
         String strTabIndex = request.getParameter( PARAMETER_TAB_INDEX );
 
-        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl( ) );
         url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_BROWSE_NEW_WIDGETS );
         url.addParameter( PARAMETER_TAB_INDEX, strTabIndex );
@@ -513,28 +534,29 @@ public class MyPortalApp implements XPageApplication
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
-                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl( ), Paginator.PARAMETER_PAGE_INDEX,
+                strCurrentPageIndex, request.getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems( ) );
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl( ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
         model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale(  ),
-                model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_BROWSE_NEW_WIDGETS, request.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get the new widgets list html
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getSearchWidgets( HttpServletRequest request )
@@ -551,7 +573,7 @@ public class MyPortalApp implements XPageApplication
         List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
         String strBaseUrl = AppPathService.getBaseUrl( request );
 
-        UrlItem url = new UrlItem( AppPathService.getPortalUrl(  ) );
+        UrlItem url = new UrlItem( AppPathService.getPortalUrl( ) );
         url.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         url.addParameter( PARAMETER_ACTION, ACTION_SEARCH_WIDGETS );
         url.addParameter( PARAMETER_SEARCH_WIDGETS_NAME, strName );
@@ -564,42 +586,44 @@ public class MyPortalApp implements XPageApplication
         // Paginator
         String strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, "1" );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE_IN_FO, 50 );
-        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl(  ),
-                Paginator.PARAMETER_PAGE_INDEX, strCurrentPageIndex, request.getLocale(  ) );
+        LocalizedPaginator paginator = new LocalizedPaginator( listWidgets, nDefaultItemsPerPage, url.getUrl( ), Paginator.PARAMETER_PAGE_INDEX,
+                strCurrentPageIndex, request.getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_BASE_URL, strBaseUrl );
-        model.put( MARK_WIDGETS_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_WIDGETS_LIST, paginator.getPageItems( ) );
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( nDefaultItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_LIST_TAB, listTabs );
-        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl(  ) );
+        model.put( MARK_PAGINATOR_URL_FOR_JS, urlForJs.getUrl( ) );
         model.put( MARK_TAB_INDEX, strTabIndex );
         model.put( MARK_USER_WIDGET_IDS, _widgetService.getUserWidgetIds( getUser( request ) ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_SEARCH_WIDGETS, request.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Gets the user from the request
-     * @param request The HTTP user
+     * 
+     * @param request
+     *            The HTTP user
      * @return The Lutece User
      */
     private LuteceUser getUser( HttpServletRequest request )
     {
         LuteceUser user = null;
 
-        if ( SecurityService.isAuthenticationEnable(  ) )
+        if ( SecurityService.isAuthenticationEnable( ) )
         {
             try
             {
-                user = SecurityService.getInstance(  ).getRemoteUser( request );
+                user = SecurityService.getInstance( ).getRemoteUser( request );
             }
-            catch ( UserNotSignedException ue )
+            catch( UserNotSignedException ue )
             {
-                AppLogService.error( ue.getMessage(  ), ue );
+                AppLogService.error( ue.getMessage( ), ue );
             }
         }
 
@@ -613,21 +637,25 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get the content of the page getMyPortalAddTab
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getMyPortalAddTab( HttpServletRequest request )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_ADD_TAB, request.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Process add tab
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doAddTab( HttpServletRequest request )
@@ -640,7 +668,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get the content of editing a tab
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getMyPortalEditTab( HttpServletRequest request )
@@ -655,15 +685,14 @@ public class MyPortalApp implements XPageApplication
             List<TabConfig> listTabs = _pageService.getTabList( getUser( request ) );
             TabConfig tabConfig = listTabs.get( nIdTab - 1 );
 
-            Map<String, Object> model = new HashMap<String, Object>(  );
+            Map<String, Object> model = new HashMap<String, Object>( );
 
             model.put( MARK_TAB_INDEX, nIdTab );
-            model.put( MARK_TAB_NAME, tabConfig.getName(  ) );
+            model.put( MARK_TAB_NAME, tabConfig.getName( ) );
 
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale(  ),
-                    model );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_TAB, request.getLocale( ), model );
 
-            strHtml = template.getHtml(  );
+            strHtml = template.getHtml( );
         }
 
         return strHtml;
@@ -671,7 +700,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Edit a tab
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doEditTab( HttpServletRequest request )
@@ -691,7 +722,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Delete a tab
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return the forward url
      */
     public String doDelTab( HttpServletRequest request )
@@ -714,7 +747,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get the content of editing a widget
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the html code
      */
     public String getMyPortalEditWidget( HttpServletRequest request )
@@ -723,27 +758,26 @@ public class MyPortalApp implements XPageApplication
         String strIdTab = request.getParameter( PARAMETER_TAB_INDEX );
         String strIdWidget = request.getParameter( PARAMETER_ID_WIDGET );
 
-        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) &&
-                StringUtils.isNotBlank( strIdWidget ) && StringUtils.isNumeric( strIdWidget ) )
+        if ( StringUtils.isNotBlank( strIdTab ) && StringUtils.isNumeric( strIdTab ) && StringUtils.isNotBlank( strIdWidget )
+                && StringUtils.isNumeric( strIdWidget ) )
         {
             int nIdTab = Integer.parseInt( strIdTab );
             int nIdWidget = Integer.parseInt( strIdWidget );
-            int nNbColumns = _defaultPageBuilderService.getColumnCount(  );
+            int nNbColumns = _defaultPageBuilderService.getColumnCount( );
 
             Widget widget = _widgetService.getWidget( nIdWidget );
 
             if ( widget != null )
             {
-                Map<String, Object> model = new HashMap<String, Object>(  );
+                Map<String, Object> model = new HashMap<String, Object>( );
 
                 model.put( MARK_TAB_INDEX, nIdTab );
                 model.put( MARK_WIDGET, widget );
                 model.put( MARK_NB_COLUMNS, nNbColumns );
 
-                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_WIDGET,
-                        request.getLocale(  ), model );
+                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MYPORTAL_EDIT_WIDGET, request.getLocale( ), model );
 
-                strHtml = template.getHtml(  );
+                strHtml = template.getHtml( );
             }
         }
 
@@ -752,7 +786,9 @@ public class MyPortalApp implements XPageApplication
 
     /**
      * Get tabs of my portal used by MyPortal.jsp
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return tabs
      */
     public String getTabs( HttpServletRequest request )

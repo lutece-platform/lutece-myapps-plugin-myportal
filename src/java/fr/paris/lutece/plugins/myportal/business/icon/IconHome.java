@@ -40,9 +40,8 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.List;
 
-
 /**
- * This class provides instances management methods (create, find, ...) for Icon  objects
+ * This class provides instances management methods (create, find, ...) for Icon objects
  */
 public final class IconHome
 {
@@ -53,15 +52,17 @@ public final class IconHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private IconHome(  )
+    private IconHome( )
     {
     }
 
     /**
      * Creation of an instance of icon
      *
-     * @param icon The instance of icon which contains the informations to store
-     * @param plugin the plugin
+     * @param icon
+     *            The instance of icon which contains the informations to store
+     * @param plugin
+     *            the plugin
      *
      *
      *
@@ -74,8 +75,10 @@ public final class IconHome
     /**
      * Update of icon which is specified in parameter
      *
-     * @param icon  The instance of icon which contains the informations to update
-     * @param plugin the Plugin
+     * @param icon
+     *            The instance of icon which contains the informations to update
+     * @param plugin
+     *            the Plugin
      *
      */
     public static void update( Icon icon, Plugin plugin )
@@ -86,8 +89,10 @@ public final class IconHome
     /**
      * Update metatdata of icon which is specified in parameter
      *
-     * @param icon  The instance of icon which contains the informations to update
-     * @param plugin the Plugin
+     * @param icon
+     *            The instance of icon which contains the informations to update
+     * @param plugin
+     *            the Plugin
      *
      */
     public static void updateMetadata( Icon icon, Plugin plugin )
@@ -96,10 +101,12 @@ public final class IconHome
     }
 
     /**
-     *  remove icon which is specified in parameter
+     * remove icon which is specified in parameter
      *
-     * @param  nIdIcon The icon key to remove
-     * @param plugin the Plugin
+     * @param nIdIcon
+     *            The icon key to remove
+     * @param plugin
+     *            the Plugin
      *
      */
     public static void remove( int nIdIcon, Plugin plugin )
@@ -107,15 +114,18 @@ public final class IconHome
         _dao.delete( nIdIcon, plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
-         * Load the icon Object
-         * @param nIdIcon the icon id
-         * @param plugin the plugin
-         * @return the Icon Object
-         */
+     * Load the icon Object
+     * 
+     * @param nIdIcon
+     *            the icon id
+     * @param plugin
+     *            the plugin
+     * @return the Icon Object
+     */
     public static Icon findByPrimaryKey( int nIdIcon, Plugin plugin )
     {
         return _dao.load( nIdIcon, plugin );
@@ -123,18 +133,22 @@ public final class IconHome
 
     /**
      * return the list of all icon
-     * @param plugin the plugin
+     * 
+     * @param plugin
+     *            the plugin
      * @return a list of icon
      */
     public static List<Icon> getListIcons( Plugin plugin )
     {
         return _dao.selectAll( plugin );
     }
-    
+
     /**
      * return the list of all icon to display in front
-     * @param diplayFO 
-     * @param plugin the plugin
+     * 
+     * @param diplayFO
+     * @param plugin
+     *            the plugin
      * @return a list of icon
      */
     public static List<Icon> getListIconsFO( boolean diplayFO )

@@ -39,7 +39,6 @@ import fr.paris.lutece.util.sql.DAOUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * This class provides Data Access methods for Style objects
@@ -57,32 +56,37 @@ public final class WidgetStyleDAO implements IWidgetStyleDAO
 
     /**
      * Generates a new primary key
-     * @param plugin The Plugin
+     * 
+     * @param plugin
+     *            The Plugin
      * @return The new primary key
      */
     public int newPrimaryKey( Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         int nKey;
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
             // if the table is empty
             nKey = 1;
         }
 
         nKey = daoUtil.getInt( 1 ) + 1;
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
 
     /**
      * Insert a new record in the table.
-     * @param style instance of the Style object to insert
-     * @param plugin The plugin
+     * 
+     * @param style
+     *            instance of the Style object to insert
+     * @param plugin
+     *            The plugin
      */
     public void insert( Style style, Plugin plugin )
     {
@@ -90,87 +94,98 @@ public final class WidgetStyleDAO implements IWidgetStyleDAO
 
         style.setId( newPrimaryKey( plugin ) );
 
-        daoUtil.setInt( 1, style.getId(  ) );
-        daoUtil.setString( 2, style.getName(  ) );
-        daoUtil.setString( 3, style.getCssClass(  ) );
+        daoUtil.setInt( 1, style.getId( ) );
+        daoUtil.setString( 2, style.getName( ) );
+        daoUtil.setString( 3, style.getCssClass( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the data of the style from the table
-     * @param nId The identifier of the style
-     * @param plugin The plugin
+     * 
+     * @param nId
+     *            The identifier of the style
+     * @param plugin
+     *            The plugin
      * @return the instance of the Style
      */
     public Style load( int nId, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setInt( 1, nId );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         Style style = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-            style = new Style(  );
+            style = new Style( );
 
             style.setId( daoUtil.getInt( 1 ) );
             style.setName( daoUtil.getString( 2 ) );
             style.setCssClass( daoUtil.getString( 3 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return style;
     }
 
     /**
      * Delete a record from the table
-     * @param nStyleId The identifier of the style
-     * @param plugin The plugin
+     * 
+     * @param nStyleId
+     *            The identifier of the style
+     * @param plugin
+     *            The plugin
      */
     public void delete( int nStyleId, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nStyleId );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Update the record in the table
-     * @param style The reference of the style
-     * @param plugin The plugin
+     * 
+     * @param style
+     *            The reference of the style
+     * @param plugin
+     *            The plugin
      */
     public void store( Style style, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-        daoUtil.setInt( 1, style.getId(  ) );
-        daoUtil.setString( 2, style.getName(  ) );
-        daoUtil.setString( 3, style.getCssClass(  ) );
-        daoUtil.setInt( 4, style.getId(  ) );
+        daoUtil.setInt( 1, style.getId( ) );
+        daoUtil.setString( 2, style.getName( ) );
+        daoUtil.setString( 3, style.getCssClass( ) );
+        daoUtil.setInt( 4, style.getId( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the data of all the styles and returns them as a List
-     * @param plugin The plugin
+     * 
+     * @param plugin
+     *            The plugin
      * @return The List which contains the data of all the styles
      */
     public List<Style> selectStylesList( Plugin plugin )
     {
-        List<Style> styleList = new ArrayList<Style>(  );
+        List<Style> styleList = new ArrayList<Style>( );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            Style style = new Style(  );
+            Style style = new Style( );
 
             style.setId( daoUtil.getInt( 1 ) );
             style.setName( daoUtil.getString( 2 ) );
@@ -179,7 +194,7 @@ public final class WidgetStyleDAO implements IWidgetStyleDAO
             styleList.add( style );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return styleList;
     }

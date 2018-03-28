@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 /**
  *
  * WidgetConfig
@@ -51,7 +50,9 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Set WidgetConfigId
-     * @param nIdWidgetComponent WidgetConfigId
+     * 
+     * @param nIdWidgetComponent
+     *            WidgetConfigId
      */
     public void setIdWidgetComponent( int nIdWidgetComponent )
     {
@@ -60,25 +61,29 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Get WidgetConfigId
+     * 
      * @return WidgetConfigId
      */
-    public int getIdWidgetComponent(  )
+    public int getIdWidgetComponent( )
     {
         return _nIdWidgetComponent;
     }
 
     /**
      * Returns the WidgetId
+     * 
      * @return The WidgetId
      */
-    public int getIdWidget(  )
+    public int getIdWidget( )
     {
         return _nIdWidget;
     }
 
     /**
      * Sets the WidgetId
-     * @param nIdWidget The WidgetId
+     * 
+     * @param nIdWidget
+     *            The WidgetId
      */
     public void setIdWidget( int nIdWidget )
     {
@@ -87,16 +92,19 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Returns the WidgetState
+     * 
      * @return The WidgetState
      */
-    public int getWidgetState(  )
+    public int getWidgetState( )
     {
         return _nWidgetState;
     }
 
     /**
      * Sets the WidgetState
-     * @param nWidgetState The WidgetState
+     * 
+     * @param nWidgetState
+     *            The WidgetState
      */
     public void setWidgetState( int nWidgetState )
     {
@@ -105,16 +113,19 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Returns the Column
+     * 
      * @return The Column
      */
-    public int getColumn(  )
+    public int getColumn( )
     {
         return _nColumn;
     }
 
     /**
      * Sets the Column
-     * @param nColumn The Column
+     * 
+     * @param nColumn
+     *            The Column
      */
     public void setColumn( int nColumn )
     {
@@ -123,7 +134,9 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Set the Order
-     * @param nOrder The Order
+     * 
+     * @param nOrder
+     *            The Order
      */
     public void setOrder( int nOrder )
     {
@@ -132,26 +145,29 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Get the Order
+     * 
      * @return The Order
      */
-    public int getOrder(  )
+    public int getOrder( )
     {
         return _nOrder;
     }
 
     /**
      * Compare to a widget component by its order
-     * @param o a {@link WidgetComponent}
+     * 
+     * @param o
+     *            a {@link WidgetComponent}
      * @return the result of the comparaison
      */
     public int compareTo( WidgetComponent o )
     {
-        return getOrder(  ) - o.getOrder(  );
+        return getOrder( ) - o.getOrder( );
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals( Object obj )
     {
@@ -159,7 +175,7 @@ public class WidgetComponent implements Comparable<WidgetComponent>
         {
             WidgetComponent other = (WidgetComponent) obj;
 
-            return other.getIdWidgetComponent(  ) == _nIdWidgetComponent;
+            return other.getIdWidgetComponent( ) == _nIdWidgetComponent;
         }
 
         return false;
@@ -169,14 +185,16 @@ public class WidgetComponent implements Comparable<WidgetComponent>
      * {@inheritDoc}
      */
     @Override
-    public int hashCode(  )
+    public int hashCode( )
     {
         return _nIdWidgetComponent;
     }
 
     /**
      * Set widgetname
-     * @param strWidgetName The widget name
+     * 
+     * @param strWidgetName
+     *            The widget name
      */
     public void setWidgetName( String strWidgetName )
     {
@@ -185,16 +203,19 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Get widget name
+     * 
      * @return The widget name
      */
-    public String getWidgetName(  )
+    public String getWidgetName( )
     {
         return _strWidgetName;
     }
 
     /**
      * Set widget style
-     * @param strStyleName the style
+     * 
+     * @param strStyleName
+     *            the style
      */
     public void setStyleName( String strStyleName )
     {
@@ -203,9 +224,10 @@ public class WidgetComponent implements Comparable<WidgetComponent>
 
     /**
      * Get widget style
+     * 
      * @return the style
      */
-    public String getStyleName(  )
+    public String getStyleName( )
     {
         return _strStyleName;
     }

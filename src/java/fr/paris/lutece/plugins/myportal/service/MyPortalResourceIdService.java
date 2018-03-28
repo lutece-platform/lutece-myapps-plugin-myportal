@@ -43,7 +43,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Locale;
 
-
 /**
  *
  * MyPortalResourceIdService
@@ -59,7 +58,7 @@ public class MyPortalResourceIdService extends ResourceIdService
     /**
      * Constructor
      */
-    public MyPortalResourceIdService(  )
+    public MyPortalResourceIdService( )
     {
         setPluginName( MyPortalPlugin.PLUGIN_NAME );
     }
@@ -67,15 +66,15 @@ public class MyPortalResourceIdService extends ResourceIdService
     /**
      * Initializes the service
      */
-    public void register(  )
+    public void register( )
     {
-        ResourceType rt = new ResourceType(  );
-        rt.setResourceIdServiceClass( MyPortalResourceIdService.class.getName(  ) );
+        ResourceType rt = new ResourceType( );
+        rt.setResourceIdServiceClass( MyPortalResourceIdService.class.getName( ) );
         rt.setPluginName( MyPortalPlugin.PLUGIN_NAME );
         rt.setResourceTypeKey( RESOURCE_TYPE );
         rt.setResourceTypeLabelKey( PROPERTY_LABEL_RESOURCE_TYPE );
 
-        Permission p = new Permission(  );
+        Permission p = new Permission( );
         p.setPermissionKey( PERMISSION_MANAGE_ADVANCED_PARAMETERS );
         p.setPermissionTitleKey( PROPERTY_LABEL_MANAGE_ADVANCED_PARAMETERS );
         rt.registerPermission( p );
@@ -86,7 +85,8 @@ public class MyPortalResourceIdService extends ResourceIdService
     /**
      * Returns a list of resource ids
      *
-     * @param locale The current locale
+     * @param locale
+     *            The current locale
      * @return A list of resource ids
      */
     public ReferenceList getResourceIdList( Locale locale )
@@ -97,8 +97,10 @@ public class MyPortalResourceIdService extends ResourceIdService
     /**
      * Returns the Title of a given resource
      *
-     * @param strId The Id of the resource
-     * @param locale The current locale
+     * @param strId
+     *            The Id of the resource
+     * @param locale
+     *            The current locale
      * @return The Title of a given resource
      */
     public String getTitle( String strId, Locale locale )

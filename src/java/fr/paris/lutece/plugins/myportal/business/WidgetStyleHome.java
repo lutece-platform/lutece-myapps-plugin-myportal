@@ -41,7 +41,6 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.List;
 
-
 /**
  *
  * This class provides instances management methods (create, find, ...) for Style objects
@@ -52,29 +51,31 @@ public final class WidgetStyleHome
     // Static variable pointed at the DAO instance
     private static final String BEAN_MYPORTAL_WIDGETSTYLEDAO = "myportal.widgetStyleDAO";
     private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-    private static IWidgetStyleDAO _dao = (IWidgetStyleDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_WIDGETSTYLEDAO );
+    private static IWidgetStyleDAO _dao = (IWidgetStyleDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME, BEAN_MYPORTAL_WIDGETSTYLEDAO );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private WidgetStyleHome(  )
+    private WidgetStyleHome( )
     {
     }
 
     /**
      * Generates a new primary key
+     * 
      * @return The new primary key
      */
-    public static int newPrimaryKey(  )
+    public static int newPrimaryKey( )
     {
         return _dao.newPrimaryKey( _plugin );
     }
 
     /**
      * Create an instance of the style class
-     * @param style The instance of the Style which contains the informations to store
-     * @return The  instance of style which has been created with its primary key.
+     * 
+     * @param style
+     *            The instance of the Style which contains the informations to store
+     * @return The instance of style which has been created with its primary key.
      */
     public static Style create( Style style )
     {
@@ -85,8 +86,10 @@ public final class WidgetStyleHome
 
     /**
      * Update of the style which is specified in parameter
-     * @param style The instance of the Style which contains the data to store
-     * @return The instance of the  style which has been updated
+     * 
+     * @param style
+     *            The instance of the Style which contains the data to store
+     * @return The instance of the style which has been updated
      */
     public static Style update( Style style )
     {
@@ -97,19 +100,23 @@ public final class WidgetStyleHome
 
     /**
      * Remove the style whose identifier is specified in parameter
-     * @param nStyleId The style Id
+     * 
+     * @param nStyleId
+     *            The style Id
      */
     public static void remove( int nStyleId )
     {
         _dao.delete( nStyleId, _plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Returns an instance of a style whose identifier is specified in parameter
-     * @param nKey The style primary key
+     * 
+     * @param nKey
+     *            The style primary key
      * @return an instance of Style
      */
     public static Style findByPrimaryKey( int nKey )
@@ -119,24 +126,26 @@ public final class WidgetStyleHome
 
     /**
      * Load the data of all the style objects and returns them in form of a list
+     * 
      * @return the list which contains the data of all the style objects
      */
-    public static List<Style> getStylesList(  )
+    public static List<Style> getStylesList( )
     {
         return _dao.selectStylesList( _plugin );
     }
 
     /**
      * Load the data of all the style objects and returns them in form of a list
+     * 
      * @return the list which contains the data of all the style objects
      */
-    public static ReferenceList getStyles(  )
+    public static ReferenceList getStyles( )
     {
-        ReferenceList list = new ReferenceList(  );
+        ReferenceList list = new ReferenceList( );
 
         for ( Style style : _dao.selectStylesList( _plugin ) )
         {
-            list.addItem( style.getId(  ), style.getName(  ) );
+            list.addItem( style.getId( ), style.getName( ) );
         }
 
         return list;

@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.service.cache;
 
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
-
 /**
  * WidgetCacheService
  */
@@ -47,19 +46,20 @@ public final class WidgetCacheService extends AbstractCacheableService
     /**
      * constructor
      */
-    private WidgetCacheService(  )
+    private WidgetCacheService( )
     {
     }
 
     /**
      * Get the instance of WidgetCacheService
+     * 
      * @return an instance of WidgetCacheService
      */
-    public static WidgetCacheService getInstance(  )
+    public static WidgetCacheService getInstance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new WidgetCacheService(  );
+            _singleton = new WidgetCacheService( );
         }
 
         return _singleton;
@@ -68,7 +68,7 @@ public final class WidgetCacheService extends AbstractCacheableService
     /**
      * {@inheritDoc }
      */
-    public String getName(  )
+    public String getName( )
     {
         return SERVICE_NAME;
     }

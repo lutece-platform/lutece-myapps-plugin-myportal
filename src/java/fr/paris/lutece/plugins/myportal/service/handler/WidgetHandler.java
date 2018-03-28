@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * WidgetHandler
@@ -48,31 +47,36 @@ public interface WidgetHandler
 {
     /**
      * Get the name of the handler
+     * 
      * @return the name
      */
-    String getName(  );
+    String getName( );
 
     /**
      * Get the description of the handler
+     * 
      * @return the description
      */
-    String getDescription(  );
+    String getDescription( );
 
     /**
      * Render a widget
-     * @param widget the widget
-     * @param user the {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
+     * 
+     * @param widget
+     *            the widget
+     * @param user
+     *            the {@link LuteceUser}
+     * @param request
+     *            {@link HttpServletRequest}
      * @return a data
      */
     String renderWidget( Widget widget, LuteceUser user, HttpServletRequest request );
 
     /**
-     * Check if the widget is customizable or not.
-     * <br />
-     * In other words, if the wiget is indeed customizable, the content depends on
-     * the {@link LuteceUser}.
+     * Check if the widget is customizable or not. <br />
+     * In other words, if the wiget is indeed customizable, the content depends on the {@link LuteceUser}.
+     * 
      * @return true if it is customizable, false otherwise
      */
-    boolean isCustomizable(  );
+    boolean isCustomizable( );
 }

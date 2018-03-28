@@ -40,7 +40,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
-
 /**
  *
  * WidgetParameterHome
@@ -57,24 +56,27 @@ public final class PageBuilderParameterHome
     /**
      * Constructor
      */
-    private PageBuilderParameterHome(  )
+    private PageBuilderParameterHome( )
     {
     }
 
     /**
      * Load all the parameter default values
+     * 
      * @return a list of ReferenceItem
      */
-    public static ReferenceList findAll(  )
+    public static ReferenceList findAll( )
     {
         return _dao.selectAll( _plugin );
     }
 
     /**
-    * Load the parameter value
-    * @param strParameterKey the parameter key
-    * @return The parameter value
-    */
+     * Load the parameter value
+     * 
+     * @param strParameterKey
+     *            the parameter key
+     * @return The parameter value
+     */
     public static ReferenceItem findByKey( String strParameterKey )
     {
         return _dao.load( strParameterKey, _plugin );
@@ -82,7 +84,9 @@ public final class PageBuilderParameterHome
 
     /**
      * Update the parameter
-     * @param param The parameter
+     * 
+     * @param param
+     *            The parameter
      */
     public static void update( ReferenceItem param )
     {
@@ -92,14 +96,16 @@ public final class PageBuilderParameterHome
     /**
      * Remove all parameters associated to the column styles
      */
-    public static void removeAllColumnStyles(  )
+    public static void removeAllColumnStyles( )
     {
         _dao.deleteAllColumnStyles( _plugin );
     }
 
     /**
      * Insert a new parameter
-     * @param param the parameter
+     * 
+     * @param param
+     *            the parameter
      */
     public static void create( ReferenceItem param )
     {

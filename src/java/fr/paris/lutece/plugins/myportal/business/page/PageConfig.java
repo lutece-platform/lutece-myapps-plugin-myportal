@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business.page;
 
 import java.util.List;
 
-
 /**
  *
  * PageConfig
@@ -48,16 +47,19 @@ public class PageConfig
 
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
 
     /**
      * Sets the Name
-     * @param strName The Name
+     * 
+     * @param strName
+     *            The Name
      */
     public void setName( String strName )
     {
@@ -66,16 +68,19 @@ public class PageConfig
 
     /**
      * Returns the TabList
+     * 
      * @return The TabList
      */
-    public List<TabConfig> getTabList(  )
+    public List<TabConfig> getTabList( )
     {
         return _listTab;
     }
 
     /**
      * Sets the TabList
-     * @param tabList The TabList
+     * 
+     * @param tabList
+     *            The TabList
      */
     public void setTabList( List<TabConfig> tabList )
     {

@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 /**
  *
  * WidgetComponentFilter
@@ -46,16 +45,19 @@ public class WidgetComponentFilter
 
     /**
      * Filter column
+     * 
      * @return Filter column
      */
-    public Integer getFilterColumn(  )
+    public Integer getFilterColumn( )
     {
         return _nFilterColumn;
     }
 
     /**
      * Filter column
-     * @param nFilterColumn the Filter column
+     * 
+     * @param nFilterColumn
+     *            the Filter column
      */
     public void setFilterColumn( Integer nFilterColumn )
     {
@@ -64,16 +66,19 @@ public class WidgetComponentFilter
 
     /**
      * Filter order
+     * 
      * @return Filter order
      */
-    public Integer getFilterOrder(  )
+    public Integer getFilterOrder( )
     {
         return _nFilterOrder;
     }
 
     /**
      * Filter order
-     * @param nFilterOrder the Filter order
+     * 
+     * @param nFilterOrder
+     *            the Filter order
      */
     public void setFilterOrder( Integer nFilterOrder )
     {
@@ -82,18 +87,20 @@ public class WidgetComponentFilter
 
     /**
      * true if {@link #getFilterOrder()} != null
+     * 
      * @return <code>true</code> if {@link #getFilterOrder()} != null, <code>false</code> otherwise.
      */
-    public boolean containsFilterOrder(  )
+    public boolean containsFilterOrder( )
     {
         return _nFilterOrder != null;
     }
 
     /**
      * true if {@link #getFilterColumn()} != null
+     * 
      * @return <code>true</code> if {@link #getFilterColumn()} != null, <code>false</code> otherwise
      */
-    public boolean containsFilterColumn(  )
+    public boolean containsFilterColumn( )
     {
         return _nFilterColumn != null;
     }
@@ -103,9 +110,8 @@ public class WidgetComponentFilter
      * {@inheritDoc}
      */
     @Override
-    public String toString(  )
+    public String toString( )
     {
-        return this.getClass(  ).getName(  ) + "[column=" + this.getFilterColumn(  ) + ", order=" +
-        this.getFilterOrder(  ) + "]";
+        return this.getClass( ).getName( ) + "[column=" + this.getFilterColumn( ) + ", order=" + this.getFilterOrder( ) + "]";
     }
 }

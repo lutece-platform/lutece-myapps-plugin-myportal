@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business.page;
 
-
 /**
  *
  * WidgetConfig
@@ -48,16 +47,19 @@ public class WidgetConfig
 
     /**
      * Returns the WidgetId
+     * 
      * @return The WidgetId
      */
-    public int getWidgetId(  )
+    public int getWidgetId( )
     {
         return _nWidgetId;
     }
 
     /**
      * Sets the WidgetId
-     * @param nWidgetId The WidgetId
+     * 
+     * @param nWidgetId
+     *            The WidgetId
      */
     public void setWidgetId( int nWidgetId )
     {
@@ -66,16 +68,19 @@ public class WidgetConfig
 
     /**
      * Returns the WidgetState
+     * 
      * @return The WidgetState
      */
-    public int getWidgetState(  )
+    public int getWidgetState( )
     {
         return _nWidgetState;
     }
 
     /**
      * Sets the WidgetState
-     * @param nWidgetState The WidgetState
+     * 
+     * @param nWidgetState
+     *            The WidgetState
      */
     public void setWidgetState( int nWidgetState )
     {
@@ -84,16 +89,19 @@ public class WidgetConfig
 
     /**
      * Returns the Column
+     * 
      * @return The Column
      */
-    public int getColumn(  )
+    public int getColumn( )
     {
         return _nColumn;
     }
 
     /**
      * Sets the Column
-     * @param nColumn The Column
+     * 
+     * @param nColumn
+     *            The Column
      */
     public void setColumn( int nColumn )
     {

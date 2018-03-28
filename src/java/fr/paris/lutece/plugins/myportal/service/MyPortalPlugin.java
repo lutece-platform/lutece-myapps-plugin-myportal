@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.service;
 
 import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
 
-
 /**
  *
  * class MyPortalPlugin
@@ -49,8 +48,8 @@ public class MyPortalPlugin extends PluginDefaultImplementation
      * Initialize the MyPortalPlugin
      */
     @Override
-    public void init(  )
+    public void init( )
     {
-        IconService.getInstance(  ).register(  );
+        IconService.getInstance( ).register( );
     }
 }

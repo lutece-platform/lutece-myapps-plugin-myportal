@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 /**
  *
  * This is the business class for the object Category
@@ -41,23 +40,26 @@ package fr.paris.lutece.plugins.myportal.business;
  */
 public class Category
 {
-    // Variables declarations 
+    // Variables declarations
     private int _nIdCategory;
     private String _strName;
     private String _strDescription;
 
     /**
      * Returns the IdCategory
+     * 
      * @return The IdCategory
      */
-    public int getIdCategory(  )
+    public int getIdCategory( )
     {
         return _nIdCategory;
     }
 
     /**
      * Sets the IdCategory
-     * @param nIdCategory The IdCategory
+     * 
+     * @param nIdCategory
+     *            The IdCategory
      */
     public void setIdCategory( int nIdCategory )
     {
@@ -66,16 +68,19 @@ public class Category
 
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
 
     /**
      * Sets the Name
-     * @param strName The Name
+     * 
+     * @param strName
+     *            The Name
      */
     public void setName( String strName )
     {
@@ -84,16 +89,19 @@ public class Category
 
     /**
      * Returns the Description
+     * 
      * @return The Description
      */
-    public String getDescription(  )
+    public String getDescription( )
     {
         return _strDescription;
     }
 
     /**
      * Sets the Description
-     * @param strDescription The Description
+     * 
+     * @param strDescription
+     *            The Description
      */
     public void setDescription( String strDescription )
     {

@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business.parameter;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * PageBuilderParameterTest
@@ -46,9 +45,9 @@ public class PageBuilderParameterTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.parameter.PageBuilderParameter
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // List test
-        PageBuilderParameterHome.findAll(  );
+        PageBuilderParameterHome.findAll( );
     }
 }

@@ -39,7 +39,6 @@ import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.test.LuteceTestCase;
 import fr.paris.lutece.test.MokeHttpServletRequest;
 
-
 /**
  *
  * DefaultPageBuilderJspBeanTest
@@ -49,19 +48,21 @@ public class DefaultPageBuilderJspBeanTest extends LuteceTestCase
 {
     /**
      * Test of getBuildDefaultPage method of class fr.paris.lutece.plugins.myportal.web.DefaultPageBuilderJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetBuildDefaultPage(  ) throws AccessDeniedException
+    public void testGetBuildDefaultPage( ) throws AccessDeniedException
     {
         System.out.println( "getBuildDefaultPage" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
-        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean(  );
+        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean( );
         instance.init( request, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
         String result = instance.getBuildDefaultPage( request );
@@ -71,19 +72,21 @@ public class DefaultPageBuilderJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getWidgetsListPage method of class fr.paris.lutece.plugins.myportal.web.DefaultPageBuilderJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetWidgetsListPage(  ) throws AccessDeniedException
+    public void testGetWidgetsListPage( ) throws AccessDeniedException
     {
         System.out.println( "getWidgetsListPage" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
-        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean(  );
+        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean( );
         instance.init( request, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
         String result = instance.getWidgetsListPage( request );
@@ -93,19 +96,21 @@ public class DefaultPageBuilderJspBeanTest extends LuteceTestCase
 
     /**
      * Test of getManageAdvancedParameters method of class fr.paris.lutece.plugins.myportal.web.DefaultPageBuilderJspBean
-     * @throws AccessDeniedException if the user has not the right
+     * 
+     * @throws AccessDeniedException
+     *             if the user has not the right
      */
-    public void testGetManageAdvancedParameters(  ) throws AccessDeniedException
+    public void testGetManageAdvancedParameters( ) throws AccessDeniedException
     {
         System.out.println( "getManageAdvancedParameters" );
 
-        MokeHttpServletRequest request = new MokeHttpServletRequest(  );
+        MokeHttpServletRequest request = new MokeHttpServletRequest( );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
         request.registerAdminUserWithRigth( user, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
-        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean(  );
+        DefaultPageBuilderJspBean instance = new DefaultPageBuilderJspBean( );
         instance.init( request, DefaultPageBuilderJspBean.RIGHT_DEFAULT_PAGE_BUILDER );
 
         String result = instance.getManageAdvancedParameters( request );

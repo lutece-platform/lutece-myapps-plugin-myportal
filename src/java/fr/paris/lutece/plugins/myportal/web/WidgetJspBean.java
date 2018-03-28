@@ -61,10 +61,8 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
- * This class provides the user interface to manage  Category, Widget, features
- * ( manage, create, modify, remove )
+ * This class provides the user interface to manage Category, Widget, features ( manage, create, modify, remove )
  */
 public class WidgetJspBean extends PluginAdminPageJspBean
 {
@@ -127,14 +125,15 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
-    private WidgetService _widgetService = SpringContextService.getBean(BEAN_MYPORTAL_WIDGETSERVICE );
-    
-    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
+    private WidgetService _widgetService = SpringContextService.getBean( BEAN_MYPORTAL_WIDGETSERVICE );
+
+    private CategoryService _categoryService = SpringContextService.getBean( CategoryService.BEAN_NAME );
 
     /**
      * Returns the list of widget
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the widgets list
      */
     public String getManageWidgets( HttpServletRequest request )
@@ -143,54 +142,55 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
         _nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_WIDGET_PER_PAGE, 50 );
-        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
-                _nDefaultItemsPerPage );
+        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage, _nDefaultItemsPerPage );
 
         UrlItem url = new UrlItem( JSP_URL_MANAGE_WIDGETS );
-        String strUrl = url.getUrl(  );
-        Collection<Widget> listWidgets = _widgetService.getWidgetsList(  );
-        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl,
-                PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
+        String strUrl = url.getUrl( );
+        Collection<Widget> listWidgets = _widgetService.getWidgetsList( );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Widget>) listWidgets, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX, _strCurrentPageIndex,
+                getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         model.put( MARK_NB_ITEMS_PER_PAGE, Integer.toString( _nItemsPerPage ) );
         model.put( MARK_PAGINATOR, paginator );
-        model.put( MARK_WIDGET_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_WIDGET_LIST, paginator.getPageItems( ) );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_WIDGETS, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_WIDGETS, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
      * Returns the form to create a widget
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the widget form
      */
     public String getCreateWidget( HttpServletRequest request )
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_CREATE_WIDGET );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories(  ) );
-        model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
-        model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-        model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
-        model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
-        model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
-        model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
+        Map<String, Object> model = new HashMap<String, Object>( );
+        model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories( ) );
+        model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin( ) ) );
+        model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance( ).getHandlers( ) );
+        model.put( MARK_STYLES_LIST, StyleService.getInstance( ).getWidgetStyles( ) );
+        model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId( ) );
+        model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId( ) );
+        model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId( ) );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_WIDGET, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_WIDGET, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Process the data capture form of a new widget
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      */
     public String doCreateWidget( HttpServletRequest request )
@@ -204,12 +204,10 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         String strIdStyle = request.getParameter( PARAMETER_ID_STYLE );
         String strWidgetStatus = request.getParameter( PARAMETER_WIDGET_STATUS );
 
-        if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) &&
-                StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
-                StringUtils.isNotBlank( strIdIcon ) && StringUtils.isNumeric( strIdIcon ) &&
-                StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
-                StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) &&
-                StringUtils.isNotBlank( strWidgetType ) )
+        if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) && StringUtils.isNotBlank( strIdCategory )
+                && StringUtils.isNumeric( strIdCategory ) && StringUtils.isNotBlank( strIdIcon ) && StringUtils.isNumeric( strIdIcon )
+                && StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) && StringUtils.isNotBlank( strWidgetStatus )
+                && StringUtils.isNumeric( strWidgetStatus ) && StringUtils.isNotBlank( strWidgetType ) )
         {
             int nIdCategory = Integer.parseInt( strIdCategory );
             int nIdIcon = Integer.parseInt( strIdIcon );
@@ -219,7 +217,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             boolean bIsEssential = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_ESSENTIAL ) );
             boolean bIsNew = StringUtils.isNotBlank( request.getParameter( PARAMETER_IS_NEW ) );
 
-            Widget widget = new Widget(  );
+            Widget widget = new Widget( );
             widget.setName( strWidgetName );
             widget.setDescription( strWidgetDescription );
             widget.setIdCategory( nIdCategory );
@@ -246,7 +244,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     /**
      * Manages the removal form of a widget whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     public String getConfirmRemoveWidget( HttpServletRequest request )
@@ -260,8 +259,7 @@ public class WidgetJspBean extends PluginAdminPageJspBean
             UrlItem url = new UrlItem( JSP_URL_DO_REMOVE_WIDGET );
             url.addParameter( PARAMETER_ID_WIDGET, nId );
 
-            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl(  ),
-                    AdminMessage.TYPE_CONFIRMATION );
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_WIDGET, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
         }
         else
         {
@@ -274,7 +272,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     /**
      * Handles the removal form of a widget
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage widgets
      */
     public String doRemoveWidget( HttpServletRequest request )
@@ -300,7 +299,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     /**
      * Returns the form to update info about a widget
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     public String getModifyWidget( HttpServletRequest request )
@@ -317,19 +317,19 @@ public class WidgetJspBean extends PluginAdminPageJspBean
 
             if ( widget != null )
             {
-                Map<String, Object> model = new HashMap<String, Object>(  );
+                Map<String, Object> model = new HashMap<String, Object>( );
                 model.put( MARK_WIDGET, widget );
-                model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories(  ) );
-                model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin(  ) ) );
-                model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance(  ).getHandlers(  ) );
-                model.put( MARK_STYLES_LIST, StyleService.getInstance(  ).getWidgetStyles(  ) );
-                model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId(  ) );
-                model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId(  ) );
-                model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId(  ) );
+                model.put( MARK_CATEGORIES_LIST, _categoryService.getCategories( ) );
+                model.put( MARK_ICONS_LIST, IconHome.getListIcons( getPlugin( ) ) );
+                model.put( MARK_WIDGET_TYPES_LIST, WidgetHandlerService.instance( ).getHandlers( ) );
+                model.put( MARK_STYLES_LIST, StyleService.getInstance( ).getWidgetStyles( ) );
+                model.put( MARK_STATUS_DRAFT, WidgetStatusEnum.DRAFT.getId( ) );
+                model.put( MARK_STATUS_MANDATORY, WidgetStatusEnum.MANDATORY.getId( ) );
+                model.put( MARK_STATUS_PUBLIC, WidgetStatusEnum.PUBLIC.getId( ) );
 
-                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale(  ), model );
+                HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_WIDGET, getLocale( ), model );
 
-                strUrl = getAdminPage( template.getHtml(  ) );
+                strUrl = getAdminPage( template.getHtml( ) );
             }
             else
             {
@@ -347,7 +347,8 @@ public class WidgetJspBean extends PluginAdminPageJspBean
     /**
      * Process the change form of a widget
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      */
     public String doModifyWidget( HttpServletRequest request )
@@ -362,13 +363,11 @@ public class WidgetJspBean extends PluginAdminPageJspBean
         String strIdStyle = request.getParameter( PARAMETER_ID_STYLE );
         String strWidgetStatus = request.getParameter( PARAMETER_WIDGET_STATUS );
 
-        if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) &&
-                StringUtils.isNotBlank( strIdCategory ) && StringUtils.isNumeric( strIdCategory ) &&
-                StringUtils.isNotBlank( strIdIcon ) && StringUtils.isNumeric( strIdIcon ) &&
-                StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) &&
-                StringUtils.isNotBlank( strWidgetStatus ) && StringUtils.isNumeric( strWidgetStatus ) &&
-                StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId ) &&
-                StringUtils.isNotBlank( strWidgetType ) )
+        if ( StringUtils.isNotBlank( strWidgetName ) && StringUtils.isNotBlank( strWidgetDescription ) && StringUtils.isNotBlank( strIdCategory )
+                && StringUtils.isNumeric( strIdCategory ) && StringUtils.isNotBlank( strIdIcon ) && StringUtils.isNumeric( strIdIcon )
+                && StringUtils.isNotBlank( strIdStyle ) && StringUtils.isNumeric( strIdStyle ) && StringUtils.isNotBlank( strWidgetStatus )
+                && StringUtils.isNumeric( strWidgetStatus ) && StringUtils.isNotBlank( strWidgetId ) && StringUtils.isNumeric( strWidgetId )
+                && StringUtils.isNotBlank( strWidgetType ) )
         {
             int nWidgetId = Integer.parseInt( strWidgetId );
             Widget widget = _widgetService.getWidget( nWidgetId );

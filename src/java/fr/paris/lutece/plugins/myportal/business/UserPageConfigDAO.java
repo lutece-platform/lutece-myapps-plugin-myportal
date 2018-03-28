@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.myportal.business;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
 
-
 /**
  *
  * This class provides Data Access methods for UserPageConfig objects
@@ -52,73 +51,85 @@ public final class UserPageConfigDAO implements IUserPageConfigDAO
 
     /**
      * Insert a new record in the table.
-     * @param userPageConfig instance of the UserPageConfig object to insert
-     * @param plugin The plugin
+     * 
+     * @param userPageConfig
+     *            instance of the UserPageConfig object to insert
+     * @param plugin
+     *            The plugin
      */
     public void insert( UserPageConfig userPageConfig, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
-        daoUtil.setString( 1, userPageConfig.getUserGuid(  ) );
-        daoUtil.setString( 2, userPageConfig.getUserPageConfig(  ) );
+        daoUtil.setString( 1, userPageConfig.getUserGuid( ) );
+        daoUtil.setString( 2, userPageConfig.getUserPageConfig( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the data of the userPageConfig from the table
-     * @param strUserGuid The identifier of the userPageConfig
-     * @param plugin The plugin
+     * 
+     * @param strUserGuid
+     *            The identifier of the userPageConfig
+     * @param plugin
+     *            The plugin
      * @return the instance of the UserPageConfig
      */
     public UserPageConfig load( String strUserGuid, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setString( 1, strUserGuid );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         UserPageConfig userPageConfig = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-            userPageConfig = new UserPageConfig(  );
+            userPageConfig = new UserPageConfig( );
 
             userPageConfig.setUserGuid( daoUtil.getString( 1 ) );
             userPageConfig.setUserPageConfig( daoUtil.getString( 2 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return userPageConfig;
     }
 
     /**
      * Delete a record from the table
-     * @param strUserGuid user guid
-     * @param plugin The plugin
+     * 
+     * @param strUserGuid
+     *            user guid
+     * @param plugin
+     *            The plugin
      */
     public void delete( String strUserGuid, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setString( 1, strUserGuid );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Update the record in the table
-     * @param userPageConfig The reference of the userPageConfig
-     * @param plugin The plugin
+     * 
+     * @param userPageConfig
+     *            The reference of the userPageConfig
+     * @param plugin
+     *            The plugin
      */
     public void store( UserPageConfig userPageConfig, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-        daoUtil.setString( 1, userPageConfig.getUserPageConfig(  ) );
-        daoUtil.setString( 2, userPageConfig.getUserGuid(  ) );
+        daoUtil.setString( 1, userPageConfig.getUserPageConfig( ) );
+        daoUtil.setString( 2, userPageConfig.getUserGuid( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 }

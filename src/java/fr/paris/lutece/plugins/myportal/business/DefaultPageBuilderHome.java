@@ -40,7 +40,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.List;
 
-
 /**
  *
  * DefaultPageBuilderHome
@@ -57,7 +56,7 @@ public final class DefaultPageBuilderHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private DefaultPageBuilderHome(  )
+    private DefaultPageBuilderHome( )
     {
     }
 
@@ -66,7 +65,7 @@ public final class DefaultPageBuilderHome
      *
      * @return the new PK
      */
-    public static int newPrimaryKey(  )
+    public static int newPrimaryKey( )
     {
         return _dao.newPrimaryKey( _plugin );
     }
@@ -74,7 +73,8 @@ public final class DefaultPageBuilderHome
     /**
      * Creation of an instance of widgetComponent
      *
-     * @param widgetComponent The instance of the widgetComponent which contains the informations to store
+     * @param widgetComponent
+     *            The instance of the widgetComponent which contains the informations to store
      */
     public static void create( WidgetComponent widgetComponent )
     {
@@ -84,7 +84,8 @@ public final class DefaultPageBuilderHome
     /**
      * Update of the widgetComponent which is specified in parameter
      *
-     * @param widgetComponent The instance of the widgetComponent which contains the informations to update
+     * @param widgetComponent
+     *            The instance of the widgetComponent which contains the informations to update
      *
      */
     public static void update( WidgetComponent widgetComponent )
@@ -95,7 +96,8 @@ public final class DefaultPageBuilderHome
     /**
      * Remove the widgetComponent whose identifier is specified in parameter
      *
-     * @param nIdWidgetComponent The widgetComponent id
+     * @param nIdWidgetComponent
+     *            The widgetComponent id
      */
     public static void remove( int nIdWidgetComponent )
     {
@@ -105,7 +107,8 @@ public final class DefaultPageBuilderHome
     /**
      * Delete the records that have a column > to the given nColumnMax
      *
-     * @param nColumnMax the column max
+     * @param nColumnMax
+     *            the column max
      */
     public static void removeByColumnMax( int nColumnMax )
     {
@@ -115,7 +118,7 @@ public final class DefaultPageBuilderHome
     /**
      * Remove the widgetComponent whose identifier is specified in parameter
      */
-    public static void removeAll(  )
+    public static void removeAll( )
     {
         _dao.deleteAll( _plugin );
     }
@@ -126,7 +129,8 @@ public final class DefaultPageBuilderHome
     /**
      * Returns an instance of a widgetComponent whose identifier is specified in parameter
      *
-     * @param nIdWidgetComponent The widgetComponent primary key
+     * @param nIdWidgetComponent
+     *            The widgetComponent primary key
      * @return an instance of widgetComponent
      */
     public static WidgetComponent findByPrimaryKey( int nIdWidgetComponent )
@@ -139,14 +143,16 @@ public final class DefaultPageBuilderHome
      *
      * @return the list which contains the data of all the widgetComponent
      */
-    public static List<WidgetComponent> findAll(  )
+    public static List<WidgetComponent> findAll( )
     {
         return _dao.selectAllWidgetComponents( _plugin );
     }
 
     /**
      * Loads the data of all the widgetComponent
-     * @param filter a search by criteria
+     * 
+     * @param filter
+     *            a search by criteria
      * @return the list which contains the data of all the widgetComponent
      */
     public static List<WidgetComponent> findByFilter( WidgetComponentFilter filter )
@@ -156,16 +162,19 @@ public final class DefaultPageBuilderHome
 
     /**
      * Finds the max order for all columns.
+     * 
      * @return the max order
      */
-    public static int findMaxOrder(  )
+    public static int findMaxOrder( )
     {
         return _dao.selectMaxOrder( _plugin );
     }
 
     /**
      * Finds the max order for the column.
-     * @param nColumn the column
+     * 
+     * @param nColumn
+     *            the column
      * @return the max order
      */
     public static int findMaxOrder( int nColumn )
@@ -175,18 +184,20 @@ public final class DefaultPageBuilderHome
 
     /**
      * Find the columns list
+     * 
      * @return a list of integer
      */
-    public static List<Integer> findColumns(  )
+    public static List<Integer> findColumns( )
     {
         return _dao.selectColumns( _plugin );
     }
 
     /**
      * Return the widget ids list
+     * 
      * @return the widget ids list
      */
-    public static List<Integer> findWidgetIds(  )
+    public static List<Integer> findWidgetIds( )
     {
         return _dao.selectWidgetIds( _plugin );
     }

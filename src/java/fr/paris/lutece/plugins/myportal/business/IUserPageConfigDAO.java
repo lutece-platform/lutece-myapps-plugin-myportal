@@ -35,42 +35,53 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
-
 /**
  *
-* IUserPageConfigDAO Interface
-*
-*/
+ * IUserPageConfigDAO Interface
+ *
+ */
 public interface IUserPageConfigDAO
 {
     /**
      * Insert a new record in the table.
-     * @param userPageConfig instance of the UserPageConfig object to inssert
-     * @param plugin the Plugin
+     * 
+     * @param userPageConfig
+     *            instance of the UserPageConfig object to inssert
+     * @param plugin
+     *            the Plugin
      */
     void insert( UserPageConfig userPageConfig, Plugin plugin );
 
     /**
-    * Update the record in the table
-    * @param userPageConfig the reference of the UserPageConfig
-    * @param plugin the Plugin
-    */
+     * Update the record in the table
+     * 
+     * @param userPageConfig
+     *            the reference of the UserPageConfig
+     * @param plugin
+     *            the Plugin
+     */
     void store( UserPageConfig userPageConfig, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param strUserGuid user guid
-     * @param plugin the Plugin
+     * 
+     * @param strUserGuid
+     *            user guid
+     * @param plugin
+     *            the Plugin
      */
     void delete( String strUserGuid, Plugin plugin );
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Load the data from the table
-     * @param strUserGuid The identifier of the userPageConfig
-     * @param plugin the Plugin
+     * 
+     * @param strUserGuid
+     *            The identifier of the userPageConfig
+     * @param plugin
+     *            the Plugin
      * @return The instance of the userPageConfig
      */
     UserPageConfig load( String strUserGuid, Plugin plugin );

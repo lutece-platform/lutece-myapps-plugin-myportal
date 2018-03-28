@@ -38,7 +38,6 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.List;
 
-
 /**
  *
  * WidgetHandlerService
@@ -52,19 +51,20 @@ public final class WidgetHandlerService
     /**
      * Constructor
      */
-    private WidgetHandlerService(  )
+    private WidgetHandlerService( )
     {
     }
 
     /**
      * Get an instance of {@link WidgetHandlerService}
+     * 
      * @return an instance of {@link WidgetHandlerService}
      */
-    public static synchronized WidgetHandlerService instance(  )
+    public static synchronized WidgetHandlerService instance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new WidgetHandlerService(  );
+            _singleton = new WidgetHandlerService( );
             _listHandlers = SpringContextService.getBeansOfType( WidgetHandler.class );
         }
 
@@ -73,15 +73,16 @@ public final class WidgetHandlerService
 
     /**
      * Get the handlers as a {@link ReferenceList}
+     * 
      * @return a {@link ReferenceList}
      */
-    public ReferenceList getHandlers(  )
+    public ReferenceList getHandlers( )
     {
-        ReferenceList list = new ReferenceList(  );
+        ReferenceList list = new ReferenceList( );
 
         for ( WidgetHandler handler : _listHandlers )
         {
-            list.addItem( handler.getName(  ), handler.getDescription(  ) );
+            list.addItem( handler.getName( ), handler.getDescription( ) );
         }
 
         return list;
@@ -89,14 +90,16 @@ public final class WidgetHandlerService
 
     /**
      * Get a handler given a type
-     * @param strType the type
+     * 
+     * @param strType
+     *            the type
      * @return a {@link WidgetHandler}
      */
     public WidgetHandler getHandler( String strType )
     {
         for ( WidgetHandler handler : _listHandlers )
         {
-            if ( handler.getName(  ).equals( strType ) )
+            if ( handler.getName( ).equals( strType ) )
             {
                 return handler;
             }

@@ -39,7 +39,6 @@ import fr.paris.lutece.util.sql.DAOUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * DefaultPageBuilderDAO
@@ -52,12 +51,11 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     private static final String SQL_QUERY_MAX_ORDER = " SELECT max( a.widget_order ) FROM myportal_default_page a ";
     private static final String SQL_QUERY_MAX_ORDER_COLUMN = SQL_QUERY_MAX_ORDER + " WHERE a.widget_column = ? ";
     private static final String SQL_QUERY_DELETE = " DELETE FROM myportal_default_page ";
-    private static final String SQL_QUERY_DELETE_BY_ID_WIDGET_CONFIG = SQL_QUERY_DELETE +
-        " WHERE id_widget_component = ? ";
+    private static final String SQL_QUERY_DELETE_BY_ID_WIDGET_CONFIG = SQL_QUERY_DELETE + " WHERE id_widget_component = ? ";
     private static final String SQL_QUERY_DELETE_BY_COLUMN_MAX = SQL_QUERY_DELETE + " WHERE widget_column > ? ";
-    private static final String SQL_QUERY_SELECT = " SELECT DISTINCT a.id_widget_component, a.id_widget, a.widget_order, a.widget_column, b.name, c.name " +
-        " FROM myportal_default_page a INNER JOIN myportal_widget b ON a.id_widget = b.id_widget " +
-        " INNER JOIN myportal_widget_style INNER JOIN myportal_widget_style c ON b.id_style = c.id_style ";
+    private static final String SQL_QUERY_SELECT = " SELECT DISTINCT a.id_widget_component, a.id_widget, a.widget_order, a.widget_column, b.name, c.name "
+            + " FROM myportal_default_page a INNER JOIN myportal_widget b ON a.id_widget = b.id_widget "
+            + " INNER JOIN myportal_widget_style INNER JOIN myportal_widget_style c ON b.id_style = c.id_style ";
     private static final String SQL_QUERY_ORDER_BY_COLUMN_AND_ORDER = " ORDER BY a.widget_column, a.widget_order ";
     private static final String SQL_QUERY_SELECT_ALL = SQL_QUERY_SELECT + SQL_QUERY_ORDER_BY_COLUMN_AND_ORDER;
     private static final String SQL_QUERY_SELECT_COLUMNS = " SELECT a.widget_column FROM myportal_default_page a GROUP BY a.widget_column ";
@@ -65,12 +63,11 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     private static final String SQL_QUERY_FILTER_COLUMN = " a.widget_column = ? ";
     private static final String SQL_QUERY_FILTER_ORDER = " a.widget_order = ? ";
     private static final String SQL_QUERY_FILTER_ID_WIDGET_COMPONENT = " a.id_widget_component = ? ";
-    private static final String SQL_QUERY_SELECT_BY_PRIMARY_KEY = SQL_QUERY_SELECT + " WHERE " +
-        SQL_QUERY_FILTER_ID_WIDGET_COMPONENT;
-    private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_default_page( id_widget_component, id_widget, widget_order, widget_column ) " +
-        " VALUES(?,?,?,?) ";
-    private static final String SQL_QUERY_UPDATE = " UPDATE myportal_default_page " +
-        " SET id_widget = ?, widget_order = ?, widget_column = ? WHERE id_widget_component = ? ";
+    private static final String SQL_QUERY_SELECT_BY_PRIMARY_KEY = SQL_QUERY_SELECT + " WHERE " + SQL_QUERY_FILTER_ID_WIDGET_COMPONENT;
+    private static final String SQL_QUERY_INSERT = " INSERT INTO myportal_default_page( id_widget_component, id_widget, widget_order, widget_column ) "
+            + " VALUES(?,?,?,?) ";
+    private static final String SQL_QUERY_UPDATE = " UPDATE myportal_default_page "
+            + " SET id_widget = ?, widget_order = ?, widget_column = ? WHERE id_widget_component = ? ";
     private static final String SQL_QUERY_KEYWORD_WHERE = "  WHERE ";
     private static final String SQL_QUERY_KEYWORD_AND = " AND ";
 
@@ -80,18 +77,18 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     public int newPrimaryKey( Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         int nKey;
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
             // if the table is empty
             nKey = 1;
         }
 
         nKey = daoUtil.getInt( 1 ) + 1;
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
@@ -105,9 +102,9 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         daoUtil.setInt( 1, nIdWidgetComponent );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -119,9 +116,9 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         daoUtil.setInt( 1, nColumnMax );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -131,9 +128,9 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -146,9 +143,9 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
         daoUtil.setInt( 1, newPrimaryKey( plugin ) );
         setInsertOrUpdateValues( 2, widgetComponent, daoUtil );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -160,14 +157,14 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         daoUtil.setInt( 1, nIdWidgetComponent );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         WidgetComponent widgetComponent = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            widgetComponent = new WidgetComponent(  );
+            widgetComponent = new WidgetComponent( );
             widgetComponent.setIdWidgetComponent( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setOrder( daoUtil.getInt( nIndex++ ) );
@@ -176,7 +173,7 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
             widgetComponent.setStyleName( daoUtil.getString( nIndex++ ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return widgetComponent;
     }
@@ -188,14 +185,14 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ALL, plugin );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        List<WidgetComponent> listWidgetComponents = new ArrayList<WidgetComponent>(  );
+        List<WidgetComponent> listWidgetComponents = new ArrayList<WidgetComponent>( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            WidgetComponent widgetComponent = new WidgetComponent(  );
+            WidgetComponent widgetComponent = new WidgetComponent( );
             widgetComponent.setIdWidgetComponent( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setOrder( daoUtil.getInt( nIndex++ ) );
@@ -205,7 +202,7 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
             listWidgetComponents.add( widgetComponent );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listWidgetComponents;
     }
@@ -219,14 +216,14 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         int nMaxOrder = 0;
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             nMaxOrder = daoUtil.getInt( 1 );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nMaxOrder;
     }
@@ -242,14 +239,14 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         daoUtil.setInt( 1, nColumn );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             nMaxOrder = daoUtil.getInt( 1 );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nMaxOrder;
     }
@@ -263,18 +260,18 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
         buildSQLFilter( sbSQL, filter );
         sbSQL.append( SQL_QUERY_ORDER_BY_COLUMN_AND_ORDER );
 
-        DAOUtil daoUtil = new DAOUtil( sbSQL.toString(  ), plugin );
+        DAOUtil daoUtil = new DAOUtil( sbSQL.toString( ), plugin );
 
         applySQLFilter( daoUtil, 1, filter );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        List<WidgetComponent> listWidgetComponents = new ArrayList<WidgetComponent>(  );
+        List<WidgetComponent> listWidgetComponents = new ArrayList<WidgetComponent>( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             int nIndex = 1;
-            WidgetComponent widgetComponent = new WidgetComponent(  );
+            WidgetComponent widgetComponent = new WidgetComponent( );
             widgetComponent.setIdWidgetComponent( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setIdWidget( daoUtil.getInt( nIndex++ ) );
             widgetComponent.setOrder( daoUtil.getInt( nIndex++ ) );
@@ -284,7 +281,7 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
             listWidgetComponents.add( widgetComponent );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listWidgetComponents;
     }
@@ -298,11 +295,11 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
         int nIndex = 1;
         nIndex = setInsertOrUpdateValues( 1, widgetComponent, daoUtil );
-        daoUtil.setInt( nIndex, widgetComponent.getIdWidgetComponent(  ) );
+        daoUtil.setInt( nIndex, widgetComponent.getIdWidgetComponent( ) );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -310,18 +307,18 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
      */
     public List<Integer> selectColumns( Plugin plugin )
     {
-        List<Integer> listColumns = new ArrayList<Integer>(  );
+        List<Integer> listColumns = new ArrayList<Integer>( );
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_COLUMNS, plugin );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             listColumns.add( daoUtil.getInt( 1 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listColumns;
     }
@@ -331,59 +328,66 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
      */
     public List<Integer> selectWidgetIds( Plugin plugin )
     {
-        List<Integer> listWidgetIds = new ArrayList<Integer>(  );
+        List<Integer> listWidgetIds = new ArrayList<Integer>( );
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_WIDGET_IDS, plugin );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             listWidgetIds.add( daoUtil.getInt( 1 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listWidgetIds;
     }
 
     /**
      * Sets daoUtil values from componnet
-     * @param nStartIndex the start index
-     * @param widgetComponent the component
-     * @param daoUtil daoutil
+     * 
+     * @param nStartIndex
+     *            the start index
+     * @param widgetComponent
+     *            the component
+     * @param daoUtil
+     *            daoutil
      * @return the end index
      */
     private int setInsertOrUpdateValues( int nStartIndex, WidgetComponent widgetComponent, DAOUtil daoUtil )
     {
         int nIndex = nStartIndex;
-        daoUtil.setInt( nIndex++, widgetComponent.getIdWidget(  ) );
-        daoUtil.setInt( nIndex++, widgetComponent.getOrder(  ) );
-        daoUtil.setInt( nIndex++, widgetComponent.getColumn(  ) );
+        daoUtil.setInt( nIndex++, widgetComponent.getIdWidget( ) );
+        daoUtil.setInt( nIndex++, widgetComponent.getOrder( ) );
+        daoUtil.setInt( nIndex++, widgetComponent.getColumn( ) );
 
         return nIndex;
     }
 
     /**
      * Builds sql filter
-     * @param sbSQL the buffer
-     * @param filter the filter
+     * 
+     * @param sbSQL
+     *            the buffer
+     * @param filter
+     *            the filter
      */
     private void buildSQLFilter( StringBuilder sbSQL, WidgetComponentFilter filter )
     {
-        List<String> listFilters = new ArrayList<String>(  );
+        List<String> listFilters = new ArrayList<String>( );
 
-        if ( filter.containsFilterOrder(  ) )
+        if ( filter.containsFilterOrder( ) )
         {
             listFilters.add( SQL_QUERY_FILTER_ORDER );
         }
 
-        if ( filter.containsFilterColumn(  ) )
+        if ( filter.containsFilterColumn( ) )
         {
             listFilters.add( SQL_QUERY_FILTER_COLUMN );
         }
 
-        if ( !listFilters.isEmpty(  ) )
+        if ( !listFilters.isEmpty( ) )
         {
             sbSQL.append( SQL_QUERY_KEYWORD_WHERE );
 
@@ -407,23 +411,27 @@ public class DefaultPageBuilderDAO implements IDefaultPageBuilderDAO
 
     /**
      * Add daoUtil parameters
-     * @param daoUtil daoUtil
-     * @param nStartIndex start index
-     * @param filter the filter to apply
+     * 
+     * @param daoUtil
+     *            daoUtil
+     * @param nStartIndex
+     *            start index
+     * @param filter
+     *            the filter to apply
      * @return end index
      */
     private int applySQLFilter( DAOUtil daoUtil, int nStartIndex, WidgetComponentFilter filter )
     {
         int nIndex = nStartIndex;
 
-        if ( filter.containsFilterOrder(  ) )
+        if ( filter.containsFilterOrder( ) )
         {
-            daoUtil.setInt( nIndex++, filter.getFilterOrder(  ) );
+            daoUtil.setInt( nIndex++, filter.getFilterOrder( ) );
         }
 
-        if ( filter.containsFilterColumn(  ) )
+        if ( filter.containsFilterColumn( ) )
         {
-            daoUtil.setInt( nIndex++, filter.getFilterColumn(  ) );
+            daoUtil.setInt( nIndex++, filter.getFilterColumn( ) );
         }
 
         return nIndex;

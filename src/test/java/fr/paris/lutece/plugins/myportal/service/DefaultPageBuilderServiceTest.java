@@ -42,7 +42,6 @@ import fr.paris.lutece.test.LuteceTestCase;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  *
  * DefaultPageBuilderServiceTest
@@ -50,16 +49,16 @@ import java.util.Map;
  */
 public class DefaultPageBuilderServiceTest extends LuteceTestCase
 {
-	private DefaultPageBuilderService defaultPageBuilderService =  SpringContextService.getBean(DefaultPageBuilderService.BEAN_NAME);
-	
+    private DefaultPageBuilderService defaultPageBuilderService = SpringContextService.getBean( DefaultPageBuilderService.BEAN_NAME );
+
     /**
      * Test of getWidgetComponents method of class fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService
      */
-    public void testGetWidgetComponents(  )
+    public void testGetWidgetComponents( )
     {
         System.out.println( "getWidgetComponents" );
 
-        int nNbColumns = defaultPageBuilderService.getColumnCount(  );
+        int nNbColumns = defaultPageBuilderService.getColumnCount( );
 
         for ( int i = 1; i <= nNbColumns; i++ )
         {
@@ -71,34 +70,34 @@ public class DefaultPageBuilderServiceTest extends LuteceTestCase
     /**
      * Test of getAllSetWidgetComponents method of class fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService
      */
-    public void testGetAllSetWidgetComponents(  )
+    public void testGetAllSetWidgetComponents( )
     {
         System.out.println( "getAllSetWidgetComponents" );
 
-        Map<String, List<WidgetComponent>> result = defaultPageBuilderService.getAllSetWidgetComponents(  );
+        Map<String, List<WidgetComponent>> result = defaultPageBuilderService.getAllSetWidgetComponents( );
         assertNotNull( result );
     }
 
     /**
      * Test of getOrderedColumnsStatus method of class fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService
      */
-    public void testGetOrderedColumnsStatus(  )
+    public void testGetOrderedColumnsStatus( )
     {
         System.out.println( "getOrderedColumnsStatus" );
 
-        Map<String, Boolean> result = defaultPageBuilderService.getOrderedColumnsStatus(  );
+        Map<String, Boolean> result = defaultPageBuilderService.getOrderedColumnsStatus( );
         assertNotNull( result );
     }
 
     /**
      * Test of getManageAdvancedParameters method of class fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService
      */
-    public void testGetManageAdvancedParameters(  )
+    public void testGetManageAdvancedParameters( )
     {
         System.out.println( "getManageAdvancedParameters" );
 
         AdminUser user = AdminUserHome.findUserByLogin( "admin" );
-        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId(  ) ) );
+        user.setRoles( AdminUserHome.getRolesListForUser( user.getUserId( ) ) );
 
         Map<String, Object> result = defaultPageBuilderService.getManageAdvancedParameters( user );
         assertNotNull( result );

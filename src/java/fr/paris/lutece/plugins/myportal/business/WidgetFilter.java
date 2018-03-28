@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  *
  * WidgetFilter
@@ -58,7 +57,7 @@ public class WidgetFilter
     /**
      * Constructor
      */
-    public WidgetFilter(  )
+    public WidgetFilter( )
     {
         _bIsWideSearch = true;
         _strName = StringUtils.EMPTY;
@@ -72,14 +71,15 @@ public class WidgetFilter
     }
 
     /**
-     * Set true if the filter is applied to a wide search.
-     * <br/>
+     * Set true if the filter is applied to a wide search. <br/>
      * In other words, the SQL query will use
      * <ul>
      * <li>SQL <b>OR</b> if it is applied to a wide search</li>
      * <li>SQL <b>AND</b> if it is not applied to a wide search</li>
      * </ul>
-     * @param bIsWideSearch true if it a wide search, false otherwise
+     * 
+     * @param bIsWideSearch
+     *            true if it a wide search, false otherwise
      */
     public void setIsWideSearch( boolean bIsWideSearch )
     {
@@ -87,32 +87,35 @@ public class WidgetFilter
     }
 
     /**
-     * Check if the filter is applied to a wide search or not.
-     * <br/>
+     * Check if the filter is applied to a wide search or not. <br/>
      * In other words, the SQL query will use
      * <ul>
      * <li>SQL <b>OR</b> if it is applied to a wide search</li>
      * <li>SQL <b>AND</b> if it is not applied to a wide search</li>
      * </ul>
+     * 
      * @return true if it is applied to a wide search
      */
-    public boolean getIsWideSearch(  )
+    public boolean getIsWideSearch( )
     {
         return _bIsWideSearch;
     }
 
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
 
     /**
      * Sets the Name
-     * @param strName The Name
+     * 
+     * @param strName
+     *            The Name
      */
     public void setName( String strName )
     {
@@ -121,25 +124,29 @@ public class WidgetFilter
 
     /**
      * Check if the filter contains the attribute Name
+     * 
      * @return true if it containts, false otherwise
      */
-    public boolean containsName(  )
+    public boolean containsName( )
     {
         return StringUtils.isNotBlank( _strName );
     }
 
     /**
      * Returns the Description
+     * 
      * @return The Description
      */
-    public String getDescription(  )
+    public String getDescription( )
     {
         return _strDescription;
     }
 
     /**
      * Sets the Description
-     * @param strDescription The Description
+     * 
+     * @param strDescription
+     *            The Description
      */
     public void setDescription( String strDescription )
     {
@@ -148,25 +155,29 @@ public class WidgetFilter
 
     /**
      * Check if the filter contains the attribute Description
+     * 
      * @return true if it containts, false otherwise
      */
-    public boolean containsDescription(  )
+    public boolean containsDescription( )
     {
         return StringUtils.isNotBlank( _strDescription );
     }
 
     /**
      * Returns the IdCategory
+     * 
      * @return The IdCategory
      */
-    public int getIdCategory(  )
+    public int getIdCategory( )
     {
         return _nIdCategory;
     }
 
     /**
      * Sets the IdCategory
-     * @param nIdCategory The IdCategory
+     * 
+     * @param nIdCategory
+     *            The IdCategory
      */
     public void setIdCategory( int nIdCategory )
     {
@@ -175,25 +186,29 @@ public class WidgetFilter
 
     /**
      * Check if the filter contains the attribute ID category
+     * 
      * @return true if it containts, false otherwise
      */
-    public boolean containsIdCategory(  )
+    public boolean containsIdCategory( )
     {
         return _nIdCategory != ALL_INT;
     }
 
     /**
      * Returns the IdStyle
+     * 
      * @return The IdStyle
      */
-    public int getIdStyle(  )
+    public int getIdStyle( )
     {
         return _nIdStyle;
     }
 
     /**
      * Sets the IdStyle
-     * @param nIdStyle The IdStyle
+     * 
+     * @param nIdStyle
+     *            The IdStyle
      */
     public void setIdStyle( int nIdStyle )
     {
@@ -202,25 +217,29 @@ public class WidgetFilter
 
     /**
      * Check if the filter contains the attribute ID style
+     * 
      * @return true if it containts, false otherwise
      */
-    public boolean containsIdStyle(  )
+    public boolean containsIdStyle( )
     {
         return _nIdStyle != ALL_INT;
     }
 
     /**
      * Returns the WidgetType
+     * 
      * @return The WidgetType
      */
-    public String getWidgetType(  )
+    public String getWidgetType( )
     {
         return _strWidgetType;
     }
 
     /**
      * Sets the WidgetType
-     * @param strWidgetType The WidgetType
+     * 
+     * @param strWidgetType
+     *            The WidgetType
      */
     public void setWidgetType( String strWidgetType )
     {
@@ -229,16 +248,19 @@ public class WidgetFilter
 
     /**
      * Check if the filter contains the attribute Widget Type
+     * 
      * @return true if it containts, false otherwise
      */
-    public boolean containsWidgetType(  )
+    public boolean containsWidgetType( )
     {
         return StringUtils.isNotBlank( _strWidgetType );
     }
 
     /**
      * Set the status of the widget
-     * @param nStatus the status
+     * 
+     * @param nStatus
+     *            the status
      */
     public void setStatus( int nStatus )
     {
@@ -247,25 +269,29 @@ public class WidgetFilter
 
     /**
      * Get the status of the widget
+     * 
      * @return the status of the widget
      */
-    public int getStatus(  )
+    public int getStatus( )
     {
         return _nStatus;
     }
 
     /**
-    * Check if the filter contains the attribute Name
-    * @return true if it containts, false otherwise
-    */
-    public boolean containsStatus(  )
+     * Check if the filter contains the attribute Name
+     * 
+     * @return true if it containts, false otherwise
+     */
+    public boolean containsStatus( )
     {
         return _nStatus != ALL_INT;
     }
 
     /**
      * Set the widget as essential
-     * @param nIsEssential true if it is essential, false otherwise
+     * 
+     * @param nIsEssential
+     *            true if it is essential, false otherwise
      */
     public void setIsEssential( int nIsEssential )
     {
@@ -274,25 +300,29 @@ public class WidgetFilter
 
     /**
      * Check if the widget is essential
+     * 
      * @return true if it is essential, false otherwise
      */
-    public int getIsEssential(  )
+    public int getIsEssential( )
     {
         return _nIsEssential;
     }
 
     /**
      * Check if the filter contains the attribute essential
+     * 
      * @return true if it contains, false otherwise
      */
-    public boolean containsIsEssential(  )
+    public boolean containsIsEssential( )
     {
         return _nIsEssential != ALL_INT;
     }
 
     /**
      * Set the widget as new
-     * @param nIsNew true if it is new, false otherwise
+     * 
+     * @param nIsNew
+     *            true if it is new, false otherwise
      */
     public void setIsNew( int nIsNew )
     {
@@ -301,18 +331,20 @@ public class WidgetFilter
 
     /**
      * Check if the widget is new
+     * 
      * @return true if it is new, false otherwise
      */
-    public int getIsNew(  )
+    public int getIsNew( )
     {
         return _nIsNew;
     }
 
     /**
      * Check if the filter contains the attribute new
+     * 
      * @return true if it contains, false otherwise
      */
-    public boolean containsIsNew(  )
+    public boolean containsIsNew( )
     {
         return _nIsNew != ALL_INT;
     }

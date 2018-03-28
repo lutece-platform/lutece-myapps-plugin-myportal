@@ -56,14 +56,12 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
- * This class provides the user interface to manage  Category, Widget, features
- * ( manage, create, modify, remove )
+ * This class provides the user interface to manage Category, Widget, features ( manage, create, modify, remove )
  */
 public class CategoryJspBean extends PluginAdminPageJspBean
 {
-    ////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
     // Constants
 
     // Parameters
@@ -100,10 +98,10 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     private static final String MESSAGE_CONFIRM_REMOVE_CATEGORY = "myportal.message.confirmRemoveCategory";
     private static final String MESSAGE_ERROR = "myportal.message.error";
     private static final String MESSAGE_CANNOT_REMOVE_CATEGORY = "myportal.message.cannotRemoveCategory";
-    
-    private CategoryService _categoryService = SpringContextService.getBean(CategoryService.BEAN_NAME);
 
-    //Variables
+    private CategoryService _categoryService = SpringContextService.getBean( CategoryService.BEAN_NAME );
+
+    // Variables
     private int _nDefaultItemsPerPage;
     private String _strCurrentPageIndex;
     private int _nItemsPerPage;
@@ -111,7 +109,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     /**
      * Returns the list of category
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the categorys list
      */
     public String getManageCategories( HttpServletRequest request )
@@ -120,47 +119,48 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
         _strCurrentPageIndex = Paginator.getPageIndex( request, Paginator.PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
         _nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( PROPERTY_DEFAULT_LIST_CATEGORY_PER_PAGE, 50 );
-        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage,
-                _nDefaultItemsPerPage );
+        _nItemsPerPage = Paginator.getItemsPerPage( request, Paginator.PARAMETER_ITEMS_PER_PAGE, _nItemsPerPage, _nDefaultItemsPerPage );
 
         UrlItem url = new UrlItem( JSP_MANAGE_CATEGORYS );
-        String strUrl = url.getUrl(  );
-        Collection<Category> listCategories = _categoryService.getCategoriesList(  );
-        LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCategories, _nItemsPerPage, strUrl,
-                PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) );
+        String strUrl = url.getUrl( );
+        Collection<Category> listCategories = _categoryService.getCategoriesList( );
+        LocalizedPaginator paginator = new LocalizedPaginator( (List<Category>) listCategories, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX,
+                _strCurrentPageIndex, getLocale( ) );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         model.put( MARK_NB_ITEMS_PER_PAGE, "" + _nItemsPerPage );
         model.put( MARK_PAGINATOR, paginator );
-        model.put( MARK_CATEGORY_LIST, paginator.getPageItems(  ) );
+        model.put( MARK_CATEGORY_LIST, paginator.getPageItems( ) );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_CATEGORIES, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_CATEGORIES, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
      * Returns the form to create a category
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the category form
      */
     public String getCreateCategory( HttpServletRequest request )
     {
         setPageTitleProperty( PROPERTY_PAGE_TITLE_CREATE_CATEGORY );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_CATEGORY, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_CATEGORY, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Process the data capture form of a new category
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      */
     public String doCreateCategory( HttpServletRequest request )
@@ -171,7 +171,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
 
         if ( StringUtils.isNotBlank( strName ) && StringUtils.isNotBlank( strDescription ) )
         {
-            Category category = new Category(  );
+            Category category = new Category( );
             category.setName( strName );
             category.setDescription( strDescription );
 
@@ -190,7 +190,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     /**
      * Manages the removal form of a category whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     public String getConfirmRemoveCategory( HttpServletRequest request )
@@ -204,8 +205,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
             UrlItem url = new UrlItem( JSP_DO_REMOVE_CATEGORY );
             url.addParameter( PARAMETER_CATEGORY_ID_CATEGORY, nId );
 
-            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_CATEGORY, url.getUrl(  ),
-                    AdminMessage.TYPE_CONFIRMATION );
+            strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_CATEGORY, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
         }
         else
         {
@@ -218,7 +218,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     /**
      * Handles the removal form of a category
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage categorys
      */
     public String doRemoveCategory( HttpServletRequest request )
@@ -236,8 +237,7 @@ public class CategoryJspBean extends PluginAdminPageJspBean
             }
             else
             {
-                strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CANNOT_REMOVE_CATEGORY,
-                        AdminMessage.TYPE_STOP );
+                strUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CANNOT_REMOVE_CATEGORY, AdminMessage.TYPE_STOP );
             }
         }
         else
@@ -251,7 +251,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     /**
      * Returns the form to update info about a category
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     public String getModifyCategory( HttpServletRequest request )
@@ -266,12 +267,12 @@ public class CategoryJspBean extends PluginAdminPageJspBean
             int nId = Integer.parseInt( strCategoryId );
             Category category = _categoryService.findByPrimaryKey( nId );
 
-            Map<String, Object> model = new HashMap<String, Object>(  );
+            Map<String, Object> model = new HashMap<String, Object>( );
             model.put( MARK_CATEGORY, category );
 
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_CATEGORY, getLocale(  ), model );
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_CATEGORY, getLocale( ), model );
 
-            strUrl = getAdminPage( template.getHtml(  ) );
+            strUrl = getAdminPage( template.getHtml( ) );
         }
         else
         {
@@ -284,7 +285,8 @@ public class CategoryJspBean extends PluginAdminPageJspBean
     /**
      * Process the change form of a category
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      */
     public String doModifyCategory( HttpServletRequest request )

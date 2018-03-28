@@ -38,71 +38,91 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  *
-* IWidgetDAO Interface
-*
-*/
+ * IWidgetDAO Interface
+ *
+ */
 public interface IWidgetDAO
 {
     /**
-    * Generates a new primary key
-    * @param plugin The Plugin
-    * @return The new primary key
-    */
+     * Generates a new primary key
+     * 
+     * @param plugin
+     *            The Plugin
+     * @return The new primary key
+     */
     int newPrimaryKey( Plugin plugin );
 
     /**
      * Insert a new record in the table.
-     * @param widget instance of the Widget object to inssert
-     * @param plugin the Plugin
+     * 
+     * @param widget
+     *            instance of the Widget object to inssert
+     * @param plugin
+     *            the Plugin
      */
     void insert( Widget widget, Plugin plugin );
 
     /**
-    * Update the record in the table
-    * @param widget the reference of the Widget
-    * @param plugin the Plugin
-    */
+     * Update the record in the table
+     * 
+     * @param widget
+     *            the reference of the Widget
+     * @param plugin
+     *            the Plugin
+     */
     void store( Widget widget, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nIdWidget int identifier of the Widget to delete
-     * @param plugin the Plugin
+     * 
+     * @param nIdWidget
+     *            int identifier of the Widget to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nIdWidget, Plugin plugin );
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the widget
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the widget
+     * @param plugin
+     *            the Plugin
      * @return The instance of the widget
      */
     Widget load( int nKey, Plugin plugin );
 
     /**
-    * Load the data of all the widget objects and returns them as a collection
-    * @param plugin the Plugin
-    * @return The collection which contains the data of all the widget objects
-    */
+     * Load the data of all the widget objects and returns them as a collection
+     * 
+     * @param plugin
+     *            the Plugin
+     * @return The collection which contains the data of all the widget objects
+     */
     Collection<Widget> selectWidgetsList( Plugin plugin );
 
     /**
      * Get the list of public or mandatory widgets
-     * @param plugin {@link Plugin}
+     * 
+     * @param plugin
+     *            {@link Plugin}
      * @return the list widgets
      */
     List<Widget> getPublicMandatoryWidgets( Plugin plugin );
 
     /**
      * Get the list of widgets by filter
-     * @param wFilter the filter
-     * @param plugin {@link Plugin}
+     * 
+     * @param wFilter
+     *            the filter
+     * @param plugin
+     *            {@link Plugin}
      * @return a list of {@link Widget}
      */
     List<Widget> getWidgetsByFilter( WidgetFilter wFilter, Plugin plugin );

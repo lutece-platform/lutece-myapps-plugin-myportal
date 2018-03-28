@@ -41,7 +41,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  *
  * This class provides instances management methods (create, find, ...) for Widget objects
@@ -52,29 +51,31 @@ public final class WidgetHome
     // Static variable pointed at the DAO instance
     private static final String BEAN_MYPORTAL_WIDGETDAO = "myportal.widgetDAO";
     private static Plugin _plugin = PluginService.getPlugin( MyPortalPlugin.PLUGIN_NAME );
-    private static IWidgetDAO _dao = (IWidgetDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME,
-            BEAN_MYPORTAL_WIDGETDAO );
+    private static IWidgetDAO _dao = (IWidgetDAO) SpringContextService.getPluginBean( MyPortalPlugin.PLUGIN_NAME, BEAN_MYPORTAL_WIDGETDAO );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private WidgetHome(  )
+    private WidgetHome( )
     {
     }
 
     /**
      * Generates a new primary key
+     * 
      * @return The new primary key
      */
-    public static int newPrimaryKey(  )
+    public static int newPrimaryKey( )
     {
         return _dao.newPrimaryKey( _plugin );
     }
 
     /**
      * Create an instance of the widget class
-     * @param widget The instance of the Widget which contains the informations to store
-     * @return The  instance of widget which has been created with its primary key.
+     * 
+     * @param widget
+     *            The instance of the Widget which contains the informations to store
+     * @return The instance of widget which has been created with its primary key.
      */
     public static Widget create( Widget widget )
     {
@@ -85,8 +86,10 @@ public final class WidgetHome
 
     /**
      * Update of the widget which is specified in parameter
-     * @param widget The instance of the Widget which contains the data to store
-     * @return The instance of the  widget which has been updated
+     * 
+     * @param widget
+     *            The instance of the Widget which contains the data to store
+     * @return The instance of the widget which has been updated
      */
     public static Widget update( Widget widget )
     {
@@ -97,19 +100,23 @@ public final class WidgetHome
 
     /**
      * Remove the widget whose identifier is specified in parameter
-     * @param nWidgetId The widget Id
+     * 
+     * @param nWidgetId
+     *            The widget Id
      */
     public static void remove( int nWidgetId )
     {
         _dao.delete( nWidgetId, _plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
      * Returns an instance of a widget whose identifier is specified in parameter
-     * @param nKey The widget primary key
+     * 
+     * @param nKey
+     *            The widget primary key
      * @return an instance of Widget
      */
     public static Widget findByPrimaryKey( int nKey )
@@ -119,25 +126,29 @@ public final class WidgetHome
 
     /**
      * Load the data of all the widget objects and returns them in form of a collection
+     * 
      * @return the collection which contains the data of all the widget objects
      */
-    public static Collection<Widget> getWidgetsList(  )
+    public static Collection<Widget> getWidgetsList( )
     {
         return _dao.selectWidgetsList( _plugin );
     }
 
     /**
      * Get the list of public or mandatory widgets
+     * 
      * @return the list widgets
      */
-    public static List<Widget> getPublicMandatoryWidgets(  )
+    public static List<Widget> getPublicMandatoryWidgets( )
     {
         return _dao.getPublicMandatoryWidgets( _plugin );
     }
 
     /**
      * Get the list of widgets by filter
-     * @param wFilter the filter
+     * 
+     * @param wFilter
+     *            the filter
      * @return a list of {@link Widget}
      */
     public static List<Widget> getWidgetsByFilter( WidgetFilter wFilter )

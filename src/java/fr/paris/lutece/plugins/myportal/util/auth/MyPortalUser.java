@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.util.auth;
 
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
-
 /**
  *
  * MyPortalUser
@@ -47,10 +46,12 @@ public class MyPortalUser extends LuteceUser
 
     /**
      * Constructor
-     * @param strUserName the user name
+     * 
+     * @param strUserName
+     *            the user name
      */
     public MyPortalUser( String strUserName )
     {
-        super( strUserName, new MyPortalAuthentication(  ) );
+        super( strUserName, new MyPortalAuthentication( ) );
     }
 }

@@ -38,7 +38,6 @@ import fr.paris.lutece.plugins.myportal.business.Style;
 import fr.paris.lutece.plugins.myportal.business.WidgetStyleHome;
 import fr.paris.lutece.util.ReferenceList;
 
-
 /**
  * StyleService
  */
@@ -49,7 +48,7 @@ public final class StyleService
     /**
      * Private constructor
      */
-    private StyleService(  )
+    private StyleService( )
     {
     }
 
@@ -58,11 +57,11 @@ public final class StyleService
      *
      * @return an instance of {@link StyleService}
      */
-    public static synchronized StyleService getInstance(  )
+    public static synchronized StyleService getInstance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new StyleService(  );
+            _singleton = new StyleService( );
         }
 
         return _singleton;
@@ -70,25 +69,29 @@ public final class StyleService
 
     /**
      * Load the data of all the style objects and returns them in form of a list
+     * 
      * @return the list which contains the data of all the style objects
      */
-    public ReferenceList getWidgetStyles(  )
+    public ReferenceList getWidgetStyles( )
     {
-        return WidgetStyleHome.getStyles(  );
+        return WidgetStyleHome.getStyles( );
     }
 
     /**
      * Load the data of all the style objects and returns them in form of a list
+     * 
      * @return the list which contains the data of all the style objects
      */
-    public ReferenceList getColumnStyles(  )
+    public ReferenceList getColumnStyles( )
     {
-        return ColumnStyleHome.getStyles(  );
+        return ColumnStyleHome.getStyles( );
     }
 
     /**
      * Get the column style
-     * @param nIdStyle the ID style
+     * 
+     * @param nIdStyle
+     *            the ID style
      * @return a {@link Style}
      */
     public Style getColumnStyle( int nIdStyle )

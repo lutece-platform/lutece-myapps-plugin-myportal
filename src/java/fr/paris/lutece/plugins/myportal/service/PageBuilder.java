@@ -55,16 +55,13 @@ import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
  *
- * This is an implentation of a page builder. Other implementation can be
- * injected using Spring IoC
+ * This is an implentation of a page builder. Other implementation can be injected using Spring IoC
  *
  */
 public class PageBuilder implements IPageBuilder
 {
-
 
     // PARAMETERS
     private static final String PARAMETER_PAGE = "page";
@@ -79,63 +76,63 @@ public class PageBuilder implements IPageBuilder
 
     // JSP
     private static final String JSP_RUNSTANDALONEAPP = "jsp/site/RunStandaloneApp.jsp";
-    
-    
-    //MARKER
-    private static final String MARK_URL_ADDWIDGET="urlAddWidget";
-    private static final String MARK_URL_EDITTAB="urlEditTab";
 
-    private static final String MARK_TAB_NAME="tabName";    
-    private static final String MARK_ID_WIDGET="idWidget";
-    private static final String MARK_CSS_WIDGET="cssWidget";
-    private static final String MARK_TAB_INDEX="tabIndex";
-    private static final String MARK_WIDGET_NAME="WidgetName";
-    private static final String MARK_WIDGET_CONTENT= "contentWidget";
-    private static final String MARK_LIST_WIDGET_TAG= "listWidgetTag";
-    private static final String MARK_TAB_LINKS= "tabLinks";
+    // MARKER
+    private static final String MARK_URL_ADDWIDGET = "urlAddWidget";
+    private static final String MARK_URL_EDITTAB = "urlEditTab";
 
-    
-    //Template
-    
-    private static final String TEMPLATE_TAB_LINKS ="/skin/plugins/myportal/widget/tab_links.html";
-    private static final String TEMPLATE_WIDGET ="/skin/plugins/myportal/widget/widget.html";
-    private static final String TEMPLATE_WIGET_PAGE ="/skin/plugins/myportal/widget/widgets_page.html";
-    private static final String TEMPLATE_WIGET_TABS ="/skin/plugins/myportal/widget/tabs.html";
-    
+    private static final String MARK_TAB_NAME = "tabName";
+    private static final String MARK_ID_WIDGET = "idWidget";
+    private static final String MARK_CSS_WIDGET = "cssWidget";
+    private static final String MARK_TAB_INDEX = "tabIndex";
+    private static final String MARK_WIDGET_NAME = "WidgetName";
+    private static final String MARK_WIDGET_CONTENT = "contentWidget";
+    private static final String MARK_LIST_WIDGET_TAG = "listWidgetTag";
+    private static final String MARK_TAB_LINKS = "tabLinks";
+
+    // Template
+
+    private static final String TEMPLATE_TAB_LINKS = "/skin/plugins/myportal/widget/tab_links.html";
+    private static final String TEMPLATE_WIDGET = "/skin/plugins/myportal/widget/widget.html";
+    private static final String TEMPLATE_WIGET_PAGE = "/skin/plugins/myportal/widget/widgets_page.html";
+    private static final String TEMPLATE_WIGET_TABS = "/skin/plugins/myportal/widget/tabs.html";
+
     private WidgetContentService _widgetContentService;
     private WidgetService _widgetService;
     private DefaultPageBuilderService _defaultPageBuilderService;
 
-    
     /**
      * Build the page given a page config and a LuteceUser
      *
-     * @param pageConfig a {@link PageConfig}
-     * @param user a {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
+     * @param pageConfig
+     *            a {@link PageConfig}
+     * @param user
+     *            a {@link LuteceUser}
+     * @param request
+     *            {@link HttpServletRequest}
      * @return the page
      */
     public String buildPage( PageConfig pageConfig, LuteceUser user, HttpServletRequest request )
     {
-        StringBuffer sb = new StringBuffer(  );
+        StringBuffer sb = new StringBuffer( );
         Map<String, Object> model = new HashMap<String, Object>( );
-        List<TabConfig> listTabs = pageConfig.getTabList(  );
+        List<TabConfig> listTabs = pageConfig.getTabList( );
 
         int nTab = 1;
-        StringBuilder sbContent = new StringBuilder(  );
+        StringBuilder sbContent = new StringBuilder( );
 
         for ( TabConfig tab : listTabs )
         {
-           
+
             sbContent.append( buildTabLinks( nTab, tab, JSP_RUNSTANDALONEAPP, request.getLocale( ) ).replaceAll( NEWLINE_CHAR, StringUtils.EMPTY ) );
-            //sb.append(sbContent);
+            // sb.append(sbContent);
             nTab++;
         }
-        
-        model.put(MARK_TAB_LINKS, sbContent.toString( ));
+
+        model.put( MARK_TAB_LINKS, sbContent.toString( ) );
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIGET_TABS, request.getLocale( ), model );
-        sb.append(template.getHtml( ));
-        
+        sb.append( template.getHtml( ) );
+
         nTab = 1;
 
         for ( TabConfig tab : listTabs )
@@ -144,138 +141,141 @@ public class PageBuilder implements IPageBuilder
             nTab++;
         }
 
-        return sb.toString(  );
+        return sb.toString( );
     }
 
     /**
      * Build the html code for tab links
      *
-     * @param strUrl the url of the tab link
-     * @param nTabIndex the tab index
-     * @param tab the tab
-     * @param strBaseUrl the base url
+     * @param strUrl
+     *            the url of the tab link
+     * @param nTabIndex
+     *            the tab index
+     * @param tab
+     *            the tab
+     * @param strBaseUrl
+     *            the base url
      * @return the html code
      */
-    private String buildTabLinks(  int nTabIndex, TabConfig tab, String strBaseUrl, Locale locale )
+    private String buildTabLinks( int nTabIndex, TabConfig tab, String strBaseUrl, Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>( );
-                
-        
-        model.put( MARK_TAB_NAME, tab.getName(  ) );
-        
+
+        model.put( MARK_TAB_NAME, tab.getName( ) );
+
         // Url for adding a new widget
         UrlItem urlAddWidget = new UrlItem( strBaseUrl );
         urlAddWidget.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         urlAddWidget.addParameter( PARAMETER_ACTION, ACTION_BROWSE_CATEGORIES );
         urlAddWidget.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-        
-        model.put( MARK_URL_ADDWIDGET, urlAddWidget.getUrlWithEntity(  ) );
+
+        model.put( MARK_URL_ADDWIDGET, urlAddWidget.getUrlWithEntity( ) );
 
         // Url for editing a tab
         UrlItem urlEditTab = new UrlItem( strBaseUrl );
         urlEditTab.addParameter( PARAMETER_PAGE, MyPortalPlugin.PLUGIN_NAME );
         urlEditTab.addParameter( PARAMETER_ACTION, ACTION_EDIT_TAB );
         urlEditTab.addParameter( PARAMETER_TAB_INDEX, nTabIndex );
-        model.put( MARK_URL_EDITTAB, urlEditTab.getUrlWithEntity(  ) );
-        model.put(MARK_TAB_INDEX, nTabIndex);
-        
+        model.put( MARK_URL_EDITTAB, urlEditTab.getUrlWithEntity( ) );
+        model.put( MARK_TAB_INDEX, nTabIndex );
+
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TAB_LINKS, locale, model );
-        
-        return template.getHtml();
+
+        return template.getHtml( );
     }
-   
+
     /**
      * Build the tab content
      *
-     * @param tab the tab
-     * @param sb the content of the htlm code
-     * @param nTab the index of the tab
-     * @param user the {@link LuteceUser}
-     * @param request {@link HttpServletRequest}
+     * @param tab
+     *            the tab
+     * @param sb
+     *            the content of the htlm code
+     * @param nTab
+     *            the index of the tab
+     * @param user
+     *            the {@link LuteceUser}
+     * @param request
+     *            {@link HttpServletRequest}
      */
     private void buildTabContent( TabConfig tab, StringBuffer sb, int nTab, LuteceUser user, HttpServletRequest request )
     {
-        int nNbColumns = _defaultPageBuilderService.getColumnCount(  );       
+        int nNbColumns = _defaultPageBuilderService.getColumnCount( );
         Map<String, Object> model = new HashMap<String, Object>( );
 
-        List<StringBuffer> listCol = new ArrayList<StringBuffer>(  );
-        List<WidgetsTag> listTag = new ArrayList<WidgetsTag>(  );
-       
-        
+        List<StringBuffer> listCol = new ArrayList<StringBuffer>( );
+        List<WidgetsTag> listTag = new ArrayList<WidgetsTag>( );
+
         for ( int nColumn = 1; nColumn <= nNbColumns; nColumn++ )
         {
             Style style = getColumnStyle( nColumn );
-            WidgetsTag wdTag= new WidgetsTag();
+            WidgetsTag wdTag = new WidgetsTag( );
             if ( style != null )
             {
-            	wdTag.setCssClass(style.getCssClass( ));
-            	
+                wdTag.setCssClass( style.getCssClass( ) );
+
             }
             else
             {
-            	wdTag.setCssClass(StringUtils.EMPTY);
+                wdTag.setCssClass( StringUtils.EMPTY );
             }
-            listTag.add(wdTag);
-            listCol.add(new StringBuffer());
+            listTag.add( wdTag );
+            listCol.add( new StringBuffer( ) );
 
-        }       
+        }
 
-        for ( WidgetConfig widgetConfig : tab.getWidgetList(  ) )
+        for ( WidgetConfig widgetConfig : tab.getWidgetList( ) )
         {
-        	
-            Widget widget = _widgetService.getWidget( widgetConfig.getWidgetId(  ) );
-            StringBuffer sbWidget = listCol.get( widgetConfig.getColumn(  ) - 1 );
-            
-            model.put( MARK_ID_WIDGET, widgetConfig.getWidgetId(  ) );
 
-            if ( ( widget != null ) && ( widgetConfig.getColumn(  ) <= nNbColumns ) )
+            Widget widget = _widgetService.getWidget( widgetConfig.getWidgetId( ) );
+            StringBuffer sbWidget = listCol.get( widgetConfig.getColumn( ) - 1 );
+
+            model.put( MARK_ID_WIDGET, widgetConfig.getWidgetId( ) );
+
+            if ( ( widget != null ) && ( widgetConfig.getColumn( ) <= nNbColumns ) )
             {
 
-                model.put( MARK_CSS_WIDGET, widget.getCssClass(  ) );               
+                model.put( MARK_CSS_WIDGET, widget.getCssClass( ) );
                 model.put( MARK_TAB_INDEX, nTab );
                 model.put( MARK_WIDGET_NAME, widget.getName( ) );
-                model.put( MARK_WIDGET_CONTENT, _widgetContentService.getWidgetContent( widgetConfig.getWidgetId(  ), user, request ) );
-                
-              
+                model.put( MARK_WIDGET_CONTENT, _widgetContentService.getWidgetContent( widgetConfig.getWidgetId( ), user, request ) );
+
             }
             HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIDGET, request.getLocale( ), model );
-            sbWidget.append(template.getHtml( ));
-            
+            sbWidget.append( template.getHtml( ) );
+
         }
 
         for ( int i = 0; i < nNbColumns; i++ )
         {
-        	WidgetsTag wdTag = listTag.get( i );
-        	wdTag.setContent(listCol.get(i).toString());
+            WidgetsTag wdTag = listTag.get( i );
+            wdTag.setContent( listCol.get( i ).toString( ) );
         }
-        
 
-        model.put(MARK_LIST_WIDGET_TAG, listTag);
+        model.put( MARK_LIST_WIDGET_TAG, listTag );
         model.put( MARK_TAB_INDEX, nTab );
-        
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIGET_PAGE, request.getLocale( ), model );
-        
-        sb.append( new StringBuffer(template.getHtml()) );
-    }
 
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_WIGET_PAGE, request.getLocale( ), model );
+
+        sb.append( new StringBuffer( template.getHtml( ) ) );
+    }
 
     /**
      * Get the column style from the column number
      *
-     * @param nColumn the column number
+     * @param nColumn
+     *            the column number
      * @return the {@link Style}
      */
     private Style getColumnStyle( int nColumn )
     {
         Style style = null;
-        ReferenceItem columnStyle = _defaultPageBuilderService.getPageBuilderParameterDefaultValue( PARAMETER_COLUMN_STYLE +
-                nColumn );
+        ReferenceItem columnStyle = _defaultPageBuilderService.getPageBuilderParameterDefaultValue( PARAMETER_COLUMN_STYLE + nColumn );
 
-        if ( ( columnStyle != null ) && StringUtils.isNotBlank( columnStyle.getName(  ) ) &&
-                StringUtils.isNumeric( columnStyle.getName(  ) ) )
+        if ( ( columnStyle != null ) && StringUtils.isNotBlank( columnStyle.getName( ) ) && StringUtils.isNumeric( columnStyle.getName( ) ) )
         {
-            int nIdStyle = Integer.parseInt( columnStyle.getName(  ) );
-            style = StyleService.getInstance(  ).getColumnStyle( nIdStyle );
+            int nIdStyle = Integer.parseInt( columnStyle.getName( ) );
+            style = StyleService.getInstance( ).getColumnStyle( nIdStyle );
         }
 
         return style;
@@ -283,7 +283,9 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Set the widget content service
-     * @param widgetContentService the widget content service
+     * 
+     * @param widgetContentService
+     *            the widget content service
      */
     public void setWidgetContentService( WidgetContentService widgetContentService )
     {
@@ -292,7 +294,9 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Set the widget service
-     * @param widgetService the widget content service
+     * 
+     * @param widgetService
+     *            the widget content service
      */
     public void setWidgetService( WidgetService widgetService )
     {
@@ -301,11 +305,13 @@ public class PageBuilder implements IPageBuilder
 
     /**
      * Set the default page builder service
-     * @param defaultPageBuilderService the default page builder service
+     * 
+     * @param defaultPageBuilderService
+     *            the default page builder service
      */
-	public void setDefaultPageBuilderService(DefaultPageBuilderService defaultPageBuilderService) {
-		this._defaultPageBuilderService = defaultPageBuilderService;
-	}
-    
-    
+    public void setDefaultPageBuilderService( DefaultPageBuilderService defaultPageBuilderService )
+    {
+        this._defaultPageBuilderService = defaultPageBuilderService;
+    }
+
 }

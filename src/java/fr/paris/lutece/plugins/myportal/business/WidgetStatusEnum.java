@@ -33,22 +33,22 @@
  */
 package fr.paris.lutece.plugins.myportal.business;
 
-
 /**
  *
  * WidgetStatusEnum
  *
  */
 public enum WidgetStatusEnum
-{DRAFT( 0 ),
-    MANDATORY( 1 ),
-    PUBLIC( 2 );
+{
+    DRAFT( 0 ), MANDATORY( 1 ), PUBLIC( 2 );
 
     private int _nId;
 
     /**
      * Constructor.
-     * @param nId the ID
+     * 
+     * @param nId
+     *            the ID
      */
     WidgetStatusEnum( int nId )
     {
@@ -57,9 +57,10 @@ public enum WidgetStatusEnum
 
     /**
      * Renvoie l'identifiant
+     * 
      * @return l'identifiant
      */
-    public int getId(  )
+    public int getId( )
     {
         return _nId;
     }

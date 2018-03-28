@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.myportal.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
-
 /**
  *
  * StyleTest
@@ -51,38 +50,38 @@ public class WidgetStyleTest extends LuteceTestCase
     /**
      * Test business of class fr.paris.lutece.plugins.myportal.business.Style
      */
-    public void testBusiness(  )
+    public void testBusiness( )
     {
         // Initialize an object
-        Style style = new Style(  );
-        style.setId( WidgetStyleHome.newPrimaryKey(  ) );
+        Style style = new Style( );
+        style.setId( WidgetStyleHome.newPrimaryKey( ) );
         style.setName( NAME1 );
         style.setCssClass( CSSCLASS1 );
 
         // Create test
         WidgetStyleHome.create( style );
 
-        Style styleStored = WidgetStyleHome.findByPrimaryKey( style.getId(  ) );
-        assertEquals( styleStored.getId(  ), style.getId(  ) );
-        assertEquals( styleStored.getName(  ), style.getName(  ) );
-        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
+        Style styleStored = WidgetStyleHome.findByPrimaryKey( style.getId( ) );
+        assertEquals( styleStored.getId( ), style.getId( ) );
+        assertEquals( styleStored.getName( ), style.getName( ) );
+        assertEquals( styleStored.getCssClass( ), style.getCssClass( ) );
 
         // Update test
         style.setName( NAME2 );
         style.setCssClass( CSSCLASS2 );
         WidgetStyleHome.update( style );
-        styleStored = WidgetStyleHome.findByPrimaryKey( style.getId(  ) );
-        assertEquals( styleStored.getId(  ), style.getId(  ) );
-        assertEquals( styleStored.getName(  ), style.getName(  ) );
-        assertEquals( styleStored.getCssClass(  ), style.getCssClass(  ) );
+        styleStored = WidgetStyleHome.findByPrimaryKey( style.getId( ) );
+        assertEquals( styleStored.getId( ), style.getId( ) );
+        assertEquals( styleStored.getName( ), style.getName( ) );
+        assertEquals( styleStored.getCssClass( ), style.getCssClass( ) );
 
         // List test
-        WidgetStyleHome.getStyles(  );
-        WidgetStyleHome.getStylesList(  );
+        WidgetStyleHome.getStyles( );
+        WidgetStyleHome.getStylesList( );
 
         // Delete test
-        WidgetStyleHome.remove( style.getId(  ) );
-        styleStored = WidgetStyleHome.findByPrimaryKey( style.getId(  ) );
+        WidgetStyleHome.remove( style.getId( ) );
+        styleStored = WidgetStyleHome.findByPrimaryKey( style.getId( ) );
         assertNull( styleStored );
     }
 }
