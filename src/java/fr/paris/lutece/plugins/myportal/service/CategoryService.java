@@ -54,7 +54,7 @@ public final class CategoryService
 	public static final String BEAN_NAME = "myportal.categoryService";
 	
 	private Collection<Category> _categories;
-	
+	private boolean _cached;	
 
     /**
      * Private constructor
@@ -69,9 +69,10 @@ public final class CategoryService
      */
     public Collection<Category> getCategoriesList(  )
     {
-    	if(_categories == null)
+    	if(!_cached)
     	{
     		_categories = CategoryHome.getCategoriesList(  );
+    		_cached = true;
     	}
     	
         return _categories;
@@ -100,7 +101,7 @@ public final class CategoryService
      */
     public Category findByPrimaryKey( int nCategoryId )
     {
-    	if(_categories != null)
+    	if(_cached)
     	{
     		for (Category category : _categories) {
 				if(category.getIdCategory() == nCategoryId)
@@ -108,7 +109,7 @@ public final class CategoryService
 					return category;
 				}
 			}
-    		_categories = null;
+    		_cached = false;
     	}
         return CategoryHome.findByPrimaryKey( nCategoryId );
     }
@@ -120,7 +121,7 @@ public final class CategoryService
      */
     public Category createCategory( Category category )
     {
-    	_categories = null;
+    	_cached = false;
         return CategoryHome.create( category );
     }
 
@@ -146,7 +147,7 @@ public final class CategoryService
         }
         else
         {
-        	_categories = null;
+        	_cached = false;
             CategoryHome.remove( nCategoryId );
         }
 
@@ -160,7 +161,7 @@ public final class CategoryService
      */
     public Category updateCategory( Category category )
     {
-    	_categories = null;
+    	_cached = false;
         return CategoryHome.update( category );
     }
 

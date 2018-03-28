@@ -78,6 +78,7 @@ public final class DefaultPageBuilderService
     private WidgetService _widgetService;
     
     private ReferenceList _pageBuilderParameters;
+    private boolean _bPageBuilderParametersCache;
 
     /**
      * Private Constructor
@@ -284,9 +285,10 @@ public final class DefaultPageBuilderService
      */
     public ReferenceList getPageBuilderParamDefaultValues(  )
     {
-    	if(_pageBuilderParameters == null)
+    	if(!_bPageBuilderParametersCache)
     	{
     		_pageBuilderParameters = PageBuilderParameterHome.findAll(  );
+    		_bPageBuilderParametersCache = true;
     	}
         return _pageBuilderParameters;
     }
@@ -298,7 +300,7 @@ public final class DefaultPageBuilderService
      */
     public ReferenceItem getPageBuilderParameterDefaultValue( String strParameterKey )
     {
-    	if(_pageBuilderParameters != null)
+    	if(_bPageBuilderParametersCache)
     	{
 	    	for (ReferenceItem referenceItem : _pageBuilderParameters) {
 				if( strParameterKey.equals(referenceItem.getCode( ) ) )
@@ -306,7 +308,7 @@ public final class DefaultPageBuilderService
 					return referenceItem;
 				}
 			}
-	    	_pageBuilderParameters = null;
+	    	_bPageBuilderParametersCache = false;
     	}
         return PageBuilderParameterHome.findByKey( strParameterKey );
     }
@@ -349,7 +351,7 @@ public final class DefaultPageBuilderService
      */
     public void updatePageBuilderParameterDefaultValue( ReferenceItem param )
     {
-    	_pageBuilderParameters = null;
+    	_bPageBuilderParametersCache = false;
         PageBuilderParameterHome.update( param );
     }
 
@@ -358,7 +360,7 @@ public final class DefaultPageBuilderService
      */
     public void removeAllColumnStyleFromPageBuilderParameter(  )
     {
-    	_pageBuilderParameters = null;
+    	_bPageBuilderParametersCache = false;
         PageBuilderParameterHome.removeAllColumnStyles(  );
     }
 
@@ -368,7 +370,7 @@ public final class DefaultPageBuilderService
      */
     public void addNewPageBuilderParameter( ReferenceItem param )
     {
-    	_pageBuilderParameters = null;
+    	_bPageBuilderParametersCache = false;
         PageBuilderParameterHome.create( param );
     }
 
