@@ -67,6 +67,8 @@ import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
+import fr.paris.lutece.util.json.JsonResponse;
+import fr.paris.lutece.util.json.JsonUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
 /**
@@ -77,6 +79,7 @@ public class MyPortalApp implements XPageApplication
     // CONSTANTS
     private static final String LINE = "-";
     private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
+    private static final String CODE_SAVED = "SAVED";
 
     // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
@@ -463,7 +466,7 @@ public class MyPortalApp implements XPageApplication
 
         _pageService.setPageConfigUser( getUser( request ), strJson );
 
-        return "portal state saved!"; // todo : use properties conf to permit url rewriting
+        return JsonUtil.buildJsonResponse( new JsonResponse( CODE_SAVED ) );
     }
 
     /**
