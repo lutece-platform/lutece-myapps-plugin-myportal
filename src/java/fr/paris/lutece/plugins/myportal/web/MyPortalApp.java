@@ -49,6 +49,7 @@ import fr.paris.lutece.plugins.myportal.service.CategoryService;
 import fr.paris.lutece.plugins.myportal.service.DefaultPageBuilderService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPageService;
 import fr.paris.lutece.plugins.myportal.service.MyPortalPlugin;
+import fr.paris.lutece.plugins.myportal.service.PageConfigJsonUtil;
 import fr.paris.lutece.plugins.myportal.service.WidgetService;
 import fr.paris.lutece.plugins.myportal.util.auth.MyPortalUser;
 import fr.paris.lutece.portal.service.i18n.I18nService;
@@ -67,6 +68,7 @@ import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
+import fr.paris.lutece.util.json.ErrorJsonResponse;
 import fr.paris.lutece.util.json.JsonResponse;
 import fr.paris.lutece.util.json.JsonUtil;
 import fr.paris.lutece.util.url.UrlItem;
@@ -80,6 +82,7 @@ public class MyPortalApp implements XPageApplication
     private static final String LINE = "-";
     private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
     private static final String CODE_SAVED = "SAVED";
+    private static final String CODE_PARSE_ERROR = "PARSE_ERROR";
 
     // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
@@ -463,6 +466,16 @@ public class MyPortalApp implements XPageApplication
     public String doSavePortalState( HttpServletRequest request )
     {
         String strJson = request.getParameter( PARAMETER_PORTAL_STATE );
+
+        try
+        {
+            PageConfigJsonUtil.parseJson( strJson );
+        }
+        catch (Exception e)
+        {
+            AppLogService.error( "Error parsing JSON : " + strJson, e );
+            return JsonUtil.buildJsonResponse ( new ErrorJsonResponse( CODE_PARSE_ERROR, e.getMessage( ) ) );
+        }
 
         _pageService.setPageConfigUser( getUser( request ), strJson );
 

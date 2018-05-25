@@ -83,4 +83,61 @@ public class MyPortalAppTest extends LuteceTestCase
         }
 
     }
+
+    private void ParseErrorDoSavePortalState( String strParseErrorJson ) throws Exception
+    {
+        MyPortalApp app = new MyPortalApp( );
+
+        UserPageConfig originalConfig = UserPageConfigHome.findByPrimaryKey( "Anonymous" );
+
+        try
+        {
+            MokeHttpServletRequest request = new MokeHttpServletRequest( );
+            request.addMokeParameters( "portalState", strParseErrorJson );
+            String strReturnCode = app.doSavePortalState( request );
+            JsonNode actual = new ObjectMapper( ).readTree( strReturnCode );
+            assertEquals( "the status field should be", "ERROR", actual.get( "status" ).asText( ) );
+            assertEquals( "the errorCode field should be", "PARSE_ERROR", actual.get( "errorCode" ).asText( ) );
+            assertTrue( "The message field should have some error message", actual.get( "message" ).asText( ).length( ) > 0 );
+
+            String strNewJsonDb = UserPageConfigHome.findByPrimaryKey( "Anonymous" ).getUserPageConfig( );
+            assertEquals( "When in error, the database value shouldn't be modified", originalConfig.getUserPageConfig( ), strNewJsonDb );
+        }
+        finally
+        {
+            // Restore the original config in case other tests depend on it
+            UserPageConfigHome.update( originalConfig );
+        }
+
+    }
+
+    public void testDoSavePortalStateNull( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( null );
+    }
+
+    public void testDoSavePortalStateIncomplete( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( "{}" );
+    }
+
+    public void testDoSavePortalStateMalformed( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( "{]" );
+    }
+
+    public void testDoSavePortalStateNonObjectArray( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( "[1,2,3]" );
+    }
+
+    public void testDoSavePortalStateNonObjectLiteralString( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( "hello" );
+    }
+
+    public void testDoSavePortalStateNonObjectLiteralNumber( ) throws Exception
+    {
+        ParseErrorDoSavePortalState( "42" );
+    }
 }
