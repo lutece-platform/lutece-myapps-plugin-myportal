@@ -43,6 +43,7 @@ import fr.paris.lutece.plugins.myportal.business.UserPageConfigHome;
 import fr.paris.lutece.plugins.myportal.business.page.PageConfig;
 import fr.paris.lutece.plugins.myportal.business.page.TabConfig;
 import fr.paris.lutece.plugins.myportal.service.PageConfigJsonUtil;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.test.LuteceTestCase;
 import fr.paris.lutece.test.MokeHttpServletRequest;
 
@@ -68,6 +69,8 @@ public class MyPortalAppTest extends LuteceTestCase
         {
             MokeHttpServletRequest request = new MokeHttpServletRequest( );
             request.addMokeParameters( "portalState", strNewJson );
+            request.addMokeParameters( SecurityTokenService.PARAMETER_TOKEN, SecurityTokenService.getInstance( )
+                    .getToken( request, "jsp/site/plugins/myportal/DoSavePortalState.jsp" ) );
             String strReturnCode = app.doSavePortalState( request );
             JsonNode actual = new ObjectMapper( ).readTree( strReturnCode );
             JsonNode expected = new ObjectMapper( ).readTree( "{\"result\":\"SAVED\",\"status\":\"OK\"}" );
@@ -94,6 +97,8 @@ public class MyPortalAppTest extends LuteceTestCase
         {
             MokeHttpServletRequest request = new MokeHttpServletRequest( );
             request.addMokeParameters( "portalState", strParseErrorJson );
+            request.addMokeParameters( SecurityTokenService.PARAMETER_TOKEN, SecurityTokenService.getInstance( )
+                    .getToken( request, "jsp/site/plugins/myportal/DoSavePortalState.jsp" ) );
             String strReturnCode = app.doSavePortalState( request );
             JsonNode actual = new ObjectMapper( ).readTree( strReturnCode );
             assertEquals( "the status field should be", "ERROR", actual.get( "status" ).asText( ) );
@@ -139,5 +144,40 @@ public class MyPortalAppTest extends LuteceTestCase
     public void testDoSavePortalStateNonObjectLiteralNumber( ) throws Exception
     {
         ParseErrorDoSavePortalState( "42" );
+    }
+
+    public void testDoSavePortalStateBadToken( ) throws Exception
+    {
+        MyPortalApp app = new MyPortalApp( );
+
+        UserPageConfig originalConfig = UserPageConfigHome.findByPrimaryKey( "Anonymous" );
+        String strJson = originalConfig.getUserPageConfig( );
+        PageConfig pageConfig = PageConfigJsonUtil.parseJson( strJson );
+        pageConfig.setTabList( Collections.<TabConfig> emptyList( ) );
+        String strNewJson = PageConfigJsonUtil.buildJson( pageConfig );
+        assertNotSame( "If the JSON are the same, the modification is not tested", strNewJson, strJson );
+
+        try
+        {
+            MokeHttpServletRequest request = new MokeHttpServletRequest( );
+            request.addMokeParameters( "portalState", strNewJson );
+            request.addMokeParameters( SecurityTokenService.PARAMETER_TOKEN, SecurityTokenService.getInstance( )
+                    .getToken( request, "jsp/site/plugins/myportal/DoSavePortalState.jsp" ) + "b" );
+
+            String strReturnCode = app.doSavePortalState( request );
+            JsonNode actual = new ObjectMapper( ).readTree( strReturnCode );
+            JsonNode expected = new ObjectMapper( ).readTree( "{\"errorCode\":\"INVALID_TOKEN\",\"message\":\"Invalid security token\",\"status\":\"ERROR\"}" );
+
+            assertEquals( expected, actual );
+
+            String strNewJsonDb = UserPageConfigHome.findByPrimaryKey( "Anonymous" ).getUserPageConfig( );
+            assertEquals( strJson, strNewJsonDb );
+        }
+        finally
+        {
+            // Restore the original config in case other tests depend on it
+            UserPageConfigHome.update( originalConfig );
+        }
+
     }
 }

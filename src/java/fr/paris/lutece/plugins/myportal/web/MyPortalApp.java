@@ -57,6 +57,7 @@ import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -83,6 +84,8 @@ public class MyPortalApp implements XPageApplication
     private static final String BEAN_MYPORTAL_WIDGETSERVICE = "myportal.widgetService";
     private static final String CODE_SAVED = "SAVED";
     private static final String CODE_PARSE_ERROR = "PARSE_ERROR";
+    private static final String CODE_INVALID_TOKEN = "INVALID_TOKEN";
+    private static final String ACTION_JSP_DO_SAVE_PORTAL_STATE = "jsp/site/plugins/myportal/DoSavePortalState.jsp";
 
     // TEMPLATES
     private static final String TEMPLATE_MYPORTAL_PAGE = "skin/plugins/myportal/myportal.html";
@@ -457,6 +460,18 @@ public class MyPortalApp implements XPageApplication
     }
 
     /**
+     * Generate a CSRF token for DoSavePortalState
+     *
+     * @param request
+     *            The HTTP request
+     * @return the token
+     */
+    public String getSavePortalStateToken ( HttpServletRequest request )
+    {
+        return SecurityTokenService.getInstance( ).getToken( request, ACTION_JSP_DO_SAVE_PORTAL_STATE );
+    }
+
+    /**
      * Process save portal state
      * 
      * @param request
@@ -465,6 +480,11 @@ public class MyPortalApp implements XPageApplication
      */
     public String doSavePortalState( HttpServletRequest request )
     {
+        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_JSP_DO_SAVE_PORTAL_STATE ) )
+        {
+           return JsonUtil.buildJsonResponse ( new ErrorJsonResponse( CODE_INVALID_TOKEN, "Invalid security token" ) );
+        }
+
         String strJson = request.getParameter( PARAMETER_PORTAL_STATE );
 
         try
