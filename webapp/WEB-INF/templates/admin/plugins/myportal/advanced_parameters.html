@@ -1,43 +1,41 @@
 <#function getName code reference_list>
-<#if reference_list?has_content>
-<#list reference_list as reference_item>
-<#if reference_item.code = code>
-<#return reference_item.name>
-</#if>
-</#list>
-</#if>
-<#return "">
-</#function>
-<form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp">
-	<div class="control-group">
-		<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelNbColumn} : </label>
-        <div class="controls">
-			<input type="text" size="1" maxlength="1" name="nb_columns" value="${nb_columns}" />
-        </div>
-    </div>
-
-	<#if ( nb_columns > 0 )>
-		<#list 1..nb_columns as i>
-        <#assign column_style_name = 'column_style_' + i>
-        <#assign column_style_code = getName( column_style_name, list_param_default_values )>
-
-        <div class="control-group">
-			<label class="control-label" > #i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i} :</label>
-            <div class="controls">
-				<select name="column_style_${i}">
-                    <#list column_styles as style>
-                        <#if column_style_code?? && column_style_code == style.code>
-                        <option value="${style.code}" selected="selected">${style.name}</option>
-                        <#else>
-                        <option value="${style.code}">${style.name}</option>
-                        </#if>
-                    </#list>
-                </select>
-            </div>
-        </div>
+    <#if reference_list?has_content>
+        <#list reference_list as reference_item>
+            <#if reference_item.code=code>
+                <#return reference_item.name>
+            </#if>
         </#list>
     </#if>
-    <button class="btn btn-primary btn-small" type="submit" >
-		<i class="icon-ok icon-white"></i>&nbsp;#i18n{myportal.manage_advanced_parameters.buttonModify}
-	</button>
-</form>
+    <#return "">
+</#function>
+<@fieldSet>
+    <@tform method='post' name='MyPortalPluginsForm'
+        action='jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp'>
+        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelNbColumn} ' labelFor='nb_columns'
+            showLabel=true>
+            <@input type='text' id="nb_columns" name='nb_columns' size='1' maxlength=1 value='${nb_columns}'
+                placeHolder='${i18n("myportal.manage_advanced_parameters.labelNbColumn")}' />
+        </@formGroup>
+        <#if ( nb_columns> 0 )>
+            <#list 1..nb_columns as i>
+                <#assign column_style_name='column_style_' + i>
+                    <#assign column_style_code=getName( column_style_name, list_param_default_values )>
+                        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i}'
+                            labelFor='column_style_${i}'>
+                            <@select name='column_style_${i}' id='column_style_${i}'>
+                                <#list column_styles as style>
+                                    <#if column_style_code?? && column_style_code==style.code>
+                                        <option value="${style.code}" selected="selected">${style.name}</option>
+                                        <#else>
+                                            <option value="${style.code}">${style.name}</option>
+                                    </#if>
+                                </#list>
+                            </@select>
+                        </@formGroup>
+            </#list>
+        </#if>
+        <@formGroup>
+            <@button type='submit' buttonIcon='check' title='#i18n{myportal.manage_advanced_parameters.buttonModify}' />
+        </@formGroup>
+    </@tform>
+</@fieldSet>

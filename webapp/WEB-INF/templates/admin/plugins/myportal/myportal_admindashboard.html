@@ -1,4 +1,21 @@
-<fieldset>
-	<legend>#i18n{myportal.myportal_admindashboard.pageTitle}</legend>
+<!-- Delete the macro once the v6 support is discontinued. -->
+<#macro adminDashboardPanel title='' parentId='' childId='' icon='' color='primary'>
+	<@row>
+		<@columns>
+			<@accordionContainer id=parentId>
+				<@accordionPanel color=color collapsed=true childId=childId>
+					<@accordionHeader title=title headerIcon=icon>
+					</@accordionHeader>
+					<@accordionBody>
+						<#nested>
+					</@accordionBody>
+				</@accordionPanel>
+			</@accordionContainer>
+		</@columns>
+	</@row>
+</#macro>
+
+<@adminDashboardPanel title='#i18n{myportal.myportal_admindashboard.pageTitle}' icon='columns'
+	parentId='myPortalParameters_management' childId='myPortalParameters'>
 	<#include "advanced_parameters.html" />
-</fieldset>
+</@adminDashboardPanel>
