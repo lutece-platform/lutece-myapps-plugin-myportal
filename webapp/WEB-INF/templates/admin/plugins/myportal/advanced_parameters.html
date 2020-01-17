@@ -11,8 +11,7 @@
 <@fieldSet>
     <@tform method='post' name='MyPortalPluginsForm'
         action='jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp'>
-        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelNbColumn} ' labelFor='nb_columns'
-            showLabel=true>
+        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelNbColumn} ' labelFor='nb_columns' >
             <@input type='text' id="nb_columns" name='nb_columns' size='1' maxlength=1 value='${nb_columns}'
                 placeHolder='${i18n("myportal.manage_advanced_parameters.labelNbColumn")}' />
         </@formGroup>
@@ -20,8 +19,7 @@
             <#list 1..nb_columns as i>
                 <#assign column_style_name='column_style_' + i>
                     <#assign column_style_code=getName( column_style_name, list_param_default_values )>
-                        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i}'
-                            labelFor='column_style_${i}'>
+                        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelColumnStyle} ${i}' labelFor='column_style_${i}'>
                             <@select name='column_style_${i}' id='column_style_${i}'>
                                 <#list column_styles as style>
                                     <#if column_style_code?? && column_style_code==style.code>
