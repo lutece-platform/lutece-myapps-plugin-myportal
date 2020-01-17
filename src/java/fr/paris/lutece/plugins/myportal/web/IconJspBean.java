@@ -200,7 +200,7 @@ public class IconJspBean extends PluginAdminPageJspBean
 
         if ( ( icon == null ) )
         {
-            throw new AccessDeniedException( );
+            throw new AccessDeniedException( "MyPortal - icon not found" );
         }
 
         Map<String, Object> model = new HashMap<String, Object>( );
@@ -233,7 +233,7 @@ public class IconJspBean extends PluginAdminPageJspBean
 
             if ( ( icon == null ) )
             {
-                throw new AccessDeniedException( );
+                throw new AccessDeniedException( "MyPortal - icon not found" );
             }
 
             String strError = getIconData( request, icon );

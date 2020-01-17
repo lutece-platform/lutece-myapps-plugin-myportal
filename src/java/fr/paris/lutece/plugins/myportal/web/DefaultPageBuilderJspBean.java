@@ -357,7 +357,7 @@ public class DefaultPageBuilderJspBean extends PluginAdminPageJspBean
         if ( !RBACService.isAuthorized( MyPortalResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
                 MyPortalResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) )
         {
-            throw new AccessDeniedException( );
+            throw new AccessDeniedException( "MyPortal - Acces denied to resource " + MyPortalResourceIdService.RESOURCE_TYPE );
         }
 
         _service.removeAllColumnStyleFromPageBuilderParameter( );
