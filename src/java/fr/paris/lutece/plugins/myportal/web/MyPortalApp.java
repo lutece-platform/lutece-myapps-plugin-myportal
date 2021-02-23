@@ -621,9 +621,9 @@ public class MyPortalApp implements XPageApplication
             {
                 user = SecurityService.getInstance( ).getRemoteUser( request );
             }
-            catch( UserNotSignedException ue )
+            catch ( UserNotSignedException ue )
             {
-                AppLogService.error( ue.getMessage( ), ue );
+                AppLogService.debug( ue.getMessage( ) );
             }
         }
 
