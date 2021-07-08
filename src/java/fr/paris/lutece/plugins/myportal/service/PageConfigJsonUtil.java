@@ -128,7 +128,7 @@ public final class PageConfigJsonUtil
      *            The Page Config object
      * @return The JSON flow
      */
-    static String buildJson( PageConfig pageConfig )
+    public static String buildJson( PageConfig pageConfig )
     {
         JSONObject json = new JSONObject( );
         JSONObject jsonPage = new JSONObject( );

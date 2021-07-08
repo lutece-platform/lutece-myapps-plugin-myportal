@@ -96,6 +96,6 @@ PRIMARY KEY (id_widget)
 DROP TABLE IF EXISTS myportal_user_pageconfig;
 CREATE TABLE myportal_user_pageconfig (
 user_guid varchar(50) NOT NULL default '',
-user_pageconfig LONG VARCHAR DEFAULT NULL,
+user_pageconfig LONG VARCHAR NOT NULL,
 PRIMARY KEY (user_guid)
 );

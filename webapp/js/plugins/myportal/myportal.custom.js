@@ -57,7 +57,9 @@ function saveCurrentConf(  ) {
 		strJson += ']},';
 	});
 	strJson += ']}}';
-    $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoSavePortalState.jsp", data: "portalState=" + strJson });
+    $.get("jsp/site/plugins/myportal/GetSavePortalStateToken.jsp", function( strToken ) {
+        $.ajax({ type: "POST", url: "jsp/site/plugins/myportal/DoSavePortalState.jsp", data: "portalState=" + strJson + "&token=" + strToken ) });
+    });
 }
 
 $( "#tabs" ).bind( "sortstop", saveCurrentConf );
