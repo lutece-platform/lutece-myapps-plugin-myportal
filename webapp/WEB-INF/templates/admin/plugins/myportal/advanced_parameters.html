@@ -11,9 +11,8 @@
 <@fieldSet>
     <@tform method='post' name='MyPortalPluginsForm'
         action='jsp/admin/plugins/myportal/DoModifyWidgetParameterDefaultValues.jsp'>
-        <@formGroup labelKey='#i18n{myportal.manage_advanced_parameters.labelNbColumn} ' labelFor='nb_columns' >
-            <@input type='text' id="nb_columns" name='nb_columns' size='1' maxlength=1 value='${nb_columns}'
-                placeHolder='${i18n("myportal.manage_advanced_parameters.labelNbColumn")}' />
+        <@formGroup labelFor='nb_columns' labelKey='#i18n{myportal.manage_advanced_parameters.labelNbColumn}'>
+            <@input type='text' id='nb_columns' name='nb_columns' inputSize=1 maxlength=1 value='${nb_columns}' placeHolder='${i18n("myportal.manage_advanced_parameters.labelNbColumn")}' />
         </@formGroup>
         <#if ( nb_columns> 0 )>
             <#list 1..nb_columns as i>
