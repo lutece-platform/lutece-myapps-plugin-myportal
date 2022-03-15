@@ -1,66 +1,48 @@
-<div class="row-fluid">
-	<div class="span12">
-       <fieldset>
-		<legend>#i18n{myportal.modify_icon.title} : ${icone.name}</legend>
-		<form class="form-horizontal" action="jsp/admin/plugins/myportal/DoModifyIcon.jsp?plugin_name=myportal" method="post" name="" id="" enctype="multipart/form-data">
-            <input name="id_icon" value="${icone.id}" type="hidden">
-            <div class="control-group">
-                <label class="control-label" for="name">#i18n{myportal.create_icon.label_name} * : </label>
-                <div class="controls">
-                    <input type="text" name="name" id="" size="80" value="${icone.name}"  maxlength="255"/>
-                    <span class="help-block">#i18n{myportal.create_icon.label_name_comment}</span>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="id_file" >#i18n{myportal.create_icon.label_file} *</label>
-                 <div class="controls">
-					<img  src="image?resource_type=myportal_icon_img&id=${icone.id}" <#if icone.width!=-1> width="${icone.width}"</#if><#if icone.height!=-1> height="${icone.height}"</#if>>
-                    <input type="file" id="id_file" name="id_file" />
-                    <span class="help-block">#i18n{myportal.create_icon.label_file_comment}</span>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="width">#i18n{myportal.create_icon.label_width} : </label>
-                <#if icone.width?exists&&icone.width!=-1>
-                <div class="controls">
-                    <input type="text" name="width" id="" size="4" value="${icone.width}"  maxlength="255"/>
-                    <span class="help-block">#i18n{myportal.create_icon.label_width_comment}</span>
-                </div>
-            </div>
-            <#else>
-            <div class="controls">
-                <input type="text" name="width" id="" size="4" value=""  maxlength="255"/>
-                <span class="help-block">#i18n{myportal.create_icon.label_width_comment}</span>
-            </div>
-            </div>
-            </#if> 
-            <div class="control-group">
-                <label class="control-label" for="height">#i18n{myportal.create_icon.label_height} : </label>
-                <#if icone.height?exists&&icone.height!=-1>
-                <div class="controls">
-                    <input type="text" name="height" id="" size="4" value="${icone.height}"  maxlength="255"/>
-                    <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
-                </div>
-            </div>
-            <#else>
-            <div class="controls">
-                <input type="text" name="height" id="" size="4" value=""  maxlength="255"/>
-                <span class="help-block">#i18n{myportal.create_icon.label_height_comment}</span>
-            </div>
-            </#if>
-            <div class="control-group">
-                <label class="control-label" for="isDisplayFO">#i18n{myportal.create_icon.label_displayFO} : </label>
-                <div class="controls">
-                	  <input type="checkbox" id="isDisplayFO" name="isDisplayFO" value="true" <#if icone.dispolayFO > checked </#if>  >
-                    <span class="help-block">#i18n{myportal.create_icon.label_displayFO_comment}</span>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.create_icon.button_save}</button>
-                <a class="btn btn-small" href="jsp/admin/plugins/myportal/ManageIcons.jsp" >#i18n{myportal.create_icon.button_cancel}</a>
-            </div>
-		</form>
-        </fieldset>
-	</div>
-</div>
-
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{myportal.modify_icon.title} : ${icone.name}' />
+			<@boxBody>
+				<@tform action='jsp/admin/plugins/myportal/DoModifyIcon.jsp?plugin_name=myportal' method='post' enctype='multipart/form-data'>
+					<@input type='hidden' name='id_icon' value='${icone.id}' />
+					<@formGroup labelFor='name' labelKey='#i18n{myportal.create_icon.label_name}' helpKey='#i18n{myportal.create_icon.label_name_comment}' mandatory=true>
+						<@input type='text' name='name' inputSize=80 value='${icone.name}' maxlength=255 />
+					</@formGroup>
+					<@formGroup labelFor='id_file' labelKey='#i18n{myportal.create_icon.label_file}' helpKey='#i18n{myportal.create_icon.label_file_comment}' mandatory=true>
+						<@row>
+							<@columns xs=10>
+								<@input type='file' id='id_file' name='id_file' />
+							</@columns>
+							<@columns xs=2>
+								<img src="image?resource_type=myportal_icon_img&id=${icone.id}" <#if icone.width!=-1> width="${icone.width}"</#if><#if icone.height!=-1> height="${icone.height}"</#if> style="display:block;">
+							</@columns>
+						</@row>
+					</@formGroup>
+					<@formGroup labelFor='width' labelKey='#i18n{myportal.create_icon.label_width}' helpKey='#i18n{myportal.create_icon.label_width_comment}'>
+						<#if icone.width?exists&&icone.width!=-1>
+							<#assign inputValue = icone.width />
+						<#else>
+							<#assign inputValue = '' />
+						</#if>
+						<@input type='text' name='width' inputSize=4 value=inputValue maxlength=255 />
+					</@formGroup>
+					<@formGroup labelFor='height' labelKey='#i18n{myportal.create_icon.label_height}' helpKey='#i18n{myportal.create_icon.label_height_comment}'>
+						<#if icone.height?exists&&icone.height!=-1>
+							<#assign inputValue = icone.height />
+						<#else>
+							<#assign inputValue = '' />
+						</#if>
+						<@input type='text' name='height' inputSize=4 value=inputValue maxlength=255 />
+					</@formGroup>
+					<@formGroup labelKey='&nbsp;'>
+						<@checkBox labelFor='isDisplayFO' labelKey='#i18n{myportal.create_icon.label_displayFO_comment}' id='isDisplayFO' name='isDisplayFO' value="true" checked=icone.dispolayFO />
+					</@formGroup>
+					<@formGroup>
+						<@button type='submit' title='#i18n{myportal.create_icon.button_save}' buttonIcon='save' />
+						<@aButton href='jsp/admin/plugins/myportal/ManageIcons.jsp' title='#i18n{myportal.create_icon.button_cancel}' buttonIcon='times' color='default' />
+					</@formGroup>
+				</@tform>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>

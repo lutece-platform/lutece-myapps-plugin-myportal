@@ -1,25 +1,20 @@
-<#macro radioIconList name default_value icons >
+<#macro radioIconList name default_value icons>
    <#list icons as icon>
-    <#if default_value=icon.id> 			
-	<input checked="checked" class="radio" type="radio" name="${name}" value="${icon.id}" />
-        <img  src="image?resource_type=myportal_icon_img&id=${icon.id}"
-      <#if icon.width!=-1>
-        width="${icon.width}"
-      </#if> 
-      <#if icon.height!=-1>
-        height="${icon.height}"
-      </#if> 
-	/>
-      <#else>
-	<input class="radio" type="radio" name="${name}" value="${icon.id}" />
-        <img  src="image?resource_type=myportal_icon_img&id=${icon.id}"
-      <#if icon.width!=-1>
-        width="${icon.width}"
-      </#if> 
-      <#if icon.height!=-1>
-	height="${icon.height}"
-      </#if> 
-	/>
-      </#if>
-  </#list>
+    <#if default_value=icon.id>
+		<#assign checked = true />
+	<#else>
+		<#assign checked = false />
+	</#if>
+		<#assign radioLabelKey>
+			<img src="image?resource_type=myportal_icon_img&id=${icon.id}"
+		  <#if icon.width!=-1>
+			width="${icon.width}"
+		  </#if> 
+		  <#if icon.height!=-1>
+			height="${icon.height}"
+		  </#if>
+		  />
+		</#assign>
+		<@radioButton labelFor=name+icon?index labelKey=radioLabelKey name='${name}' id=name+icon?index value='${icon.id}' checked=checked />
+	</#list>
 </#macro>

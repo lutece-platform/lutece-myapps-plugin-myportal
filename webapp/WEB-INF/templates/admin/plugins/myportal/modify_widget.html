@@ -1,92 +1,63 @@
 <#include "macro_myportal.html" />
-<div class="row-fluid">
-	<div class="span12">
-       <fieldset>
-		<legend>#i18n{myportal.modify_widget.tableLabel}</legend>
-		<form class="form-horizontal" method="post" enctype="multipart/form-data" name="modify_widget" action="jsp/admin/plugins/myportal/DoModifyWidget.jsp">
-			<div class="control-group">
-                <label class="control-label" for="widget_name" >#i18n{myportal.modify_widget.labelName} * :</label>
-                <div class="controls">
-                    <input type="text" id="widget_name" name="widget_name" size="60" maxlength="50" value="${widget.name}" tabindex="1" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="widget_description" >#i18n{myportal.modify_widget.labelDescription} * :</label>
-                <div class="controls">
-                    <input type="text" id="widget_description" name="widget_description" size="60" maxlength="50" value="${widget.description}" tabindex="1" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="id_icon" >#i18n{myportal.create_widget.labelIcon} * :</label>
-                <div class="controls">
-                    <@radioIconList name="id_icon" default_value=widget.idIcon icons=icons_list />        
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="id_category" >#i18n{myportal.modify_widget.labelId_category} :</label>
-                <div class="controls">
-                    <@combo name="id_category" default_value="${widget.idCategory}" items=categories_list />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="widget_type" >#i18n{myportal.modify_widget.labelWidget_type} :</label>
-                <div class="controls">
-                    <@combo name="widget_type" default_value="${widget.widgetType}" items=widget_types_list />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="id_style" >#i18n{myportal.modify_widget.labelStyle} :</label>
-                <div class="controls">
-                    <@combo name="id_style" default_value="${widget.idStyle}" items=widget_styles_list />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="widget_config_data" >#i18n{myportal.modify_widget.labelConfigData} :</label>
-                <div class="controls">
-                    <textarea cols="80" rows="5"  id="widget_config_data" name="widget_config_data"  tabindex="9" >${widget.configData}</textarea>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="widget_status" >#i18n{myportal.create_widget.labelStatus} :</label>
-                <div class="controls">
-                    <select name="widget_status">
-                        <option value="${status_draft}" 
-                                <#if widget.status == status_draft>
-                                selected="selected"
-                                </#if>
-                                > #i18n{myportal.create_widget.labelStatusDraft}</option>
-                        <option value="${status_mandatory}" 
-                                <#if widget.status == status_mandatory>
-                                selected="selected"
-                                </#if>
-                                > #i18n{myportal.create_widget.labelStatusMandatory}</option>
-                        <option value="${status_public}" 
-                                <#if widget.status == status_public>
-                                selected="selected"
-                                </#if>
-                                > #i18n{myportal.create_widget.labelStatusPublic}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="">#i18n{myportal.modify_widget.labelFeature}</label>
-                <div class="controls">
-					<label class="checkbox" for="is_essential">
-                    <input type="checkbox" name="is_essential" value="1" <#if widget.isEssential> checked="checked" </#if>>
-                           &nbsp; #i18n{myportal.modify_widget.labelEssential}
-					</label>
-                	<label class="checkbox" for="is_new">
-                    <input type="checkbox" name="is_new" value="1" 
-                           <#if widget.isNew> checked="checked" </#if> />&nbsp; #i18n{myportal.modify_widget.labelNew}
-					</label>
-                </div>
-            </div>
-            <div class="form-actions">               
-                <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.modify_widget.buttonModifyWidget}</button>
-                <a class="btn btn-small" href="jsp/admin/plugins/myportal/ManageWidgets.jsp" >#i18n{myportal.create_icon.button_cancel}</a>
-            </div>
-            <input type="hidden" id="id_widget" name="id_widget" value="${widget.idWidget}"/>
-			</form>
-        </fieldset>
-	</div>
-</div>
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{myportal.modify_widget.tableLabel}' />
+			<@boxBody>
+				<@tform method='post' enctype='multipart/form-data' name='modify_widget' action='jsp/admin/plugins/myportal/DoModifyWidget.jsp'>
+					<@formGroup labelFor='widget_name' labelKey='#i18n{myportal.modify_widget.labelName}' mandatory=true>
+						<@input type='text' id='widget_name' name='widget_name' inputSize=60 maxlength=50 value='${widget.name}' />
+					</@formGroup>
+					<@formGroup labelFor='widget_description' labelKey='#i18n{myportal.modify_widget.labelDescription}' mandatory=true>
+						<@input type='text' id='widget_description' name='widget_description' inputSize=60 maxlength=50 value='${widget.description}' />
+					</@formGroup>
+					<@formGroup labelFor='id_icon' labelKey='#i18n{myportal.create_widget.labelIcon}' mandatory=true>
+						<@radioIconList name='id_icon' default_value=widget.idIcon icons=icons_list />        
+					</@formGroup>
+					<@formGroup labelFor='id_category' labelKey='#i18n{myportal.modify_widget.labelId_category}'>
+						<@select name='id_category' default_value='${widget.idCategory}' items=categories_list />
+					</@formGroup>
+					<@formGroup labelFor='widget_type' labelKey='#i18n{myportal.modify_widget.labelWidget_type}'>
+						<@select name='widget_type' default_value='${widget.widgetType}' items=widget_types_list />
+					</@formGroup>
+					<@formGroup labelFor='id_style' labelKey='#i18n{myportal.modify_widget.labelStyle}'>
+						<@select name='id_style' default_value='${widget.idStyle}' items=widget_styles_list />
+					</@formGroup>
+					<@formGroup labelFor='widget_config_data' labelKey='#i18n{myportal.modify_widget.labelConfigData}'>
+						<@input type='textarea' cols=80 rows=5 id='widget_config_data' name='widget_config_data'>${widget.configData}</@input>
+					</@formGroup>
+					<@formGroup labelFor='widget_status' labelKey='#i18n{myportal.create_widget.labelStatus}'>
+						<@select name='widget_status'>
+							<option value="${status_draft}" 
+									<#if widget.status == status_draft>
+									selected="selected"
+									</#if>
+									> #i18n{myportal.create_widget.labelStatusDraft}</option>
+							<option value="${status_mandatory}" 
+									<#if widget.status == status_mandatory>
+									selected="selected"
+									</#if>
+									> #i18n{myportal.create_widget.labelStatusMandatory}</option>
+							<option value="${status_public}" 
+									<#if widget.status == status_public>
+									selected="selected"
+									</#if>
+									> #i18n{myportal.create_widget.labelStatusPublic}</option>
+						</@select>
+					</@formGroup>
+					
+					<@formGroup labelKey='#i18n{myportal.modify_widget.labelFeature}'>
+						<@checkBox labelFor='is_essential' labelKey='#i18n{myportal.modify_widget.labelEssential}' name='is_essential' value='1' checked=widget.isEssential />
+						<@checkBox labelFor='is_new' labelKey='#i18n{myportal.modify_widget.labelNew}' name='is_new' value='1' checked=widget.isNew /> 
+					</@formGroup>
+					
+					<@formGroup>
+						<@button type='submit' title='#i18n{myportal.modify_widget.buttonModifyWidget}' buttonIcon='save' />
+						<@aButton href='jsp/admin/plugins/myportal/ManageWidgets.jsp' title='#i18n{myportal.create_icon.button_cancel}' buttonIcon='times' color='default' />
+						<@input type='hidden' id='id_widget' name='id_widget' value='${widget.idWidget}' />
+					</@formGroup>
+				</@tform>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>

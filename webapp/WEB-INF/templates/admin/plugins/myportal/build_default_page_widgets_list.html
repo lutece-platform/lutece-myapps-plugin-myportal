@@ -1,57 +1,52 @@
-<div class="row-fluid">
-    <legend>#i18n{myportal.build_default_page_widgets_list.pageTitle}</legend>
-    <@paginationAdmin paginator=paginator combo=1 />
-    <form class="form-horizontal" method="post" action="jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp">
-        <fieldset>
-            <table class="table table-striped table-condensed">
-                <tr>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnName}</th>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnIcon_url}</th>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnDescription}</th>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnId_category}</th>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnWidget_type}</th>
-                    <th>#i18n{myportal.build_default_page_widgets_list.columnStyle}</th>
-                </tr>
-                <#list widgets_list as widget >
-                <tr>
-                    <td>
-                        <div class="controls">
-                            <input type="radio" name="id_widget" value="${widget.idWidget}" />
-                        </div>
-                        </div>
-                        ${widget.name}
-                    </td>
-                    <td><img src="image?resource_type=myportal_icon_img&amp;id=${widget.idIcon}" alt="widget icon" height="30px"/></td>
-                    <td>${widget.description}</td>
-                    <td>${widget.category}</td>
-                    <td>${widget.widgetType}</td>
-                    <td>${widget.style}</td>
-                </tr>
-                </#list>
-            </table>
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{myportal.build_default_page_widgets_list.pageTitle}' />
+			<@boxBody>
+				<@paginationAdmin paginator=paginator combo=1 />
+				<@tform method='post' action='jsp/admin/plugins/myportal/DoMoveWidgetComponent.jsp'>
+					<@table>
+						<@tr>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnName}</@th>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnIcon_url}</@th>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnDescription}</@th>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnId_category}</@th>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnWidget_type}</@th>
+							<@th>#i18n{myportal.build_default_page_widgets_list.columnStyle}</@th>
+						</@tr>
+						<#list widgets_list as widget >
+						<@tr>
+							<@td>
+								<@radioButton labelFor='id_widget'+widget?index labelKey='${widget.name}' name='id_widget' id='id_widget'+widget?index value='${widget.idWidget}' />
+							</@td>
+							<@td><img src="image?resource_type=myportal_icon_img&amp;id=${widget.idIcon}" alt="widget icon" height="30px" /></@td>
+							<@td>${widget.description}</@td>
+							<@td>${widget.category}</@td>
+							<@td>${widget.widgetType}</@td>
+							<@td>${widget.style}</@td>
+						</@tr>
+						</#list>
+					</@table>
 
-            <input type="hidden" name="widget_order" value="0" />
+					<@input type='hidden' name='widget_order' value='0' />
 
-            <div class="control-group">
-                <label class="control-label" for="widget_column">#i18n{myportal.build_default_page_widgets_list.labelColumn}</label>
-                <div class="controls">
-
-                    <select name="widget_column">
-                        <#list list_available_columns as column_refItem>
-                        <#if column_refItem.code != ''>
-                        <option value="${column_refItem.code}">${column_refItem.code}</option>
-                        </#if>
-                        </#list>
-                    </select>
-                </div>
-            </div>
-            
-            
-            <div class="form-actions">
-                <button class="btn btn-primary btn-small" type="submit" >#i18n{myportal.build_default_page_widgets_list.buttonAddWidget}</button>
-                <a class="btn btn-small" href="jsp/admin/plugins/myportal/BuildDefaultPage.jsp" >#i18n{myportal.create_icon.button_cancel}</a>
-            </div>            
-        </fieldset>
-    </form>
-    <@paginationAdmin paginator=paginator />
-</div>
+					<@formGroup labelFor='widget_column' labelKey='#i18n{myportal.build_default_page_widgets_list.labelColumn}'>
+						<@select name='widget_column'>
+							<#list list_available_columns as column_refItem>
+								<#if column_refItem.code != ''>
+									<option value="${column_refItem.code}">${column_refItem.code}</option>
+								</#if>
+							</#list>
+						</@select>
+					</@formGroup>
+											
+					<@formGroup>
+						<@button type='submit' title='#i18n{myportal.build_default_page_widgets_list.buttonAddWidget}' buttonIcon='save' />
+						<@aButton href='jsp/admin/plugins/myportal/BuildDefaultPage.jsp' title='#i18n{myportal.create_icon.button_cancel}' buttonIcon='times' color='default' />
+					</@formGroup>
+				</@tform>
+				<@paginationAdmin paginator=paginator />
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>
