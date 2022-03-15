@@ -1,4 +1,12 @@
-<fieldset>
-	<legend>#i18n{myportal.manage_advanced_parameters.pageTitle}</legend> 
-	<#include "advanced_parameters.html" />
-</fieldset>
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{myportal.manage_advanced_parameters.pageTitle}' />
+			<@boxBody>
+				<@fieldSet>
+					<#include "advanced_parameters.html" />
+				</@fieldSet>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>
